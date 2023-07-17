@@ -26,3 +26,12 @@
     *((range).data + (range).size) = (value); \
     (range).size++; \
 } while (0);
+
+// Requires GNUC:
+#define SUM_RANGE(range) ({ \
+    typeof(*range.data) sum = 0; \
+    FOR_RANGE(it, (range)) { \
+        sum += *it; \
+    } \
+    sum; \
+})

@@ -22,11 +22,7 @@ int main(int argc, char **argv) {
         printf("%s", buffer);
         let n = atoi(buffer);
         if (n == 0) {
-            // sum values
-            int sum = 0;
-            FOR_RANGE(it, words) {
-                sum += *it;
-            }
+            let sum = SUM_RANGE(words);
             max_sum = fmax(max_sum, sum);
             words.size = 0;
         } else {
