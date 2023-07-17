@@ -37,6 +37,15 @@
 })
 
 // Requires GNUC:
+#define MIN_ELEMENT_RANGE(range) ({ \
+    typeof(range.data) minimum = range.data; \
+    FOR_RANGE(it, (range)) { \
+        minimum = *minimum > *it ? it : minimum; \
+    } \
+    minimum; \
+})
+
+// Requires GNUC:
 #define MAX_ELEMENT_RANGE(range) ({ \
     typeof(range.data) maximum = range.data; \
     FOR_RANGE(it, (range)) { \
