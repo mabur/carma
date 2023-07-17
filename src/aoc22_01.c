@@ -14,26 +14,29 @@ int main(int argc, char **argv) {
     let file = fopen(file_path, "r");
     char buffer[256];
     
-    Ints words;
-    INIT_DARRAY(words, 0, 10000);
-    int max_sum = 0;
+    Ints current_calories;
+    Ints all_calories;
+    INIT_DARRAY(current_calories, 0, 10000);
+    INIT_DARRAY(all_calories, 0, 10000);
     
     while (fgets(buffer, sizeof(buffer), file) != NULL) {
         printf("%s", buffer);
         let n = atoi(buffer);
         if (n == 0) {
-            let sum = SUM_RANGE(words);
-            max_sum = fmax(max_sum, sum);
-            words.size = 0;
+            APPEND(all_calories, SUM_RANGE(current_calories));
+            current_calories.size = 0;
         } else {
-            APPEND(words, n);
+            APPEND(current_calories, n);
         }
     }
     fclose(file);
     
-    printf("Max sum: %d", max_sum);
+    let it = MAX_ELEMENT_RANGE(all_calories);
+    
+    printf("Max sum: %d", *it);
 
-    FREE_RANGE(words);
+    FREE_RANGE(current_calories);
+    FREE_RANGE(all_calories);
     
     return 0;
 }

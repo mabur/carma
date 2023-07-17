@@ -35,3 +35,12 @@
     } \
     sum; \
 })
+
+// Requires GNUC:
+#define MAX_ELEMENT_RANGE(range) ({ \
+    typeof(range.data) maximum = range.data; \
+    FOR_RANGE(it, (range)) { \
+        maximum = *maximum < *it ? it : maximum; \
+    } \
+    maximum; \
+})
