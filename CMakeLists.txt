@@ -1,6 +1,4 @@
 cmake_minimum_required(VERSION 3.5)
 project(carma)
-FILE(GLOB source "src/*.c" "src/*.h")
-add_executable(carma ${source})
-target_link_libraries(carma PRIVATE)
-target_compile_features(carma PRIVATE c_std_99)
+add_executable(raytracer src/raytracer.c)
+target_compile_features(raytracer PRIVATE c_std_99)
