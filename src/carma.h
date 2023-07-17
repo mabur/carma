@@ -55,3 +55,5 @@
     } \
     maximum; \
 })
+
+#define FOR_LINES(line, capacity, file) for (char line[capacity]; fgets(line, (capacity), (file)) != NULL;)
