@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
         let n = atoi(buffer);
         if (n == 0) {
             APPEND(all_calories, SUM_RANGE(current_calories));
-            current_calories.size = 0;
+            CLEAR_RANGE(current_calories);
         } else {
             APPEND(current_calories, n);
         }

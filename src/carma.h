@@ -27,6 +27,8 @@
     (range).size++; \
 } while (0);
 
+#define CLEAR_RANGE(range) do {(range).size = 0;} while (0);
+
 // Requires GNUC:
 #define SUM_RANGE(range) ({ \
     typeof(*range.data) sum = 0; \
