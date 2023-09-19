@@ -1,0 +1,12 @@
+* Assume GNU C.
+* Type inference via GNU C extension.
+* Pass structs by value and do not use const by default. Enforce functional style via convention instead of compiler.
+* Containers implemented via convention:
+  - Arrays with size known at run-time. first, last
+  - Arrays that can grow and shrink. first, last, last_allocated
+* Algorithms implemented via macros and GNU C extensions:
+  - For each
+  - Copy
+  - Fill
+  - Find
+  - erase_if
