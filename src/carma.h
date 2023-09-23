@@ -72,4 +72,21 @@
     it; \
 })
 
+#define FIND_IF_BACKWARDS(range, predicate) ({ \
+    let it = (range).last - 1; \
+    for (; it != (range).first - 1 && !(predicate)(*it); --it) { \
+    } \
+    it; \
+})
+
+#define ERASE_IF(darray, predicate) do { \
+    let range = (darray); \
+    while (range.first != range.last)) { \
+        range.first = *(range.last - 1); \
+        range.last = range.last - 1; \
+        range.first = FIND_IF(range, (predicate)); \
+    } \
+    (darray).last = range.last;\
+} while (0);
+
 #define FOR_LINES(line, capacity, file) for (char line[capacity]; fgets(line, (capacity), (file)) != NULL;)
