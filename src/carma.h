@@ -2,6 +2,9 @@
 
 #define let __auto_type // Requires GNUC. C23 also has auto.
 
+#define RANGE(type) struct {type* first; type* last;}
+#define DARRAY(type) struct {type* first; type* last; type* last_allocated;}
+
 #define INIT_RANGE(range, count) do { \
     (range).first = malloc((count) * sizeof(*(range).first)); \
     (range).last = (range).first + (count); \

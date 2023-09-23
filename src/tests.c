@@ -2,17 +2,6 @@
 
 #include "carma.h"
 
-typedef struct {
-    int* first;
-    int* last;
-} Ints;
-
-typedef struct {
-    int* first;
-    int* last;
-    int* last_allocated;
-} IntsDarray;
-
 int is_positive(int x) {
     return x > 0;
 }
@@ -34,7 +23,7 @@ int is_zero(int x) {
 } while (0);
 
 void test_find_if() {
-    Ints range;
+    RANGE(int) range;
     INIT_RANGE(range, 4);
     range.first[0] = -1;
     range.first[1] = 4;
@@ -47,7 +36,7 @@ void test_find_if() {
 }
 
 void test_find_if_backwards() {
-    Ints range;
+    RANGE(int) range;
     INIT_RANGE(range, 4);
     range.first[0] = -1;
     range.first[1] = 4;
@@ -60,7 +49,7 @@ void test_find_if_backwards() {
 }
 
 void test_drop_while() {
-    Ints range;
+    RANGE(int) range;
     INIT_RANGE(range, 4);
     range.first[0] = -1;
     range.first[1] = 4;
@@ -73,7 +62,7 @@ void test_drop_while() {
 }
 
 void test_drop_until() {
-    Ints range;
+    RANGE(int) range;
     INIT_RANGE(range, 4);
     range.first[0] = -1;
     range.first[1] = 4;
@@ -86,7 +75,7 @@ void test_drop_until() {
 }
 
 void test_drop_back_while() {
-    Ints range;
+    RANGE(int) range;
     INIT_RANGE(range, 4);
     range.first[0] = -1;
     range.first[1] = 4;
@@ -99,7 +88,7 @@ void test_drop_back_while() {
 }
 
 void test_drop_back_until() {
-    Ints range;
+    RANGE(int) range;
     INIT_RANGE(range, 4);
     range.first[0] = -1;
     range.first[1] = 4;
@@ -112,7 +101,7 @@ void test_drop_back_until() {
 }
 
 void test_erase_if() {
-    IntsDarray array;
+    DARRAY(int) array;
     INIT_DARRAY(array, 4, 4);
     array.first[0] = -1;
     array.first[1] = 4;

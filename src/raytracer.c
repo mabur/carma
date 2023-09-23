@@ -19,7 +19,7 @@ Vec3d sub(Vec3d a, Vec3d b) {
 }
 
 Vec3d mul(Vec3d a, Vec3d b) {
-    return (Vec3d){ a.x * b.x, a.y * b.y, a.z * b.z };
+    return (Vec3d){a.x * b.x, a.y * b.y, a.z * b.z};
 }
 
 Vec3d muls(double a, Vec3d b) {
@@ -53,15 +53,8 @@ typedef struct {
     Vec3d color;
 } Light;
 
-typedef struct {
-    Sphere* first;
-    Sphere* last;
-} Spheres;
-
-typedef struct {
-    Light* first;
-    Light* last;
-} Lights;
+typedef RANGE(Sphere) Spheres;
+typedef RANGE(Light) Lights;
 
 typedef struct {
     Spheres spheres;
