@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 project(carma)
+add_executable(tests src/tests.c)
 add_executable(raytracer src/raytracer.c)
 add_executable(aoc22_01 src/aoc22_01.c)
+target_compile_features(tests PRIVATE c_std_99)
 target_compile_features(raytracer PRIVATE c_std_99)
 target_compile_features(aoc22_01 PRIVATE c_std_99)

@@ -64,4 +64,12 @@
     maximum; \
 })
 
+// Requires GNUC:
+#define FIND_IF(range, predicate) ({ \
+    let it = (range).first; \
+    for (; it != (range).last && !(predicate)(*it); ++it) { \
+    } \
+    it; \
+})
+
 #define FOR_LINES(line, capacity, file) for (char line[capacity]; fgets(line, (capacity), (file)) != NULL;)
