@@ -84,7 +84,7 @@
 // Requires GNUC:
 #define DROP_WHILE(range, predicate) ({ \
     let result = (range); \
-    for (; result.first != result.last && (predicate)(*result.first); ++result.first) { \
+    for (; COUNT(result) > 0 && (predicate)(*result.first); ++result.first) { \
     } \
     result; \
 })
@@ -92,7 +92,7 @@
 // Requires GNUC:
 #define DROP_UNTIL(range, predicate) ({ \
     let result = (range); \
-    for (; result.first != result.last && !(predicate)(*result.first); ++result.first) { \
+    for (; COUNT(result) > 0 && !(predicate)(*result.first); ++result.first) { \
     } \
     result; \
 })
@@ -100,7 +100,7 @@
 // Requires GNUC:
 #define DROP_BACK_WHILE(range, predicate) ({ \
     let result = (range); \
-    for (; result.first != result.last && (predicate)(*(result.last - 1)); --result.last) { \
+    for (; COUNT(result) > 0 && (predicate)(*(result.last - 1)); --result.last) { \
     } \
     result; \
 })
@@ -108,7 +108,7 @@
 // Requires GNUC:
 #define DROP_BACK_UNTIL(range, predicate) ({ \
     let result = (range); \
-    for (; result.first != result.last && !(predicate)(*(result.last - 1)); --result.last) { \
+    for (; COUNT(result) > 0 && !(predicate)(*(result.last - 1)); --result.last) { \
     } \
     result; \
 })
