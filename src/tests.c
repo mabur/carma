@@ -11,6 +11,14 @@ int is_positive(int x) {
     return x > 0;
 }
 
+int is_negative(int x) {
+    return x < 0;
+}
+
+int is_zero(int x) {
+    return x == 0;
+}
+
 #define ASSERT_EQUAL(description, a, b) do { \
     if (a == b) {                            \
         printf("%s ok\n", description);      \
@@ -21,12 +29,14 @@ int is_positive(int x) {
 
 void test_find_if() {
     Ints range;
-    INIT_RANGE(range, 3);
+    INIT_RANGE(range, 4);
     range.first[0] = -1;
     range.first[1] = 4;
     range.first[2] = -2;
-    let it = FIND_IF(range, is_positive);
-    ASSERT_EQUAL("FIND_IF", *it, 4);
+    range.first[2] = 1;
+    ASSERT_EQUAL("FIND_IF", *FIND_IF(range, is_positive), 4);
+    ASSERT_EQUAL("FIND_IF", *FIND_IF(range, is_negative), -1);
+    ASSERT_EQUAL("FIND_IF", FIND_IF(range, is_zero), range.last);
     FREE_RANGE(range);
 }
 
