@@ -7,6 +7,12 @@ typedef struct {
     int* last;
 } Ints;
 
+typedef struct {
+    int* first;
+    int* last;
+    int* last_allocated;
+} IntsDarray;
+
 int is_positive(int x) {
     return x > 0;
 }
@@ -103,6 +109,20 @@ void test_drop_back_until() {
     ASSERT_EQUAL("DROP_BACK_UNTIL", *(DROP_BACK_UNTIL(range, is_negative).last - 1), -2);
     ASSERT_EQUAL("DROP_BACK_UNTIL", DROP_BACK_UNTIL(range, is_zero).last, range.first);
     FREE_RANGE(range);
+}
+
+void test_erase_if() {
+    IntsDarray array;
+    INIT_DARRAY(array, 4, 4);
+    array.first[0] = -1;
+    array.first[1] = 4;
+    array.first[2] = -2;
+    array.first[3] = 1;
+    ERASE_IF(array, is_positive);
+    ASSERT_EQUAL("ERASE_IF", COUNT(array), 2);
+    ASSERT_EQUAL("ERASE_IF", *array.first, -1);
+    ASSERT_EQUAL("ERASE_IF", *(array.last - 1), -2);
+    FREE_DARRAY(array);
 }
 
 int main() {

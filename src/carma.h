@@ -79,6 +79,8 @@
     it; \
 })
 
+#define COUNT(range) ((range).last - (range).first)
+
 // Requires GNUC:
 #define DROP_WHILE(range, predicate) ({ \
     let result = (range); \
@@ -113,12 +115,16 @@
 
 #define ERASE_IF(darray, predicate) do { \
     let range = (darray); \
-    while (range.first != range.last)) { \
-        range.first = *(range.last - 1); \
-        range.last = range.last - 1; \
-        range.first = FIND_IF(range, (predicate)); \
+    while (COUNT(range) > 0) { \
+        range = DROP_UNTIL(range, predicate); \
+        range = DROP_BACK_WHILE(range, predicate); \
+        if (COUNT(range) > 1) { \
+            *range.first = *(range.last - 1); \
+            ++range.first; \
+            --range.last; \
+        } \
     } \
-    (darray).last = range.last;\
+    (darray).last = range.last; \
 } while (0);
 
 #define FOR_LINES(line, capacity, file) for (char line[capacity]; fgets(line, (capacity), (file)) != NULL;)
