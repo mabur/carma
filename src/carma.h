@@ -95,6 +95,22 @@
     result; \
 })
 
+// Requires GNUC:
+#define DROP_BACK_WHILE(range, predicate) ({ \
+    let result = (range); \
+    for (; result.first != result.last && (predicate)(*(result.last - 1)); --result.last) { \
+    } \
+    result; \
+})
+
+// Requires GNUC:
+#define DROP_BACK_UNTIL(range, predicate) ({ \
+    let result = (range); \
+    for (; result.first != result.last && !(predicate)(*(result.last - 1)); --result.last) { \
+    } \
+    result; \
+})
+
 #define ERASE_IF(darray, predicate) do { \
     let range = (darray); \
     while (range.first != range.last)) { \

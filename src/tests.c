@@ -79,12 +79,40 @@ void test_drop_until() {
     FREE_RANGE(range);
 }
 
+void test_drop_back_while() {
+    Ints range;
+    INIT_RANGE(range, 4);
+    range.first[0] = -1;
+    range.first[1] = 4;
+    range.first[2] = -2;
+    range.first[3] = 1;
+    ASSERT_EQUAL("DROP_BACK_WHILE", *(DROP_BACK_WHILE(range, is_positive).last - 1), -2);
+    ASSERT_EQUAL("DROP_BACK_WHILE", *(DROP_BACK_WHILE(range, is_negative).last - 1), 1);
+    ASSERT_EQUAL("DROP_BACK_WHILE", DROP_BACK_WHILE(range, is_zero).last, range.last);
+    FREE_RANGE(range);
+}
+
+void test_drop_back_until() {
+    Ints range;
+    INIT_RANGE(range, 4);
+    range.first[0] = -1;
+    range.first[1] = 4;
+    range.first[2] = -2;
+    range.first[3] = 1;
+    ASSERT_EQUAL("DROP_BACK_UNTIL", *(DROP_BACK_UNTIL(range, is_positive).last - 1), 1);
+    ASSERT_EQUAL("DROP_BACK_UNTIL", *(DROP_BACK_UNTIL(range, is_negative).last - 1), -2);
+    ASSERT_EQUAL("DROP_BACK_UNTIL", DROP_BACK_UNTIL(range, is_zero).last, range.first);
+    FREE_RANGE(range);
+}
+
 int main() {
     printf("TESTS BEGIN\n");
     test_find_if();
     test_find_if_backwards();
     test_drop_while();
     test_drop_until();
+    test_drop_back_while();
+    test_drop_back_until();
     printf("TESTS END\n");
     return 0;
 }
