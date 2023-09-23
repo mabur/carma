@@ -10,3 +10,4 @@
   - Fill
   - Find
   - erase_if
+* Can we get around the lack lambda functions in C by using a macro like FOR_EACH where the predicate is defined as an expression?
