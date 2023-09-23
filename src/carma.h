@@ -16,7 +16,7 @@
     (range).last = NULL; \
 } while (0);
 
-#define FOR_RANGE(it, range) \
+#define FOR_EACH(it, range) \
     for (__auto_type it = (range).first; it != (range).last; ++it)
 
 #define INIT_DARRAY(range, count, capacity) do { \
@@ -43,7 +43,7 @@
 // Requires GNUC:
 #define SUM_RANGE(range) ({ \
     typeof(*range.first) sum = 0; \
-    FOR_RANGE(it, (range)) { \
+    FOR_EACH(it, (range)) { \
         sum += *it; \
     } \
     sum; \
@@ -52,7 +52,7 @@
 // Requires GNUC:
 #define MIN_ELEMENT_RANGE(range) ({ \
     let minimum = (range).first; \
-    FOR_RANGE(it, (range)) { \
+    FOR_EACH(it, (range)) { \
         minimum = *minimum > *it ? it : minimum; \
     } \
     minimum; \
@@ -61,7 +61,7 @@
 // Requires GNUC:
 #define MAX_ELEMENT_RANGE(range) ({ \
     let maximum = (range).first; \
-    FOR_RANGE(it, (range)) { \
+    FOR_EACH(it, (range)) { \
         maximum = *maximum < *it ? it : maximum; \
     } \
     maximum; \

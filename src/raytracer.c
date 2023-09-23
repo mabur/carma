@@ -121,7 +121,7 @@ Intersection findSingleIntersection(
 
 Intersection findIntersection(Vec3d start, Vec3d direction, Spheres spheres) {
     let i1 = makeIntersection();
-    FOR_RANGE(sphere, spheres) {
+    FOR_EACH(sphere, spheres) {
         let i2 = findSingleIntersection(start, direction, *sphere);
         if (i2.distance < i1.distance) {
             i1 = i2;
@@ -144,7 +144,7 @@ Vec3d shade(Intersection intersection, World world) {
         return (Vec3d){ 1, 1, 1 };
     }
     let color = shadeAtmosphere(intersection, world.atmosphere_color);
-    FOR_RANGE(light, world.lights) {
+    FOR_EACH(light, world.lights) {
         color = add(color, shadeSingleLight(intersection, *light));
     }
     return color;
