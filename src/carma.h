@@ -87,6 +87,14 @@
     result; \
 })
 
+// Requires GNUC:
+#define DROP_UNTIL(range, predicate) ({ \
+    let result = (range); \
+    for (; result.first != result.last && !(predicate)(*result.first); ++result.first) { \
+    } \
+    result; \
+})
+
 #define ERASE_IF(darray, predicate) do { \
     let range = (darray); \
     while (range.first != range.last)) { \

@@ -62,6 +62,20 @@ void test_drop_while() {
     range.first[3] = 1;
     ASSERT_EQUAL("DROP_WHILE", *DROP_WHILE(range, is_positive).first, -1);
     ASSERT_EQUAL("DROP_WHILE", *DROP_WHILE(range, is_negative).first, 4);
+    ASSERT_EQUAL("DROP_WHILE", *DROP_WHILE(range, is_zero).first, -1);
+    FREE_RANGE(range);
+}
+
+void test_drop_until() {
+    Ints range;
+    INIT_RANGE(range, 4);
+    range.first[0] = -1;
+    range.first[1] = 4;
+    range.first[2] = -2;
+    range.first[3] = 1;
+    ASSERT_EQUAL("DROP_UNTIL", *DROP_UNTIL(range, is_positive).first, 4);
+    ASSERT_EQUAL("DROP_UNTIL", *DROP_UNTIL(range, is_negative).first, -1);
+    ASSERT_EQUAL("DROP_UNTIL", DROP_UNTIL(range, is_zero).first, range.last);
     FREE_RANGE(range);
 }
 
@@ -70,6 +84,7 @@ int main() {
     test_find_if();
     test_find_if_backwards();
     test_drop_while();
+    test_drop_until();
     printf("TESTS END\n");
     return 0;
 }
