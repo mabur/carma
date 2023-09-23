@@ -11,3 +11,7 @@
   - Find
   - erase_if
 * Can we get around the lack lambda functions in C by using a macro like FOR_EACH where the predicate is defined as an expression?
+* Compare arrays and slices in Golang:
+  - "An array has a fixed size."
+  - "A slice, on the other hand, is a dynamically-sized, flexible view into the elements of an array."
+  - "In practice, slices are much more common than arrays."
