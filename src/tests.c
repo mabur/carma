@@ -53,10 +53,23 @@ void test_find_if_backwards() {
     FREE_RANGE(range);
 }
 
+void test_drop_while() {
+    Ints range;
+    INIT_RANGE(range, 4);
+    range.first[0] = -1;
+    range.first[1] = 4;
+    range.first[2] = -2;
+    range.first[3] = 1;
+    ASSERT_EQUAL("DROP_WHILE", *DROP_WHILE(range, is_positive).first, -1);
+    ASSERT_EQUAL("DROP_WHILE", *DROP_WHILE(range, is_negative).first, 4);
+    FREE_RANGE(range);
+}
+
 int main() {
     printf("TESTS BEGIN\n");
     test_find_if();
     test_find_if_backwards();
+    test_drop_while();
     printf("TESTS END\n");
     return 0;
 }

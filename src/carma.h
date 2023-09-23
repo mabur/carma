@@ -79,6 +79,14 @@
     it; \
 })
 
+// Requires GNUC:
+#define DROP_WHILE(range, predicate) ({ \
+    let result = (range); \
+    for (; result.first != result.last && (predicate)(*result.first); ++result.first) { \
+    } \
+    result; \
+})
+
 #define ERASE_IF(darray, predicate) do { \
     let range = (darray); \
     while (range.first != range.last)) { \
