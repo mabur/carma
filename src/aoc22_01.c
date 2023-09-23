@@ -1,16 +1,10 @@
 #include <stdio.h>
 #include "carma.h"
 
-typedef struct {
-    int* first;
-    int* last;
-    int* last_allocated;
-} Ints;
-
 int main(int argc, char **argv) {
     let file_path = argv[1];
-    Ints current_calories;
-    Ints all_calories;
+    DARRAY(int) current_calories;
+    DARRAY(int) all_calories;
     INIT_DARRAY(current_calories, 0, 10000);
     INIT_DARRAY(all_calories, 0, 10000);
     let file = fopen(file_path, "r");
