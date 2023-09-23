@@ -2,36 +2,44 @@
 
 #define let __auto_type // Requires GNUC. C23 also has auto.
 
-#define INIT_RANGE(range, size_) do { \
-    (range).data = malloc((size_) * sizeof(*(range).data)); \
-    (range).size = (size_); \
-} while (0)
-
-#define INIT_DARRAY(range, size_, capacity_) do { \
-    (range).data = malloc((capacity_) * sizeof(*(range).data)); \
-    (range).size = (size_); \
-    (range).capacity = (capacity_); \
-} while (0)
+#define INIT_RANGE(range, count) do { \
+    (range).first = malloc((count) * sizeof(*(range).first)); \
+    (range).last = (range).first + (count); \
+} while (0);
 
 #define FREE_RANGE(range) do { \
-    free((range).data); \
-    (range).data = NULL; \
-} while (0)
+    free((range).first); \
+    (range).first = NULL; \
+    (range).last = NULL; \
+} while (0);
 
 #define FOR_RANGE(it, range) \
-    for (__auto_type it = (range).data; it != (range).data + (range).size; ++it)
+    for (__auto_type it = (range).first; it != (range).last; ++it)
 
-#define APPEND(range, value) do { \
-    if ((range).size >= (range).capacity) exit(EXIT_FAILURE); \
-    *((range).data + (range).size) = (value); \
-    (range).size++; \
+#define INIT_DARRAY(range, count, capacity) do { \
+    (range).first = malloc((capacity) * sizeof(*(range).first)); \
+    (range).last = (range).first + (count);      \
+    (range).last_allocated = (range).first + (capacity); \
 } while (0)
 
-#define CLEAR_RANGE(range) do {(range).size = 0;} while (0)
+#define FREE_DARRAY(range) do { \
+    free((range).first); \
+    (range).first = NULL; \
+    (range).last = NULL; \
+    (range).last_allocated = NULL; \
+} while (0);
+
+#define APPEND(range, value) do { \
+    if ((range).last >= (range).last_allocated) exit(EXIT_FAILURE); \
+    *(range).last = (value); \
+    (range).last++; \
+} while (0)
+
+#define CLEAR_DARRAY(range) do {(range).last = (range).first;} while (0)
 
 // Requires GNUC:
 #define SUM_RANGE(range) ({ \
-    typeof(*range.data) sum = 0; \
+    typeof(*range.first) sum = 0; \
     FOR_RANGE(it, (range)) { \
         sum += *it; \
     } \
@@ -40,7 +48,7 @@
 
 // Requires GNUC:
 #define MIN_ELEMENT_RANGE(range) ({ \
-    typeof(range.data) minimum = range.data; \
+    let minimum = (range).first; \
     FOR_RANGE(it, (range)) { \
         minimum = *minimum > *it ? it : minimum; \
     } \
@@ -49,7 +57,7 @@
 
 // Requires GNUC:
 #define MAX_ELEMENT_RANGE(range) ({ \
-    typeof(range.data) maximum = range.data; \
+    let maximum = (range).first; \
     FOR_RANGE(it, (range)) { \
         maximum = *maximum < *it ? it : maximum; \
     } \

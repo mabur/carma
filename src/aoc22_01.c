@@ -2,9 +2,9 @@
 #include "carma.h"
 
 typedef struct {
-    int* data;
-    int size;
-    int capacity;
+    int* first;
+    int* last;
+    int* last_allocated;
 } Ints;
 
 int main(int argc, char **argv) {
@@ -18,15 +18,15 @@ int main(int argc, char **argv) {
         let n = atoi(line);
         if (n == 0) {
             APPEND(all_calories, SUM_RANGE(current_calories));
-            CLEAR_RANGE(current_calories);
+            CLEAR_DARRAY(current_calories);
         } else {
             APPEND(current_calories, n);
         }
     }
     fclose(file);
     let it = MAX_ELEMENT_RANGE(all_calories);
-    FREE_RANGE(current_calories);
-    FREE_RANGE(all_calories);
+    FREE_DARRAY(current_calories);
+    FREE_DARRAY(all_calories);
     printf("Max sum: %d", *it);
     return 0;
 }
