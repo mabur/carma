@@ -33,7 +33,15 @@
 } while (0);
 
 #define APPEND(range, value) do { \
-    if ((range).last >= (range).last_allocated) exit(EXIT_FAILURE); \
+    if ((range).last == (range).last_allocated) { \
+        size_t old_count = COUNT(range); \
+        size_t old_capacity = CAPACITY(range); \
+        size_t new_capacity = old_capacity == 0 ? 1 : 2 * old_capacity; \
+        size_t item_size = sizeof(*(range).first); \
+        (range).first = realloc((range).first, new_capacity * item_size); \
+        (range).last = (range).first + old_count; \
+        (range).last_allocated = (range).first + new_capacity; \
+    } \
     *(range).last = (value); \
     (range).last++; \
 } while (0)
@@ -83,6 +91,8 @@
 })
 
 #define COUNT(range) ((range).last - (range).first)
+
+#define CAPACITY(range) ((range).last_allocated - (range).first)
 
 // Requires GNUC:
 #define DROP_WHILE(range, predicate) ({ \

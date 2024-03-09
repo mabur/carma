@@ -127,6 +127,29 @@ void test_erase_if() {
     FREE_DARRAY(array);
 }
 
+void test_append() {
+    DARRAY(int) array;
+    INIT_DARRAY(array, 0, 0);
+    ASSERT_EQUAL("APPEND", COUNT(array), 0);
+    ASSERT_EQUAL("APPEND", CAPACITY(array), 0);
+    APPEND(array, 1);
+    ASSERT_EQUAL("APPEND", COUNT(array), 1);
+    ASSERT_EQUAL("APPEND", CAPACITY(array), 1);
+    APPEND(array, 2);
+    ASSERT_EQUAL("APPEND", COUNT(array), 2);
+    ASSERT_EQUAL("APPEND", CAPACITY(array), 2);
+    APPEND(array, 3);
+    ASSERT_EQUAL("APPEND", COUNT(array), 3);
+    ASSERT_EQUAL("APPEND", CAPACITY(array), 4);
+    APPEND(array, 4);
+    ASSERT_EQUAL("APPEND", COUNT(array), 4);
+    ASSERT_EQUAL("APPEND", CAPACITY(array), 4);
+    APPEND(array, 5);
+    ASSERT_EQUAL("APPEND", COUNT(array), 5);
+    ASSERT_EQUAL("APPEND", CAPACITY(array), 8);
+    FREE_DARRAY(array);
+}
+
 int main() {
     test_find_if();
     test_find_if_backwards();
@@ -135,6 +158,7 @@ int main() {
     test_drop_back_while();
     test_drop_back_until();
     test_erase_if();
+    test_append();
     summarize_tests();
     return 0;
 }
