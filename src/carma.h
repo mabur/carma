@@ -7,8 +7,6 @@
 #define RANGE(type) struct {type* data; size_t count;}
 #define DARRAY(type) struct {type* data; size_t count; size_t capacity;}
 
-#define COUNT(range) ((range).count)
-#define CAPACITY(darray) ((darray).capacity)
 #define LAST(range) ((range).data + (range).count)
 
 #define INIT_RANGE(range, mycount) do { \
@@ -57,12 +55,8 @@
 
 #define APPEND(darray, value) do { \
     if ((darray).count == (darray).capacity) { \
-        size_t old_count = COUNT(darray); \
-        size_t old_capacity = CAPACITY(darray); \
-        size_t new_capacity = old_capacity == 0 ? 1 : 2 * old_capacity; \
-        size_t item_size = sizeof(*(darray).data); \
-        (darray).data = realloc((darray).data, new_capacity * item_size); \
-        (darray).capacity = new_capacity; \
+        (darray).capacity = (darray).capacity == 0 ? 1 : 2 * (darray).capacity; \
+        (darray).data = realloc((darray).data, (darray).capacity * sizeof(*(darray).data)); \
     } \
     ((darray).data)[(darray).count] = (value); \
     (darray).count++; \
@@ -183,7 +177,7 @@
 // Requires GNUC:
 #define DROP_BACK_WHILE(range, predicate) ({ \
     let result = (range); \
-    for (; COUNT(result) > 0 && (predicate)(*(LAST(result) - 1)); --result.count) { \
+    for (; (result).count > 0 && (predicate)(*(LAST(result) - 1)); --result.count) { \
     } \
     result; \
 })
@@ -191,7 +185,7 @@
 // Requires GNUC:
 #define DROP_BACK_UNTIL(range, predicate) ({ \
     let result = (range); \
-    for (; COUNT(result) > 0 && !(predicate)(*(LAST(result) - 1)); --result.count) { \
+    for (; (result).count > 0 && !(predicate)(*(LAST(result) - 1)); --result.count) { \
     } \
     result; \
 })
