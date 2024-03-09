@@ -11,14 +11,14 @@ int main(int argc, char **argv) {
     FOR_LINES(line, 255, file) {
         let n = atoi(line);
         if (n == 0) {
-            APPEND(all_calories, SUM_RANGE(current_calories));
-            CLEAR_DARRAY(current_calories);
+            APPEND(all_calories, SUM(current_calories));
+            CLEAR(current_calories);
         } else {
             APPEND(current_calories, n);
         }
     }
     fclose(file);
-    let it = MAX_ELEMENT_RANGE(all_calories);
+    let it = MAX_ELEMENT(all_calories);
     FREE_DARRAY(current_calories);
     FREE_DARRAY(all_calories);
     printf("Max sum: %d", *it);

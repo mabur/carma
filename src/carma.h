@@ -46,10 +46,10 @@
     (range).last++; \
 } while (0)
 
-#define CLEAR_DARRAY(range) do {(range).last = (range).first;} while (0)
+#define CLEAR(range) do {(range).last = (range).first;} while (0)
 
 // Requires GNUC:
-#define SUM_RANGE(range) ({ \
+#define SUM(range) ({ \
     typeof(*range.first) sum = 0; \
     FOR_EACH(it, (range)) { \
         sum += *it; \
@@ -58,7 +58,7 @@
 })
 
 // Requires GNUC:
-#define MIN_ELEMENT_RANGE(range) ({ \
+#define MIN_ELEMENT(range) ({ \
     let minimum = (range).first; \
     FOR_EACH(it, (range)) { \
         minimum = *minimum > *it ? it : minimum; \
@@ -67,7 +67,7 @@
 })
 
 // Requires GNUC:
-#define MAX_ELEMENT_RANGE(range) ({ \
+#define MAX_ELEMENT(range) ({ \
     let maximum = (range).first; \
     FOR_EACH(it, (range)) { \
         maximum = *maximum < *it ? it : maximum; \
