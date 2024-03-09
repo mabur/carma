@@ -14,13 +14,26 @@ int is_zero(int x) {
     return x == 0;
 }
 
+int global_assert_count = 0;
+int global_assert_errors = 0;
+
 #define ASSERT_EQUAL(description, a, b) do { \
+    global_assert_count++; \
     if (a == b) { \
         printf("%s ok\n", (description)); \
     } else { \
         printf("%s %i!=%i bad\n", (description), (a), (b)); \
+        global_assert_errors++; \
     } \
 } while (0);
+
+void summarize_tests() {
+    if (global_assert_errors != 0) {
+        printf("%d/%d test failed\n", global_assert_errors, global_assert_count);
+    } else {
+        printf("All %d test succeeded\n", global_assert_count);
+    }
+}
 
 void test_find_if() {
     RANGE(int) range;
@@ -115,13 +128,12 @@ void test_erase_if() {
 }
 
 int main() {
-    printf("TESTS BEGIN\n");
     test_find_if();
     test_find_if_backwards();
     test_drop_while();
     test_drop_until();
     test_drop_back_while();
     test_drop_back_until();
-    printf("TESTS END\n");
+    summarize_tests();
     return 0;
 }
