@@ -80,15 +80,15 @@ World makeWorld() {
     let world = (World){};
 
     INIT_RANGE(world.spheres, 5);
-    world.spheres.first[0] = (Sphere){(Vec3d){-2, 0, 6}, 1, (Vec3d){MAX_C, MAX_C, MIN_C}};
-    world.spheres.first[1] = (Sphere){(Vec3d){0, 0, 5}, 1, (Vec3d){MAX_C, MIN_C, MIN_C}};
-    world.spheres.first[2] = (Sphere){(Vec3d){2, 0, 4}, 1, (Vec3d){2 * MIN_C, 4 * MIN_C, MAX_C}};
-    world.spheres.first[3] = (Sphere){(Vec3d){0, 1 + R, 0}, R * R, (Vec3d){MIN_C, MAX_C, MIN_C}};
-    world.spheres.first[4] = (Sphere){(Vec3d){0, -1 - R, 0}, R * R, (Vec3d){MAX_C, MAX_C, MAX_C}};
+    world.spheres.data[0] = (Sphere){(Vec3d){-2, 0, 6}, 1, (Vec3d){MAX_C, MAX_C, MIN_C}};
+    world.spheres.data[1] = (Sphere){(Vec3d){0, 0, 5}, 1, (Vec3d){MAX_C, MIN_C, MIN_C}};
+    world.spheres.data[2] = (Sphere){(Vec3d){2, 0, 4}, 1, (Vec3d){2 * MIN_C, 4 * MIN_C, MAX_C}};
+    world.spheres.data[3] = (Sphere){(Vec3d){0, 1 + R, 0}, R * R, (Vec3d){MIN_C, MAX_C, MIN_C}};
+    world.spheres.data[4] = (Sphere){(Vec3d){0, -1 - R, 0}, R * R, (Vec3d){MAX_C, MAX_C, MAX_C}};
 
     INIT_RANGE(world.lights, 2);
-    world.lights.first[0] = (Light){(Vec3d){+1, +1, +2}, muls(0.4, (Vec3d){1, 0.8, 0.5})};
-    world.lights.first[1] = (Light){(Vec3d){-1, -1, -2}, muls(0.4, (Vec3d){0.5, 0.5, 1})};
+    world.lights.data[0] = (Light){(Vec3d){+1, +1, +2}, muls(0.4, (Vec3d){1, 0.8, 0.5})};
+    world.lights.data[1] = (Light){(Vec3d){-1, -1, -2}, muls(0.4, (Vec3d){0.5, 0.5, 1})};
 
     world.atmosphere_color = muls(0.3, (Vec3d){0.5, 0.5, 1});
     return world;
