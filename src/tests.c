@@ -134,6 +134,7 @@ int main() {
     test_drop_until();
     test_drop_back_while();
     test_drop_back_until();
+    test_erase_if();
     summarize_tests();
     return 0;
 }
