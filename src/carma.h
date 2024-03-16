@@ -2,8 +2,6 @@
 #include <stdbool.h>
 #include <string.h>
 
-#define let __auto_type // Requires GNUC. C23 also has auto.
-
 #define RANGE(type) struct {type* data; size_t count;}
 #define DARRAY(type) struct {type* data; size_t count; size_t capacity;}
 
@@ -63,7 +61,7 @@
 } while (0)
 
 #define FOR_EACH(it, range) \
-    for (__auto_type it = (range).data; it != LAST(range); ++it)
+    for (auto it = (range).data; it != LAST(range); ++it)
 
 #define CLEAR(range) do {(range).count = 0;} while (0)
 
@@ -78,7 +76,7 @@
 
 // Requires GNUC:
 #define MIN_ELEMENT(range) ({ \
-    let minimum = (range).data; \
+    auto minimum = (range).data; \
     FOR_EACH(it, (range)) { \
         minimum = *minimum > *it ? it : minimum; \
     } \
@@ -87,7 +85,7 @@
 
 // Requires GNUC:
 #define MAX_ELEMENT(range) ({ \
-    let maximum = (range).data; \
+    auto maximum = (range).data; \
     FOR_EACH(it, (range)) { \
         maximum = *maximum < *it ? it : maximum; \
     } \
@@ -96,7 +94,7 @@
 
 // Requires GNUC:
 #define EQUAL_RANGES(left_range, right_range) ({ \
-    let result = true; \
+    auto result = true; \
     if ((left_range).count != (right_range).count) { \
         result = false; \
     } else { \
@@ -112,7 +110,7 @@
 
 // Requires GNUC:
 #define FIND_IF(range, predicate) ({ \
-    let it = (range).data; \
+    auto it = (range).data; \
     for (; it != LAST(range) && !(predicate)(*it); ++it) { \
     } \
     it; \
@@ -120,7 +118,7 @@
 
 // Requires GNUC:
 #define FIND_IF_ITERATOR(first, last, predicate) ({ \
-    let it = (first); \
+    auto it = (first); \
     for (; it < last && !(predicate)(*it); ++it) { \
     } \
     it; \
@@ -128,7 +126,7 @@
 
 // Requires GNUC:
 #define FIND_IF_NOT(range, predicate) ({ \
-    let it = (range).data; \
+    auto it = (range).data; \
     for (; it != LAST(range) && (predicate)(*it); ++it) { \
     } \
     it; \
@@ -136,21 +134,21 @@
 
 // Requires GNUC:
 #define FIND_IF_BACKWARDS(range, predicate) ({ \
-    let it = LAST(range) - 1; \
+    auto it = LAST(range) - 1; \
     for (; it != (range).data - 1 && !(predicate)(*it); --it) { \
     } \
     it; \
 })
 
 #define FIND_IF_NOT_BACKWARDS(range, predicate) ({ \
-    let it = LAST(range) - 1; \
+    auto it = LAST(range) - 1; \
     for (; it != (range).data - 1 && (predicate)(*it); --it) { \
     } \
     it; \
 })
 
 #define FIND_IF_NOT_BACKWARDS_ITERATOR(first, last, predicate) ({ \
-    let it = (last) - 1; \
+    auto it = (last) - 1; \
     for (; it != (range).data - 1 && (predicate)(*it); --it) { \
     } \
     it; \
@@ -159,7 +157,7 @@
 // Requires GNUC:
 // TODO: think about capacity when calling this with a darray.
 #define DROP_WHILE(range, predicate) ({ \
-    let result = (range); \
+    auto result = (range); \
     for (; result.count > 0 && (predicate)(*result.data); ++result.data, --result.count) { \
     } \
     result; \
@@ -168,7 +166,7 @@
 // Requires GNUC:
 // TODO: think about capacity when calling this with a darray.
 #define DROP_UNTIL(range, predicate) ({ \
-    let result = (range); \
+    auto result = (range); \
     for (; result.count > 0 && !(predicate)(*result.data); ++result.data, --result.count) { \
     } \
     result; \
@@ -176,7 +174,7 @@
 
 // Requires GNUC:
 #define DROP_BACK_WHILE(range, predicate) ({ \
-    let result = (range); \
+    auto result = (range); \
     for (; (result).count > 0 && (predicate)(*(LAST(result) - 1)); --result.count) { \
     } \
     result; \
@@ -184,16 +182,15 @@
 
 // Requires GNUC:
 #define DROP_BACK_UNTIL(range, predicate) ({ \
-    let result = (range); \
+    auto result = (range); \
     for (; (result).count > 0 && !(predicate)(*(LAST(result) - 1)); --result.count) { \
     } \
     result; \
 })
 
-// Requires GNUC:
 #define ERASE_IF(range, predicate) do { \
-    let first_to_erase = (range).data; \
-    let last_to_keep = (range).data + (range).count - 1; \
+    auto first_to_erase = (range).data; \
+    auto last_to_keep = (range).data + (range).count - 1; \
     while (first_to_erase <= last_to_keep) { \
         for (; first_to_erase <= last_to_keep && !(predicate)(*first_to_erase); ++first_to_erase) { \
         } \

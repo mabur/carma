@@ -74,10 +74,10 @@ Intersection makeIntersection() {
 }
 
 World makeWorld() {
-    let R = 100000.0;
-    let MAX_C = 1.0;
-    let MIN_C = 0.1;
-    let world = (World){};
+    auto R = 100000.0;
+    auto MAX_C = 1.0;
+    auto MIN_C = 0.1;
+    auto world = (World){};
 
     INIT_RANGE(world.spheres, 5);
     world.spheres.data[0] = (Sphere){(Vec3d){-2, 0, 6}, 1, (Vec3d){MAX_C, MAX_C, MIN_C}};
@@ -102,13 +102,13 @@ void freeWorld(World world) {
 Intersection findSingleIntersection(
     Vec3d start, Vec3d direction, Sphere sphere
 ) {
-    let intersection = makeIntersection();
-    let offset = sub(sphere.position, start);
-    let c = dot(direction, offset);
+    auto intersection = makeIntersection();
+    auto offset = sub(sphere.position, start);
+    auto c = dot(direction, offset);
     if (c < 0.0) {
         return intersection;
     }
-    let discriminant = c * c - squaredNorm(offset) + sphere.squaredRadius;
+    auto discriminant = c * c - squaredNorm(offset) + sphere.squaredRadius;
     if (discriminant < 0.0) {
         return intersection;
     }
@@ -120,9 +120,9 @@ Intersection findSingleIntersection(
 }
 
 Intersection findIntersection(Vec3d start, Vec3d direction, Spheres spheres) {
-    let i1 = makeIntersection();
+    auto i1 = makeIntersection();
     FOR_EACH(sphere, spheres) {
-        let i2 = findSingleIntersection(start, direction, *sphere);
+        auto i2 = findSingleIntersection(start, direction, *sphere);
         if (i2.distance < i1.distance) {
             i1 = i2;
         }
@@ -131,7 +131,7 @@ Intersection findIntersection(Vec3d start, Vec3d direction, Spheres spheres) {
 }
 
 Vec3d shadeSingleLight(Intersection intersection, Light light) {
-    let geometry = fmax(-dot(light.direction, intersection.normal), 0.0);
+    auto geometry = fmax(-dot(light.direction, intersection.normal), 0.0);
     return muls(geometry, mul(intersection.color, light.color));
 }
 
@@ -143,7 +143,7 @@ Vec3d shade(Intersection intersection, World world) {
     if (isinf(intersection.distance)) {
         return (Vec3d){ 1, 1, 1 };
     }
-    let color = shadeAtmosphere(intersection, world.atmosphere_color);
+    auto color = shadeAtmosphere(intersection, world.atmosphere_color);
     FOR_EACH(light, world.lights) {
         color = add(color, shadeSingleLight(intersection, *light));
     }
@@ -162,30 +162,30 @@ void writePixel(
     int height,
     World world
 ) {
-    let start = (Vec3d){0, 0, 0};
-    let xd = (double)(x - width / 2);
-    let yd = (double)(y - height / 2);
-    let zd = (double)(height / 2);
-    let direction = normalize((Vec3d){xd, yd, zd});
-    let intersection = findIntersection(start, direction, world.spheres);
-    let color = shade(intersection, world);
-    let r = colorU8fromF64(color.x);
-    let g = colorU8fromF64(color.y);
-    let b = colorU8fromF64(color.z);
+    auto start = (Vec3d){0, 0, 0};
+    auto xd = (double)(x - width / 2);
+    auto yd = (double)(y - height / 2);
+    auto zd = (double)(height / 2);
+    auto direction = normalize((Vec3d){xd, yd, zd});
+    auto intersection = findIntersection(start, direction, world.spheres);
+    auto color = shade(intersection, world);
+    auto r = colorU8fromF64(color.x);
+    auto g = colorU8fromF64(color.y);
+    auto b = colorU8fromF64(color.z);
     fprintf(file, "%d %d %d ", r, g, b);
 }
 
 void writeImage(const char* file_path, World world) {
-    let file = fopen(file_path, "w");
+    auto file = fopen(file_path, "w");
     if (file == NULL) {
         fprintf(stderr, "error opening file\n");
         exit(EXIT_FAILURE);
     }
-    let WIDTH = 800;
-    let HEIGHT = 600;
+    auto WIDTH = 800;
+    auto HEIGHT = 600;
     fprintf(file, "%s\n%d\n%d\n%d\n", "P3", WIDTH, HEIGHT, 255);
-    for (let y = 0; y < HEIGHT; ++y) {
-        for (let x = 0; x < WIDTH; ++x) {
+    for (auto y = 0; y < HEIGHT; ++y) {
+        for (auto x = 0; x < WIDTH; ++x) {
             writePixel(file, x, y, WIDTH, HEIGHT, world);
         }
     }
@@ -194,7 +194,7 @@ void writeImage(const char* file_path, World world) {
 
 int main() {
     printf("Saving image\n");
-    let world = makeWorld();
+    auto world = makeWorld();
     writeImage("image.ppm", world);
     freeWorld(world);
     return 0;

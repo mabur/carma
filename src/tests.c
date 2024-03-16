@@ -58,7 +58,7 @@ void summarize_tests() {
 }
 
 void test_find_if() {
-    let range = MAKE_RANGE(int, -1, 4, -2, 1);
+    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
     ASSERT_EQUAL("FIND_IF", *FIND_IF(range, is_positive), 4);
     ASSERT_EQUAL("FIND_IF", *FIND_IF(range, is_negative), -1);
     ASSERT_EQUAL("FIND_IF", FIND_IF(range, is_zero), LAST(range));
@@ -66,7 +66,7 @@ void test_find_if() {
 }
 
 void test_find_if_backwards() {
-    let range = MAKE_RANGE(int, -1, 4, -2, 1);
+    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
     ASSERT_EQUAL("FIND_IF_BACKWARDS", *FIND_IF_BACKWARDS(range, is_positive), 1);
     ASSERT_EQUAL("FIND_IF_BACKWARDS", *FIND_IF_BACKWARDS(range, is_negative), -2);
     ASSERT_EQUAL("FIND_IF_BACKWARDS", FIND_IF_BACKWARDS(range, is_zero), range.data - 1);
@@ -74,7 +74,7 @@ void test_find_if_backwards() {
 }
 
 void test_drop_while() {
-    let range = MAKE_RANGE(int, -1, 4, -2, 1);
+    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
     ASSERT_EQUAL("DROP_WHILE", *DROP_WHILE(range, is_positive).data, -1);
     ASSERT_EQUAL("DROP_WHILE", *DROP_WHILE(range, is_negative).data, 4);
     ASSERT_EQUAL("DROP_WHILE", *DROP_WHILE(range, is_zero).data, -1);
@@ -82,7 +82,7 @@ void test_drop_while() {
 }
 
 void test_drop_until() {
-    let range = MAKE_RANGE(int, -1, 4, -2, 1);
+    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
     ASSERT_EQUAL("DROP_UNTIL", *DROP_UNTIL(range, is_positive).data, 4);
     ASSERT_EQUAL("DROP_UNTIL", *DROP_UNTIL(range, is_negative).data, -1);
     ASSERT_EQUAL("DROP_UNTIL", DROP_UNTIL(range, is_zero).data, LAST(range));
@@ -90,7 +90,7 @@ void test_drop_until() {
 }
 
 void test_drop_back_while() {
-    let range = MAKE_RANGE(int, -1, 4, -2, 1);
+    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
     ASSERT_EQUAL("DROP_BACK_WHILE", *(LAST(DROP_BACK_WHILE(range, is_positive)) - 1), -2);
     ASSERT_EQUAL("DROP_BACK_WHILE", *(LAST(DROP_BACK_WHILE(range, is_negative)) - 1), 1);
     ASSERT_EQUAL("DROP_BACK_WHILE", LAST(DROP_BACK_WHILE(range, is_zero)), LAST(range));
@@ -98,7 +98,7 @@ void test_drop_back_while() {
 }
 
 void test_drop_back_until() {
-    let range = MAKE_RANGE(int, -1, 4, -2, 1);
+    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
     ASSERT_EQUAL("DROP_BACK_UNTIL", *(LAST(DROP_BACK_UNTIL(range, is_positive)) - 1), 1);
     ASSERT_EQUAL("DROP_BACK_UNTIL", *(LAST(DROP_BACK_UNTIL(range, is_negative)) - 1), -2);
     ASSERT_EQUAL("DROP_BACK_UNTIL", LAST(DROP_BACK_UNTIL(range, is_zero)), range.data);
@@ -106,7 +106,7 @@ void test_drop_back_until() {
 }
 
 void test_erase_if_empty() {
-    let array = MAKE_DARRAY(int);
+    __auto_type array = MAKE_DARRAY(int);
     ERASE_IF(array, is_zero);
     ASSERT_EQUAL("ERASE_IF EMPTY", array.count, 0);
     ASSERT_EQUAL_RANGE("ERASE_IF EMPTY", array, array);
@@ -114,65 +114,65 @@ void test_erase_if_empty() {
 }
 
 void test_erase_if0() {
-    let actual = MAKE_DARRAY(int, 0);
+    __auto_type actual = MAKE_DARRAY(int, 0);
     ERASE_IF(actual, is_zero);
-    let expected = MAKE_DARRAY(int);
+    __auto_type expected = MAKE_DARRAY(int);
     ASSERT_EQUAL_RANGE("ERASE_IF 0", actual, expected);
 }
 
 void test_erase_if1() {
-    let actual = MAKE_DARRAY(int, 1);
+    __auto_type actual = MAKE_DARRAY(int, 1);
     ERASE_IF(actual, is_zero);
-    let expected = MAKE_DARRAY(int, 1);
+    __auto_type expected = MAKE_DARRAY(int, 1);
     ASSERT_EQUAL_RANGE("ERASE_IF 1", actual, expected);
 }
 
 void test_erase_if11() {
-    let actual = MAKE_DARRAY(int, 1, 1);
+    __auto_type actual = MAKE_DARRAY(int, 1, 1);
     ERASE_IF(actual, is_zero);
-    let expected = MAKE_DARRAY(int, 1, 1);
+    __auto_type expected = MAKE_DARRAY(int, 1, 1);
     ASSERT_EQUAL_RANGE("ERASE_IF 11", actual, expected);
 }
 
 void test_erase_if00() {
-    let actual = MAKE_DARRAY(int, 0, 0);
+    __auto_type actual = MAKE_DARRAY(int, 0, 0);
     ERASE_IF(actual, is_zero);
-    let expected = MAKE_DARRAY(int);
+    __auto_type expected = MAKE_DARRAY(int);
     ASSERT_EQUAL_RANGE("ERASE_IF 00", actual, expected);
 }
 
 void test_erase_if10() {
-    let actual = MAKE_DARRAY(int, 1, 0);
+    __auto_type actual = MAKE_DARRAY(int, 1, 0);
     ERASE_IF(actual, is_zero);
-    let expected = MAKE_DARRAY(int, 1);
+    __auto_type expected = MAKE_DARRAY(int, 1);
     ASSERT_EQUAL_RANGE("ERASE_IF 10", actual, expected);
 }
 
 void test_erase_if01() {
-    let actual = MAKE_DARRAY(int, 0, 1);
+    __auto_type actual = MAKE_DARRAY(int, 0, 1);
     ERASE_IF(actual, is_zero);
-    let expected = MAKE_DARRAY(int, 1);
+    __auto_type expected = MAKE_DARRAY(int, 1);
     ASSERT_EQUAL_RANGE("ERASE_IF 01", actual, expected);
 }
 
 void test_erase_if101() {
-    let actual = MAKE_DARRAY(int, 1, 0, 1);
+    __auto_type actual = MAKE_DARRAY(int, 1, 0, 1);
     ERASE_IF(actual, is_zero);
-    let expected = MAKE_DARRAY(int, 1, 1);
+    __auto_type expected = MAKE_DARRAY(int, 1, 1);
     ASSERT_EQUAL_RANGE("ERASE_IF 101", actual, expected);
 }
 
 void test_erase_if010() {
-    let actual = MAKE_DARRAY(int, 0, 1, 0);
+    __auto_type actual = MAKE_DARRAY(int, 0, 1, 0);
     ERASE_IF(actual, is_zero);
-    let expected = MAKE_DARRAY(int, 1);
+    __auto_type expected = MAKE_DARRAY(int, 1);
     ASSERT_EQUAL_RANGE("ERASE_IF 010", actual, expected);
 }
 
 void test_erase_if() {
-    let actual = MAKE_DARRAY(int, -1, 4, -2, 1);
+    __auto_type actual = MAKE_DARRAY(int, -1, 4, -2, 1);
     ERASE_IF(actual, is_positive);
-    let expected = MAKE_DARRAY(int, -1, -2);
+    __auto_type expected = MAKE_DARRAY(int, -1, -2);
     ASSERT_EQUAL_RANGE("ERASE_IF", actual, expected);
 }
 
