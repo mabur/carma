@@ -12,39 +12,39 @@
 #define INIT_RANGE(range, mycount) do { \
     (range).data = malloc((mycount) * sizeof(*(range).data)); \
     (range).count = (mycount); \
-} while (0);
+} while (0)
 
 #define INIT_DARRAY(darray, mycount, mycapacity) do { \
     (darray).data = malloc((mycapacity) * sizeof(*(darray).data)); \
     (darray).count = (mycount); \
     (darray).capacity = (mycapacity); \
-} while (0);
+} while (0)
 
 #define FREE_RANGE(range) do { \
     free((range).data); \
     (range).data = NULL; \
     (range).count = 0; \
-} while (0);
+} while (0)
 
 #define FREE_DARRAY(darray) do { \
     free((darray).data); \
     (darray).data = NULL; \
     (darray).count = 0; \
     (darray).capacity = 0; \
-} while (0);
+} while (0)
 
 #define INIT_RANGE_ELEMENTS(range, ...) do { \
     VALUE_TYPE(range) array[] = { __VA_ARGS__ }; \
     INIT_RANGE((range), sizeof(array) / sizeof(VALUE_TYPE(range))); \
     memcpy((range).data, array, sizeof(array)); \
-} while (0);
+} while (0)
 
 #define INIT_DARRAY_ELEMENTS(range, ...) do { \
     VALUE_TYPE(range) array[] = { __VA_ARGS__ }; \
     size_t c = sizeof(array) / sizeof(VALUE_TYPE(range)); \
     INIT_DARRAY((range), c, c); \
     memcpy((range).data, array, sizeof(array)); \
-} while (0);
+} while (0)
 
 // Requires GNUC:
 #define MAKE_RANGE(value_type, ...) ({ \
@@ -212,6 +212,6 @@
         } \
     } \
     (range).count = first_to_erase - (range).data; \
-} while (0);
+} while (0)
 
 #define FOR_LINES(line, capacity, file) for (char line[capacity]; fgets(line, (capacity), (file)) != NULL;)
