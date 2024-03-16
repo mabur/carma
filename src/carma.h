@@ -7,6 +7,8 @@
 
 #define LAST(range) ((range).data + (range).count)
 
+#define VALUE_TYPE(range) typeof(*(range).data)
+
 #define INIT_RANGE(range, mycount) do { \
     (range).data = malloc((mycount) * sizeof(*(range).data)); \
     (range).count = (mycount); \
@@ -31,23 +33,30 @@
     (darray).capacity = 0; \
 } while (0);
 
+#define INIT_RANGE_ELEMENTS(range, ...) do { \
+    VALUE_TYPE(range) array[] = { __VA_ARGS__ }; \
+    INIT_RANGE((range), sizeof(array) / sizeof(VALUE_TYPE(range))); \
+    memcpy((range).data, array, sizeof(array)); \
+} while (0);
+
+#define INIT_DARRAY_ELEMENTS(range, ...) do { \
+    VALUE_TYPE(range) array[] = { __VA_ARGS__ }; \
+    size_t c = sizeof(array) / sizeof(VALUE_TYPE(range)); \
+    INIT_DARRAY((range), c, c); \
+    memcpy((range).data, array, sizeof(array)); \
+} while (0);
+
 // Requires GNUC:
 #define MAKE_RANGE(value_type, ...) ({ \
-    value_type array[] = { __VA_ARGS__ }; \
-    size_t count = sizeof(array) / sizeof(value_type); \
     RANGE(value_type) result; \
-    INIT_RANGE((result), count); \
-    memcpy((result).data, array, count * sizeof(value_type)); \
+    INIT_RANGE_ELEMENTS(result, __VA_ARGS__); \
     result; \
 })
 
 // Requires GNUC:
 #define MAKE_DARRAY(value_type, ...) ({ \
-    value_type array[] = { __VA_ARGS__ }; \
-    size_t count = sizeof(array) / sizeof(value_type); \
     DARRAY(value_type) result; \
-    INIT_DARRAY((result), count, count); \
-    memcpy((result).data, array, count * sizeof(value_type)); \
+    INIT_DARRAY_ELEMENTS(result, __VA_ARGS__); \
     result; \
 })
 
@@ -67,7 +76,7 @@
 
 // Requires GNUC:
 #define SUM(range) ({ \
-    typeof(*range.data) sum = 0; \
+    typeof(*(range).data) sum = 0; \
     FOR_EACH(it, (range)) { \
         sum += *it; \
     } \
