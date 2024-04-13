@@ -14,6 +14,10 @@ int is_zero(int x) {
     return x == 0;
 }
 
+int square(int x) {
+    return x * x;
+}
+
 int global_assert_count = 0;
 int global_assert_errors = 0;
 
@@ -55,6 +59,15 @@ void summarize_tests() {
     } else {
         printf("All %d test succeeded\n", global_assert_count);
     }
+}
+
+void test_for_each() {
+    __auto_type actual = MAKE_DARRAY(int, 1, 2, 3);
+    FOR_EACH(it, actual) {
+        *it = square(*it);
+    }
+    __auto_type expected = MAKE_DARRAY(int, 1, 4, 9);
+    ASSERT_EQUAL_RANGE("test_for_each", actual, expected);  
 }
 
 void test_find_if() {
@@ -200,6 +213,8 @@ void test_append() {
 }
 
 int main() {
+    test_for_each();
+    
     test_find_if();
     test_find_if_backwards();
     test_drop_while();
