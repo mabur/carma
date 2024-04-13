@@ -72,6 +72,9 @@
 #define FOR_EACH(it, range) \
     for (auto it = (range).data; it != LAST(range); ++it)
 
+#define ENUMERATE(i, range) \
+    for (size_t i = 0; i < (range).count; ++i)
+
 #define CLEAR(range) do {(range).count = 0;} while (0)
 
 // Requires GNUC:
