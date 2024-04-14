@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "carma.h"
+#include <carma/carma.h>
 
 int is_positive(int x) {
     return x > 0;

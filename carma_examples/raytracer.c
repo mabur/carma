@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "carma.h"
+#include <carma/carma.h>
 
 typedef struct {
     double x;

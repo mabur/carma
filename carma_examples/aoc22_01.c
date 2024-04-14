@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "carma.h"
+#include <carma/carma.h>
 
 typedef struct {
     int* data;
