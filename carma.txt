@@ -15,3 +15,8 @@
   - "An array has a fixed size."
   - "A slice, on the other hand, is a dynamically-sized, flexible view into the elements of an array."
   - "In practice, slices are much more common than arrays."
+* Memory handling
+  - Some memory can be allocated once and freed when the program exits.
+  - Some memory can be allocated once and then grow/append as needed during run-time, and then freed when the program exits.
+  - Some memory can be allocated as static variable inside function, and shared for all calls to the functions, and freed when the program exits.
+  - What common cases are left?
