@@ -21,6 +21,13 @@
     (darray).capacity = (mycapacity); \
 } while (0)
 
+#define INIT_IMAGE(image, width, height) do { \
+    (image).data = (POINTER_TYPE(image))malloc((width) * (height) * sizeof(*(image).data)); \
+    (image).width = (width); \
+    (image).height = (height); \
+    (image).count = (width) * (height); \
+} while (0)
+
 #define FREE_RANGE(range) do { \
     free((range).data); \
     (range).data = NULL; \
@@ -32,6 +39,14 @@
     (darray).data = NULL; \
     (darray).count = 0; \
     (darray).capacity = 0; \
+} while (0)
+
+#define FREE_IMAGE(image) do { \
+    free((image).data); \
+    (image).data = NULL; \
+    (image).width = 0; \
+    (image).height = 0; \
+    (image).count = 0; \
 } while (0)
 
 #define INIT_RANGE_ELEMENTS(range, ...) do { \
