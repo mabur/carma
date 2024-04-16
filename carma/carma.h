@@ -11,18 +11,18 @@
 #define VALUE_TYPE(range) typeof(*(range).data)
 
 #define INIT_RANGE(range, mycount) do { \
-    (range).data = (POINTER_TYPE(range))malloc((mycount) * sizeof(*(range).data)); \
+    (range).data = (POINTER_TYPE(range))malloc((mycount) * sizeof(VALUE_TYPE(range))); \
     (range).count = (mycount); \
 } while (0)
 
 #define INIT_DARRAY(darray, mycount, mycapacity) do { \
-    (darray).data = (POINTER_TYPE(darray))malloc((mycapacity) * sizeof(*(darray).data)); \
+    (darray).data = (POINTER_TYPE(darray))malloc((mycapacity) * sizeof(VALUE_TYPE(darray))); \
     (darray).count = (mycount); \
     (darray).capacity = (mycapacity); \
 } while (0)
 
 #define INIT_IMAGE(image, width, height) do { \
-    (image).data = (POINTER_TYPE(image))malloc((width) * (height) * sizeof(*(image).data)); \
+    (image).data = (POINTER_TYPE(image))malloc((width) * (height) * sizeof(VALUE_TYPE(image))); \
     (image).width = (width); \
     (image).height = (height); \
     (image).count = (width) * (height); \
