@@ -2,6 +2,13 @@
 
 #include <carma/carma.h>
 
+typedef struct {
+    int* data;
+    size_t width;
+    size_t height;
+    size_t count;
+} Image;
+
 int is_positive(int x) {
     return x > 0;
 }
@@ -59,6 +66,15 @@ void summarize_tests() {
     } else {
         printf("All %d test succeeded\n", global_assert_count);
     }
+}
+
+void test_init_image() {
+    Image image;
+    INIT_IMAGE(image, 2, 3);
+    ASSERT_EQUAL("test_init_image width", image.width, 2);
+    ASSERT_EQUAL("test_init_image height", image.height, 3);
+    ASSERT_EQUAL("test_init_image count", image.count, 2 * 3);
+    FREE_IMAGE(image);
 }
 
 void test_for_each() {
@@ -222,6 +238,8 @@ void test_append() {
 }
 
 int main() {
+    test_init_image();
+    
     test_for_each();
     test_enumerate();
     
