@@ -5,7 +5,7 @@
 #define RANGE(type) struct {type* data; size_t count;}
 #define DARRAY(type) struct {type* data; size_t count; size_t capacity;}
 
-#define LAST(range) ((range).data + (range).count)
+#define END_POINTER(range) ((range).data + (range).count)
 
 #define POINTER_TYPE(range) typeof((range).data)
 #define VALUE_TYPE(range) typeof(*(range).data)
@@ -71,7 +71,7 @@
 } while (0)
 
 #define FOR_EACH(it, range) \
-    for (auto it = (range).data; it != LAST(range); ++it)
+    for (auto it = (range).data; it != END_POINTER(range); ++it)
 
 #define ENUMERATE(i, range) \
     for (size_t i = 0; i < (range).count; ++i)
@@ -124,7 +124,7 @@
 // Requires GNUC:
 #define FIND_IF(range, predicate) ({ \
     auto it = (range).data; \
-    for (; it != LAST(range) && !(predicate)(*it); ++it) { \
+    for (; it != END_POINTER(range) && !(predicate)(*it); ++it) { \
     } \
     it; \
 })
@@ -140,21 +140,21 @@
 // Requires GNUC:
 #define FIND_IF_NOT(range, predicate) ({ \
     auto it = (range).data; \
-    for (; it != LAST(range) && (predicate)(*it); ++it) { \
+    for (; it != END_POINTER(range) && (predicate)(*it); ++it) { \
     } \
     it; \
 })
 
 // Requires GNUC:
 #define FIND_IF_BACKWARDS(range, predicate) ({ \
-    auto it = LAST(range) - 1; \
+    auto it = END_POINTER(range) - 1; \
     for (; it != (range).data - 1 && !(predicate)(*it); --it) { \
     } \
     it; \
 })
 
 #define FIND_IF_NOT_BACKWARDS(range, predicate) ({ \
-    auto it = LAST(range) - 1; \
+    auto it = END_POINTER(range) - 1; \
     for (; it != (range).data - 1 && (predicate)(*it); --it) { \
     } \
     it; \
@@ -188,7 +188,7 @@
 // Requires GNUC:
 #define DROP_BACK_WHILE(range, predicate) ({ \
     auto result = (range); \
-    for (; (result).count > 0 && (predicate)(*(LAST(result) - 1)); --result.count) { \
+    for (; (result).count > 0 && (predicate)(*(END_POINTER(result) - 1)); --result.count) { \
     } \
     result; \
 })
@@ -196,7 +196,7 @@
 // Requires GNUC:
 #define DROP_BACK_UNTIL(range, predicate) ({ \
     auto result = (range); \
-    for (; (result).count > 0 && !(predicate)(*(LAST(result) - 1)); --result.count) { \
+    for (; (result).count > 0 && !(predicate)(*(END_POINTER(result) - 1)); --result.count) { \
     } \
     result; \
 })

@@ -83,7 +83,7 @@ void test_find_if() {
     __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
     ASSERT_EQUAL("FIND_IF", *FIND_IF(range, is_positive), 4);
     ASSERT_EQUAL("FIND_IF", *FIND_IF(range, is_negative), -1);
-    ASSERT_EQUAL("FIND_IF", FIND_IF(range, is_zero), LAST(range));
+    ASSERT_EQUAL("FIND_IF", FIND_IF(range, is_zero), END_POINTER(range));
     FREE_RANGE(range);
 }
 
@@ -107,23 +107,23 @@ void test_drop_until() {
     __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
     ASSERT_EQUAL("DROP_UNTIL", *DROP_UNTIL(range, is_positive).data, 4);
     ASSERT_EQUAL("DROP_UNTIL", *DROP_UNTIL(range, is_negative).data, -1);
-    ASSERT_EQUAL("DROP_UNTIL", DROP_UNTIL(range, is_zero).data, LAST(range));
+    ASSERT_EQUAL("DROP_UNTIL", DROP_UNTIL(range, is_zero).data, END_POINTER(range));
     FREE_RANGE(range);
 }
 
 void test_drop_back_while() {
     __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
-    ASSERT_EQUAL("DROP_BACK_WHILE", *(LAST(DROP_BACK_WHILE(range, is_positive)) - 1), -2);
-    ASSERT_EQUAL("DROP_BACK_WHILE", *(LAST(DROP_BACK_WHILE(range, is_negative)) - 1), 1);
-    ASSERT_EQUAL("DROP_BACK_WHILE", LAST(DROP_BACK_WHILE(range, is_zero)), LAST(range));
+    ASSERT_EQUAL("DROP_BACK_WHILE", *(END_POINTER(DROP_BACK_WHILE(range, is_positive)) - 1), -2);
+    ASSERT_EQUAL("DROP_BACK_WHILE", *(END_POINTER(DROP_BACK_WHILE(range, is_negative)) - 1), 1);
+    ASSERT_EQUAL("DROP_BACK_WHILE", END_POINTER(DROP_BACK_WHILE(range, is_zero)), END_POINTER(range));
     FREE_RANGE(range);
 }
 
 void test_drop_back_until() {
     __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
-    ASSERT_EQUAL("DROP_BACK_UNTIL", *(LAST(DROP_BACK_UNTIL(range, is_positive)) - 1), 1);
-    ASSERT_EQUAL("DROP_BACK_UNTIL", *(LAST(DROP_BACK_UNTIL(range, is_negative)) - 1), -2);
-    ASSERT_EQUAL("DROP_BACK_UNTIL", LAST(DROP_BACK_UNTIL(range, is_zero)), range.data);
+    ASSERT_EQUAL("DROP_BACK_UNTIL", *(END_POINTER(DROP_BACK_UNTIL(range, is_positive)) - 1), 1);
+    ASSERT_EQUAL("DROP_BACK_UNTIL", *(END_POINTER(DROP_BACK_UNTIL(range, is_negative)) - 1), -2);
+    ASSERT_EQUAL("DROP_BACK_UNTIL", END_POINTER(DROP_BACK_UNTIL(range, is_zero)), range.data);
     FREE_RANGE(range);
 }
 
