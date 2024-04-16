@@ -7,15 +7,16 @@
 
 #define LAST(range) ((range).data + (range).count)
 
+#define POINTER_TYPE(range) typeof((range).data)
 #define VALUE_TYPE(range) typeof(*(range).data)
 
 #define INIT_RANGE(range, mycount) do { \
-    (range).data = malloc((mycount) * sizeof(*(range).data)); \
+    (range).data = (POINTER_TYPE(range))malloc((mycount) * sizeof(*(range).data)); \
     (range).count = (mycount); \
 } while (0)
 
 #define INIT_DARRAY(darray, mycount, mycapacity) do { \
-    (darray).data = malloc((mycapacity) * sizeof(*(darray).data)); \
+    (darray).data = (POINTER_TYPE(darray))malloc((mycapacity) * sizeof(*(darray).data)); \
     (darray).count = (mycount); \
     (darray).capacity = (mycapacity); \
 } while (0)
