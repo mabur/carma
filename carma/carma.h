@@ -79,7 +79,7 @@
 #define APPEND(darray, value) do { \
     if ((darray).count == (darray).capacity) { \
         (darray).capacity = (darray).capacity == 0 ? 1 : 2 * (darray).capacity; \
-        (darray).data = realloc((darray).data, (darray).capacity * sizeof(*(darray).data)); \
+        (darray).data = (POINTER_TYPE(darray))realloc((darray).data, (darray).capacity * sizeof(VALUE_TYPE(darray))); \
     } \
     ((darray).data)[(darray).count] = (value); \
     (darray).count++; \
