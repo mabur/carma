@@ -88,6 +88,11 @@
 #define FOR_EACH(it, range) \
     for (auto it = (range).data; it != END_POINTER(range); ++it)
 
+#define FOR_EACH2(it0, it1, range0, range1) \
+    auto it0 = (range0).data; \
+    auto it1 = (range1).data; \
+    for (; it0 != END_POINTER(range0) && it1 != END_POINTER(range1); ++it0, ++it1)
+
 #define ENUMERATE(i, range) \
     for (size_t i = 0; i < (range).count; ++i)
 
