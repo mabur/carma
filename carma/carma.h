@@ -222,6 +222,7 @@
 })
 
 #define ERASE_IF(range, predicate) do { \
+    if ((range).count == 0 || (range).data == 0) return; \
     auto first_to_erase = (range).data; \
     auto last_to_keep = (range).data + (range).count - 1; \
     while (first_to_erase <= last_to_keep) { \

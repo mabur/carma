@@ -153,6 +153,18 @@ void test_drop_back_until() {
     FREE_RANGE(range);
 }
 
+void test_erase_if_unallocated() {
+    DARRAY(int) array;
+    array.data = 0;
+    array.count = 0;
+    array.capacity = 0;
+
+    ERASE_IF(array, is_zero);
+    ASSERT_EQUAL("ERASE_IF EMPTY", array.count, 0);
+    ASSERT_EQUAL_RANGE("ERASE_IF EMPTY", array, array);
+    FREE_DARRAY(array);
+}
+
 void test_erase_if_empty() {
     __auto_type array = MAKE_DARRAY(int);
     ERASE_IF(array, is_zero);
@@ -260,9 +272,10 @@ int main() {
     test_drop_until();
     test_drop_back_while();
     test_drop_back_until();
-    
-    test_erase_if();
+
+    test_erase_if_unallocated();
     test_erase_if_empty();
+    test_erase_if();
     test_erase_if0();
     test_erase_if1();
     test_erase_if00();
