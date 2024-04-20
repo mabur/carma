@@ -221,6 +221,13 @@
     result; \
 })
 
+#define ERASE_INDEX(range, index) do { \
+    --(range).count; \
+    if ((index) != (range).count) { \
+        (range).data[index] = (range).data[(range).count]; \
+    } \
+} while (0)
+
 #define ERASE_IF(range, predicate) do { \
     if ((range).count == 0 || (range).data == 0) return; \
     auto first_to_erase = (range).data; \

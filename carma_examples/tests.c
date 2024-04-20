@@ -153,6 +153,48 @@ void test_drop_back_until() {
     FREE_RANGE(range);
 }
 
+void test_erase_index1() {
+    __auto_type actual = MAKE_DARRAY(int, 9);
+    ERASE_INDEX(actual, 0);
+    __auto_type expected = MAKE_DARRAY(int);
+    ASSERT_EQUAL_RANGE("ERASE_INDEX 1", actual, expected);
+}
+
+void test_erase_index2a() {
+    __auto_type actual = MAKE_DARRAY(int, 9, 8);
+    ERASE_INDEX(actual, 0);
+    __auto_type expected = MAKE_DARRAY(int, 8);
+    ASSERT_EQUAL_RANGE("ERASE_INDEX 2a", actual, expected);
+}
+
+void test_erase_index2b() {
+    __auto_type actual = MAKE_DARRAY(int, 9, 8);
+    ERASE_INDEX(actual, 1);
+    __auto_type expected = MAKE_DARRAY(int, 9);
+    ASSERT_EQUAL_RANGE("ERASE_INDEX 2b", actual, expected);
+}
+
+void test_erase_index3a() {
+    __auto_type actual = MAKE_DARRAY(int, 9, 8, 7);
+    ERASE_INDEX(actual, 0);
+    __auto_type expected = MAKE_DARRAY(int, 7, 8);
+    ASSERT_EQUAL_RANGE("ERASE_INDEX 3a", actual, expected);
+}
+
+void test_erase_index3b() {
+    __auto_type actual = MAKE_DARRAY(int, 9, 8, 7);
+    ERASE_INDEX(actual, 1);
+    __auto_type expected = MAKE_DARRAY(int, 9, 7);
+    ASSERT_EQUAL_RANGE("ERASE_INDEX 3b", actual, expected);
+}
+
+void test_erase_index3c() {
+    __auto_type actual = MAKE_DARRAY(int, 9, 8, 7);
+    ERASE_INDEX(actual, 2);
+    __auto_type expected = MAKE_DARRAY(int, 9, 8);
+    ASSERT_EQUAL_RANGE("ERASE_INDEX 3b", actual, expected);
+}
+
 void test_erase_if_unallocated() {
     DARRAY(int) array;
     array.data = 0;
@@ -273,6 +315,13 @@ int main() {
     test_drop_back_while();
     test_drop_back_until();
 
+    test_erase_index1();
+    test_erase_index2a();
+    test_erase_index2b();
+    test_erase_index3a();
+    test_erase_index3b();
+    test_erase_index3c();
+    
     test_erase_if_unallocated();
     test_erase_if_empty();
     test_erase_if();
