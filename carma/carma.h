@@ -230,20 +230,20 @@
 
 #define ERASE_IF(range, predicate) do { \
     if ((range).count == 0 || (range).data == 0) return; \
-    auto first_to_erase = (range).data; \
-    auto last_to_keep = (range).data + (range).count - 1; \
-    while (first_to_erase <= last_to_keep) { \
-        for (; first_to_erase <= last_to_keep && !(predicate)(*first_to_erase); ++first_to_erase) { \
+    auto a = (range).data; \
+    auto b = (range).data + (range).count; \
+    while (a < b) { \
+        for (; a < b && !(predicate)(*a); ++a) { \
         } \
-        for (; first_to_erase <= last_to_keep && (predicate)(*last_to_keep); --last_to_keep) { \
+        for (; a < b && (predicate)(*(b - 1)); --b) { \
         } \
-        if (first_to_erase < last_to_keep) { \
-            *first_to_erase = *last_to_keep; \
-            ++first_to_erase; \
-            --last_to_keep; \
+        if (a + 1 < b) { \
+            *a = *(b - 1); \
+            ++a; \
+            --b; \
         } \
     } \
-    (range).count = first_to_erase - (range).data; \
+    (range).count = a - (range).data; \
 } while (0)
 
 #define FOR_LINES(line, capacity, file) for (char line[capacity]; fgets(line, (capacity), (file)) != NULL;)
