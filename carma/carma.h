@@ -229,7 +229,6 @@
 } while (0)
 
 #define ERASE_IF(range, predicate) do { \
-    if ((range).count == 0 || (range).data == 0) return; \
     auto a = (range).data; \
     auto b = (range).data + (range).count; \
     while (a < b) { \
