@@ -96,8 +96,6 @@
 #define ENUMERATE(i, range) \
     for (size_t i = 0; i < (range).count; ++i)
 
-#define CLEAR(range) do {(range).count = 0;} while (0)
-
 // Requires GNUC:
 #define SUM(range) ({ \
     typeof(*(range).data) sum = 0; \
@@ -187,6 +185,38 @@
     it; \
 })
 
+
+#define FOR_LINES(line, capacity, file) for (char line[capacity]; fgets(line, (capacity), (file)) != NULL;)
+
+////////////////////////////////////////////////////////////////////////////////
+// DYNAMIC ARRAY ALGORITHMS
+
+#define CLEAR(dynamic_array) do {(dynamic_array).count = 0;} while (0)
+
+#define ERASE_INDEX(dynamic_array, index) do { \
+    --(dynamic_array).count; \
+    if ((index) != (dynamic_array).count) { \
+        (dynamic_array).data[index] = (dynamic_array).data[(dynamic_array).count]; \
+    } \
+} while (0)
+
+#define ERASE_IF(dynamic_array, predicate) do { \
+    auto a = (dynamic_array).data; \
+    auto b = (dynamic_array).data + (dynamic_array).count; \
+    while (a < b) { \
+        for (; a < b && !(predicate)(*a); ++a) { \
+        } \
+        for (; a < b && (predicate)(*(b - 1)); --b) { \
+        } \
+        if (a + 1 < b) { \
+            *a = *(b - 1); \
+            ++a; \
+            --b; \
+        } \
+    } \
+    (dynamic_array).count = a - (dynamic_array).data; \
+} while (0)
+
 // Requires GNUC:
 // TODO: think about capacity when calling this with a darray.
 #define DROP_WHILE(range, predicate) ({ \
@@ -220,29 +250,3 @@
     } \
     result; \
 })
-
-#define ERASE_INDEX(dynamic_array, index) do { \
-    --(dynamic_array).count; \
-    if ((index) != (dynamic_array).count) { \
-        (dynamic_array).data[index] = (dynamic_array).data[(dynamic_array).count]; \
-    } \
-} while (0)
-
-#define ERASE_IF(dynamic_array, predicate) do { \
-    auto a = (dynamic_array).data; \
-    auto b = (dynamic_array).data + (dynamic_array).count; \
-    while (a < b) { \
-        for (; a < b && !(predicate)(*a); ++a) { \
-        } \
-        for (; a < b && (predicate)(*(b - 1)); --b) { \
-        } \
-        if (a + 1 < b) { \
-            *a = *(b - 1); \
-            ++a; \
-            --b; \
-        } \
-    } \
-    (dynamic_array).count = a - (dynamic_array).data; \
-} while (0)
-
-#define FOR_LINES(line, capacity, file) for (char line[capacity]; fgets(line, (capacity), (file)) != NULL;)
