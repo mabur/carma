@@ -19,4 +19,5 @@
   - Some memory can be allocated once and freed when the program exits.
   - Some memory can be allocated once and then grow/append as needed during run-time, and then freed when the program exits.
   - Some memory can be allocated as static variable inside function, and shared for all calls to the functions, and freed when the program exits.
+  - Some memory can be allocated for a game interval, like a frame or a scene, and then deallocated/cleared after that frame or scene.
   - What common cases are left?
