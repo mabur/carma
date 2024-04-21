@@ -76,15 +76,6 @@
     result; \
 })
 
-#define APPEND(darray, value) do { \
-    if ((darray).count == (darray).capacity) { \
-        (darray).capacity = (darray).capacity == 0 ? 1 : 2 * (darray).capacity; \
-        (darray).data = (POINTER_TYPE(darray))realloc((darray).data, (darray).capacity * sizeof(VALUE_TYPE(darray))); \
-    } \
-    ((darray).data)[(darray).count] = (value); \
-    (darray).count++; \
-} while (0)
-
 #define FOR_EACH(it, range) \
     for (auto it = (range).data; it != END_POINTER(range); ++it)
 
@@ -190,6 +181,15 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // DYNAMIC ARRAY ALGORITHMS
+
+#define APPEND(dynamic_array, item) do { \
+    if ((dynamic_array).count == (dynamic_array).capacity) { \
+        (dynamic_array).capacity = (dynamic_array).capacity == 0 ? 1 : 2 * (dynamic_array).capacity; \
+        (dynamic_array).data = (POINTER_TYPE(dynamic_array))realloc((dynamic_array).data, (dynamic_array).capacity * sizeof(VALUE_TYPE(dynamic_array))); \
+    } \
+    ((dynamic_array).data)[(dynamic_array).count] = (item); \
+    (dynamic_array).count++; \
+} while (0)
 
 #define CLEAR(dynamic_array) do {(dynamic_array).count = 0;} while (0)
 
