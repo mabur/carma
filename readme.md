@@ -1,9 +1,12 @@
 CARMA is a single header with C ARray MAcros.
 
+It follows the tradition of developers implementing their own utility
+functions to deal with arrays, since the C standard library is a bit lacking in this regard.
+
 # Arrays
 
 Carma does not define any concrete array structs on its own.
-Instead, iterator works on any structs that follow certain conventions for its member variables.
+Instead, it works on any structs that follow certain conventions for its member variables.
 
 A **range** is defined as any struct that has a member variable `data` of pointer type
 and a member variable `count` of integer type:
@@ -37,6 +40,8 @@ struct ExampleImage {
     ...
 };
 ```
+So an **image** is a **range** but not a **dynamic array**,
+since it does not have a `capacity`.
 
 # Range Loop Macros
 
@@ -57,7 +62,7 @@ Two loop variables with the name given by `iterator0` and `iterator1` will be
 allocated, unfortunately in the scope surrounding the loop, and they will point to each item in the two ranges.
 Example:
 ```c
-FOR_EACH(a, b, range0, range1) {
+FOR_EACH2(a, b, range0, range1) {
     *a = *b;
 }
 ```
