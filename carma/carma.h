@@ -85,16 +85,16 @@
 ////////////////////////////////////////////////////////////////////////////////
 // RANGE ALGORITHMS
 
-#define FOR_EACH(it, range) \
-    for (auto it = (range).data; it != END_POINTER(range); ++it)
+#define FOR_EACH(iterator, range) \
+    for (auto iterator = (range).data; iterator != END_POINTER(range); ++iterator)
 
-#define FOR_EACH2(it0, it1, range0, range1) \
-    auto it0 = (range0).data; \
-    auto it1 = (range1).data; \
-    for (; it0 != END_POINTER(range0) && it1 != END_POINTER(range1); ++it0, ++it1)
+#define FOR_EACH2(iterator0, iterator1, range0, range1) \
+    auto iterator0 = (range0).data; \
+    auto iterator1 = (range1).data; \
+    for (; iterator0 != END_POINTER(range0) && iterator1 != END_POINTER(range1); ++iterator0, ++iterator1)
 
-#define ENUMERATE(i, range) \
-    for (size_t i = 0; i < (range).count; ++i)
+#define ENUMERATE(index, range) \
+    for (size_t index = 0; index < (range).count; ++index)
 
 // Requires GNUC:
 #define SUM(range) ({ \
