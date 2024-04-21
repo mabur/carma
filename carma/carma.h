@@ -2,6 +2,9 @@
 #include <stdbool.h>
 #include <string.h>
 
+////////////////////////////////////////////////////////////////////////////////
+// UTILITIES
+
 #define RANGE(type) struct {type* data; size_t count;}
 #define DARRAY(type) struct {type* data; size_t count; size_t capacity;}
 
@@ -9,6 +12,9 @@
 
 #define POINTER_TYPE(range) typeof((range).data)
 #define VALUE_TYPE(range) typeof(*(range).data)
+
+////////////////////////////////////////////////////////////////////////////////
+// ALGORITHMS FOR ALLOCATION AND FREE
 
 #define INIT_RANGE(range, mycount) do { \
     (range).data = (POINTER_TYPE(range))malloc((mycount) * sizeof(VALUE_TYPE(range))); \
@@ -75,6 +81,9 @@
     INIT_DARRAY_ELEMENTS(result, __VA_ARGS__); \
     result; \
 })
+
+////////////////////////////////////////////////////////////////////////////////
+// RANGE ALGORITHMS
 
 #define FOR_EACH(it, range) \
     for (auto it = (range).data; it != END_POINTER(range); ++it)
@@ -176,9 +185,6 @@
     it; \
 })
 
-
-#define FOR_LINES(line, capacity, file) for (char line[capacity]; fgets(line, (capacity), (file)) != NULL;)
-
 ////////////////////////////////////////////////////////////////////////////////
 // DYNAMIC ARRAY ALGORITHMS
 
@@ -250,3 +256,8 @@
     } \
     result; \
 })
+
+////////////////////////////////////////////////////////////////////////////////
+// FILE ALGORITHMS
+
+#define FOR_LINES(line, capacity, file) for (char line[capacity]; fgets(line, (capacity), (file)) != NULL;)
