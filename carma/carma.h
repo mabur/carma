@@ -221,16 +221,16 @@
     result; \
 })
 
-#define ERASE_INDEX(range, index) do { \
-    --(range).count; \
-    if ((index) != (range).count) { \
-        (range).data[index] = (range).data[(range).count]; \
+#define ERASE_INDEX(dynamic_array, index) do { \
+    --(dynamic_array).count; \
+    if ((index) != (dynamic_array).count) { \
+        (dynamic_array).data[index] = (dynamic_array).data[(dynamic_array).count]; \
     } \
 } while (0)
 
-#define ERASE_IF(range, predicate) do { \
-    auto a = (range).data; \
-    auto b = (range).data + (range).count; \
+#define ERASE_IF(dynamic_array, predicate) do { \
+    auto a = (dynamic_array).data; \
+    auto b = (dynamic_array).data + (dynamic_array).count; \
     while (a < b) { \
         for (; a < b && !(predicate)(*a); ++a) { \
         } \
@@ -242,7 +242,7 @@
             --b; \
         } \
     } \
-    (range).count = a - (range).data; \
+    (dynamic_array).count = a - (dynamic_array).data; \
 } while (0)
 
 #define FOR_LINES(line, capacity, file) for (char line[capacity]; fgets(line, (capacity), (file)) != NULL;)
