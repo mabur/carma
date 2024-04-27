@@ -60,9 +60,11 @@ FOR_EACH(it, range) {
 ```
 
 * `FOR_EACH2(iterator0, iterator1, range0, range1)` can be used instead of a
-normal for-loop to loop over all items in two ranges.
+normal for-loop to loop over the pairwise items in two ranges.
+It is similar to a zip-function.
 Two loop variables with the name given by `iterator0` and `iterator1` will be
-allocated, unfortunately in the scope surrounding the loop, and they will point to each item in the two ranges.
+allocated, unfortunately in the scope surrounding the loop,
+and they will point to the pairwise items in the two ranges.
 Example:
 ```c
 FOR_EACH2(a, b, range0, range1) {
