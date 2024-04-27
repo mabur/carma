@@ -1,9 +1,12 @@
-CARMA is a single header with C ARray MAcros.
+# What is Carma?
 
-It follows the tradition of developers implementing their own utility
-functions to deal with arrays, since the C standard library is a bit lacking in this regard.
+CARMA is a single C header with C ARray MAcros.
 
-# Arrays
+It follows the tradition of C developers implementing their own utility
+functions to deal with arrays,
+since the C standard library is so bare bone.
+
+## Arrays
 
 Carma does not define any concrete array structs on its own.
 Instead, it works on any structs that follow certain conventions for its member variables.
@@ -43,7 +46,7 @@ struct ExampleImage {
 So an **image** is a **range** but not a **dynamic array**,
 since it does not have a `capacity`.
 
-# Range Loop Macros
+## Range Loop Macros
 
 * `FOR_EACH(iterator, range)` can be used instead of a normal for-loop 
 to loop over all items in the `range`.
@@ -66,6 +69,7 @@ FOR_EACH2(a, b, range0, range1) {
     *a = *b;
 }
 ```
+
 * `ENUMERATE(index, range)` can be used instead of a normal for-loop
   to loop over all indices of a `range`.
 Example:
@@ -75,7 +79,9 @@ ENUMERATE(i, range) {
 }
 ```
 
-# Dynamic Array Algorithms
+* `FILL(range, value)` sets all the items in the `range` to `value`.
+
+## Dynamic Array Algorithms
 
 * `APPEND(dynamic_array, item)` adds `item` to the end of the `dynamic_array`.
 It increases `count` by one.
