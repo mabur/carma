@@ -6,7 +6,7 @@ It follows the tradition of C developers implementing their own utility
 functions to deal with arrays,
 since the C standard library is so bare bone.
 
-## Arrays
+## Different Kind of Arrays
 
 Carma does not define any concrete array structs on its own.
 Instead, it works on any structs that follow certain conventions for its member variables.
