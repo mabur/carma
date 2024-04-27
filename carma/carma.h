@@ -94,7 +94,7 @@
     for (; iterator0 != END_POINTER(range0) && iterator1 != END_POINTER(range1); ++iterator0, ++iterator1)
 
 #define ENUMERATE(index, range) \
-    for (size_t index = 0; index < (range).count; ++index)
+    for (typeof((range).count) index = 0; index < (range).count; ++index)
 
 #define FILL(range, value) FOR_EACH(it, (range)) *it = (value)
 
