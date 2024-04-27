@@ -96,6 +96,8 @@
 #define ENUMERATE(index, range) \
     for (size_t index = 0; index < (range).count; ++index)
 
+#define FILL(range, value) FOR_EACH(it, (range)) *it = (value)
+
 // Requires GNUC:
 #define SUM(range) ({ \
     typeof(*(range).data) sum = 0; \

@@ -105,6 +105,13 @@ void test_enumerate() {
     ASSERT_EQUAL_RANGE("test_enumerate", actual, expected);
 }
 
+void test_fill() {
+    __auto_type actual = MAKE_DARRAY(int, 1, 2, 3);
+    FILL(actual, 3);
+    __auto_type expected = MAKE_DARRAY(int, 3, 3, 3);
+    ASSERT_EQUAL_RANGE("test_fill", actual, expected);
+}
+
 void test_find_if() {
     __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
     ASSERT_EQUAL("FIND_IF", *FIND_IF(range, is_positive), 4);
@@ -307,6 +314,8 @@ int main() {
     test_for_each();
     test_for_each2();
     test_enumerate();
+
+    test_fill();
     
     test_find_if();
     test_find_if_backwards();
