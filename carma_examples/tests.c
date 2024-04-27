@@ -308,6 +308,25 @@ void test_append() {
     FREE_DARRAY(array);
 }
 
+void test_enumerate_x_y() {
+    Image actual;
+    INIT_IMAGE(actual, 4, 3);
+    auto i = 0;
+    ENUMERATE_Y(y, actual) {
+        ENUMERATE_X(x, actual) {
+            actual.data[i] = x * y;
+            ++i;
+        }
+    }
+    __auto_type expected = MAKE_DARRAY(
+        int,
+        0, 0, 0, 0,
+        0, 1, 2, 3,
+        0, 2, 4, 6,
+    );
+    ASSERT_EQUAL_RANGE("test_enumerate_x_y", actual, expected);
+}
+
 int main() {
     test_init_image();
     
@@ -344,6 +363,10 @@ int main() {
     test_erase_if010();
     
     test_append();
+
+    test_enumerate_x_y();
+    
     summarize_tests();
+    
     return 0;
 }
