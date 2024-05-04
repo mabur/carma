@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include <carma/carma.h>
+#include <carma/carma_gnu.h>
 
 typedef struct {
     int* data;
