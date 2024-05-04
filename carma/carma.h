@@ -1,7 +1,6 @@
 #pragma once
 
 #include <stdlib.h>
-#include <stdbool.h>
 #include <string.h>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -13,7 +12,7 @@
 #define VALUE_TYPE(range) typeof(*(range).data)
 
 ////////////////////////////////////////////////////////////////////////////////
-// ALGORITHMS FOR ALLOCATION AND FREE
+// ALLOCATE MEMORY
 
 #define INIT_RANGE(range, mycount) do { \
     (range).data = (POINTER_TYPE(range))malloc((mycount) * sizeof(VALUE_TYPE(range))); \
@@ -32,6 +31,22 @@
     (image).height = (myheight); \
     (image).count = (mywidth) * (myheight); \
 } while (0)
+
+#define INIT_RANGE_ELEMENTS(range, ...) do { \
+    VALUE_TYPE(range) array[] = { __VA_ARGS__ }; \
+    INIT_RANGE((range), sizeof(array) / sizeof(VALUE_TYPE(range))); \
+    memcpy((range).data, array, sizeof(array)); \
+} while (0)
+
+#define INIT_DARRAY_ELEMENTS(range, ...) do { \
+    VALUE_TYPE(range) array[] = { __VA_ARGS__ }; \
+    size_t c = sizeof(array) / sizeof(VALUE_TYPE(range)); \
+    INIT_DARRAY((range), c, c); \
+    memcpy((range).data, array, sizeof(array)); \
+} while (0)
+
+////////////////////////////////////////////////////////////////////////////////
+// FREE MEMORY
 
 #define FREE_RANGE(range) do { \
     free((range).data); \
@@ -52,19 +67,6 @@
     (image).width = 0; \
     (image).height = 0; \
     (image).count = 0; \
-} while (0)
-
-#define INIT_RANGE_ELEMENTS(range, ...) do { \
-    VALUE_TYPE(range) array[] = { __VA_ARGS__ }; \
-    INIT_RANGE((range), sizeof(array) / sizeof(VALUE_TYPE(range))); \
-    memcpy((range).data, array, sizeof(array)); \
-} while (0)
-
-#define INIT_DARRAY_ELEMENTS(range, ...) do { \
-    VALUE_TYPE(range) array[] = { __VA_ARGS__ }; \
-    size_t c = sizeof(array) / sizeof(VALUE_TYPE(range)); \
-    INIT_DARRAY((range), c, c); \
-    memcpy((range).data, array, sizeof(array)); \
 } while (0)
 
 ////////////////////////////////////////////////////////////////////////////////
