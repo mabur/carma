@@ -3,7 +3,6 @@
 #include <stdlib.h>
 
 #include <carma/carma.h>
-#include <carma/carma_gnu.h>
 
 typedef struct {
     double x;
@@ -54,8 +53,15 @@ typedef struct {
     Vec3d color;
 } Light;
 
-typedef RANGE(Sphere) Spheres;
-typedef RANGE(Light) Lights;
+typedef struct {
+    Sphere* data;
+    size_t count;
+} Spheres;
+
+typedef struct {
+    Light* data;
+    size_t count;
+} Lights;
 
 typedef struct {
     Spheres spheres;
