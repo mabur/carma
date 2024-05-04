@@ -72,11 +72,11 @@ FOR_EACH2(a, b, range0, range1) {
 }
 ```
 
-* `ENUMERATE(index, range)` can be used instead of a normal for-loop
+* `FOR_INDEX(index, range)` can be used instead of a normal for-loop
   to loop over all indices of a `range`.
 Example:
 ```c
-ENUMERATE(i, range) {
+FOR_INDEX(i, range) {
     printf("index %i has item %i ", i, range.data[i]);
 }
 ```

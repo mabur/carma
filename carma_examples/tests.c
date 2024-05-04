@@ -96,13 +96,13 @@ void test_for_each2() {
     ASSERT_EQUAL_RANGE("test_for_each2", actual, expected);
 }
 
-void test_enumerate() {
+void test_for_index() {
     __auto_type actual = MAKE_DARRAY(int, 1, 2, 3);
-    ENUMERATE(i, actual) {
+    FOR_INDEX(i, actual) {
         actual.data[i] = square(actual.data[i]);
     }
     __auto_type expected = MAKE_DARRAY(int, 1, 4, 9);
-    ASSERT_EQUAL_RANGE("test_enumerate", actual, expected);
+    ASSERT_EQUAL_RANGE("test_for_index", actual, expected);
 }
 
 void test_fill() {
@@ -332,7 +332,7 @@ int main() {
     
     test_for_each();
     test_for_each2();
-    test_enumerate();
+    test_for_index();
 
     test_fill();
     

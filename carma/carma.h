@@ -93,7 +93,7 @@
     auto iterator1 = (range1).data; \
     for (; iterator0 != END_POINTER(range0) && iterator1 != END_POINTER(range1); ++iterator0, ++iterator1)
 
-#define ENUMERATE(index, range) \
+#define FOR_INDEX(index, range) \
     for (typeof((range).count) index = 0; index < (range).count; ++index)
 
 #define FILL(range, value) FOR_EACH(it, (range)) *it = (value)
