@@ -103,11 +103,6 @@ World makeWorld() {
     return world;
 }
 
-void freeWorld(World world) {
-    FREE_RANGE(world.spheres);
-    FREE_RANGE(world.lights);
-}
-
 Intersection findSingleIntersection(
     Vec3d start, Vec3d direction, Sphere sphere
 ) {
@@ -205,6 +200,5 @@ int main() {
     printf("Saving image\n");
     auto world = makeWorld();
     writeImage("image.ppm", world);
-    freeWorld(world);
     return 0;
 }
