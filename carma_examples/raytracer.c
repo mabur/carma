@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include <carma/carma.h>
+#include <carma/carma_gnu.h>
 
 typedef struct {
     double x;

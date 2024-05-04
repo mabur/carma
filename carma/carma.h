@@ -7,9 +7,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // UTILITIES
 
-#define RANGE(type) struct {type* data; size_t count;}
-#define DARRAY(type) struct {type* data; size_t count; size_t capacity;}
-
 #define END_POINTER(range) ((range).data + (range).count)
 
 #define POINTER_TYPE(range) typeof((range).data)
