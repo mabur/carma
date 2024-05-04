@@ -308,12 +308,12 @@ void test_append() {
     FREE_DARRAY(array);
 }
 
-void test_enumerate_x_y() {
+void test_for_x_y() {
     Image actual;
     INIT_IMAGE(actual, 4, 3);
     auto i = 0;
-    ENUMERATE_Y(y, actual) {
-        ENUMERATE_X(x, actual) {
+    FOR_Y(y, actual) {
+        FOR_X(x, actual) {
             actual.data[i] = x * y;
             ++i;
         }
@@ -324,7 +324,7 @@ void test_enumerate_x_y() {
         0, 1, 2, 3,
         0, 2, 4, 6,
     );
-    ASSERT_EQUAL_RANGE("test_enumerate_x_y", actual, expected);
+    ASSERT_EQUAL_RANGE("test_for_x_y", actual, expected);
 }
 
 int main() {
@@ -364,7 +364,7 @@ int main() {
     
     test_append();
 
-    test_enumerate_x_y();
+    test_for_x_y();
     
     summarize_tests();
     

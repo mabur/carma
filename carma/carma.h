@@ -263,10 +263,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 // IMAGE ALGORITHMS
 
-#define ENUMERATE_X(x, image) \
+#define FOR_X(x, image) \
     for (typeof((image).width) x = 0; x < (image).width; ++x)
 
-#define ENUMERATE_Y(y, image) \
+#define FOR_Y(y, image) \
     for (typeof((image).height) y = 0; y < (image).height; ++y)
 
 ////////////////////////////////////////////////////////////////////////////////

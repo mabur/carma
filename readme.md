@@ -88,17 +88,17 @@ FOR_INDEX(i, range) {
 The range loop macros above can also be used for images, since images are ranges.
 But Carma also provides some loop macros that only works for images:
 
-* `ENUMERATE_X(x, image)` can be used instead of a normal for-loop
+* `FOR_X(x, image)` can be used instead of a normal for-loop
 to let `x` loop from `0` to `image.width - 1`.
 
-* `ENUMERATE_Y(y, image)` can be used instead of a normal for-loop
+* `FOR_Y(y, image)` can be used instead of a normal for-loop
   to let `y` loop from `0` to `image.height - 1`.
 
-ENUMERATE_X and ENUMERATE_Y can be used independently,
+FOR_X and FOR_Y can be used independently,
 but they can also be used together like in this example:
 ```c
-ENUMERATE_Y(y, image) {
-    ENUMERATE_X(x, image) {
+FOR_Y(y, image) {
+    FOR_X(x, image) {
         printf("(x=%i,y=%i) ", x, y);
     }
     printf("\n");
