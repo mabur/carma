@@ -88,12 +88,16 @@
 ////////////////////////////////////////////////////////////////////////////////
 // DYNAMIC ARRAY ALGORITHMS
 
-#define NEXT_CAPACITY(capacity) (capacity) == 0 ? 1 : 2 * (capacity)
+#define NEXT_CAPACITY(capacity) ((capacity) == 0 ? 1 : 2 * (capacity))
+
+#define RESERVE(dynamic_array, new_capacity) do { \
+    (dynamic_array).capacity = (new_capacity); \
+    (dynamic_array).data = (POINTER_TYPE(dynamic_array))realloc((dynamic_array).data, (new_capacity) * sizeof(VALUE_TYPE(dynamic_array))); \
+} while (0)
 
 #define APPEND(dynamic_array, item) do { \
     if ((dynamic_array).count == (dynamic_array).capacity) { \
-        (dynamic_array).capacity = NEXT_CAPACITY((dynamic_array).capacity); \
-        (dynamic_array).data = (POINTER_TYPE(dynamic_array))realloc((dynamic_array).data, (dynamic_array).capacity * sizeof(VALUE_TYPE(dynamic_array))); \
+        RESERVE((dynamic_array), NEXT_CAPACITY((dynamic_array).capacity)); \
     } \
     ((dynamic_array).data)[(dynamic_array).count] = (item); \
     (dynamic_array).count++; \
@@ -105,7 +109,7 @@
         while (new_count > (dynamic_array).capacity) { \
             (dynamic_array).capacity = NEXT_CAPACITY((dynamic_array).capacity); \
         } \
-        (dynamic_array).data = (POINTER_TYPE(dynamic_array))realloc((dynamic_array).data, (dynamic_array).capacity * sizeof(VALUE_TYPE(dynamic_array))); \
+        RESERVE((dynamic_array), (dynamic_array).capacity); \
     } \
     FOR_INDEX(i, (range)) { \
         ((dynamic_array).data)[(dynamic_array).count + i] = (range).data[i]; \
