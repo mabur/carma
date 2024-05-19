@@ -119,6 +119,10 @@ the `capacity` is increased and the memory of the `data` pointer is reallocated.
 
 * `CLEAR(dynamic_array)` decreases `count` to zero.
 
+* `RESERVE(dynamic_array, capacity)` sets a new `capacity` and reallocates the `data` pointer.
+If the new `capacity` is smaller than the old `count`,
+then the new `count` is set to the new `capacity`.
+
 * `ERASE_INDEX(dynamic_array, index)` erases the item at `index`.
 Decreases `count` by one.
 The order of the remaining items is NOT preserved.

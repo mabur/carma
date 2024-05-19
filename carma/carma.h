@@ -92,6 +92,9 @@
 
 #define RESERVE(dynamic_array, new_capacity) do { \
     (dynamic_array).capacity = (new_capacity); \
+    if ((dynamic_array).count > (new_capacity)) { \
+        (dynamic_array).count = (new_capacity); \
+    } \
     (dynamic_array).data = (POINTER_TYPE(dynamic_array))realloc((dynamic_array).data, (new_capacity) * sizeof(VALUE_TYPE(dynamic_array))); \
 } while (0)
 
