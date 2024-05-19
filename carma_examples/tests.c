@@ -309,6 +309,26 @@ void test_append() {
     FREE_DARRAY(array);
 }
 
+void test_append_all() {
+    DARRAY(int) target;
+    INIT_DARRAY(target, 0, 0);
+    
+    __auto_type source = MAKE_DARRAY(int, 1, 2, 3);
+    
+    ASSERT_EQUAL("APPEND_ALL", target.count, 0);
+    ASSERT_EQUAL("APPEND_ALL", target.capacity, 0);
+    
+    APPEND_ALL(target, source);
+    __auto_type expected0 = MAKE_DARRAY(int, 1, 2, 3);
+    ASSERT_EQUAL_RANGE("test_for_x_y", target, expected0);
+    ASSERT_EQUAL("APPEND_ALL", target.capacity, 4);
+    
+    APPEND_ALL(target, source);
+    __auto_type expected1 = MAKE_DARRAY(int, 1, 2, 3, 1, 2, 3);
+    ASSERT_EQUAL_RANGE("test_for_x_y", target, expected1);
+    ASSERT_EQUAL("APPEND_ALL", target.capacity, 8);
+}
+
 void test_for_x_y() {
     Image actual;
     INIT_IMAGE(actual, 4, 3);
@@ -364,6 +384,7 @@ int main() {
     test_erase_if010();
     
     test_append();
+    test_append_all();
 
     test_for_x_y();
     

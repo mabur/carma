@@ -99,6 +99,20 @@
     (dynamic_array).count++; \
 } while (0)
 
+#define APPEND_ALL(dynamic_array, range) do { \
+    auto new_count = (dynamic_array).count + (range).count; \
+    if (new_count > (dynamic_array).capacity) { \
+        while (new_count > (dynamic_array).capacity) { \
+            (dynamic_array).capacity = NEXT_CAPACITY((dynamic_array).capacity); \
+        } \
+        (dynamic_array).data = (POINTER_TYPE(dynamic_array))realloc((dynamic_array).data, (dynamic_array).capacity * sizeof(VALUE_TYPE(dynamic_array))); \
+    } \
+    FOR_INDEX(i, (range)) { \
+        ((dynamic_array).data)[(dynamic_array).count + i] = (range).data[i]; \
+    } \
+    (dynamic_array).count = new_count; \
+} while (0)
+
 #define CLEAR(dynamic_array) do {(dynamic_array).count = 0;} while (0)
 
 #define ERASE_INDEX(dynamic_array, index) do { \
