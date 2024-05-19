@@ -88,9 +88,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 // DYNAMIC ARRAY ALGORITHMS
 
+#define NEXT_CAPACITY(capacity) (capacity) == 0 ? 1 : 2 * (capacity)
+
 #define APPEND(dynamic_array, item) do { \
     if ((dynamic_array).count == (dynamic_array).capacity) { \
-        (dynamic_array).capacity = (dynamic_array).capacity == 0 ? 1 : 2 * (dynamic_array).capacity; \
+        (dynamic_array).capacity = NEXT_CAPACITY((dynamic_array).capacity); \
         (dynamic_array).data = (POINTER_TYPE(dynamic_array))realloc((dynamic_array).data, (dynamic_array).capacity * sizeof(VALUE_TYPE(dynamic_array))); \
     } \
     ((dynamic_array).data)[(dynamic_array).count] = (item); \
