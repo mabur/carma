@@ -317,16 +317,16 @@ void test_append_all() {
     
     ASSERT_EQUAL("APPEND_ALL", target.count, 0);
     ASSERT_EQUAL("APPEND_ALL", target.capacity, 0);
-    
-    APPEND_ALL(target, source);
+
+    CONCAT(target, source);
     __auto_type expected0 = MAKE_DARRAY(int, 1, 2, 3);
-    ASSERT_EQUAL_RANGE("test_for_x_y", target, expected0);
-    ASSERT_EQUAL("APPEND_ALL", target.capacity, 4);
-    
-    APPEND_ALL(target, source);
+    ASSERT_EQUAL_RANGE("CONCAT", target, expected0);
+    ASSERT_EQUAL("CONCAT", target.capacity, 4);
+
+    CONCAT(target, source);
     __auto_type expected1 = MAKE_DARRAY(int, 1, 2, 3, 1, 2, 3);
-    ASSERT_EQUAL_RANGE("test_for_x_y", target, expected1);
-    ASSERT_EQUAL("APPEND_ALL", target.capacity, 8);
+    ASSERT_EQUAL_RANGE("CONCAT", target, expected1);
+    ASSERT_EQUAL("CONCAT", target.capacity, 8);
 }
 
 void test_for_x_y() {

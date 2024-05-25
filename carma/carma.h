@@ -106,7 +106,7 @@
     (dynamic_array).count++; \
 } while (0)
 
-#define APPEND_ALL(dynamic_array, range) do { \
+#define CONCAT(dynamic_array, range) do { \
     auto new_count = (dynamic_array).count + (range).count; \
     if (new_count > (dynamic_array).capacity) { \
         while (new_count > (dynamic_array).capacity) { \
