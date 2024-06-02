@@ -1,16 +1,3 @@
-* Assume GNU C.
-* Type inference via GNU C extension.
-* Pass structs by value and do not use const by default. Enforce functional style via convention instead of compiler.
-* Containers implemented via convention:
-  - Arrays with size known at run-time. first, last
-  - Arrays that can grow and shrink. first, last, last_allocated
-* Algorithms implemented via macros and GNU C extensions:
-  - For each
-  - Copy
-  - Fill
-  - Find
-  - erase_if
-* Can we get around the lack lambda functions in C by using a macro like FOR_EACH where the predicate is defined as an expression?
 * Compare arrays and slices in Golang:
   - "An array has a fixed size."
   - "A slice, on the other hand, is a dynamically-sized, flexible view into the elements of an array."
@@ -20,4 +7,23 @@
   - Some memory can be allocated once and then grow/append as needed during run-time, and then freed when the program exits.
   - Some memory can be allocated as static variable inside function, and shared for all calls to the functions, and freed when the program exits.
   - Some memory can be allocated for a game interval, like a frame or a scene, and then deallocated/cleared after that frame or scene.
+  - Some memory can be allocated on the stack using alloca (C&C++) or VLA (C)
   - What common cases are left?
+
+From Falco Girgis:
+// alloca()
+#ifndef GBL_ALLOCA
+//#   ifndef alloca
+#       if defined(__APPLE__) || defined(__GLIBC__) || defined(__sun) || defined(__CYGWIN__) || defined(__EMSCRIPTEN__) || defined(VITA) || defined(__DREAMCAST__) || defined(PSP)
+#           include <alloca.h>     // alloca
+#       elif defined(_WIN32)
+#           include <malloc.h>     // alloca
+#           ifndef alloca
+#               define alloca _alloca  // for clang with MS Codegen
+#           endif
+#       else
+#           include <stdlib.h>     // alloca
+#       endif
+//#   endif
+#   define GBL_ALLOCA alloca
+#endif
