@@ -7,7 +7,7 @@
   - Some memory can be allocated once and then grow/append as needed during run-time, and then freed when the program exits.
   - Some memory can be allocated as static variable inside function, and shared for all calls to the functions, and freed when the program exits.
   - Some memory can be allocated for a game interval, like a frame or a scene, and then deallocated/cleared after that frame or scene.
-  - Some memory can be allocated on the stack using alloca (C&C++) or VLA (C)
+  - Some memory can be allocated on the stack using alloca (C&C++) or VLA (C). At least arrays up to ~1000 primitives.
   - What common cases are left?
 
 From Falco Girgis:
