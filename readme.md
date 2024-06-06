@@ -81,6 +81,8 @@ FOR_INDEX(i, range) {
 }
 ```
 
+* `IS_EMPTY(range)` checks if the range has a count of zero.
+
 * `FILL(range, value)` sets all the items in the `range` to `value`.
 
 ## Image Loop Macros

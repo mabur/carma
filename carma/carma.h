@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // UTILITIES
 
+#define IS_EMPTY(range) ((range).count == 0)
 #define END_POINTER(range) ((range).data + (range).count)
 
 #define POINTER_TYPE(range) typeof((range).data)

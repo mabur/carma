@@ -78,6 +78,13 @@ void test_init_image() {
     FREE_IMAGE(image);
 }
 
+void test_is_empty() {
+    __auto_type actual = MAKE_DARRAY(int);
+    ASSERT_EQUAL("test_is_empty", IS_EMPTY(actual), true);
+    APPEND(actual, 1);
+    ASSERT_EQUAL("test_is_empty", IS_EMPTY(actual), false);
+}
+
 void test_for_each() {
     __auto_type actual = MAKE_DARRAY(int, 1, 2, 3);
     FOR_EACH(it, actual) {
@@ -350,6 +357,8 @@ void test_for_x_y() {
 
 int main() {
     test_init_image();
+
+    test_is_empty();
     
     test_for_each();
     test_for_each2();
