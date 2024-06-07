@@ -54,8 +54,8 @@
     if ((left_range).count != (right_range).count) { \
         result = false; \
     } else { \
-        for (size_t i = 0; i < (left_range).count; ++i) { \
-            if ((left_range).data[i] != (right_range).data[i]) { \
+        FOR_EACH2(left, right, (left_range), (right_range)) { \
+            if (*left != *right) { \
                 result = false; \
                 break; \
             } \
