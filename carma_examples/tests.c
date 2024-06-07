@@ -136,6 +136,20 @@ void test_find_if_backwards() {
     FREE_RANGE(range);
 }
 
+void test_drop_first() {
+    __auto_type actual = MAKE_RANGE(int, -1, 4, -2, 1);
+    DROP_FIRST(actual);
+    __auto_type expected = MAKE_RANGE(int, 4, -2, 1);
+    ASSERT_EQUAL_RANGE("drop_first", actual, expected);
+}
+
+void test_drop_last() {
+    __auto_type actual = MAKE_RANGE(int, -1, 4, -2, 1);
+    DROP_LAST(actual);
+    __auto_type expected = MAKE_RANGE(int, -1, 4, -2);
+    ASSERT_EQUAL_RANGE("drop_first", actual, expected);
+}
+
 void test_drop_while() {
     __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
     ASSERT_EQUAL("DROP_WHILE", *DROP_WHILE(range, is_positive).data, -1);
@@ -368,6 +382,8 @@ int main() {
     
     test_find_if();
     test_find_if_backwards();
+    test_drop_first();
+    test_drop_last();
     test_drop_while();
     test_drop_until();
     test_drop_back_while();

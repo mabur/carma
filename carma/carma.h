@@ -87,6 +87,15 @@
 
 #define FILL(range, value) FOR_EACH(it, (range)) *it = (value)
 
+#define DROP_FIRST(range) do { \
+    (range).data++; \
+    (range).count--; \
+} while (0)
+
+#define DROP_LAST(range) do { \
+    (range).count--; \
+} while (0)
+
 ////////////////////////////////////////////////////////////////////////////////
 // DYNAMIC ARRAY ALGORITHMS
 
