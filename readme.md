@@ -46,7 +46,19 @@ struct ExampleImage {
 So an **image** is a **range** but not a **dynamic array**,
 since it does not have a `capacity`.
 
-## Range Loop Macros
+## Range Macros O(1)
+
+* `IS_EMPTY(range)` checks if the range has a count of zero.
+
+* `FIRST_ITEM(range)` returns the item at index 0. It assumes that the range is not empty.
+
+* `LAST_ITEM(range)` returns the item at index count-1. It assumes that the range is not empty.
+
+* `DROP_FIRST(range)` increments the data pointer by one and decrements the count by one. Does not reallocate any memory.
+
+* `DROP_LAST(range)` decrements the count by one. Does not reallocate any memory.
+
+## Range Loop Macros O(count)
 
 * `FOR_EACH(iterator, range)` can be used instead of a normal for-loop 
 to loop over all items in the `range`.
@@ -80,12 +92,6 @@ FOR_INDEX(i, range) {
     printf("index %i has item %i ", i, range.data[i]);
 }
 ```
-
-* `IS_EMPTY(range)` checks if the range has a count of zero.
-
-* `DROP_FIRST(range)` increments the data pointer by one and decrements the count by one. Does not reallocate any memory.
-
-* `DROP_LAST(range)` decrements the count by one. Does not reallocate any memory.
 
 * `FILL(range, value)` sets all the items in the `range` to `value`.
 

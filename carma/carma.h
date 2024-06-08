@@ -7,8 +7,12 @@
 // UTILITIES
 
 #define IS_EMPTY(range) ((range).count == 0)
+
 #define BEGIN_POINTER(range) ((range).data)
 #define END_POINTER(range) ((range).data + (range).count)
+
+#define FIRST_ITEM(range) ((range).data[0])
+#define LAST_ITEM(range) ((range).data[0 + (range).count - 1])
 
 #define POINTER_TYPE(range) typeof((range).data)
 #define VALUE_TYPE(range) typeof(*(range).data)

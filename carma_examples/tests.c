@@ -85,6 +85,16 @@ void test_is_empty() {
     ASSERT_EQUAL("test_is_empty", IS_EMPTY(actual), false);
 }
 
+void test_first_item() {
+    __auto_type actual = MAKE_DARRAY(int, 3, 4, 5);
+    ASSERT_EQUAL("test_first_item", FIRST_ITEM(actual), 3);
+}
+
+void test_last_item() {
+    __auto_type actual = MAKE_DARRAY(int, 3, 4, 5);
+    ASSERT_EQUAL("test_last_item", LAST_ITEM(actual), 5);
+}
+
 void test_for_each() {
     __auto_type actual = MAKE_DARRAY(int, 1, 2, 3);
     FOR_EACH(it, actual) {
@@ -371,7 +381,9 @@ void test_for_x_y() {
 
 int main() {
     test_init_image();
-
+    
+    test_first_item();
+    test_last_item();
     test_is_empty();
     
     test_for_each();
