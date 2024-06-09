@@ -93,6 +93,17 @@ FOR_INDEX(i, range) {
 }
 ```
 
+* `FOR_EACH_REVERSE(iterator, range)` can be used instead of a normal for-loop
+  to loop over all items in the `range` in reverse order.
+  A loop variable with the name given by `iterator` will be allocated,
+  in the scope inside the loop, and it will point to each item in the range.
+  Example:
+```c
+FOR_EACH_REVERSE(it, range) {
+    printf("%i ", *it);
+}
+```
+
 * `FILL(range, value)` sets all the items in the `range` to `value`.
 
 ## Image Loop Macros

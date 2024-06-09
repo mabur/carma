@@ -81,6 +81,10 @@
 #define FOR_EACH(iterator, range) \
     for (auto iterator = BEGIN_POINTER(range); iterator != END_POINTER(range); ++iterator)
 
+#define FOR_EACH_REVERSE(iterator, range) \
+    for (auto iterator = END_POINTER(range); iterator != BEGIN_POINTER(range);) \
+        if (--iterator || true)
+    
 #define FOR_EACH2(iterator0, iterator1, range0, range1) \
     auto iterator0 = BEGIN_POINTER(range0); \
     auto iterator1 = BEGIN_POINTER(range1); \
