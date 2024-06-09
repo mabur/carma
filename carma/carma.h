@@ -79,11 +79,11 @@
 // RANGE ALGORITHMS
 
 #define FOR_EACH(iterator, range) \
-    for (auto iterator = (range).data; iterator != END_POINTER(range); ++iterator)
+    for (auto iterator = BEGIN_POINTER(range); iterator != END_POINTER(range); ++iterator)
 
 #define FOR_EACH2(iterator0, iterator1, range0, range1) \
-    auto iterator0 = (range0).data; \
-    auto iterator1 = (range1).data; \
+    auto iterator0 = BEGIN_POINTER(range0); \
+    auto iterator1 = BEGIN_POINTER(range1); \
     for (; iterator0 != END_POINTER(range0) && iterator1 != END_POINTER(range1); ++iterator0, ++iterator1)
 
 #define FOR_INDEX(index, range) \
