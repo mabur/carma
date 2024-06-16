@@ -434,12 +434,12 @@ void test_for_x_y() {
     ASSERT_EQUAL_RANGE("test_for_x_y", actual, expected);
 }
 
-void test_make_constant_string() {
-    ASSERT_EQUAL("make_constant_string", makeConstantString("").count, 0);
-    ASSERT_EQUAL("make_constant_string", makeConstantString("a").count, 1);
-    ASSERT_EQUAL("make_constant_string", makeConstantString("ab").count, 2);
-    ASSERT_EQUAL("make_constant_string", makeConstantString("\n").count, 1);
-    ASSERT_EQUAL("make_constant_string", makeConstantString("\0").count, 0);
+void test_constant_string() {
+    ASSERT_EQUAL("test_constant_string", CONSTANT_STRING("").count, 0);
+    ASSERT_EQUAL("test_constant_string", CONSTANT_STRING("a").count, 1);
+    ASSERT_EQUAL("test_constant_string", CONSTANT_STRING("ab").count, 2);
+    ASSERT_EQUAL("test_constant_string", CONSTANT_STRING("\n").count, 1);
+    ASSERT_EQUAL("test_constant_string", CONSTANT_STRING("\0").count, 0);
 }
 
 void test_format_string() {
@@ -522,7 +522,7 @@ int main() {
 
     test_for_x_y();
 
-    test_make_constant_string();
+    test_constant_string();
     test_format_string();
     
     summarize_tests();

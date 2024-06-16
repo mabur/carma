@@ -18,16 +18,12 @@ typedef struct DynamicString {
     size_t capacity;
 } DynamicString;
 
-static
-inline
-ConstantString makeConstantString(const char* s) {
-    return (ConstantString){s, strlen(s)};
-}
+#define CONSTANT_STRING(s) (ConstantString){(s), strlen(s)}
 
 static
 inline
 DynamicString concatenate(DynamicString base, const char* tail) {
-    CONCAT(base, makeConstantString(tail));
+    CONCAT(base, CONSTANT_STRING(tail));
     return base;
 }
 
