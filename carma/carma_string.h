@@ -34,7 +34,7 @@ DynamicString concatenate(DynamicString base, const char* tail) {
 
 static
 inline
-DynamicString formatString(DynamicString string, const char* format, ...) {
+DynamicString carmaFormatString(DynamicString string, const char* format, ...) {
     va_list args;
     va_start(args, format);
     auto num_characters = vsnprintf(string.data, (size_t)string.capacity, format, args);
@@ -52,5 +52,5 @@ DynamicString formatString(DynamicString string, const char* format, ...) {
 }
 
 #define FORMAT_STRING(string, format, ...) do { \
-    (string) = formatString((string), (format), ##__VA_ARGS__); \
+    (string) = carmaFormatString((string), (format), ##__VA_ARGS__); \
 } while(0)
