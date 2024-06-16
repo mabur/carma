@@ -2,6 +2,7 @@
 
 #include <carma/carma.h>
 #include <carma/carma_gnu.h>
+#include <carma/carma_string.h>
 
 typedef struct {
     int* data;
@@ -419,6 +420,23 @@ void test_for_x_y() {
     ASSERT_EQUAL_RANGE("test_for_x_y", actual, expected);
 }
 
+void test_make_constant_string() {
+    ASSERT_EQUAL("make_constant_string", makeConstantString("").count, 0);
+    ASSERT_EQUAL("make_constant_string", makeConstantString("a").count, 1);
+    ASSERT_EQUAL("make_constant_string", makeConstantString("ab").count, 2);
+    ASSERT_EQUAL("make_constant_string", makeConstantString("\n").count, 1);
+    ASSERT_EQUAL("make_constant_string", makeConstantString("\0").count, 0);
+}
+
+void test_format_string() {
+    auto s = (DynamicString){};
+    
+    FORMAT_STRING(s, "");
+    ASSERT_EQUAL_RANGE("test_format_string", s, makeConstantString(""));
+    ASSERT_EQUAL("test_format_string count", s.count, 0);
+    ASSERT_EQUAL("test_format_string capacity", s.capacity, 1);
+}
+
 int main() {
     test_init_image();
     
@@ -469,6 +487,9 @@ int main() {
     test_append_all();
 
     test_for_x_y();
+
+    test_make_constant_string();
+    test_format_string();
     
     summarize_tests();
     
