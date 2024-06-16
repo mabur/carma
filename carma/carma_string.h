@@ -7,7 +7,6 @@
 
 #include "carma.h"
 
-// Naming: StringLiteral, ConstantString, StringView...
 typedef struct ConstantString {
     const char* data;
     size_t count;
