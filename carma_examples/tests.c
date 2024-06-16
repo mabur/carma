@@ -464,6 +464,11 @@ void test_format_string() {
     ASSERT_EQUAL_STRINGS("test_format_string 2", s.data, "ab");
     ASSERT_EQUAL("test_format_string 2 count", s.count, 2);
     ASSERT_EQUAL("test_format_string 2 capacity", s.capacity, 3);
+    
+    FORMAT_STRING(s, "%i%s\n%i", 1, "ab", 99);
+    ASSERT_EQUAL_STRINGS("test_format_string 6", s.data, "1ab\n99");
+    ASSERT_EQUAL("test_format_string 6 count", s.count, 6);
+    ASSERT_EQUAL("test_format_string 6 capacity", s.capacity, 7);
 }
 
 int main() {
