@@ -62,6 +62,20 @@ int global_assert_errors = 0;
     } \
 } while (0);
 
+#define ASSERT_EQUAL_STRINGS(description, a, b) do { \
+    global_assert_count++; \
+    if (strcmp(a, b) == 0) { \
+        printf("%s ok\n", (description)); \
+    } else { \
+        printf("%s ", (description)); \
+        printf("%s", a); \
+        printf("!="); \
+        printf("%s", b); \
+        printf(" bad\n"); \
+        global_assert_errors++; \
+    } \
+} while (0);
+
 void summarize_tests() {
     if (global_assert_errors != 0) {
         printf("%d/%d test failed\n", global_assert_errors, global_assert_count);
@@ -432,9 +446,24 @@ void test_format_string() {
     auto s = (DynamicString){};
     
     FORMAT_STRING(s, "");
-    ASSERT_EQUAL_RANGE("test_format_string", s, makeConstantString(""));
+    ASSERT_EQUAL_STRINGS("test_format_string", s.data, "");
     ASSERT_EQUAL("test_format_string count", s.count, 0);
     ASSERT_EQUAL("test_format_string capacity", s.capacity, 1);
+
+    FORMAT_STRING(s, "");
+    ASSERT_EQUAL_STRINGS("test_format_string 0", s.data, "");
+    ASSERT_EQUAL("test_format_string 0 count", s.count, 0);
+    ASSERT_EQUAL("test_format_string 0 capacity", s.capacity, 1);
+
+    FORMAT_STRING(s, "a");
+    ASSERT_EQUAL_STRINGS("test_format_string 1", s.data, "a");
+    ASSERT_EQUAL("test_format_string 1 count", s.count, 1);
+    ASSERT_EQUAL("test_format_string 1 capacity", s.capacity, 2);
+
+    FORMAT_STRING(s, "ab");
+    ASSERT_EQUAL_STRINGS("test_format_string 2", s.data, "ab");
+    ASSERT_EQUAL("test_format_string 2 count", s.count, 2);
+    ASSERT_EQUAL("test_format_string 2 capacity", s.capacity, 3);
 }
 
 int main() {

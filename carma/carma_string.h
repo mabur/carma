@@ -44,7 +44,8 @@ DynamicString formatString(DynamicString string, const char* format, ...) {
         string.count = (size_t)num_characters;
     } else {
         RESERVE(string, (size_t)num_characters + 1);
-        vsnprintf(string.data, string.capacity, format, args);
+        num_characters = vsnprintf(string.data, string.capacity, format, args);
+        string.count = (size_t)num_characters;
     }
     va_end(args);
     return string;
