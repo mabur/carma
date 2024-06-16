@@ -1,7 +1,7 @@
 #pragma once
 
-#include <stddef.h>
 #include <stdarg.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -19,13 +19,6 @@ typedef struct DynamicString {
 } DynamicString;
 
 #define CONSTANT_STRING(s) (ConstantString){(s), strlen(s)}
-
-static
-inline
-DynamicString concatenate(DynamicString base, const char* tail) {
-    CONCAT(base, CONSTANT_STRING(tail));
-    return base;
-}
 
 static
 inline
