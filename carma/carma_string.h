@@ -38,13 +38,11 @@ DynamicString carmaFormatString(DynamicString string, const char* format, ...) {
     va_list args;
     va_start(args, format);
     auto num_characters = vsnprintf(string.data, (size_t)string.capacity, format, args);
-    if (num_characters < 0) {
-    }
-    else if (num_characters < (int)string.capacity) {
-        string.count = (size_t)num_characters;
-    } else {
-        RESERVE(string, (size_t)num_characters + 1);
-        num_characters = vsnprintf(string.data, string.capacity, format, args);
+    if (num_characters >= 0) {
+        if (num_characters >= (int)string.capacity) {
+            RESERVE(string, (size_t) num_characters + 1);
+            num_characters = vsnprintf(string.data, string.capacity, format, args);
+        }
         string.count = (size_t)num_characters;
     }
     va_end(args);
