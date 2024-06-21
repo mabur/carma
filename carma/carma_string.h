@@ -25,6 +25,7 @@ inline
 DynamicString carmaFormatString(DynamicString string, const char* format, ...) {
     va_list args;
     va_start(args, format);
+    // TODO: need a copy of args for each function call
     auto num_characters = vsnprintf(string.data, (size_t)string.capacity, format, args);
     if (num_characters >= 0) {
         if (num_characters >= (int)string.capacity) {
