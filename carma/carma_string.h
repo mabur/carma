@@ -23,18 +23,22 @@ typedef struct DynamicString {
 static
 inline
 DynamicString carmaFormatString(DynamicString string, const char* format, ...) {
-    va_list args;
-    va_start(args, format);
-    // TODO: need a copy of args for each function call
-    auto num_characters = vsnprintf(string.data, (size_t)string.capacity, format, args);
+    va_list args0;
+    va_list args1;
+    va_start(args0, format);
+    va_copy(args1, args0);
+    
+    auto num_characters = vsnprintf(string.data, (size_t)string.capacity, format, args0);
     if (num_characters >= 0) {
         if (num_characters >= (int)string.capacity) {
             RESERVE(string, (size_t) num_characters + 1);
-            num_characters = vsnprintf(string.data, string.capacity, format, args);
+            num_characters = vsnprintf(string.data, string.capacity, format, args1);
         }
         string.count = (size_t)num_characters;
     }
-    va_end(args);
+
+    va_end(args0);
+    va_end(args1);
     return string;
 }
 
