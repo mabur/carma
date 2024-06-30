@@ -225,6 +225,16 @@ void test_drop_front_while() {
     ASSERT_EQUAL("DROP_FRONT_WHILE", FIRST_ITEM(range), -2);
 }
 
+void test_drop_front_while_item() {
+    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
+    DROP_FRONT_WHILE_ITEM(range, -1);
+    ASSERT_EQUAL("DROP_FRONT_WHILE_ITEM", FIRST_ITEM(range), 4);
+    DROP_FRONT_WHILE_ITEM(range, 4);
+    ASSERT_EQUAL("DROP_FRONT_WHILE_ITEM", FIRST_ITEM(range), -2);
+    DROP_FRONT_WHILE_ITEM(range, 0);
+    ASSERT_EQUAL("DROP_FRONT_WHILE_ITEM", FIRST_ITEM(range), -2);
+}
+
 void test_drop_front_until() {
     __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
     DROP_FRONT_UNTIL(range, is_positive);
@@ -233,6 +243,16 @@ void test_drop_front_until() {
     ASSERT_EQUAL("DROP_FRONT_UNTIL", FIRST_ITEM(range), -2);
     DROP_FRONT_UNTIL(range, is_zero);
     ASSERT_EQUAL("DROP_FRONT_UNTIL", BEGIN_POINTER(range), END_POINTER(range));
+}
+
+void test_drop_front_until_item() {
+    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
+    DROP_FRONT_UNTIL_ITEM(range, 4);
+    ASSERT_EQUAL("DROP_FRONT_UNTIL_ITEM", FIRST_ITEM(range), 4);
+    DROP_FRONT_UNTIL_ITEM(range, -2);
+    ASSERT_EQUAL("DROP_FRONT_UNTIL_ITEM", FIRST_ITEM(range), -2);
+    DROP_FRONT_UNTIL_ITEM(range, 0);
+    ASSERT_EQUAL("DROP_FRONT_UNTIL_ITEM", BEGIN_POINTER(range), END_POINTER(range));
 }
 
 void test_drop_back_while() {
@@ -245,6 +265,16 @@ void test_drop_back_while() {
     ASSERT_EQUAL("DROP_BACK_WHILE", LAST_ITEM(range), 4);
 }
 
+void test_drop_back_while_item() {
+    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
+    DROP_BACK_WHILE_ITEM(range, 1);
+    ASSERT_EQUAL("DROP_BACK_WHILE_ITEM", LAST_ITEM(range), -2);
+    DROP_BACK_WHILE_ITEM(range, -2);
+    ASSERT_EQUAL("DROP_BACK_WHILE_ITEM", LAST_ITEM(range), 4);
+    DROP_BACK_WHILE_ITEM(range, 0);
+    ASSERT_EQUAL("DROP_BACK_WHILE_ITEM", LAST_ITEM(range), 4);
+}
+
 void test_drop_back_until() {
     __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
     DROP_BACK_UNTIL(range, is_negative);
@@ -253,6 +283,16 @@ void test_drop_back_until() {
     ASSERT_EQUAL("DROP_BACK_UNTIL", LAST_ITEM(range), 4);
     DROP_BACK_UNTIL(range, is_zero);
     ASSERT_EQUAL("DROP_BACK_UNTIL", range.count, 0);
+}
+
+void test_drop_back_until_item() {
+    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
+    DROP_BACK_UNTIL_ITEM(range, -2);
+    ASSERT_EQUAL("DROP_BACK_UNTIL_ITEM", LAST_ITEM(range), -2);
+    DROP_BACK_UNTIL_ITEM(range, 4);
+    ASSERT_EQUAL("DROP_BACK_UNTIL_ITEM", LAST_ITEM(range), 4);
+    DROP_BACK_UNTIL_ITEM(range, 0);
+    ASSERT_EQUAL("DROP_BACK_UNTIL_ITEM", range.count, 0);
 }
 
 void test_erase_index1() {
@@ -499,12 +539,19 @@ int main() {
     
     test_find_if();
     test_find_if_backwards();
+    
     test_drop_front();
     test_drop_back();
+    
     test_drop_front_while();
     test_drop_front_until();
     test_drop_back_while();
     test_drop_back_until();
+
+    test_drop_front_while_item();
+    test_drop_front_until_item();
+    test_drop_back_while_item();
+    test_drop_back_until_item();
 
     test_erase_index1();
     test_erase_index2a();

@@ -95,6 +95,8 @@
 
 #define FILL(range, value) FOR_EACH(it, (range)) *it = (value)
 
+////////////////////////////////////////////////////////////////////////////////
+// RANGE ALGORITHMS - DROP
 // TODO: think about capacity when calling drop functions with a darray.
 // Document behavior.
 
@@ -106,6 +108,26 @@
 #define DROP_BACK(range) do { \
     (range).count--; \
 } while (0)
+
+#define DROP_FRONT_WHILE_ITEM(range, item) \
+    while (!IS_EMPTY(range) && FIRST_ITEM(range) == item) { \
+        DROP_FRONT(range); \
+    }
+
+#define DROP_FRONT_UNTIL_ITEM(range, item) \
+    while (!IS_EMPTY(range) && FIRST_ITEM(range) != item) { \
+        DROP_FRONT(range); \
+    }
+
+#define DROP_BACK_WHILE_ITEM(range, item) \
+    while (!IS_EMPTY(range) && LAST_ITEM(range) == item) { \
+        DROP_BACK(range); \
+    }
+
+#define DROP_BACK_UNTIL_ITEM(range, item) \
+    while (!IS_EMPTY(range) && LAST_ITEM(range) != item) { \
+        DROP_BACK(range); \
+    }
 
 #define DROP_FRONT_WHILE(range, predicate) \
     while (!IS_EMPTY(range) && (predicate)(FIRST_ITEM(range))) { \
