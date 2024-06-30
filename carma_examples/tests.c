@@ -129,44 +129,44 @@ void test_for_each2() {
     ASSERT_EQUAL_RANGE("test_for_each2", actual, expected);
 }
 
-void test_for_each_reverse0() {
+void test_for_each_backward0() {
     __auto_type inputs = MAKE_DARRAY(int);
     __auto_type actual = MAKE_DARRAY(int);
-    FOR_EACH_REVERSE(it, inputs) {
+    FOR_EACH_BACKWARD(it, inputs) {
         APPEND(actual, *it);
     }
     __auto_type expected = MAKE_DARRAY(int);
-    ASSERT_EQUAL_RANGE("test_for_each_reverse0", actual, expected);
+    ASSERT_EQUAL_RANGE("test_for_each_backward0", actual, expected);
 }
 
-void test_for_each_reverse1() {
+void test_for_each_backward1() {
     __auto_type inputs = MAKE_DARRAY(int, 1);
     __auto_type actual = MAKE_DARRAY(int);
-    FOR_EACH_REVERSE(it, inputs) {
+    FOR_EACH_BACKWARD(it, inputs) {
         APPEND(actual, *it);
     }
     __auto_type expected = MAKE_DARRAY(int, 1);
-    ASSERT_EQUAL_RANGE("test_for_each_reverse0", actual, expected);
+    ASSERT_EQUAL_RANGE("test_for_each_backward1", actual, expected);
 }
 
-void test_for_each_reverse2() {
+void test_for_each_backward2() {
     __auto_type inputs = MAKE_DARRAY(int, 1, 2);
     __auto_type actual = MAKE_DARRAY(int);
-    FOR_EACH_REVERSE(it, inputs) {
+    FOR_EACH_BACKWARD(it, inputs) {
         APPEND(actual, *it);
     }
     __auto_type expected = MAKE_DARRAY(int, 2, 1);
-    ASSERT_EQUAL_RANGE("test_for_each_reverse2", actual, expected);
+    ASSERT_EQUAL_RANGE("test_for_each_backward2", actual, expected);
 }
 
-void test_for_each_reverse3() {
+void test_for_each_backward3() {
     __auto_type inputs = MAKE_DARRAY(int, 1, 2, 3);
     __auto_type actual = MAKE_DARRAY(int);
-    FOR_EACH_REVERSE(it, inputs) {
+    FOR_EACH_BACKWARD(it, inputs) {
         APPEND(actual, *it);
     }
     __auto_type expected = MAKE_DARRAY(int, 3, 2, 1);
-    ASSERT_EQUAL_RANGE("test_for_each_reverse3", actual, expected);
+    ASSERT_EQUAL_RANGE("test_for_each_backward3", actual, expected);
 }
 
 void test_for_index() {
@@ -481,11 +481,11 @@ int main() {
     test_for_each();
     test_for_each2();
     test_for_index();
-    
-    test_for_each_reverse0();
-    test_for_each_reverse1();
-    test_for_each_reverse2();
-    test_for_each_reverse3();
+
+    test_for_each_backward0();
+    test_for_each_backward1();
+    test_for_each_backward2();
+    test_for_each_backward3();
 
     test_fill();
     
