@@ -215,12 +215,14 @@ void test_drop_back() {
     ASSERT_EQUAL_RANGE("drop_back", actual, expected);
 }
 
-void test_drop_while() {
+void test_drop_front_while() {
     __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
-    ASSERT_EQUAL("DROP_WHILE", *DROP_WHILE(range, is_positive).data, -1);
-    ASSERT_EQUAL("DROP_WHILE", *DROP_WHILE(range, is_negative).data, 4);
-    ASSERT_EQUAL("DROP_WHILE", *DROP_WHILE(range, is_zero).data, -1);
-    FREE_RANGE(range);
+    DROP_FRONT_WHILE(range, is_negative);
+    ASSERT_EQUAL("DROP_FRONT_WHILE", FIRST_ITEM(range), 4);
+    DROP_FRONT_WHILE(range, is_positive);
+    ASSERT_EQUAL("DROP_FRONT_WHILE", FIRST_ITEM(range), -2);
+    DROP_FRONT_WHILE(range, is_zero);
+    ASSERT_EQUAL("DROP_FRONT_WHILE", FIRST_ITEM(range), -2);
 }
 
 void test_drop_until() {
@@ -493,7 +495,7 @@ int main() {
     test_find_if_backwards();
     test_drop_front();
     test_drop_back();
-    test_drop_while();
+    test_drop_front_while();
     test_drop_until();
     test_drop_back_while();
     test_drop_back_until();

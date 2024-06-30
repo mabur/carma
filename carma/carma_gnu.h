@@ -110,12 +110,10 @@
 // DYNAMIC ARRAY ALGORITHMS
 
 // TODO: think about capacity when calling this with a darray.
-#define DROP_WHILE(range, predicate) ({ \
-    auto result = (range); \
-    for (; result.count > 0 && (predicate)(*result.data); ++result.data, --result.count) { \
-    } \
-    result; \
-})
+#define DROP_FRONT_WHILE(range, predicate) \
+    while (!IS_EMPTY(range) && (predicate)(FIRST_ITEM(range))) { \
+        DROP_FRONT(range); \
+    }
 
 // TODO: think about capacity when calling this with a darray.
 #define DROP_UNTIL(range, predicate) ({ \
