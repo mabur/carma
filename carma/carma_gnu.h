@@ -116,12 +116,10 @@
     }
 
 // TODO: think about capacity when calling this with a darray.
-#define DROP_UNTIL(range, predicate) ({ \
-    auto result = (range); \
-    for (; result.count > 0 && !(predicate)(*result.data); ++result.data, --result.count) { \
-    } \
-    result; \
-})
+#define DROP_FRONT_UNTIL(range, predicate) \
+    while (!IS_EMPTY(range) && !(predicate)(FIRST_ITEM(range))) { \
+        DROP_FRONT(range); \
+    }
 
 #define DROP_BACK_WHILE(range, predicate) ({ \
     auto result = (range); \

@@ -225,12 +225,14 @@ void test_drop_front_while() {
     ASSERT_EQUAL("DROP_FRONT_WHILE", FIRST_ITEM(range), -2);
 }
 
-void test_drop_until() {
+void test_drop_front_until() {
     __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
-    ASSERT_EQUAL("DROP_UNTIL", *DROP_UNTIL(range, is_positive).data, 4);
-    ASSERT_EQUAL("DROP_UNTIL", *DROP_UNTIL(range, is_negative).data, -1);
-    ASSERT_EQUAL("DROP_UNTIL", DROP_UNTIL(range, is_zero).data, END_POINTER(range));
-    FREE_RANGE(range);
+    DROP_FRONT_UNTIL(range, is_positive);
+    ASSERT_EQUAL("DROP_FRONT_UNTIL", FIRST_ITEM(range), 4);
+    DROP_FRONT_UNTIL(range, is_negative);
+    ASSERT_EQUAL("DROP_FRONT_UNTIL", FIRST_ITEM(range), -2);
+    DROP_FRONT_UNTIL(range, is_zero);
+    ASSERT_EQUAL("DROP_FRONT_UNTIL", BEGIN_POINTER(range), END_POINTER(range));
 }
 
 void test_drop_back_while() {
@@ -496,7 +498,7 @@ int main() {
     test_drop_front();
     test_drop_back();
     test_drop_front_while();
-    test_drop_until();
+    test_drop_front_until();
     test_drop_back_while();
     test_drop_back_until();
 
