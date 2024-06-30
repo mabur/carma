@@ -105,28 +105,3 @@
     } \
     it; \
 })
-
-////////////////////////////////////////////////////////////////////////////////
-// DYNAMIC ARRAY ALGORITHMS
-
-// TODO: think about capacity when calling this with a darray.
-#define DROP_FRONT_WHILE(range, predicate) \
-    while (!IS_EMPTY(range) && (predicate)(FIRST_ITEM(range))) { \
-        DROP_FRONT(range); \
-    }
-
-// TODO: think about capacity when calling this with a darray.
-#define DROP_FRONT_UNTIL(range, predicate) \
-    while (!IS_EMPTY(range) && !(predicate)(FIRST_ITEM(range))) { \
-        DROP_FRONT(range); \
-    }
-
-#define DROP_BACK_WHILE(range, predicate) \
-    while (!IS_EMPTY(range) && (predicate)(LAST_ITEM(range))) { \
-        DROP_BACK(range); \
-    }
-
-#define DROP_BACK_UNTIL(range, predicate) \
-    while (!IS_EMPTY(range) && !(predicate)(LAST_ITEM(range))) { \
-        DROP_BACK(range); \
-    }
