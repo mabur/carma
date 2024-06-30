@@ -54,10 +54,6 @@ since it does not have a `capacity`.
 
 * `LAST_ITEM(range)` returns the item at index count-1. It assumes that the range is not empty.
 
-* `DROP_FRONT(range)` increments the data pointer by one and decrements the count by one. Does not reallocate any memory.
-
-* `DROP_BACK(range)` decrements the count by one. Does not reallocate any memory.
-
 ## Range Loop Macros O(count)
 
 * `FOR_EACH(iterator, range)` can be used instead of a normal for-loop 
@@ -105,6 +101,42 @@ FOR_EACH_BACKWARD(it, range) {
 ```
 
 * `FILL(range, value)` sets all the items in the `range` to `value`.
+
+
+## Drop Macros
+
+These macros change the number of items in a range.
+They do not reallocate any memory.
+Before calling these macros make sure that you keep a backup range,
+that refers to the full range, so that no memory gets lost.
+
+* `DROP_FRONT(range)` increments the data pointer by one and decrements the count by one. O(1).
+
+* `DROP_BACK(range)` decrements the count by one. O(1).
+
+These macros drop items from the range based on if they are equal to a specific item.
+The time complexity of these macros are O(count):
+
+* `DROP_FRONT_WHILE_ITEM(range, item)` drop items from the front of the range while they are equal to the given item. 
+
+* `DROP_BACK_WHILE_ITEM(range, item)` drop items from the back of the range while they are equal to the given item.
+
+* `DROP_FRONT_UNTIL_ITEM(range, item)` drop items from the front of the range until the given item is found.
+
+* `DROP_BACK_UNTIL_ITEM(range, item)` drop items from the back of the range until the given item is found.
+
+These macros drop items from the range based on if they fulfill a predicate function.
+A predicate is a function that takes an item and returns truthy or falsy.
+The time complexity of these macros are O(count):
+
+* `DROP_FRONT_WHILE(range, predicate)` drop items from the front of the range while they fulfill the predicate function.
+
+* `DROP_BACK_WHILE(range, predicate)` drop items from the back of the range while they fulfill the predicate function.
+
+* `DROP_FRONT_UNTIL(range, predicate)` drop items from the front of the range until they fulfill the predicate function.
+
+* `DROP_BACK_UNTIL(range, predicate)` drop items from the back of the range until they fulfill the predicate function.
+
 
 ## Image Loop Macros
 
