@@ -95,12 +95,12 @@
 
 #define FILL(range, value) FOR_EACH(it, (range)) *it = (value)
 
-#define DROP_FIRST(range) do { \
+#define DROP_FRONT(range) do { \
     (range).data++; \
     (range).count--; \
 } while (0)
 
-#define DROP_LAST(range) do { \
+#define DROP_BACK(range) do { \
     (range).count--; \
 } while (0)
 

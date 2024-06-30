@@ -54,9 +54,9 @@ since it does not have a `capacity`.
 
 * `LAST_ITEM(range)` returns the item at index count-1. It assumes that the range is not empty.
 
-* `DROP_FIRST(range)` increments the data pointer by one and decrements the count by one. Does not reallocate any memory.
+* `DROP_FRONT(range)` increments the data pointer by one and decrements the count by one. Does not reallocate any memory.
 
-* `DROP_LAST(range)` decrements the count by one. Does not reallocate any memory.
+* `DROP_BACK(range)` decrements the count by one. Does not reallocate any memory.
 
 ## Range Loop Macros O(count)
 
