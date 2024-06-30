@@ -126,9 +126,7 @@
         DROP_BACK(range); \
     }
 
-#define DROP_BACK_UNTIL(range, predicate) ({ \
-    auto result = (range); \
-    for (; (result).count > 0 && !(predicate)(*(END_POINTER(result) - 1)); --result.count) { \
-    } \
-    result; \
-})
+#define DROP_BACK_UNTIL(range, predicate) \
+    while (!IS_EMPTY(range) && !(predicate)(LAST_ITEM(range))) { \
+        DROP_BACK(range); \
+    }

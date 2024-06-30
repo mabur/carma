@@ -243,15 +243,16 @@ void test_drop_back_while() {
     ASSERT_EQUAL("DROP_BACK_WHILE", LAST_ITEM(range), 4);
     DROP_BACK_WHILE(range, is_zero);
     ASSERT_EQUAL("DROP_BACK_WHILE", LAST_ITEM(range), 4);
-    FREE_RANGE(range);
 }
 
 void test_drop_back_until() {
     __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
-    ASSERT_EQUAL("DROP_BACK_UNTIL", *(END_POINTER(DROP_BACK_UNTIL(range, is_positive)) - 1), 1);
-    ASSERT_EQUAL("DROP_BACK_UNTIL", *(END_POINTER(DROP_BACK_UNTIL(range, is_negative)) - 1), -2);
-    ASSERT_EQUAL("DROP_BACK_UNTIL", END_POINTER(DROP_BACK_UNTIL(range, is_zero)), range.data);
-    FREE_RANGE(range);
+    DROP_BACK_UNTIL(range, is_negative);
+    ASSERT_EQUAL("DROP_BACK_UNTIL", LAST_ITEM(range), -2);
+    DROP_BACK_UNTIL(range, is_positive);
+    ASSERT_EQUAL("DROP_BACK_UNTIL", LAST_ITEM(range), 4);
+    DROP_BACK_UNTIL(range, is_zero);
+    ASSERT_EQUAL("DROP_BACK_UNTIL", range.count, 0);
 }
 
 void test_erase_index1() {
