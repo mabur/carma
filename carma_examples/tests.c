@@ -237,9 +237,12 @@ void test_drop_front_until() {
 
 void test_drop_back_while() {
     __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
-    ASSERT_EQUAL("DROP_BACK_WHILE", *(END_POINTER(DROP_BACK_WHILE(range, is_positive)) - 1), -2);
-    ASSERT_EQUAL("DROP_BACK_WHILE", *(END_POINTER(DROP_BACK_WHILE(range, is_negative)) - 1), 1);
-    ASSERT_EQUAL("DROP_BACK_WHILE", END_POINTER(DROP_BACK_WHILE(range, is_zero)), END_POINTER(range));
+    DROP_BACK_WHILE(range, is_positive);
+    ASSERT_EQUAL("DROP_BACK_WHILE", LAST_ITEM(range), -2);
+    DROP_BACK_WHILE(range, is_negative);
+    ASSERT_EQUAL("DROP_BACK_WHILE", LAST_ITEM(range), 4);
+    DROP_BACK_WHILE(range, is_zero);
+    ASSERT_EQUAL("DROP_BACK_WHILE", LAST_ITEM(range), 4);
     FREE_RANGE(range);
 }
 
