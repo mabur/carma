@@ -107,8 +107,15 @@ FOR_EACH_BACKWARD(it, range) {
 
 These macros change the number of items in a range, by removing items in the front or back.
 They do this without moving any items or reallocating any memory.
-Before calling these macros make sure that you keep a backup range,
+They just change the memory interval that the range points to.
+These macros can be used on both ranges and dynamic arrays.
+* If you use these macros on a range make sure that you keep a backup range,
 that refers to the full range, so that no memory gets lost.
+* Dynamic arrays only support dropping from the back.
+  Then there is no need for a backup.
+  But dropping from the front is not supported for dynamic arrays.
+
+You can drop single items like this:
 
 * `DROP_FRONT(range)` increments the data pointer by one and decrements the count by one. O(1).
 
