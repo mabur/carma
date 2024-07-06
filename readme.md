@@ -105,8 +105,8 @@ FOR_EACH_BACKWARD(it, range) {
 
 ## Drop Macros
 
-These macros change the number of items in a range.
-They do not reallocate any memory.
+These macros change the number of items in a range, by removing items in the front or back.
+They do this without moving any items or reallocating any memory.
 Before calling these macros make sure that you keep a backup range,
 that refers to the full range, so that no memory gets lost.
 
