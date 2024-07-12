@@ -455,14 +455,14 @@ void test_append() {
     FREE_DARRAY(array);
 }
 
-void test_append_all() {
+void test_concat() {
     DARRAY(int) target;
     INIT_DARRAY(target, 0, 0);
     
     __auto_type source = MAKE_DARRAY(int, 1, 2, 3);
     
-    ASSERT_EQUAL("APPEND_ALL", target.count, 0);
-    ASSERT_EQUAL("APPEND_ALL", target.capacity, 0);
+    ASSERT_EQUAL("CONCAT", target.count, 0);
+    ASSERT_EQUAL("CONCAT", target.capacity, 0);
 
     CONCAT(target, source);
     __auto_type expected0 = MAKE_DARRAY(int, 1, 2, 3);
@@ -602,7 +602,7 @@ int main() {
     test_erase_if010();
     
     test_append();
-    test_append_all();
+    test_concat();
 
     test_for_x_y();
 
