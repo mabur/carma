@@ -502,6 +502,33 @@ void test_constant_string() {
     ASSERT_EQUAL("test_constant_string", CONSTANT_STRING("\0").count, 0);
 }
 
+void test_concat_cstring() {
+    auto s = (DynamicString){};
+
+    s = (DynamicString){};
+    CONCAT_CSTRING(s, "");
+    APPEND(s, '\0');
+    ASSERT_DYNAMIC_STRING("test_concat_cstring 0", s, "", 1, 1);
+
+    s = (DynamicString){};
+    CONCAT_CSTRING(s, "");
+    CONCAT_CSTRING(s, "");
+    APPEND(s, '\0');
+    ASSERT_DYNAMIC_STRING("test_concat_cstring 1", s, "", 1, 1);
+
+    s = (DynamicString){};
+    CONCAT_CSTRING(s, "a");
+    CONCAT_CSTRING(s, "");
+    APPEND(s, '\0');
+    ASSERT_DYNAMIC_STRING("test_concat_cstring 2", s, "a", 2, 2);
+
+    s = (DynamicString){};
+    CONCAT_CSTRING(s, "");
+    CONCAT_CSTRING(s, "a");
+    APPEND(s, '\0');
+    ASSERT_DYNAMIC_STRING("test_concat_cstring 3", s, "a", 2, 2);
+}
+
 void test_format_string() {
     auto s = (DynamicString){};
     
@@ -607,6 +634,7 @@ int main() {
     test_for_x_y();
 
     test_constant_string();
+    test_concat_cstring();
     test_format_string();
     
     summarize_tests();

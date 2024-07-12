@@ -18,7 +18,11 @@ typedef struct DynamicString {
     size_t capacity;
 } DynamicString;
 
-#define CONSTANT_STRING(s) (ConstantString){(s), strlen(s)}
+#define CONSTANT_STRING(cstring) (ConstantString){(cstring), strlen(cstring)}
+
+#define CONCAT_CSTRING(dynamic_string, cstring) do { \
+    CONCAT((dynamic_string), CONSTANT_STRING(cstring)); \
+} while (0)
 
 static
 inline
@@ -56,4 +60,4 @@ DynamicString carmaFormatString(DynamicString string, const char* format, ...) {
 
 #define FORMAT_STRING(string, format, ...) do { \
     (string) = carmaFormatString((string), (format), ##__VA_ARGS__); \
-} while(0)
+} while (0)
