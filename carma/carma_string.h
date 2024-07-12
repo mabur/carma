@@ -22,25 +22,6 @@ typedef struct DynamicString {
 
 static
 inline
-size_t carmaRoundUpToPowerOf2(size_t x) {
-    if (x == 0) {
-        return 1;
-    }
-    x--;
-    x |= x >> 1;
-    x |= x >> 2;
-    x |= x >> 4;
-    x |= x >> 8;
-    x |= x >> 16;
-    // Handle 64 bit size_t:
-    if (sizeof(size_t) > 4) {
-        x |= x >> 32;
-    }
-    return x + 1;
-}
-
-static
-inline
 DynamicString carmaFormatString(DynamicString string, const char* format, ...) {
     va_list args0;
     va_list args1;
@@ -59,8 +40,8 @@ DynamicString carmaFormatString(DynamicString string, const char* format, ...) {
         size_t required_capacity = string.count + (size_t)num_characters + 1;
         // Check if we need to reallocate the string to fit:
         if (required_capacity > string.capacity) {
-            size_t new_capacity = carmaRoundUpToPowerOf2(required_capacity);
-            RESERVE(string, new_capacity);
+            DOUBLE_CAPACITY_UNTIL_FIT(string, required_capacity);
+            RESERVE(string, string.capacity);
             // Write the string that should fit now:
             num_characters = vsnprintf(
                 END_POINTER(string), REMAINING_CAPACITY(string), format, args1

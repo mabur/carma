@@ -154,7 +154,15 @@
 ////////////////////////////////////////////////////////////////////////////////
 // DYNAMIC ARRAY ALGORITHMS
 
-#define NEXT_CAPACITY(capacity) ((capacity) == 0 ? 1 : 2 * (capacity))
+#define DOUBLE_CAPACITY_UNTIL_FIT(dynamic_array, count) \
+    while ((dynamic_array).capacity < (count)) { \
+        if ((dynamic_array).capacity == 0) { \
+            (dynamic_array).capacity = 1; \
+        } \
+        else { \
+            (dynamic_array).capacity *= 2; \
+        } \
+    }
 
 #define RESERVE(dynamic_array, new_capacity) do { \
     (dynamic_array).capacity = (new_capacity); \
@@ -165,8 +173,10 @@
 } while (0)
 
 #define APPEND(dynamic_array, item) do { \
-    if ((dynamic_array).count == (dynamic_array).capacity) { \
-        RESERVE((dynamic_array), NEXT_CAPACITY((dynamic_array).capacity)); \
+    auto new_count = (dynamic_array).count + 1; \
+    if (new_count > (dynamic_array).capacity) { \
+        DOUBLE_CAPACITY_UNTIL_FIT((dynamic_array), new_count);                                 \
+        RESERVE((dynamic_array), (dynamic_array).capacity); \
     } \
     ((dynamic_array).data)[(dynamic_array).count] = (item); \
     (dynamic_array).count++; \
@@ -175,9 +185,7 @@
 #define CONCAT(dynamic_array, range) do { \
     auto new_count = (dynamic_array).count + (range).count; \
     if (new_count > (dynamic_array).capacity) { \
-        while (new_count > (dynamic_array).capacity) { \
-            (dynamic_array).capacity = NEXT_CAPACITY((dynamic_array).capacity); \
-        } \
+        DOUBLE_CAPACITY_UNTIL_FIT((dynamic_array), new_count); \
         RESERVE((dynamic_array), (dynamic_array).capacity); \
     } \
     FOR_INDEX(i, (range)) { \
