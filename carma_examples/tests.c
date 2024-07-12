@@ -522,6 +522,15 @@ void test_format_string() {
     ASSERT_EQUAL_STRINGS("test_format_string 6", s.data, "1ab\n99");
     ASSERT_EQUAL("test_format_string 6 count", s.count, 6);
     ASSERT_EQUAL("test_format_string 6 capacity", s.capacity, 8);
+
+
+    auto s2 = (DynamicString){};
+    FORMAT_STRING(s2, "a");
+    FORMAT_STRING(s2, "bb");
+    FORMAT_STRING(s2, "ccc");
+    ASSERT_EQUAL_STRINGS("test_format_string 7", s2.data, "abbccc");
+    ASSERT_EQUAL("test_format_string 7 count", s2.count, 6);
+    ASSERT_EQUAL("test_format_string 7 capacity", s2.capacity, 8);
 }
 
 int main() {

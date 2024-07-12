@@ -66,7 +66,7 @@ DynamicString carmaFormatString(DynamicString string, const char* format, ...) {
                 END_POINTER(string), REMAINING_CAPACITY(string), format, args1
             );
         }
-        string.count = (size_t)num_characters;
+        string.count += (size_t)num_characters;
     }
 
     va_end(args0);
