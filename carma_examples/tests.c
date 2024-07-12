@@ -492,12 +492,6 @@ void test_constant_string() {
 
 void test_format_string() {
     auto s = (DynamicString){};
-
-    s = (DynamicString){};
-    FORMAT_STRING(s, "");
-    ASSERT_EQUAL_STRINGS("test_format_string", s.data, "");
-    ASSERT_EQUAL("test_format_string count", s.count, 0);
-    ASSERT_EQUAL("test_format_string capacity", s.capacity, 1);
     
     s = (DynamicString){};
     FORMAT_STRING(s, "");
@@ -522,14 +516,29 @@ void test_format_string() {
     ASSERT_EQUAL_STRINGS("test_format_string 6", s.data, "1ab\n99");
     ASSERT_EQUAL("test_format_string 6 count", s.count, 6);
     ASSERT_EQUAL("test_format_string 6 capacity", s.capacity, 8);
+
+    s = (DynamicString){};
+    FORMAT_STRING(s, "a");
+    FORMAT_STRING(s, "b");
+    ASSERT_EQUAL_STRINGS("test_format_string 7", s.data, "ab");
+    ASSERT_EQUAL("test_format_string 7 count", s.count, 2);
+    ASSERT_EQUAL("test_format_string 7 capacity", s.capacity, 4);
+
+
+    s = (DynamicString){};
+    FORMAT_STRING(s, "");
+    FORMAT_STRING(s, "");
+    ASSERT_EQUAL_STRINGS("test_format_string 8", s.data, "");
+    ASSERT_EQUAL("test_format_string 8 count", s.count, 0);
+    ASSERT_EQUAL("test_format_string 8 capacity", s.capacity, 1);
     
-    auto s2 = (DynamicString){};
-    FORMAT_STRING(s2, "a");
-    FORMAT_STRING(s2, "bb");
-    FORMAT_STRING(s2, "ccc");
-    ASSERT_EQUAL_STRINGS("test_format_string 7", s2.data, "abbccc");
-    ASSERT_EQUAL("test_format_string 7 count", s2.count, 6);
-    ASSERT_EQUAL("test_format_string 7 capacity", s2.capacity, 8);
+    s = (DynamicString){};
+    FORMAT_STRING(s, "a");
+    FORMAT_STRING(s, "bb");
+    FORMAT_STRING(s, "ccc");
+    ASSERT_EQUAL_STRINGS("test_format_string 9", s.data, "abbccc");
+    ASSERT_EQUAL("test_format_string 9 count", s.count, 6);
+    ASSERT_EQUAL("test_format_string 9 capacity", s.capacity, 8);
 }
 
 int main() {
