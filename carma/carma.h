@@ -172,11 +172,15 @@
     (dynamic_array).data = (POINTER_TYPE(dynamic_array))realloc((dynamic_array).data, (new_capacity) * sizeof(VALUE_TYPE(dynamic_array))); \
 } while (0)
 
+#define RESERVE_EXPONENTIAL_GROWTH(dynamic_array, min_required_capacity) do { \
+    DOUBLE_CAPACITY_UNTIL_FIT((dynamic_array), min_required_capacity); \
+    RESERVE((dynamic_array), (dynamic_array).capacity); \
+} while (0)
+
 #define APPEND(dynamic_array, item) do { \
     auto new_count = (dynamic_array).count + 1; \
     if (new_count > (dynamic_array).capacity) { \
-        DOUBLE_CAPACITY_UNTIL_FIT((dynamic_array), new_count);                                 \
-        RESERVE((dynamic_array), (dynamic_array).capacity); \
+        RESERVE_EXPONENTIAL_GROWTH((dynamic_array), new_count); \
     } \
     ((dynamic_array).data)[(dynamic_array).count] = (item); \
     (dynamic_array).count++; \
@@ -185,8 +189,7 @@
 #define CONCAT(dynamic_array, range) do { \
     auto new_count = (dynamic_array).count + (range).count; \
     if (new_count > (dynamic_array).capacity) { \
-        DOUBLE_CAPACITY_UNTIL_FIT((dynamic_array), new_count); \
-        RESERVE((dynamic_array), (dynamic_array).capacity); \
+        RESERVE_EXPONENTIAL_GROWTH((dynamic_array), new_count); \
     } \
     FOR_INDEX(i, (range)) { \
         ((dynamic_array).data)[(dynamic_array).count + i] = (range).data[i]; \

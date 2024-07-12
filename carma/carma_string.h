@@ -40,8 +40,7 @@ DynamicString carmaFormatString(DynamicString string, const char* format, ...) {
         size_t required_capacity = string.count + (size_t)num_characters + 1;
         // Check if we need to reallocate the string to fit:
         if (required_capacity > string.capacity) {
-            DOUBLE_CAPACITY_UNTIL_FIT(string, required_capacity);
-            RESERVE(string, string.capacity);
+            RESERVE_EXPONENTIAL_GROWTH(string, required_capacity);
             // Write the string that should fit now:
             num_characters = vsnprintf(
                 END_POINTER(string), REMAINING_CAPACITY(string), format, args1
