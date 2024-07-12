@@ -21,7 +21,7 @@ typedef struct DynamicString {
 #define CONSTANT_STRING(cstring) (ConstantString){(cstring), strlen(cstring)}
 
 #define CONCAT_CSTRING(dynamic_string, cstring) do { \
-    auto tail_with_null_terminator = (ConstantString){(cstring), strlen(cstring) + 1}; \
+    ConstantString tail_with_null_terminator = {(cstring), strlen(cstring) + 1}; \
     CONCAT((dynamic_string), tail_with_null_terminator); \
     DROP_BACK(dynamic_string); \
 } while (0)
