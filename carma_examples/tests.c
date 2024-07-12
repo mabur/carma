@@ -522,20 +522,30 @@ void test_format_string() {
     ASSERT_DYNAMIC_STRING("test_format_string 3", s, "1ab\n99", 6, 8);
 
     s = (DynamicString){};
-    FORMAT_STRING(s, "a");
-    FORMAT_STRING(s, "b");
-    ASSERT_DYNAMIC_STRING("test_format_string 4", s, "ab", 2, 4);
-
+    FORMAT_STRING(s, "");
+    FORMAT_STRING(s, "");
+    ASSERT_DYNAMIC_STRING("test_format_string 4", s, "", 0, 1);
+    
     s = (DynamicString){};
     FORMAT_STRING(s, "");
+    FORMAT_STRING(s, "a");
+    ASSERT_DYNAMIC_STRING("test_format_string 5", s, "a", 1, 2);
+
+    s = (DynamicString){};
+    FORMAT_STRING(s, "a");
     FORMAT_STRING(s, "");
-    ASSERT_DYNAMIC_STRING("test_format_string 5", s, "", 0, 1);
+    ASSERT_DYNAMIC_STRING("test_format_string 6", s, "a", 1, 2);
+
+    s = (DynamicString){};
+    FORMAT_STRING(s, "a");
+    FORMAT_STRING(s, "b");
+    ASSERT_DYNAMIC_STRING("test_format_string 7", s, "ab", 2, 4);
     
     s = (DynamicString){};
     FORMAT_STRING(s, "a");
     FORMAT_STRING(s, "bb");
     FORMAT_STRING(s, "ccc");
-    ASSERT_DYNAMIC_STRING("test_format_string 6", s, "abbccc", 6, 8);
+    ASSERT_DYNAMIC_STRING("test_format_string 8", s, "abbccc", 6, 8);
 }
 
 int main() {
