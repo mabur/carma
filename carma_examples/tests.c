@@ -522,8 +522,7 @@ void test_format_string() {
     ASSERT_EQUAL_STRINGS("test_format_string 6", s.data, "1ab\n99");
     ASSERT_EQUAL("test_format_string 6 count", s.count, 6);
     ASSERT_EQUAL("test_format_string 6 capacity", s.capacity, 8);
-
-
+    
     auto s2 = (DynamicString){};
     FORMAT_STRING(s2, "a");
     FORMAT_STRING(s2, "bb");
