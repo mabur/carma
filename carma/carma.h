@@ -14,6 +14,8 @@
 #define FIRST_ITEM(range) ((range).data[0])
 #define LAST_ITEM(range) ((range).data[0 + (range).count - 1])
 
+#define REMAINING_CAPACITY(darray) ((darray).capacity + (darray).count)
+
 #define POINTER_TYPE(range) typeof((range).data)
 #define VALUE_TYPE(range) typeof(*(range).data)
 
