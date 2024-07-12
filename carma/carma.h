@@ -154,16 +154,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // DYNAMIC ARRAY ALGORITHMS
 
-#define DOUBLE_CAPACITY_UNTIL_FIT(dynamic_array, count) \
-    while ((dynamic_array).capacity < (count)) { \
-        if ((dynamic_array).capacity == 0) { \
-            (dynamic_array).capacity = 1; \
-        } \
-        else { \
-            (dynamic_array).capacity *= 2; \
-        } \
-    }
-
 #define RESERVE(dynamic_array, new_capacity) do { \
     (dynamic_array).capacity = (new_capacity); \
     if ((dynamic_array).count > (new_capacity)) { \
@@ -173,7 +163,14 @@
 } while (0)
 
 #define RESERVE_EXPONENTIAL_GROWTH(dynamic_array, min_required_capacity) do { \
-    DOUBLE_CAPACITY_UNTIL_FIT((dynamic_array), min_required_capacity); \
+    while ((dynamic_array).capacity < (min_required_capacity)) { \
+        if ((dynamic_array).capacity == 0) { \
+            (dynamic_array).capacity = 1; \
+        } \
+        else { \
+            (dynamic_array).capacity *= 2; \
+        } \
+    } \
     RESERVE((dynamic_array), (dynamic_array).capacity); \
 } while (0)
 
