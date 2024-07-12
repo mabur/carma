@@ -507,26 +507,22 @@ void test_concat_cstring() {
 
     s = (DynamicString){};
     CONCAT_CSTRING(s, "");
-    APPEND(s, '\0');
-    ASSERT_DYNAMIC_STRING("test_concat_cstring 0", s, "", 1, 1);
+    ASSERT_DYNAMIC_STRING("test_concat_cstring 0", s, "", 0, 1);
 
     s = (DynamicString){};
     CONCAT_CSTRING(s, "");
     CONCAT_CSTRING(s, "");
-    APPEND(s, '\0');
-    ASSERT_DYNAMIC_STRING("test_concat_cstring 1", s, "", 1, 1);
+    ASSERT_DYNAMIC_STRING("test_concat_cstring 1", s, "", 0, 1);
 
     s = (DynamicString){};
     CONCAT_CSTRING(s, "a");
     CONCAT_CSTRING(s, "");
-    APPEND(s, '\0');
-    ASSERT_DYNAMIC_STRING("test_concat_cstring 2", s, "a", 2, 2);
+    ASSERT_DYNAMIC_STRING("test_concat_cstring 2", s, "a", 1, 2);
 
     s = (DynamicString){};
     CONCAT_CSTRING(s, "");
     CONCAT_CSTRING(s, "a");
-    APPEND(s, '\0');
-    ASSERT_DYNAMIC_STRING("test_concat_cstring 3", s, "a", 2, 2);
+    ASSERT_DYNAMIC_STRING("test_concat_cstring 3", s, "a", 1, 2);
 }
 
 void test_format_string() {

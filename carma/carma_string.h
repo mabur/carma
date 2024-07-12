@@ -22,6 +22,8 @@ typedef struct DynamicString {
 
 #define CONCAT_CSTRING(dynamic_string, cstring) do { \
     CONCAT((dynamic_string), CONSTANT_STRING(cstring)); \
+    APPEND((dynamic_string), '\0'); \
+    DROP_BACK(dynamic_string); \
 } while (0)
 
 static
