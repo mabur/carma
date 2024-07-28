@@ -16,7 +16,7 @@ target_include_directories(aoc22_01 PRIVATE ..)
 # Add warning flags for GCC
 if(CMAKE_C_COMPILER_ID MATCHES "GNU")
     set(WARN_FLAGS
-            #-Wall           # Enable all standard warnings
+            -Wall           # Enable all standard warnings
             -Wextra         # Enable extra warnings
             #-Wpedantic      # Enable strict ISO C and ISO C++ warnings
             -Wshadow        # Warn if a variable declaration shadows one from a parent context

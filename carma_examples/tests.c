@@ -30,15 +30,45 @@ int square(int x) {
 int global_assert_count = 0;
 int global_assert_errors = 0;
 
-#define ASSERT_EQUAL_INT(description, a, b) do { \
-    global_assert_count++; \
-    if (a == b) { \
-        printf("%s ok\n", (description)); \
-    } else { \
-        printf("%s %i!=%i bad\n", (description), (a), (b)); \
-        global_assert_errors++; \
-    } \
-} while (0);
+void ASSERT_EQUAL_INT(const char* description, int a, int b) {
+    global_assert_count++;
+    if (a == b) {
+        printf("%s ok\n", (description));
+    } else {
+        printf("%s %i!=%i bad\n", (description), (a), (b));
+        global_assert_errors++;
+    }
+}
+
+void ASSERT_EQUAL_POINTER(const char* description, const void* a, const void* b) {
+    global_assert_count++;
+    if (a == b) {
+        printf("%s ok\n", (description));
+    } else {
+        printf("%s %p!=%p bad\n", (description), (a), (b));
+        global_assert_errors++;
+    }
+}
+
+void ASSERT_NOT_EQUAL_POINTER(const char* description, const void* a, const void* b) {
+    global_assert_count++;
+    if (a != b) {
+        printf("%s ok\n", (description));
+    } else {
+        printf("%s %p==%p bad\n", (description), (a), (b));
+        global_assert_errors++;
+    }
+}
+
+void ASSERT_EQUAL_SIZE(const char* description, size_t a, size_t b) {
+    global_assert_count++;
+    if (a == b) {
+        printf("%s ok\n", (description));
+    } else {
+        printf("%s %zu!=%zu bad\n", (description), (a), (b));
+        global_assert_errors++;
+    }
+}
 
 #define ASSERT_NOT_EQUAL_INT(description, a, b) do { \
     global_assert_count++; \
@@ -94,8 +124,8 @@ void ASSERT_DYNAMIC_STRING(
     size_t capacity
 ) {
     ASSERT_EQUAL_STRINGS((description), (string).data, (data));
-    ASSERT_EQUAL_INT((description), (string).count, (count));
-    ASSERT_EQUAL_INT((description), (string).capacity, (capacity));
+    ASSERT_EQUAL_SIZE((description), (string).count, (count));
+    ASSERT_EQUAL_SIZE((description), (string).capacity, (capacity));
 }
 
 void summarize_tests() {
@@ -109,9 +139,9 @@ void summarize_tests() {
 void test_init_image() {
     Image image;
     INIT_IMAGE(image, 2, 3);
-    ASSERT_EQUAL_INT("test_init_image width", image.width, 2);
-    ASSERT_EQUAL_INT("test_init_image height", image.height, 3);
-    ASSERT_EQUAL_INT("test_init_image count", image.count, 2 * 3);
+    ASSERT_EQUAL_SIZE("test_init_image width", image.width, 2);
+    ASSERT_EQUAL_SIZE("test_init_image height", image.height, 3);
+    ASSERT_EQUAL_SIZE("test_init_image count", image.count, 2 * 3);
     FREE_IMAGE(image);
 }
 
@@ -205,7 +235,7 @@ void test_for_min() {
     FOR_MIN(it, actual) {
         ASSERT_EQUAL_INT("test_for_min element", *it, -3);
     }
-    ASSERT_NOT_EQUAL_INT("test_for_min iterator", it, END_POINTER(actual));
+    ASSERT_NOT_EQUAL_POINTER("test_for_min iterator", it, END_POINTER(actual));
 }
 
 void test_for_max() {
@@ -213,7 +243,7 @@ void test_for_max() {
     FOR_MAX(it, actual) {
         ASSERT_EQUAL_INT("test_for_max element", *it, 3);
     }
-    ASSERT_NOT_EQUAL_INT("test_for_max iterator", it, END_POINTER(actual));
+    ASSERT_NOT_EQUAL_POINTER("test_for_max iterator", it, END_POINTER(actual));
 }
 
 void test_fill() {
@@ -227,7 +257,7 @@ void test_find_if() {
     __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
     ASSERT_EQUAL_INT("FIND_IF", *FIND_IF(range, is_positive), 4);
     ASSERT_EQUAL_INT("FIND_IF", *FIND_IF(range, is_negative), -1);
-    ASSERT_EQUAL_INT("FIND_IF", FIND_IF(range, is_zero), END_POINTER(range));
+    ASSERT_EQUAL_POINTER("FIND_IF", FIND_IF(range, is_zero), END_POINTER(range));
     FREE_RANGE(range);
 }
 
@@ -235,7 +265,7 @@ void test_find_if_backwards() {
     __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
     ASSERT_EQUAL_INT("FIND_IF_BACKWARDS", *FIND_IF_BACKWARDS(range, is_positive), 1);
     ASSERT_EQUAL_INT("FIND_IF_BACKWARDS", *FIND_IF_BACKWARDS(range, is_negative), -2);
-    ASSERT_EQUAL_INT("FIND_IF_BACKWARDS", FIND_IF_BACKWARDS(range, is_zero), range.data - 1);
+    ASSERT_EQUAL_POINTER("FIND_IF_BACKWARDS", FIND_IF_BACKWARDS(range, is_zero), range.data - 1);
     FREE_RANGE(range);
 }
 
@@ -280,7 +310,7 @@ void test_drop_front_until() {
     DROP_FRONT_UNTIL(range, is_negative);
     ASSERT_EQUAL_INT("DROP_FRONT_UNTIL", FIRST_ITEM(range), -2);
     DROP_FRONT_UNTIL(range, is_zero);
-    ASSERT_EQUAL_INT("DROP_FRONT_UNTIL", BEGIN_POINTER(range), END_POINTER(range));
+    ASSERT_EQUAL_POINTER("DROP_FRONT_UNTIL", BEGIN_POINTER(range), END_POINTER(range));
 }
 
 void test_drop_front_until_item() {
@@ -290,7 +320,7 @@ void test_drop_front_until_item() {
     DROP_FRONT_UNTIL_ITEM(range, -2);
     ASSERT_EQUAL_INT("DROP_FRONT_UNTIL_ITEM", FIRST_ITEM(range), -2);
     DROP_FRONT_UNTIL_ITEM(range, 0);
-    ASSERT_EQUAL_INT("DROP_FRONT_UNTIL_ITEM", BEGIN_POINTER(range), END_POINTER(range));
+    ASSERT_EQUAL_POINTER("DROP_FRONT_UNTIL_ITEM", BEGIN_POINTER(range), END_POINTER(range));
 }
 
 void test_drop_back_while() {
