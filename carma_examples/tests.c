@@ -40,6 +40,16 @@ int global_assert_errors = 0;
     } \
 } while (0);
 
+#define ASSERT_NOT_EQUAL(description, a, b) do { \
+    global_assert_count++; \
+    if (a != b) { \
+        printf("%s ok\n", (description)); \
+    } else { \
+        printf("%s %i==%i bad\n", (description), (a), (b)); \
+        global_assert_errors++; \
+    } \
+} while (0);
+
 #define PRINT_RANGE(item_format, range) do { \
     printf("["); \
     FOR_EACH(it, (range)) { \
@@ -188,6 +198,14 @@ void test_for_index() {
     }
     __auto_type expected = MAKE_DARRAY(int, 1, 4, 9);
     ASSERT_EQUAL_RANGE("test_for_index", actual, expected);
+}
+
+void test_for_max() {
+    __auto_type actual = MAKE_DARRAY(int, 1, 3, 2);
+    FOR_MAX(it, actual) {
+        ASSERT_EQUAL("test_for_max element", *it, 3);
+    }
+    ASSERT_NOT_EQUAL("test_for_max iterator", it, END_POINTER(actual));
 }
 
 void test_fill() {
@@ -586,6 +604,8 @@ int main() {
     test_for_each_backward1();
     test_for_each_backward2();
     test_for_each_backward3();
+
+    test_for_max();
 
     test_fill();
     

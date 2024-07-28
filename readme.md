@@ -100,6 +100,20 @@ FOR_EACH_BACKWARD(it, range) {
 }
 ```
 
+* `FOR_MAX(iterator, range)` find the max item in the range and do something with it.
+  The body will be run once, if the max item exists,
+  and zero times if it does not exist since the range is empty.
+  A loop variable with the name given by `iterator` will be allocated,
+  unfortunately in the scope surrounding the loop.
+  It will point to the max item in the range, if it exists.
+  Otherwise, it will point to the end of the range.
+  Example:
+```c
+FOR_MAX(it, range) {
+    printf("The maximum value in the range is %i ", *it);
+}
+```
+
 * `FILL(range, value)` sets all the items in the `range` to `value`.
 
 

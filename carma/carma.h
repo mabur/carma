@@ -97,6 +97,13 @@
 
 #define FILL(range, value) FOR_EACH(it, (range)) *it = (value)
 
+#define FOR_MAX(it, range) \
+    auto it = (range).data; \
+    FOR_EACH(internal_it, (range)) { \
+        it = *it < *internal_it ? internal_it : it; \
+    } \
+    if (it != END_POINTER(range))
+
 ////////////////////////////////////////////////////////////////////////////////
 // RANGE ALGORITHMS - DROP
 // TODO: think about capacity when calling drop functions with a darray.
