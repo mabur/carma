@@ -23,7 +23,8 @@ int main(int argc, char **argv) {
         }
     }
     fclose(file);
-    auto it = MAX_ELEMENT(all_calories);
-    printf("Max sum: %d", *it);
+    FOR_MAX(it, all_calories) {
+        printf("Max sum: %d", *it);
+    }
     return 0;
 }
