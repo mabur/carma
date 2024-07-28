@@ -9,6 +9,9 @@ typedef struct {
 } Ints;
 
 int main(int argc, char **argv) {
+    if (argc < 2) {
+        return EXIT_FAILURE;
+    }
     auto file_path = argv[1];
     auto current_calories = (Ints){};
     auto all_calories = (Ints){};
@@ -26,5 +29,5 @@ int main(int argc, char **argv) {
     FOR_MAX(it, all_calories) {
         printf("Max sum: %d", *it);
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
