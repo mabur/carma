@@ -100,11 +100,25 @@ FOR_EACH_BACKWARD(it, range) {
 }
 ```
 
+* `FOR_MIN(iterator, range)` find the min item in the range and do something with it.
+  The body will be run once, if the min item exists,
+  and zero times if it does not exist since the range is empty.
+  A loop variable with the name given by `iterator` will be allocated,
+  in the scope surrounding the loop.
+  It will point to the min item in the range, if it exists.
+  Otherwise, it will point to the end of the range.
+  Example:
+```c
+FOR_MIN(it, range) {
+    printf("The minimum value in the range is %i ", *it);
+}
+```
+
 * `FOR_MAX(iterator, range)` find the max item in the range and do something with it.
   The body will be run once, if the max item exists,
   and zero times if it does not exist since the range is empty.
   A loop variable with the name given by `iterator` will be allocated,
-  unfortunately in the scope surrounding the loop.
+  in the scope surrounding the loop.
   It will point to the max item in the range, if it exists.
   Otherwise, it will point to the end of the range.
   Example:

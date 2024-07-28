@@ -200,6 +200,14 @@ void test_for_index() {
     ASSERT_EQUAL_RANGE("test_for_index", actual, expected);
 }
 
+void test_for_min() {
+    __auto_type actual = MAKE_DARRAY(int, 1, -3, 2);
+    FOR_MIN(it, actual) {
+        ASSERT_EQUAL("test_for_min element", *it, -3);
+    }
+    ASSERT_NOT_EQUAL("test_for_min iterator", it, END_POINTER(actual));
+}
+
 void test_for_max() {
     __auto_type actual = MAKE_DARRAY(int, 1, 3, 2);
     FOR_MAX(it, actual) {
@@ -605,6 +613,7 @@ int main() {
     test_for_each_backward2();
     test_for_each_backward3();
 
+    test_for_min();
     test_for_max();
 
     test_fill();
