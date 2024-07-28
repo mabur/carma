@@ -40,7 +40,7 @@ int global_assert_errors = 0;
     } \
 } while (0);
 
-#define ASSERT_NOT_EQUAL(description, a, b) do { \
+#define ASSERT_NOT_EQUAL_INT(description, a, b) do { \
     global_assert_count++; \
     if (a != b) { \
         printf("%s ok\n", (description)); \
@@ -205,7 +205,7 @@ void test_for_min() {
     FOR_MIN(it, actual) {
         ASSERT_EQUAL_INT("test_for_min element", *it, -3);
     }
-    ASSERT_NOT_EQUAL("test_for_min iterator", it, END_POINTER(actual));
+    ASSERT_NOT_EQUAL_INT("test_for_min iterator", it, END_POINTER(actual));
 }
 
 void test_for_max() {
@@ -213,7 +213,7 @@ void test_for_max() {
     FOR_MAX(it, actual) {
         ASSERT_EQUAL_INT("test_for_max element", *it, 3);
     }
-    ASSERT_NOT_EQUAL("test_for_max iterator", it, END_POINTER(actual));
+    ASSERT_NOT_EQUAL_INT("test_for_max iterator", it, END_POINTER(actual));
 }
 
 void test_fill() {
