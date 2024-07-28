@@ -33,22 +33,6 @@
     sum; \
 })
 
-#define MIN_ELEMENT(range) ({ \
-    auto minimum = (range).data; \
-    FOR_EACH(it, (range)) { \
-        minimum = *minimum > *it ? it : minimum; \
-    } \
-    minimum; \
-})
-
-#define MAX_ELEMENT(range) ({ \
-    auto maximum = (range).data; \
-    FOR_EACH(it, (range)) { \
-        maximum = *maximum < *it ? it : maximum; \
-    } \
-    maximum; \
-})
-
 #define EQUAL_RANGES(left_range, right_range) ({ \
     auto result = true; \
     if ((left_range).count != (right_range).count) { \
