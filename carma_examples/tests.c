@@ -30,7 +30,7 @@ int square(int x) {
 int global_assert_count = 0;
 int global_assert_errors = 0;
 
-#define ASSERT_EQUAL(description, a, b) do { \
+#define ASSERT_EQUAL_INT(description, a, b) do { \
     global_assert_count++; \
     if (a == b) { \
         printf("%s ok\n", (description)); \
@@ -94,8 +94,8 @@ void ASSERT_DYNAMIC_STRING(
     size_t capacity
 ) {
     ASSERT_EQUAL_STRINGS((description), (string).data, (data));
-    ASSERT_EQUAL((description), (string).count, (count));
-    ASSERT_EQUAL((description), (string).capacity, (capacity));
+    ASSERT_EQUAL_INT((description), (string).count, (count));
+    ASSERT_EQUAL_INT((description), (string).capacity, (capacity));
 }
 
 void summarize_tests() {
@@ -109,27 +109,27 @@ void summarize_tests() {
 void test_init_image() {
     Image image;
     INIT_IMAGE(image, 2, 3);
-    ASSERT_EQUAL("test_init_image width", image.width, 2);
-    ASSERT_EQUAL("test_init_image height", image.height, 3);
-    ASSERT_EQUAL("test_init_image count", image.count, 2 * 3);
+    ASSERT_EQUAL_INT("test_init_image width", image.width, 2);
+    ASSERT_EQUAL_INT("test_init_image height", image.height, 3);
+    ASSERT_EQUAL_INT("test_init_image count", image.count, 2 * 3);
     FREE_IMAGE(image);
 }
 
 void test_is_empty() {
     __auto_type actual = MAKE_DARRAY(int);
-    ASSERT_EQUAL("test_is_empty", IS_EMPTY(actual), true);
+    ASSERT_EQUAL_INT("test_is_empty", IS_EMPTY(actual), true);
     APPEND(actual, 1);
-    ASSERT_EQUAL("test_is_empty", IS_EMPTY(actual), false);
+    ASSERT_EQUAL_INT("test_is_empty", IS_EMPTY(actual), false);
 }
 
 void test_first_item() {
     __auto_type actual = MAKE_DARRAY(int, 3, 4, 5);
-    ASSERT_EQUAL("test_first_item", FIRST_ITEM(actual), 3);
+    ASSERT_EQUAL_INT("test_first_item", FIRST_ITEM(actual), 3);
 }
 
 void test_last_item() {
     __auto_type actual = MAKE_DARRAY(int, 3, 4, 5);
-    ASSERT_EQUAL("test_last_item", LAST_ITEM(actual), 5);
+    ASSERT_EQUAL_INT("test_last_item", LAST_ITEM(actual), 5);
 }
 
 void test_for_each() {
@@ -203,7 +203,7 @@ void test_for_index() {
 void test_for_min() {
     __auto_type actual = MAKE_DARRAY(int, 1, -3, 2);
     FOR_MIN(it, actual) {
-        ASSERT_EQUAL("test_for_min element", *it, -3);
+        ASSERT_EQUAL_INT("test_for_min element", *it, -3);
     }
     ASSERT_NOT_EQUAL("test_for_min iterator", it, END_POINTER(actual));
 }
@@ -211,7 +211,7 @@ void test_for_min() {
 void test_for_max() {
     __auto_type actual = MAKE_DARRAY(int, 1, 3, 2);
     FOR_MAX(it, actual) {
-        ASSERT_EQUAL("test_for_max element", *it, 3);
+        ASSERT_EQUAL_INT("test_for_max element", *it, 3);
     }
     ASSERT_NOT_EQUAL("test_for_max iterator", it, END_POINTER(actual));
 }
@@ -225,17 +225,17 @@ void test_fill() {
 
 void test_find_if() {
     __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
-    ASSERT_EQUAL("FIND_IF", *FIND_IF(range, is_positive), 4);
-    ASSERT_EQUAL("FIND_IF", *FIND_IF(range, is_negative), -1);
-    ASSERT_EQUAL("FIND_IF", FIND_IF(range, is_zero), END_POINTER(range));
+    ASSERT_EQUAL_INT("FIND_IF", *FIND_IF(range, is_positive), 4);
+    ASSERT_EQUAL_INT("FIND_IF", *FIND_IF(range, is_negative), -1);
+    ASSERT_EQUAL_INT("FIND_IF", FIND_IF(range, is_zero), END_POINTER(range));
     FREE_RANGE(range);
 }
 
 void test_find_if_backwards() {
     __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
-    ASSERT_EQUAL("FIND_IF_BACKWARDS", *FIND_IF_BACKWARDS(range, is_positive), 1);
-    ASSERT_EQUAL("FIND_IF_BACKWARDS", *FIND_IF_BACKWARDS(range, is_negative), -2);
-    ASSERT_EQUAL("FIND_IF_BACKWARDS", FIND_IF_BACKWARDS(range, is_zero), range.data - 1);
+    ASSERT_EQUAL_INT("FIND_IF_BACKWARDS", *FIND_IF_BACKWARDS(range, is_positive), 1);
+    ASSERT_EQUAL_INT("FIND_IF_BACKWARDS", *FIND_IF_BACKWARDS(range, is_negative), -2);
+    ASSERT_EQUAL_INT("FIND_IF_BACKWARDS", FIND_IF_BACKWARDS(range, is_zero), range.data - 1);
     FREE_RANGE(range);
 }
 
@@ -256,81 +256,81 @@ void test_drop_back() {
 void test_drop_front_while() {
     __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
     DROP_FRONT_WHILE(range, is_negative);
-    ASSERT_EQUAL("DROP_FRONT_WHILE", FIRST_ITEM(range), 4);
+    ASSERT_EQUAL_INT("DROP_FRONT_WHILE", FIRST_ITEM(range), 4);
     DROP_FRONT_WHILE(range, is_positive);
-    ASSERT_EQUAL("DROP_FRONT_WHILE", FIRST_ITEM(range), -2);
+    ASSERT_EQUAL_INT("DROP_FRONT_WHILE", FIRST_ITEM(range), -2);
     DROP_FRONT_WHILE(range, is_zero);
-    ASSERT_EQUAL("DROP_FRONT_WHILE", FIRST_ITEM(range), -2);
+    ASSERT_EQUAL_INT("DROP_FRONT_WHILE", FIRST_ITEM(range), -2);
 }
 
 void test_drop_front_while_item() {
     __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
     DROP_FRONT_WHILE_ITEM(range, -1);
-    ASSERT_EQUAL("DROP_FRONT_WHILE_ITEM", FIRST_ITEM(range), 4);
+    ASSERT_EQUAL_INT("DROP_FRONT_WHILE_ITEM", FIRST_ITEM(range), 4);
     DROP_FRONT_WHILE_ITEM(range, 4);
-    ASSERT_EQUAL("DROP_FRONT_WHILE_ITEM", FIRST_ITEM(range), -2);
+    ASSERT_EQUAL_INT("DROP_FRONT_WHILE_ITEM", FIRST_ITEM(range), -2);
     DROP_FRONT_WHILE_ITEM(range, 0);
-    ASSERT_EQUAL("DROP_FRONT_WHILE_ITEM", FIRST_ITEM(range), -2);
+    ASSERT_EQUAL_INT("DROP_FRONT_WHILE_ITEM", FIRST_ITEM(range), -2);
 }
 
 void test_drop_front_until() {
     __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
     DROP_FRONT_UNTIL(range, is_positive);
-    ASSERT_EQUAL("DROP_FRONT_UNTIL", FIRST_ITEM(range), 4);
+    ASSERT_EQUAL_INT("DROP_FRONT_UNTIL", FIRST_ITEM(range), 4);
     DROP_FRONT_UNTIL(range, is_negative);
-    ASSERT_EQUAL("DROP_FRONT_UNTIL", FIRST_ITEM(range), -2);
+    ASSERT_EQUAL_INT("DROP_FRONT_UNTIL", FIRST_ITEM(range), -2);
     DROP_FRONT_UNTIL(range, is_zero);
-    ASSERT_EQUAL("DROP_FRONT_UNTIL", BEGIN_POINTER(range), END_POINTER(range));
+    ASSERT_EQUAL_INT("DROP_FRONT_UNTIL", BEGIN_POINTER(range), END_POINTER(range));
 }
 
 void test_drop_front_until_item() {
     __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
     DROP_FRONT_UNTIL_ITEM(range, 4);
-    ASSERT_EQUAL("DROP_FRONT_UNTIL_ITEM", FIRST_ITEM(range), 4);
+    ASSERT_EQUAL_INT("DROP_FRONT_UNTIL_ITEM", FIRST_ITEM(range), 4);
     DROP_FRONT_UNTIL_ITEM(range, -2);
-    ASSERT_EQUAL("DROP_FRONT_UNTIL_ITEM", FIRST_ITEM(range), -2);
+    ASSERT_EQUAL_INT("DROP_FRONT_UNTIL_ITEM", FIRST_ITEM(range), -2);
     DROP_FRONT_UNTIL_ITEM(range, 0);
-    ASSERT_EQUAL("DROP_FRONT_UNTIL_ITEM", BEGIN_POINTER(range), END_POINTER(range));
+    ASSERT_EQUAL_INT("DROP_FRONT_UNTIL_ITEM", BEGIN_POINTER(range), END_POINTER(range));
 }
 
 void test_drop_back_while() {
     __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
     DROP_BACK_WHILE(range, is_positive);
-    ASSERT_EQUAL("DROP_BACK_WHILE", LAST_ITEM(range), -2);
+    ASSERT_EQUAL_INT("DROP_BACK_WHILE", LAST_ITEM(range), -2);
     DROP_BACK_WHILE(range, is_negative);
-    ASSERT_EQUAL("DROP_BACK_WHILE", LAST_ITEM(range), 4);
+    ASSERT_EQUAL_INT("DROP_BACK_WHILE", LAST_ITEM(range), 4);
     DROP_BACK_WHILE(range, is_zero);
-    ASSERT_EQUAL("DROP_BACK_WHILE", LAST_ITEM(range), 4);
+    ASSERT_EQUAL_INT("DROP_BACK_WHILE", LAST_ITEM(range), 4);
 }
 
 void test_drop_back_while_item() {
     __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
     DROP_BACK_WHILE_ITEM(range, 1);
-    ASSERT_EQUAL("DROP_BACK_WHILE_ITEM", LAST_ITEM(range), -2);
+    ASSERT_EQUAL_INT("DROP_BACK_WHILE_ITEM", LAST_ITEM(range), -2);
     DROP_BACK_WHILE_ITEM(range, -2);
-    ASSERT_EQUAL("DROP_BACK_WHILE_ITEM", LAST_ITEM(range), 4);
+    ASSERT_EQUAL_INT("DROP_BACK_WHILE_ITEM", LAST_ITEM(range), 4);
     DROP_BACK_WHILE_ITEM(range, 0);
-    ASSERT_EQUAL("DROP_BACK_WHILE_ITEM", LAST_ITEM(range), 4);
+    ASSERT_EQUAL_INT("DROP_BACK_WHILE_ITEM", LAST_ITEM(range), 4);
 }
 
 void test_drop_back_until() {
     __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
     DROP_BACK_UNTIL(range, is_negative);
-    ASSERT_EQUAL("DROP_BACK_UNTIL", LAST_ITEM(range), -2);
+    ASSERT_EQUAL_INT("DROP_BACK_UNTIL", LAST_ITEM(range), -2);
     DROP_BACK_UNTIL(range, is_positive);
-    ASSERT_EQUAL("DROP_BACK_UNTIL", LAST_ITEM(range), 4);
+    ASSERT_EQUAL_INT("DROP_BACK_UNTIL", LAST_ITEM(range), 4);
     DROP_BACK_UNTIL(range, is_zero);
-    ASSERT_EQUAL("DROP_BACK_UNTIL", range.count, 0);
+    ASSERT_EQUAL_INT("DROP_BACK_UNTIL", range.count, 0);
 }
 
 void test_drop_back_until_item() {
     __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
     DROP_BACK_UNTIL_ITEM(range, -2);
-    ASSERT_EQUAL("DROP_BACK_UNTIL_ITEM", LAST_ITEM(range), -2);
+    ASSERT_EQUAL_INT("DROP_BACK_UNTIL_ITEM", LAST_ITEM(range), -2);
     DROP_BACK_UNTIL_ITEM(range, 4);
-    ASSERT_EQUAL("DROP_BACK_UNTIL_ITEM", LAST_ITEM(range), 4);
+    ASSERT_EQUAL_INT("DROP_BACK_UNTIL_ITEM", LAST_ITEM(range), 4);
     DROP_BACK_UNTIL_ITEM(range, 0);
-    ASSERT_EQUAL("DROP_BACK_UNTIL_ITEM", range.count, 0);
+    ASSERT_EQUAL_INT("DROP_BACK_UNTIL_ITEM", range.count, 0);
 }
 
 void test_erase_index1() {
@@ -382,7 +382,7 @@ void test_erase_if_unallocated() {
     array.capacity = 0;
 
     ERASE_IF(array, is_zero);
-    ASSERT_EQUAL("ERASE_IF EMPTY", array.count, 0);
+    ASSERT_EQUAL_INT("ERASE_IF EMPTY", array.count, 0);
     ASSERT_EQUAL_RANGE("ERASE_IF EMPTY", array, array);
     FREE_DARRAY(array);
 }
@@ -390,7 +390,7 @@ void test_erase_if_unallocated() {
 void test_erase_if_empty() {
     __auto_type array = MAKE_DARRAY(int);
     ERASE_IF(array, is_zero);
-    ASSERT_EQUAL("ERASE_IF EMPTY", array.count, 0);
+    ASSERT_EQUAL_INT("ERASE_IF EMPTY", array.count, 0);
     ASSERT_EQUAL_RANGE("ERASE_IF EMPTY", array, array);
     FREE_DARRAY(array);
 }
@@ -461,23 +461,23 @@ void test_erase_if() {
 void test_append() {
     DARRAY(int) array;
     INIT_DARRAY(array, 0, 0);
-    ASSERT_EQUAL("APPEND", array.count, 0);
-    ASSERT_EQUAL("APPEND", array.capacity, 0);
+    ASSERT_EQUAL_INT("APPEND", array.count, 0);
+    ASSERT_EQUAL_INT("APPEND", array.capacity, 0);
     APPEND(array, 1);
-    ASSERT_EQUAL("APPEND", array.count, 1);
-    ASSERT_EQUAL("APPEND", array.capacity, 1);
+    ASSERT_EQUAL_INT("APPEND", array.count, 1);
+    ASSERT_EQUAL_INT("APPEND", array.capacity, 1);
     APPEND(array, 2);
-    ASSERT_EQUAL("APPEND", array.count, 2);
-    ASSERT_EQUAL("APPEND", array.capacity, 2);
+    ASSERT_EQUAL_INT("APPEND", array.count, 2);
+    ASSERT_EQUAL_INT("APPEND", array.capacity, 2);
     APPEND(array, 3);
-    ASSERT_EQUAL("APPEND", array.count, 3);
-    ASSERT_EQUAL("APPEND", array.capacity, 4);
+    ASSERT_EQUAL_INT("APPEND", array.count, 3);
+    ASSERT_EQUAL_INT("APPEND", array.capacity, 4);
     APPEND(array, 4);
-    ASSERT_EQUAL("APPEND", array.count, 4);
-    ASSERT_EQUAL("APPEND", array.capacity, 4);
+    ASSERT_EQUAL_INT("APPEND", array.count, 4);
+    ASSERT_EQUAL_INT("APPEND", array.capacity, 4);
     APPEND(array, 5);
-    ASSERT_EQUAL("APPEND", array.count, 5);
-    ASSERT_EQUAL("APPEND", array.capacity, 8);
+    ASSERT_EQUAL_INT("APPEND", array.count, 5);
+    ASSERT_EQUAL_INT("APPEND", array.capacity, 8);
     FREE_DARRAY(array);
 }
 
@@ -487,18 +487,18 @@ void test_concat() {
     
     __auto_type source = MAKE_DARRAY(int, 1, 2, 3);
     
-    ASSERT_EQUAL("CONCAT", target.count, 0);
-    ASSERT_EQUAL("CONCAT", target.capacity, 0);
+    ASSERT_EQUAL_INT("CONCAT", target.count, 0);
+    ASSERT_EQUAL_INT("CONCAT", target.capacity, 0);
 
     CONCAT(target, source);
     __auto_type expected0 = MAKE_DARRAY(int, 1, 2, 3);
     ASSERT_EQUAL_RANGE("CONCAT", target, expected0);
-    ASSERT_EQUAL("CONCAT", target.capacity, 4);
+    ASSERT_EQUAL_INT("CONCAT", target.capacity, 4);
 
     CONCAT(target, source);
     __auto_type expected1 = MAKE_DARRAY(int, 1, 2, 3, 1, 2, 3);
     ASSERT_EQUAL_RANGE("CONCAT", target, expected1);
-    ASSERT_EQUAL("CONCAT", target.capacity, 8);
+    ASSERT_EQUAL_INT("CONCAT", target.capacity, 8);
 }
 
 void test_for_x_y() {
@@ -521,11 +521,11 @@ void test_for_x_y() {
 }
 
 void test_constant_string() {
-    ASSERT_EQUAL("test_constant_string", CONSTANT_STRING("").count, 0);
-    ASSERT_EQUAL("test_constant_string", CONSTANT_STRING("a").count, 1);
-    ASSERT_EQUAL("test_constant_string", CONSTANT_STRING("ab").count, 2);
-    ASSERT_EQUAL("test_constant_string", CONSTANT_STRING("\n").count, 1);
-    ASSERT_EQUAL("test_constant_string", CONSTANT_STRING("\0").count, 0);
+    ASSERT_EQUAL_INT("test_constant_string", CONSTANT_STRING("").count, 0);
+    ASSERT_EQUAL_INT("test_constant_string", CONSTANT_STRING("a").count, 1);
+    ASSERT_EQUAL_INT("test_constant_string", CONSTANT_STRING("ab").count, 2);
+    ASSERT_EQUAL_INT("test_constant_string", CONSTANT_STRING("\n").count, 1);
+    ASSERT_EQUAL_INT("test_constant_string", CONSTANT_STRING("\0").count, 0);
 }
 
 void test_concat_cstring() {
