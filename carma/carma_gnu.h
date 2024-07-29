@@ -10,6 +10,19 @@
 #define RANGE(type) struct {type* data; size_t count;}
 #define DARRAY(type) struct {type* data; size_t count; size_t capacity;}
 
+#define INIT_RANGE_ELEMENTS(range, ...) do { \
+    VALUE_TYPE(range) array[] = { __VA_ARGS__ }; \
+    INIT_RANGE((range), sizeof(array) / sizeof(VALUE_TYPE(range))); \
+    memcpy((range).data, array, sizeof(array)); \
+} while (0)
+
+#define INIT_DARRAY_ELEMENTS(range, ...) do { \
+    VALUE_TYPE(range) array[] = { __VA_ARGS__ }; \
+    size_t c = sizeof(array) / sizeof(VALUE_TYPE(range)); \
+    INIT_DARRAY((range), c, c); \
+    memcpy((range).data, array, sizeof(array)); \
+} while (0)
+
 #define MAKE_RANGE(value_type, ...) ({ \
     RANGE(value_type) result; \
     INIT_RANGE_ELEMENTS(result, __VA_ARGS__); \
