@@ -7,13 +7,13 @@ typedef struct {
     size_t capacity;
 } Ints;
 
-#define SUM(range) ({ \
-    typeof(*(range).data) sum = 0; \
-    FOR_EACH(it, (range)) { \
-        sum += *it; \
-    } \
-    sum; \
-})
+int sum(Ints range) {
+    auto result = 0;
+    FOR_EACH(it, range) {
+        result += *it;
+    }
+    return result;
+}
 
 int main(int argc, char **argv) {
     if (argc < 2) {
@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
     FOR_LINES(line, 255, file) {
         auto n = atoi(line);
         if (n == 0) {
-            APPEND(all_calories, SUM(current_calories));
+            APPEND(all_calories, sum(current_calories));
             CLEAR(current_calories);
         } else {
             APPEND(current_calories, n);
