@@ -1,12 +1,19 @@
 #include <stdio.h>
 #include <carma/carma.h>
-#include <carma/carma_gnu.h>
 
 typedef struct {
     int* data;
     size_t count;
     size_t capacity;
 } Ints;
+
+#define SUM(range) ({ \
+    typeof(*(range).data) sum = 0; \
+    FOR_EACH(it, (range)) { \
+        sum += *it; \
+    } \
+    sum; \
+})
 
 int main(int argc, char **argv) {
     if (argc < 2) {
