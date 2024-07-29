@@ -19,6 +19,8 @@
 #define POINTER_TYPE(range) typeof((range).data)
 #define VALUE_TYPE(range) typeof(*(range).data)
 
+#define ITEM_SIZE(range_type) sizeof(*((range_type){}).data)
+
 ////////////////////////////////////////////////////////////////////////////////
 // ALLOCATE MEMORY
 
