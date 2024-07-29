@@ -16,15 +16,8 @@ typedef struct {
     size_t count;
 } IntRange;
 
-#define MAKE_RANGE(...) ({ \
-    int array[] = { __VA_ARGS__ }; \
-    (IntRange){.data=memcpy((int*)malloc(sizeof(array)), array, sizeof(array)), .count=sizeof(array) / sizeof(int)}; \
-})
-
-#define MAKE_DARRAY(...) ({ \
-    int array[] = { __VA_ARGS__ }; \
-    (IntArray){.data=memcpy((int*)malloc(sizeof(array)), array, sizeof(array)), .count=sizeof(array) / sizeof(int), .capacity=sizeof(array) / sizeof(int)}; \
-})
+#define MAKE_RANGE(...) (IntRange){.data=memcpy((int*)malloc(sizeof((int[]){__VA_ARGS__})), (int[]){__VA_ARGS__}, sizeof((int[]){__VA_ARGS__})), .count=sizeof((int[]){__VA_ARGS__}) / sizeof(int)}
+#define MAKE_DARRAY(...) (IntArray){.data=memcpy((int*)malloc(sizeof((int[]){__VA_ARGS__})), (int[]){__VA_ARGS__}, sizeof((int[]){__VA_ARGS__})), .count=sizeof((int[]){__VA_ARGS__}) / sizeof(int), .capacity=sizeof((int[]){__VA_ARGS__}) / sizeof(int)}
 
 typedef struct {
     int* data;
