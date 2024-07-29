@@ -179,35 +179,35 @@ void test_init_image() {
 }
 
 void test_is_empty() {
-    __auto_type actual = (IntArray){};
+    auto actual = (IntArray){};
     ASSERT_EQUAL_INT("test_is_empty", IS_EMPTY(actual), true);
     APPEND(actual, 1);
     ASSERT_EQUAL_INT("test_is_empty", IS_EMPTY(actual), false);
 }
 
 void test_first_item() {
-    __auto_type actual = MAKE_DARRAY(int, 3, 4, 5);
+    auto actual = MAKE_DARRAY(int, 3, 4, 5);
     ASSERT_EQUAL_INT("test_first_item", FIRST_ITEM(actual), 3);
 }
 
 void test_last_item() {
-    __auto_type actual = MAKE_DARRAY(int, 3, 4, 5);
+    auto actual = MAKE_DARRAY(int, 3, 4, 5);
     ASSERT_EQUAL_INT("test_last_item", LAST_ITEM(actual), 5);
 }
 
 void test_for_each() {
-    __auto_type actual = MAKE_DARRAY(int, 1, 2, 3);
+    auto actual = MAKE_DARRAY(int, 1, 2, 3);
     FOR_EACH(it, actual) {
         *it = square(*it);
     }
-    __auto_type expected = MAKE_DARRAY(int, 1, 4, 9);
+    auto expected = MAKE_DARRAY(int, 1, 4, 9);
     ASSERT_EQUAL_RANGE("test_for_each", actual, expected);  
 }
 
 void test_for_each2() {
-    __auto_type input = MAKE_DARRAY(int, 1, 2, 3);
-    __auto_type actual = MAKE_DARRAY(int, 0, 0, 0);
-    __auto_type expected = MAKE_DARRAY(int, 1, 4, 9);
+    auto input = MAKE_DARRAY(int, 1, 2, 3);
+    auto actual = MAKE_DARRAY(int, 0, 0, 0);
+    auto expected = MAKE_DARRAY(int, 1, 4, 9);
     FOR_EACH2(a, b, actual, input) {
         *a = square(*b);
     }
@@ -215,56 +215,56 @@ void test_for_each2() {
 }
 
 void test_for_each_backward0() {
-    __auto_type inputs = (IntArray){};
-    __auto_type actual = (IntArray){};
+    auto inputs = (IntArray){};
+    auto actual = (IntArray){};
     FOR_EACH_BACKWARD(it, inputs) {
         APPEND(actual, *it);
     }
-    __auto_type expected = (IntArray){};
+    auto expected = (IntArray){};
     ASSERT_EQUAL_RANGE("test_for_each_backward0", actual, expected);
 }
 
 void test_for_each_backward1() {
-    __auto_type inputs = MAKE_DARRAY(int, 1);
-    __auto_type actual = (IntArray){};
+    auto inputs = MAKE_DARRAY(int, 1);
+    auto actual = (IntArray){};
     FOR_EACH_BACKWARD(it, inputs) {
         APPEND(actual, *it);
     }
-    __auto_type expected = MAKE_DARRAY(int, 1);
+    auto expected = MAKE_DARRAY(int, 1);
     ASSERT_EQUAL_RANGE("test_for_each_backward1", actual, expected);
 }
 
 void test_for_each_backward2() {
-    __auto_type inputs = MAKE_DARRAY(int, 1, 2);
-    __auto_type actual = (IntArray){};
+    auto inputs = MAKE_DARRAY(int, 1, 2);
+    auto actual = (IntArray){};
     FOR_EACH_BACKWARD(it, inputs) {
         APPEND(actual, *it);
     }
-    __auto_type expected = MAKE_DARRAY(int, 2, 1);
+    auto expected = MAKE_DARRAY(int, 2, 1);
     ASSERT_EQUAL_RANGE("test_for_each_backward2", actual, expected);
 }
 
 void test_for_each_backward3() {
-    __auto_type inputs = MAKE_DARRAY(int, 1, 2, 3);
-    __auto_type actual = (IntArray){};
+    auto inputs = MAKE_DARRAY(int, 1, 2, 3);
+    auto actual = (IntArray){};
     FOR_EACH_BACKWARD(it, inputs) {
         APPEND(actual, *it);
     }
-    __auto_type expected = MAKE_DARRAY(int, 3, 2, 1);
+    auto expected = MAKE_DARRAY(int, 3, 2, 1);
     ASSERT_EQUAL_RANGE("test_for_each_backward3", actual, expected);
 }
 
 void test_for_index() {
-    __auto_type actual = MAKE_DARRAY(int, 1, 2, 3);
+    auto actual = MAKE_DARRAY(int, 1, 2, 3);
     FOR_INDEX(i, actual) {
         actual.data[i] = square(actual.data[i]);
     }
-    __auto_type expected = MAKE_DARRAY(int, 1, 4, 9);
+    auto expected = MAKE_DARRAY(int, 1, 4, 9);
     ASSERT_EQUAL_RANGE("test_for_index", actual, expected);
 }
 
 void test_for_min() {
-    __auto_type actual = MAKE_DARRAY(int, 1, -3, 2);
+    auto actual = MAKE_DARRAY(int, 1, -3, 2);
     FOR_MIN(it, actual) {
         ASSERT_EQUAL_INT("test_for_min element", *it, -3);
     }
@@ -272,7 +272,7 @@ void test_for_min() {
 }
 
 void test_for_max() {
-    __auto_type actual = MAKE_DARRAY(int, 1, 3, 2);
+    auto actual = MAKE_DARRAY(int, 1, 3, 2);
     FOR_MAX(it, actual) {
         ASSERT_EQUAL_INT("test_for_max element", *it, 3);
     }
@@ -280,28 +280,28 @@ void test_for_max() {
 }
 
 void test_fill() {
-    __auto_type actual = MAKE_DARRAY(int, 1, 2, 3);
+    auto actual = MAKE_DARRAY(int, 1, 2, 3);
     FILL(actual, 3);
-    __auto_type expected = MAKE_DARRAY(int, 3, 3, 3);
+    auto expected = MAKE_DARRAY(int, 3, 3, 3);
     ASSERT_EQUAL_RANGE("test_fill", actual, expected);
 }
 
 void test_drop_front() {
-    __auto_type actual = MAKE_RANGE(int, -1, 4, -2, 1);
+    auto actual = MAKE_RANGE(int, -1, 4, -2, 1);
     DROP_FRONT(actual);
-    __auto_type expected = MAKE_RANGE(int, 4, -2, 1);
+    auto expected = MAKE_RANGE(int, 4, -2, 1);
     ASSERT_EQUAL_RANGE("drop_front", actual, expected);
 }
 
 void test_drop_back() {
-    __auto_type actual = MAKE_RANGE(int, -1, 4, -2, 1);
+    auto actual = MAKE_RANGE(int, -1, 4, -2, 1);
     DROP_BACK(actual);
-    __auto_type expected = MAKE_RANGE(int, -1, 4, -2);
+    auto expected = MAKE_RANGE(int, -1, 4, -2);
     ASSERT_EQUAL_RANGE("drop_back", actual, expected);
 }
 
 void test_drop_front_while() {
-    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
+    auto range = MAKE_RANGE(int, -1, 4, -2, 1);
     DROP_FRONT_WHILE(range, is_negative);
     ASSERT_EQUAL_INT("DROP_FRONT_WHILE", FIRST_ITEM(range), 4);
     DROP_FRONT_WHILE(range, is_positive);
@@ -311,7 +311,7 @@ void test_drop_front_while() {
 }
 
 void test_drop_front_while_item() {
-    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
+    auto range = MAKE_RANGE(int, -1, 4, -2, 1);
     DROP_FRONT_WHILE_ITEM(range, -1);
     ASSERT_EQUAL_INT("DROP_FRONT_WHILE_ITEM", FIRST_ITEM(range), 4);
     DROP_FRONT_WHILE_ITEM(range, 4);
@@ -321,7 +321,7 @@ void test_drop_front_while_item() {
 }
 
 void test_drop_front_until() {
-    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
+    auto range = MAKE_RANGE(int, -1, 4, -2, 1);
     DROP_FRONT_UNTIL(range, is_positive);
     ASSERT_EQUAL_INT("DROP_FRONT_UNTIL", FIRST_ITEM(range), 4);
     DROP_FRONT_UNTIL(range, is_negative);
@@ -331,7 +331,7 @@ void test_drop_front_until() {
 }
 
 void test_drop_front_until_item() {
-    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
+    auto range = MAKE_RANGE(int, -1, 4, -2, 1);
     DROP_FRONT_UNTIL_ITEM(range, 4);
     ASSERT_EQUAL_INT("DROP_FRONT_UNTIL_ITEM", FIRST_ITEM(range), 4);
     DROP_FRONT_UNTIL_ITEM(range, -2);
@@ -341,7 +341,7 @@ void test_drop_front_until_item() {
 }
 
 void test_drop_back_while() {
-    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
+    auto range = MAKE_RANGE(int, -1, 4, -2, 1);
     DROP_BACK_WHILE(range, is_positive);
     ASSERT_EQUAL_INT("DROP_BACK_WHILE", LAST_ITEM(range), -2);
     DROP_BACK_WHILE(range, is_negative);
@@ -351,7 +351,7 @@ void test_drop_back_while() {
 }
 
 void test_drop_back_while_item() {
-    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
+    auto range = MAKE_RANGE(int, -1, 4, -2, 1);
     DROP_BACK_WHILE_ITEM(range, 1);
     ASSERT_EQUAL_INT("DROP_BACK_WHILE_ITEM", LAST_ITEM(range), -2);
     DROP_BACK_WHILE_ITEM(range, -2);
@@ -361,7 +361,7 @@ void test_drop_back_while_item() {
 }
 
 void test_drop_back_until() {
-    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
+    auto range = MAKE_RANGE(int, -1, 4, -2, 1);
     DROP_BACK_UNTIL(range, is_negative);
     ASSERT_EQUAL_INT("DROP_BACK_UNTIL", LAST_ITEM(range), -2);
     DROP_BACK_UNTIL(range, is_positive);
@@ -371,7 +371,7 @@ void test_drop_back_until() {
 }
 
 void test_drop_back_until_item() {
-    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
+    auto range = MAKE_RANGE(int, -1, 4, -2, 1);
     DROP_BACK_UNTIL_ITEM(range, -2);
     ASSERT_EQUAL_INT("DROP_BACK_UNTIL_ITEM", LAST_ITEM(range), -2);
     DROP_BACK_UNTIL_ITEM(range, 4);
@@ -381,44 +381,44 @@ void test_drop_back_until_item() {
 }
 
 void test_erase_index1() {
-    __auto_type actual = MAKE_DARRAY(int, 9);
+    auto actual = MAKE_DARRAY(int, 9);
     ERASE_INDEX(actual, 0);
-    __auto_type expected = (IntArray){};
+    auto expected = (IntArray){};
     ASSERT_EQUAL_RANGE("ERASE_INDEX 1", actual, expected);
 }
 
 void test_erase_index2a() {
-    __auto_type actual = MAKE_DARRAY(int, 9, 8);
+    auto actual = MAKE_DARRAY(int, 9, 8);
     ERASE_INDEX(actual, 0);
-    __auto_type expected = MAKE_DARRAY(int, 8);
+    auto expected = MAKE_DARRAY(int, 8);
     ASSERT_EQUAL_RANGE("ERASE_INDEX 2a", actual, expected);
 }
 
 void test_erase_index2b() {
-    __auto_type actual = MAKE_DARRAY(int, 9, 8);
+    auto actual = MAKE_DARRAY(int, 9, 8);
     ERASE_INDEX(actual, 1);
-    __auto_type expected = MAKE_DARRAY(int, 9);
+    auto expected = MAKE_DARRAY(int, 9);
     ASSERT_EQUAL_RANGE("ERASE_INDEX 2b", actual, expected);
 }
 
 void test_erase_index3a() {
-    __auto_type actual = MAKE_DARRAY(int, 9, 8, 7);
+    auto actual = MAKE_DARRAY(int, 9, 8, 7);
     ERASE_INDEX(actual, 0);
-    __auto_type expected = MAKE_DARRAY(int, 7, 8);
+    auto expected = MAKE_DARRAY(int, 7, 8);
     ASSERT_EQUAL_RANGE("ERASE_INDEX 3a", actual, expected);
 }
 
 void test_erase_index3b() {
-    __auto_type actual = MAKE_DARRAY(int, 9, 8, 7);
+    auto actual = MAKE_DARRAY(int, 9, 8, 7);
     ERASE_INDEX(actual, 1);
-    __auto_type expected = MAKE_DARRAY(int, 9, 7);
+    auto expected = MAKE_DARRAY(int, 9, 7);
     ASSERT_EQUAL_RANGE("ERASE_INDEX 3b", actual, expected);
 }
 
 void test_erase_index3c() {
-    __auto_type actual = MAKE_DARRAY(int, 9, 8, 7);
+    auto actual = MAKE_DARRAY(int, 9, 8, 7);
     ERASE_INDEX(actual, 2);
-    __auto_type expected = MAKE_DARRAY(int, 9, 8);
+    auto expected = MAKE_DARRAY(int, 9, 8);
     ASSERT_EQUAL_RANGE("ERASE_INDEX 3b", actual, expected);
 }
 
@@ -435,7 +435,7 @@ void test_erase_if_unallocated() {
 }
 
 void test_erase_if_empty() {
-    __auto_type array = (IntArray){};
+    auto array = (IntArray){};
     ERASE_IF(array, is_zero);
     ASSERT_EQUAL_INT("ERASE_IF EMPTY", array.count, 0);
     ASSERT_EQUAL_RANGE("ERASE_IF EMPTY", array, array);
@@ -443,65 +443,65 @@ void test_erase_if_empty() {
 }
 
 void test_erase_if0() {
-    __auto_type actual = MAKE_DARRAY(int, 0);
+    auto actual = MAKE_DARRAY(int, 0);
     ERASE_IF(actual, is_zero);
-    __auto_type expected = (IntArray){};
+    auto expected = (IntArray){};
     ASSERT_EQUAL_RANGE("ERASE_IF 0", actual, expected);
 }
 
 void test_erase_if1() {
-    __auto_type actual = MAKE_DARRAY(int, 1);
+    auto actual = MAKE_DARRAY(int, 1);
     ERASE_IF(actual, is_zero);
-    __auto_type expected = MAKE_DARRAY(int, 1);
+    auto expected = MAKE_DARRAY(int, 1);
     ASSERT_EQUAL_RANGE("ERASE_IF 1", actual, expected);
 }
 
 void test_erase_if11() {
-    __auto_type actual = MAKE_DARRAY(int, 1, 1);
+    auto actual = MAKE_DARRAY(int, 1, 1);
     ERASE_IF(actual, is_zero);
-    __auto_type expected = MAKE_DARRAY(int, 1, 1);
+    auto expected = MAKE_DARRAY(int, 1, 1);
     ASSERT_EQUAL_RANGE("ERASE_IF 11", actual, expected);
 }
 
 void test_erase_if00() {
-    __auto_type actual = MAKE_DARRAY(int, 0, 0);
+    auto actual = MAKE_DARRAY(int, 0, 0);
     ERASE_IF(actual, is_zero);
-    __auto_type expected = (IntArray){};
+    auto expected = (IntArray){};
     ASSERT_EQUAL_RANGE("ERASE_IF 00", actual, expected);
 }
 
 void test_erase_if10() {
-    __auto_type actual = MAKE_DARRAY(int, 1, 0);
+    auto actual = MAKE_DARRAY(int, 1, 0);
     ERASE_IF(actual, is_zero);
-    __auto_type expected = MAKE_DARRAY(int, 1);
+    auto expected = MAKE_DARRAY(int, 1);
     ASSERT_EQUAL_RANGE("ERASE_IF 10", actual, expected);
 }
 
 void test_erase_if01() {
-    __auto_type actual = MAKE_DARRAY(int, 0, 1);
+    auto actual = MAKE_DARRAY(int, 0, 1);
     ERASE_IF(actual, is_zero);
-    __auto_type expected = MAKE_DARRAY(int, 1);
+    auto expected = MAKE_DARRAY(int, 1);
     ASSERT_EQUAL_RANGE("ERASE_IF 01", actual, expected);
 }
 
 void test_erase_if101() {
-    __auto_type actual = MAKE_DARRAY(int, 1, 0, 1);
+    auto actual = MAKE_DARRAY(int, 1, 0, 1);
     ERASE_IF(actual, is_zero);
-    __auto_type expected = MAKE_DARRAY(int, 1, 1);
+    auto expected = MAKE_DARRAY(int, 1, 1);
     ASSERT_EQUAL_RANGE("ERASE_IF 101", actual, expected);
 }
 
 void test_erase_if010() {
-    __auto_type actual = MAKE_DARRAY(int, 0, 1, 0);
+    auto actual = MAKE_DARRAY(int, 0, 1, 0);
     ERASE_IF(actual, is_zero);
-    __auto_type expected = MAKE_DARRAY(int, 1);
+    auto expected = MAKE_DARRAY(int, 1);
     ASSERT_EQUAL_RANGE("ERASE_IF 010", actual, expected);
 }
 
 void test_erase_if() {
-    __auto_type actual = MAKE_DARRAY(int, -1, 4, -2, 1);
+    auto actual = MAKE_DARRAY(int, -1, 4, -2, 1);
     ERASE_IF(actual, is_positive);
-    __auto_type expected = MAKE_DARRAY(int, -1, -2);
+    auto expected = MAKE_DARRAY(int, -1, -2);
     ASSERT_EQUAL_RANGE("ERASE_IF", actual, expected);
 }
 
@@ -532,18 +532,18 @@ void test_concat() {
     IntArray target;
     INIT_DARRAY(target, 0, 0);
     
-    __auto_type source = MAKE_DARRAY(int, 1, 2, 3);
+    auto source = MAKE_DARRAY(int, 1, 2, 3);
     
     ASSERT_EQUAL_INT("CONCAT", target.count, 0);
     ASSERT_EQUAL_INT("CONCAT", target.capacity, 0);
 
     CONCAT(target, source);
-    __auto_type expected0 = MAKE_DARRAY(int, 1, 2, 3);
+    auto expected0 = MAKE_DARRAY(int, 1, 2, 3);
     ASSERT_EQUAL_RANGE("CONCAT", target, expected0);
     ASSERT_EQUAL_INT("CONCAT", target.capacity, 4);
 
     CONCAT(target, source);
-    __auto_type expected1 = MAKE_DARRAY(int, 1, 2, 3, 1, 2, 3);
+    auto expected1 = MAKE_DARRAY(int, 1, 2, 3, 1, 2, 3);
     ASSERT_EQUAL_RANGE("CONCAT", target, expected1);
     ASSERT_EQUAL_INT("CONCAT", target.capacity, 8);
 }
@@ -558,7 +558,7 @@ void test_for_x_y() {
             ++i;
         }
     }
-    __auto_type expected = MAKE_DARRAY(int, 
+    auto expected = MAKE_DARRAY(int, 
         0, 0, 0, 0,
         0, 1, 2, 3,
         0, 2, 4, 6,
