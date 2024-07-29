@@ -3,14 +3,18 @@
 #include <carma/carma.h>
 #include <carma/carma_string.h>
 
-#define RANGE(type) struct {type* data; size_t count;}
+typedef struct {
+    int* data;
+    size_t count;
+} IntRange;
+
 #define DARRAY(type) struct {type* data; size_t count; size_t capacity;}
 
-#define MAKE_RANGE(value_type, ...) ({ \
-    RANGE(value_type) result; \
-    VALUE_TYPE(result) array[] = { __VA_ARGS__ }; \
-    INIT_RANGE((result), sizeof(array) / sizeof(VALUE_TYPE(result))); \
-    memcpy((result).data, array, sizeof(array)); \
+#define MAKE_RANGE(...) ({ \
+    IntRange result; \
+    int array[] = { __VA_ARGS__ }; \
+    INIT_RANGE(result, sizeof(array) / sizeof(int)); \
+    memcpy(result.data, array, sizeof(array)); \
     result; \
 })
 
@@ -299,21 +303,21 @@ void test_fill() {
 }
 
 void test_drop_front() {
-    __auto_type actual = MAKE_RANGE(int, -1, 4, -2, 1);
+    __auto_type actual = MAKE_RANGE(-1, 4, -2, 1);
     DROP_FRONT(actual);
-    __auto_type expected = MAKE_RANGE(int, 4, -2, 1);
+    __auto_type expected = MAKE_RANGE(4, -2, 1);
     ASSERT_EQUAL_RANGE("drop_front", actual, expected);
 }
 
 void test_drop_back() {
-    __auto_type actual = MAKE_RANGE(int, -1, 4, -2, 1);
+    __auto_type actual = MAKE_RANGE(-1, 4, -2, 1);
     DROP_BACK(actual);
-    __auto_type expected = MAKE_RANGE(int, -1, 4, -2);
+    __auto_type expected = MAKE_RANGE(-1, 4, -2);
     ASSERT_EQUAL_RANGE("drop_back", actual, expected);
 }
 
 void test_drop_front_while() {
-    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
+    __auto_type range = MAKE_RANGE(-1, 4, -2, 1);
     DROP_FRONT_WHILE(range, is_negative);
     ASSERT_EQUAL_INT("DROP_FRONT_WHILE", FIRST_ITEM(range), 4);
     DROP_FRONT_WHILE(range, is_positive);
@@ -323,7 +327,7 @@ void test_drop_front_while() {
 }
 
 void test_drop_front_while_item() {
-    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
+    __auto_type range = MAKE_RANGE(-1, 4, -2, 1);
     DROP_FRONT_WHILE_ITEM(range, -1);
     ASSERT_EQUAL_INT("DROP_FRONT_WHILE_ITEM", FIRST_ITEM(range), 4);
     DROP_FRONT_WHILE_ITEM(range, 4);
@@ -333,7 +337,7 @@ void test_drop_front_while_item() {
 }
 
 void test_drop_front_until() {
-    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
+    __auto_type range = MAKE_RANGE(-1, 4, -2, 1);
     DROP_FRONT_UNTIL(range, is_positive);
     ASSERT_EQUAL_INT("DROP_FRONT_UNTIL", FIRST_ITEM(range), 4);
     DROP_FRONT_UNTIL(range, is_negative);
@@ -343,7 +347,7 @@ void test_drop_front_until() {
 }
 
 void test_drop_front_until_item() {
-    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
+    __auto_type range = MAKE_RANGE(-1, 4, -2, 1);
     DROP_FRONT_UNTIL_ITEM(range, 4);
     ASSERT_EQUAL_INT("DROP_FRONT_UNTIL_ITEM", FIRST_ITEM(range), 4);
     DROP_FRONT_UNTIL_ITEM(range, -2);
@@ -353,7 +357,7 @@ void test_drop_front_until_item() {
 }
 
 void test_drop_back_while() {
-    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
+    __auto_type range = MAKE_RANGE(-1, 4, -2, 1);
     DROP_BACK_WHILE(range, is_positive);
     ASSERT_EQUAL_INT("DROP_BACK_WHILE", LAST_ITEM(range), -2);
     DROP_BACK_WHILE(range, is_negative);
@@ -363,7 +367,7 @@ void test_drop_back_while() {
 }
 
 void test_drop_back_while_item() {
-    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
+    __auto_type range = MAKE_RANGE(-1, 4, -2, 1);
     DROP_BACK_WHILE_ITEM(range, 1);
     ASSERT_EQUAL_INT("DROP_BACK_WHILE_ITEM", LAST_ITEM(range), -2);
     DROP_BACK_WHILE_ITEM(range, -2);
@@ -373,7 +377,7 @@ void test_drop_back_while_item() {
 }
 
 void test_drop_back_until() {
-    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
+    __auto_type range = MAKE_RANGE(-1, 4, -2, 1);
     DROP_BACK_UNTIL(range, is_negative);
     ASSERT_EQUAL_INT("DROP_BACK_UNTIL", LAST_ITEM(range), -2);
     DROP_BACK_UNTIL(range, is_positive);
@@ -383,7 +387,7 @@ void test_drop_back_until() {
 }
 
 void test_drop_back_until_item() {
-    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
+    __auto_type range = MAKE_RANGE(-1, 4, -2, 1);
     DROP_BACK_UNTIL_ITEM(range, -2);
     ASSERT_EQUAL_INT("DROP_BACK_UNTIL_ITEM", LAST_ITEM(range), -2);
     DROP_BACK_UNTIL_ITEM(range, 4);
