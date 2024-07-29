@@ -17,7 +17,11 @@ typedef struct {
 #define VALUE_TYPE2(range_type) typeof(*((range_type){}).data)
 #define MAKE_ARRAY_LITERAL(range_type, ...) (VALUE_TYPE2(range_type)[]){__VA_ARGS__}
 #define COUNT_VARGS(type, ...) sizeof((VALUE_TYPE2(type)[]){__VA_ARGS__}) / ITEM_SIZE(type)
-#define COPY_VARARGS_RAW(type, ...) memcpy(malloc(sizeof((VALUE_TYPE2(type)[]){__VA_ARGS__})), (VALUE_TYPE2(type)[]){__VA_ARGS__}, sizeof((VALUE_TYPE2(type)[]){__VA_ARGS__}))
+#define COPY_VARARGS_RAW(type, ...) memcpy(\
+    malloc(sizeof((VALUE_TYPE2(type)[]){__VA_ARGS__})),\
+    (VALUE_TYPE2(type)[]){__VA_ARGS__},\
+    sizeof((VALUE_TYPE2(type)[]){__VA_ARGS__})\
+)
 
 #define MAKE_RANGE(range_type, ...) (range_type){\
     .data=COPY_VARARGS_RAW(range_type, __VA_ARGS__),\
