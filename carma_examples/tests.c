@@ -3,18 +3,16 @@
 #include <carma/carma.h>
 #include <carma/carma_string.h>
 
-
+typedef struct {
+    int* data;
+    size_t count;
+} IntRange;
 
 typedef struct {
     int* data;
     size_t count;
     size_t capacity;
 } IntArray;
-
-typedef struct {
-    int* data;
-    size_t count;
-} IntRange;
 
 #define MAKE_RANGE(type, ...) (IntRange){.data=memcpy((type*)malloc(sizeof((int[]){__VA_ARGS__})), (int[]){__VA_ARGS__}, sizeof((type[]){__VA_ARGS__})), .count=sizeof((type[]){__VA_ARGS__}) / sizeof(type)}
 #define MAKE_DARRAY(type, ...) (IntArray){.data=memcpy((type*)malloc(sizeof((int[]){__VA_ARGS__})), (int[]){__VA_ARGS__}, sizeof((type[]){__VA_ARGS__})), .count=sizeof((type[]){__VA_ARGS__}) / sizeof(type), .capacity=sizeof((type[]){__VA_ARGS__}) / sizeof(type)}
@@ -25,12 +23,6 @@ typedef struct {
     size_t height;
     size_t count;
 } Image;
-
-typedef struct {
-    int* data;
-    size_t count;
-    size_t capacity;
-} DynamicInts;
 
 int is_positive(int x) {
     return x > 0;
@@ -187,7 +179,7 @@ void test_init_image() {
 }
 
 void test_is_empty() {
-    __auto_type actual = (DynamicInts){};
+    __auto_type actual = (IntArray){};
     ASSERT_EQUAL_INT("test_is_empty", IS_EMPTY(actual), true);
     APPEND(actual, 1);
     ASSERT_EQUAL_INT("test_is_empty", IS_EMPTY(actual), false);
@@ -223,18 +215,18 @@ void test_for_each2() {
 }
 
 void test_for_each_backward0() {
-    __auto_type inputs = (DynamicInts){};
-    __auto_type actual = (DynamicInts){};
+    __auto_type inputs = (IntArray){};
+    __auto_type actual = (IntArray){};
     FOR_EACH_BACKWARD(it, inputs) {
         APPEND(actual, *it);
     }
-    __auto_type expected = (DynamicInts){};
+    __auto_type expected = (IntArray){};
     ASSERT_EQUAL_RANGE("test_for_each_backward0", actual, expected);
 }
 
 void test_for_each_backward1() {
     __auto_type inputs = MAKE_DARRAY(int, 1);
-    __auto_type actual = (DynamicInts){};
+    __auto_type actual = (IntArray){};
     FOR_EACH_BACKWARD(it, inputs) {
         APPEND(actual, *it);
     }
@@ -244,7 +236,7 @@ void test_for_each_backward1() {
 
 void test_for_each_backward2() {
     __auto_type inputs = MAKE_DARRAY(int, 1, 2);
-    __auto_type actual = (DynamicInts){};
+    __auto_type actual = (IntArray){};
     FOR_EACH_BACKWARD(it, inputs) {
         APPEND(actual, *it);
     }
@@ -254,7 +246,7 @@ void test_for_each_backward2() {
 
 void test_for_each_backward3() {
     __auto_type inputs = MAKE_DARRAY(int, 1, 2, 3);
-    __auto_type actual = (DynamicInts){};
+    __auto_type actual = (IntArray){};
     FOR_EACH_BACKWARD(it, inputs) {
         APPEND(actual, *it);
     }
@@ -391,7 +383,7 @@ void test_drop_back_until_item() {
 void test_erase_index1() {
     __auto_type actual = MAKE_DARRAY(int, 9);
     ERASE_INDEX(actual, 0);
-    __auto_type expected = (DynamicInts){};
+    __auto_type expected = (IntArray){};
     ASSERT_EQUAL_RANGE("ERASE_INDEX 1", actual, expected);
 }
 
@@ -443,7 +435,7 @@ void test_erase_if_unallocated() {
 }
 
 void test_erase_if_empty() {
-    __auto_type array = (DynamicInts){};
+    __auto_type array = (IntArray){};
     ERASE_IF(array, is_zero);
     ASSERT_EQUAL_INT("ERASE_IF EMPTY", array.count, 0);
     ASSERT_EQUAL_RANGE("ERASE_IF EMPTY", array, array);
@@ -453,7 +445,7 @@ void test_erase_if_empty() {
 void test_erase_if0() {
     __auto_type actual = MAKE_DARRAY(int, 0);
     ERASE_IF(actual, is_zero);
-    __auto_type expected = (DynamicInts){};
+    __auto_type expected = (IntArray){};
     ASSERT_EQUAL_RANGE("ERASE_IF 0", actual, expected);
 }
 
@@ -474,7 +466,7 @@ void test_erase_if11() {
 void test_erase_if00() {
     __auto_type actual = MAKE_DARRAY(int, 0, 0);
     ERASE_IF(actual, is_zero);
-    __auto_type expected = (DynamicInts){};
+    __auto_type expected = (IntArray){};
     ASSERT_EQUAL_RANGE("ERASE_IF 00", actual, expected);
 }
 
