@@ -56,11 +56,13 @@ typedef struct {
 typedef struct {
     Sphere* data;
     size_t count;
+    size_t capacity;
 } Spheres;
 
 typedef struct {
     Light* data;
     size_t count;
+    size_t capacity;
 } Lights;
 
 typedef struct {
@@ -84,23 +86,20 @@ World makeWorld() {
     auto R = 100000.0;
     auto MAX_C = 1.0;
     auto MIN_C = 0.1;
-    auto world = (World){};
     
-    INIT_RANGE_ELEMENTS(
-        world.spheres, 
-        (Sphere){(Vec3d){-2, 0, 6}, 1, (Vec3d){MAX_C, MAX_C, MIN_C}},
-        (Sphere){(Vec3d){0, 0, 5}, 1, (Vec3d){MAX_C, MIN_C, MIN_C}},
-        (Sphere){(Vec3d){2, 0, 4}, 1, (Vec3d){2 * MIN_C, 4 * MIN_C, MAX_C}},
-        (Sphere){(Vec3d){0, 1 + R, 0}, R * R, (Vec3d){MIN_C, MAX_C, MIN_C}},
-        (Sphere){(Vec3d){0, -1 - R, 0}, R * R, (Vec3d){MAX_C, MAX_C, MAX_C}},
-    );
-    INIT_RANGE_ELEMENTS(
-        world.lights,
-        (Light){(Vec3d){+1, +1, +2}, muls(0.4, (Vec3d){1, 0.8, 0.5})},
-        (Light){(Vec3d){-1, -1, -2}, muls(0.4, (Vec3d){0.5, 0.5, 1})},
-    );
-    world.atmosphere_color = muls(0.3, (Vec3d){0.5, 0.5, 1});
-    return world;
+    auto spheres = (Spheres){};
+    APPEND(spheres, ((Sphere){(Vec3d){-2, 0, 6}, 1, (Vec3d){MAX_C, MAX_C, MIN_C}}));
+    APPEND(spheres, ((Sphere){(Vec3d){0, 0, 5}, 1, (Vec3d){MAX_C, MIN_C, MIN_C}}));
+    APPEND(spheres, ((Sphere){(Vec3d){2, 0, 4}, 1, (Vec3d){2 * MIN_C, 4 * MIN_C, MAX_C}}));
+    APPEND(spheres, ((Sphere){(Vec3d){0, 1 + R, 0}, R * R, (Vec3d){MIN_C, MAX_C, MIN_C}}));
+    APPEND(spheres, ((Sphere){(Vec3d){0, -1 - R, 0}, R * R, (Vec3d){MAX_C, MAX_C, MAX_C}}));
+    
+    auto lights = (Lights){};
+    APPEND(lights, ((Light){(Vec3d){+1, +1, +2}, muls(0.4, (Vec3d){1, 0.8, 0.5})}));
+    APPEND(lights, ((Light){(Vec3d){-1, -1, -2}, muls(0.4, (Vec3d){0.5, 0.5, 1})}));
+    
+    auto atmosphere_color = muls(0.3, (Vec3d){0.5, 0.5, 1});
+    return (World){.spheres=spheres, .lights=lights, .atmosphere_color=atmosphere_color};
 }
 
 Intersection findSingleIntersection(
