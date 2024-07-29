@@ -19,14 +19,16 @@ typedef struct {
 #define COUNT_VARGS(type, ...) sizeof((VALUE_TYPE2(type)[]){__VA_ARGS__}) / ITEM_SIZE(type)
 #define COPY_VARARGS_RAW(type, ...) memcpy(malloc(sizeof((VALUE_TYPE2(type)[]){__VA_ARGS__})), (VALUE_TYPE2(type)[]){__VA_ARGS__}, sizeof((VALUE_TYPE2(type)[]){__VA_ARGS__}))
 
-#define MAKE_RANGE(type, ...) \
-    (type){.data=COPY_VARARGS_RAW(type, __VA_ARGS__),\
-    .count=COUNT_VARGS(type, __VA_ARGS__)}
+#define MAKE_RANGE(range_type, ...) (range_type){\
+    .data=COPY_VARARGS_RAW(range_type, __VA_ARGS__),\
+    .count=COUNT_VARGS(range_type, __VA_ARGS__)\
+}
 
-#define MAKE_DARRAY(type, ...) \
-    (type){.data=COPY_VARARGS_RAW(type, __VA_ARGS__),\
-    .count=COUNT_VARGS(type, __VA_ARGS__),\
-    .capacity=COUNT_VARGS(type, __VA_ARGS__)}
+#define MAKE_DARRAY(darray_type, ...) (darray_type){\
+    .data=COPY_VARARGS_RAW(darray_type, __VA_ARGS__),\
+    .count=COUNT_VARGS(darray_type, __VA_ARGS__),\
+    .capacity=COUNT_VARGS(darray_type, __VA_ARGS__)\
+}
 
 typedef struct {
     int* data;
