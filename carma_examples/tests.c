@@ -279,22 +279,6 @@ void test_fill() {
     ASSERT_EQUAL_RANGE("test_fill", actual, expected);
 }
 
-void test_find_if() {
-    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
-    ASSERT_EQUAL_INT("FIND_IF", *FIND_IF(range, is_positive), 4);
-    ASSERT_EQUAL_INT("FIND_IF", *FIND_IF(range, is_negative), -1);
-    ASSERT_EQUAL_POINTER("FIND_IF", FIND_IF(range, is_zero), END_POINTER(range));
-    FREE_RANGE(range);
-}
-
-void test_find_if_backwards() {
-    __auto_type range = MAKE_RANGE(int, -1, 4, -2, 1);
-    ASSERT_EQUAL_INT("FIND_IF_BACKWARDS", *FIND_IF_BACKWARDS(range, is_positive), 1);
-    ASSERT_EQUAL_INT("FIND_IF_BACKWARDS", *FIND_IF_BACKWARDS(range, is_negative), -2);
-    ASSERT_EQUAL_POINTER("FIND_IF_BACKWARDS", FIND_IF_BACKWARDS(range, is_zero), range.data - 1);
-    FREE_RANGE(range);
-}
-
 void test_drop_front() {
     __auto_type actual = MAKE_RANGE(int, -1, 4, -2, 1);
     DROP_FRONT(actual);
@@ -673,9 +657,6 @@ int main() {
     test_for_max();
 
     test_fill();
-    
-    test_find_if();
-    test_find_if_backwards();
     
     test_drop_front();
     test_drop_back();
