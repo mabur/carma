@@ -3,10 +3,7 @@
 #include <carma/carma.h>
 #include <carma/carma_string.h>
 
-typedef struct {
-    int* data;
-    size_t count;
-} IntRange;
+
 
 typedef struct {
     int* data;
@@ -14,21 +11,19 @@ typedef struct {
     size_t capacity;
 } IntArray;
 
+typedef struct {
+    int* data;
+    size_t count;
+} IntRange;
+
 #define MAKE_RANGE(...) ({ \
-    IntRange result; \
     int array[] = { __VA_ARGS__ }; \
-    INIT_RANGE(result, sizeof(array) / sizeof(int)); \
-    memcpy(result.data, array, sizeof(array)); \
-    result; \
+    (IntRange){.data=memcpy((int*)malloc(sizeof(array)), array, sizeof(array)), .count=sizeof(array) / sizeof(int)}; \
 })
 
 #define MAKE_DARRAY(...) ({ \
-    IntArray result; \
     int array[] = { __VA_ARGS__ }; \
-    size_t c = sizeof(array) / sizeof(int); \
-    INIT_DARRAY((result), c, c); \
-    memcpy((result).data, array, sizeof(array)); \
-    result; \
+    (IntArray){.data=memcpy((int*)malloc(sizeof(array)), array, sizeof(array)), .count=sizeof(array) / sizeof(int), .capacity=sizeof(array) / sizeof(int)}; \
 })
 
 typedef struct {
