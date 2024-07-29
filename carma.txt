@@ -1,3 +1,11 @@
+* Strict warnings
+* Naming conflicts for macros that introduce local variables, that could be the same as a user variable.
+  - Related to shadowing warnings. So good that the user can get warning when this happens.
+  - Could circumvent by using less generic names for local variable inside macros.
+* Simulate closures, by having extra parameters.
+* Assosiative table
+* Json
+* Csv
 * Compare arrays and slices in Golang:
   - "An array has a fixed size."
   - "A slice, on the other hand, is a dynamically-sized, flexible view into the elements of an array."
