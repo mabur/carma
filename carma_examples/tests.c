@@ -14,14 +14,16 @@ typedef struct {
     size_t capacity;
 } IntArray;
 
+#define VALUE_TYPE2(range_type) typeof(*((range_type){}).data)
+
 #define MAKE_RANGE(type, ...) \
-    (type){.data=memcpy(malloc(sizeof((int[]){__VA_ARGS__})), (int[]){__VA_ARGS__}, sizeof((int[]){__VA_ARGS__})),\
-    .count=sizeof((int[]){__VA_ARGS__}) / ITEM_SIZE(type)}
+    (type){.data=memcpy(malloc(sizeof((VALUE_TYPE2(type)[]){__VA_ARGS__})), (VALUE_TYPE2(type)[]){__VA_ARGS__}, sizeof((VALUE_TYPE2(type)[]){__VA_ARGS__})),\
+    .count=sizeof((VALUE_TYPE2(type)[]){__VA_ARGS__}) / ITEM_SIZE(type)}
 
 #define MAKE_DARRAY(type, ...) \
-    (type){.data=memcpy(malloc(sizeof((int[]){__VA_ARGS__})), (int[]){__VA_ARGS__}, sizeof((int[]){__VA_ARGS__})),\
-    .count=sizeof((int[]){__VA_ARGS__}) / ITEM_SIZE(type),\
-    .capacity=sizeof((int[]){__VA_ARGS__}) / ITEM_SIZE(type)}
+    (type){.data=memcpy(malloc(sizeof((VALUE_TYPE2(type)[]){__VA_ARGS__})), (VALUE_TYPE2(type)[]){__VA_ARGS__}, sizeof((VALUE_TYPE2(type)[]){__VA_ARGS__})),\
+    .count=sizeof((VALUE_TYPE2(type)[]){__VA_ARGS__}) / ITEM_SIZE(type),\
+    .capacity=sizeof((VALUE_TYPE2(type)[]){__VA_ARGS__}) / ITEM_SIZE(type)}
 
 typedef struct {
     int* data;
