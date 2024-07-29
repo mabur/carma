@@ -18,7 +18,7 @@ if(CMAKE_C_COMPILER_ID MATCHES "GNU")
     set(WARN_FLAGS
             -Wall           # Enable all standard warnings
             -Wextra         # Enable extra warnings
-            #-Wpedantic      # Enable strict ISO C and ISO C++ warnings
+            -Wpedantic      # Enable strict ISO C and ISO C++ warnings
             -Wshadow        # Warn if a variable declaration shadows one from a parent context
             -Wpointer-arith # Warn about anything that depends on the "size of" a function type or of void
             -Wcast-qual     # Warn whenever a pointer is cast so as to remove a type qualifier from the target type
