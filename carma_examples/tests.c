@@ -1,8 +1,22 @@
 #include <stdio.h>
 
 #include <carma/carma.h>
-#include <carma/carma_gnu.h>
 #include <carma/carma_string.h>
+
+#define RANGE(type) struct {type* data; size_t count;}
+#define DARRAY(type) struct {type* data; size_t count; size_t capacity;}
+
+#define MAKE_RANGE(value_type, ...) ({ \
+    RANGE(value_type) result; \
+    INIT_RANGE_ELEMENTS(result, __VA_ARGS__); \
+    result; \
+})
+
+#define MAKE_DARRAY(value_type, ...) ({ \
+    DARRAY(value_type) result; \
+    INIT_DARRAY_ELEMENTS(result, __VA_ARGS__); \
+    result; \
+})
 
 typedef struct {
     int* data;
