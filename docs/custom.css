@@ -6,6 +6,10 @@ body {
     background-color: #FDF6E3;
 }
 
+.sidebar-toggle {
+    background-color: #FDF6E3;
+}
+
 .markdown-section code,
 .markdown-section pre {
     background-color: #EEE8D5;
@@ -27,6 +31,11 @@ body {
 }
 
 .progress {
+    background-color: #268BD2;
+    background-color: var(--theme-color, #268BD2);
+}
+
+.sidebar-toggle span {
     background-color: #268BD2;
     background-color: var(--theme-color, #268BD2);
 }
