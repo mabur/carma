@@ -1,3 +1,32 @@
 body {
-    background-color: #fff;
+    background-color: #FDF6E3;
+}
+
+.sidebar {
+    background-color: #FDF6E3;
+}
+
+.markdown-section code,
+.markdown-section pre {
+    background-color: #EEE8D5;
+}
+
+.markdown-section code {
+    color: #D33682;
+}
+
+.sidebar ul li.active>a {
+    color: #268BD2;
+    color: var(--theme-color, #268BD2);
+}
+
+.markdown-section a {
+    color: #268BD2;
+    color: var(--theme-color, #268BD2);
+    font-weight: 600;
+}
+
+.progress {
+    background-color: #268BD2;
+    background-color: var(--theme-color, #268BD2);
 }
