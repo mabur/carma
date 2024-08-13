@@ -81,6 +81,12 @@
     auto iterator1 = BEGIN_POINTER(range1); \
     for (; iterator0 != END_POINTER(range0) && iterator1 != END_POINTER(range1); ++iterator0, ++iterator1)
 
+#define FOR_EACH3(iterator0, iterator1, iterator2, range0, range1, range2) \
+    auto iterator0 = BEGIN_POINTER(range0); \
+    auto iterator1 = BEGIN_POINTER(range1); \
+    auto iterator2 = BEGIN_POINTER(range2); \
+    for (; iterator0 != END_POINTER(range0) && iterator1 != END_POINTER(range1) && iterator2 != END_POINTER(range2); ++iterator0, ++iterator1, ++iterator2)
+    
 #define FOR_INDEX(index, range) \
     for (typeof((range).count) index = 0; index < (range).count; ++index)
 

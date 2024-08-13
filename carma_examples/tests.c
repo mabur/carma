@@ -58,6 +58,10 @@ int square(int x) {
     return x * x;
 }
 
+int add(int x, int y) {
+    return x + y;
+}
+
 int global_assert_count = 0;
 int global_assert_errors = 0;
 
@@ -135,8 +139,8 @@ void ASSERT_EQUAL_SIZE(const char* description, size_t a, size_t b) {
         break; \
     } \
     auto are_equal = true; \
-    FOR_EACH2(left, right, (left_range), (right_range)) { \
-        if (*left != *right) { \
+    FOR_EACH2(_left, _right, (left_range), (right_range)) { \
+        if (*_left != *_right) { \
             are_equal = false; \
             break; \
         } \
@@ -230,6 +234,17 @@ void test_for_each2() {
         *a = square(*b);
     }
     ASSERT_EQUAL_RANGE("test_for_each2", actual, expected);
+}
+
+void test_for_each3() {
+    auto left = MAKE_DARRAY(IntArray, 1, 2, 3);
+    auto right = MAKE_DARRAY(IntArray, 0, 1, 2);
+    auto actual = MAKE_DARRAY(IntArray, 0, 0, 0);
+    auto expected = MAKE_DARRAY(IntArray, 1, 3, 5);
+    FOR_EACH3(a, b, c, actual, left, right) {
+        *a = add(*b, *c);
+    }
+    ASSERT_EQUAL_RANGE("test_for_each3", actual, expected);
 }
 
 void test_for_each_backward0() {
@@ -670,6 +685,7 @@ int main() {
     
     test_for_each();
     test_for_each2();
+    test_for_each3();
     test_for_index();
 
     test_for_each_backward0();
