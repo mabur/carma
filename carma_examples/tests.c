@@ -2,6 +2,7 @@
 
 #include <carma/carma.h>
 #include <carma/carma_string.h>
+#include <carma/carma_table.h>
 
 typedef struct {
     int* data;
@@ -13,6 +14,17 @@ typedef struct {
     size_t count;
     size_t capacity;
 } IntArray;
+
+typedef struct {
+    size_t (*hash)(int);
+    IntArray keys;
+    IntArray values;
+    IntArray occupied;
+} IntTable;
+
+size_t hashInt(int x) {
+    return x;
+}
 
 #define VALUE_TYPE2(range_type) typeof(*((range_type){}).data)
 #define MAKE_ARRAY_LITERAL(range_type, ...) (VALUE_TYPE2(range_type)[]){__VA_ARGS__}
@@ -676,6 +688,12 @@ void test_format_string() {
     ASSERT_DYNAMIC_STRING("test_format_string 8", s, "abbccc", 6, 8);
 }
 
+void test_table() {
+    auto table = (IntTable){};
+    table.hash = hashInt;
+    SET_KEY_VALUE(table, 1, 2);
+}
+
 int main() {
     test_init_image();
     
@@ -738,6 +756,8 @@ int main() {
     test_constant_string();
     test_concat_cstring();
     test_format_string();
+    
+    test_table();
     
     summarize_tests();
     
