@@ -41,7 +41,7 @@
 #define FIND_BASE_INDEX(table, key) ((table).hash(key) % (table).keys.count)
 
 // TODO: extend to interval
-#define findFreeIndex(table, key, index) do { \
+#define FIND_FREE_INDEX(table, key, index) do { \
     if (!table.occupied.data[index]) { \
     } \
     else if (table.keys.data[index] == key) { \
@@ -59,7 +59,7 @@
     FOR_KEY_VALUE(inner_key, inner_value, (table)) { \
         auto inner_base_index = FIND_BASE_INDEX((table), *inner_key); \
         auto free_index_inner = inner_base_index; \
-        findFreeIndex((table), *inner_key, free_index_inner); \
+        FIND_FREE_INDEX((table), *inner_key, free_index_inner); \
         new_table.keys.data[free_index_inner] = *inner_key; \
         new_table.values.data[free_index_inner] = *inner_value; \
         new_table.occupied.data[free_index_inner] = true; \
@@ -74,11 +74,11 @@
     } \
     auto base_index = FIND_BASE_INDEX((table), (key)); \
     auto index = base_index; \
-    findFreeIndex((table), (key), index); \
+    FIND_FREE_INDEX((table), (key), index); \
     while (index == SIZE_MAX) { \
         DOUBLE_TABLE_CAPACITY(table); \
         index = base_index;                   \
-        findFreeIndex((table), (key), index); \
+        FIND_FREE_INDEX((table), (key), index); \
     } \
     (table).keys.data[index] = (key); \
     (table).values.data[index] = (value); \
