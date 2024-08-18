@@ -33,12 +33,12 @@
 // TODO: extend to interval
 #define FOR_KEY(value_it, table, key) \
     if (!IS_EMPTY((table).keys)) \
-    FOR_STATE(_i, findBaseIndex((table), (key))) \
+    FOR_STATE(_i, FIND_BASE_INDEX((table), (key))) \
     FOR_STATE(value_it, (table).values.data + _i) \
     if (table.occupied.data[_i]) \
     if (table.keys.data[_i] == key)
 
-#define findBaseIndex(table, key) ((table).hash(key) % (table).keys.count)
+#define FIND_BASE_INDEX(table, key) ((table).hash(key) % (table).keys.count)
 
 // TODO: extend to interval
 #define findFreeIndex(table, key, index) do { \
@@ -56,7 +56,7 @@
 inline
 bool CONTAINS(IntTable table, int key) {
     // TODO: extend to interval
-    auto base_index = findBaseIndex(table, key);
+    auto base_index = FIND_BASE_INDEX(table, key);
     // If not occupied:
     if (!table.occupied.data[base_index]) {
         return false;
@@ -75,7 +75,7 @@ bool CONTAINS(IntTable table, int key) {
     auto new_table = table; \
     INIT_TABLE(new_table, new_capacity); \
     FOR_KEY_VALUE(inner_key, inner_value, (table)) { \
-        auto inner_base_index = findBaseIndex((table), *inner_key); \
+        auto inner_base_index = FIND_BASE_INDEX((table), *inner_key); \
         auto free_index_inner = inner_base_index; \
         findFreeIndex((table), *inner_key, free_index_inner); \
         new_table.keys.data[free_index_inner] = *inner_key; \
@@ -90,7 +90,7 @@ bool CONTAINS(IntTable table, int key) {
     if (IS_EMPTY(table.keys)) { \
         DOUBLE_TABLE_CAPACITY(table); \
     } \
-    auto base_index = findBaseIndex((table), (key)); \
+    auto base_index = FIND_BASE_INDEX((table), (key)); \
     auto index = base_index; \
     findFreeIndex((table), (key), index); \
     while (index == SIZE_MAX) { \
