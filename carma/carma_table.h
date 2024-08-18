@@ -51,24 +51,6 @@
     } \
 } while (0)
 
-// How to return value in macro?
-/*
-inline
-bool CONTAINS(IntTable table, int key) {
-    // TODO: extend to interval
-    auto base_index = FIND_BASE_INDEX(table, key);
-    // If not occupied:
-    if (!table.occupied.data[base_index]) {
-        return false;
-    }
-    // If occupied by same key:
-    if (table.keys.data[base_index] == key) {
-        return true;
-    }
-    return false;
-}
-*/
-
 #define DOUBLE_TABLE_CAPACITY(table) do { \
     auto old_capacity = (table).keys.capacity; \
     auto new_capacity = old_capacity ? 2 * old_capacity : 1; \
