@@ -16,14 +16,35 @@ typedef struct {
 } IntArray;
 
 typedef struct {
-    size_t (*hash)(int);
+    const char** data;
+    size_t count;
+    size_t capacity;
+} StringArray;
+
+typedef struct {
     IntArray keys;
     IntArray values;
     IntArray occupied;
+    size_t (*hash)(int);
 } IntTable;
+
+typedef struct {
+    StringArray keys;
+    StringArray values;
+    IntArray occupied;
+    size_t (*hash)(const char*);
+} StringTable;
 
 size_t hashInt(int x) {
     return x;
+}
+
+size_t hashString(const char* string) {
+    size_t hash = 5381;
+    for (const char* sub_string = string; *sub_string; ++sub_string) {
+        hash = ((hash << 5) + hash) + *sub_string;
+    }
+    return hash;
 }
 
 #define VALUE_TYPE2(range_type) typeof(*((range_type){}).data)
@@ -702,6 +723,20 @@ void test_table_for_key_value() {
     ASSERT_EQUAL_INT("test_table_for_key_value", product, 30);
 }
 
+void test_table_for_key_value_string() {
+    auto table = (StringTable){};
+    table.hash = hashString;
+    SET_KEY_VALUE("1", "2", table);
+    SET_KEY_VALUE("2", "3", table);
+    //SET_KEY_VALUE("3", "0", table);
+    SET_KEY_VALUE("3", "5", table);
+    auto character_count = 0;
+    FOR_EACH_KEY_VALUE(k, v, table) {
+        character_count += strlen(*v);
+    }
+    ASSERT_EQUAL_INT("test_table_for_key_value", character_count, 3);
+}
+
 void test_table_missing_key() {
     auto table = (IntTable){};
     table.hash = hashInt;
@@ -787,6 +822,7 @@ int main() {
     test_format_string();
     
     test_table_for_key_value();
+    test_table_for_key_value_string();
     test_table_missing_key();
     test_table_available_key();
     
