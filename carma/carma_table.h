@@ -1,5 +1,6 @@
 #pragma once
 
+#include <assert.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -68,6 +69,7 @@
         auto inner_base_index = FIND_BASE_INDEX((table), *key); \
         auto free_index_inner = inner_base_index; \
         FIND_FREE_INDEX((table), *key, free_index_inner); \
+        assert(free_index_inner !=  SIZE_MAX); \
         new_table.keys.data[free_index_inner] = *key; \
         new_table.values.data[free_index_inner] = *value; \
         new_table.occupied.data[free_index_inner] = true; \
