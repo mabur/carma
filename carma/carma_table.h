@@ -38,7 +38,7 @@
     for (typeof(value) (name) = (value), (name##count) = 0; !(name##count); ++(name##count))
 
 // TODO: extend to interval
-#define FOR_KEY(value_it, table, key) \
+#define FOR_KEY(key, value_it, table) \
     if (!IS_EMPTY((table).keys)) \
     FOR_STATE(_i, FIND_BASE_INDEX((table), (key))) \
     FOR_STATE(value_it, (table).values.data + _i) \
