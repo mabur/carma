@@ -693,6 +693,7 @@ void test_table_for_key_value() {
     table.hash = hashInt;
     SET_KEY_VALUE(1, 2, table);
     SET_KEY_VALUE(2, 3, table);
+    SET_KEY_VALUE(3, 0, table);
     SET_KEY_VALUE(3, 5, table);
     auto product = 1;
     FOR_EACH_KEY_VALUE(k, v, table) {
