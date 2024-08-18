@@ -726,15 +726,15 @@ void test_table_for_key_value() {
 void test_table_for_key_value_string() {
     auto table = (StringTable){};
     table.hash = hashString;
-    SET_KEY_VALUE("1", "2", table);
-    SET_KEY_VALUE("2", "3", table);
+    SET_KEY_VALUE("1", "a", table);
+    SET_KEY_VALUE("2", "ab", table);
     //SET_KEY_VALUE("3", "0", table);
-    SET_KEY_VALUE("3", "5", table);
+    SET_KEY_VALUE("3", "abc", table);
     auto character_count = 0;
     FOR_EACH_KEY_VALUE(k, v, table) {
         character_count += strlen(*v);
     }
-    ASSERT_EQUAL_INT("test_table_for_key_value", character_count, 3);
+    ASSERT_EQUAL_INT("test_table_for_key_value", character_count, 6);
 }
 
 void test_table_missing_key() {
