@@ -711,6 +711,17 @@ void test_table_missing_key() {
     ASSERT_EQUAL_INT("test_table_missing_key", value, 0);
 }
 
+void test_table_available_key() {
+    auto table = (IntTable){};
+    table.hash = hashInt;
+    SET_KEY_VALUE(table, 2, 5);
+    auto value = 0;
+    FOR_KEY(v, table, 2) {
+        value = *v;
+    }
+    ASSERT_EQUAL_INT("test_table_available_key", value, 5);
+}
+
 int main() {
     test_init_image();
     
@@ -776,6 +787,7 @@ int main() {
     
     test_table_for_key_value();
     test_table_missing_key();
+    test_table_available_key();
     
     summarize_tests();
     
