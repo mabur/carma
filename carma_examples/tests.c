@@ -688,7 +688,7 @@ void test_format_string() {
     ASSERT_DYNAMIC_STRING("test_format_string 8", s, "abbccc", 6, 8);
 }
 
-void test_table() {
+void test_table_for_key_value() {
     auto table = (IntTable){};
     table.hash = hashInt;
     SET_KEY_VALUE(table, 1, 2);
@@ -698,7 +698,7 @@ void test_table() {
     FOR_KEY_VALUE(k, v, table) {
         product *= *v;
     }
-    ASSERT_EQUAL_INT("test_table", product, 30);
+    ASSERT_EQUAL_INT("test_table_for_key_value", product, 30);
 }
 
 int main() {
@@ -764,7 +764,7 @@ int main() {
     test_concat_cstring();
     test_format_string();
     
-    test_table();
+    test_table_for_key_value();
     
     summarize_tests();
     
