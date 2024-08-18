@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdio.h>
 
 #include <carma/carma.h>
@@ -21,22 +22,12 @@ typedef struct {
     size_t capacity;
 } StringArray;
 
-typedef struct {
-    IntArray keys;
-    IntArray values;
-    IntArray occupied;
-    size_t (*hash)(int);
-} IntTable;
-
-typedef struct {
-    StringArray keys;
-    StringArray values;
-    IntArray occupied;
-    size_t (*hash)(const char*);
-} StringTable;
-
 size_t hashInt(int x) {
     return x;
+}
+
+bool equalsInt(int a, int b) {
+    return a == b;
 }
 
 size_t hashString(const char* string) {
@@ -46,6 +37,37 @@ size_t hashString(const char* string) {
     }
     return hash;
 }
+
+bool equalsString(const char* a, const char* b) {
+    return strcmp(a, b) == 0;
+}
+
+typedef struct {
+    size_t (*hash)(int);
+    bool (*equals)(int, int);
+} IntHashing;
+
+typedef struct {
+    size_t (*hash)(const char*);
+    bool (*equals)(const char*, const char*);
+} StringHashing;
+
+auto DEFAULT_HASHING_INT = (IntHashing){.hash=hashInt, .equals=equalsInt};
+auto DEFAULT_HASHING_STRING = (StringHashing){.hash=hashString, .equals=equalsString};
+
+typedef struct {
+    IntArray keys;
+    IntArray values;
+    IntArray occupied;
+    typeof(DEFAULT_HASHING_INT) strategy;
+} IntTable;
+
+typedef struct {
+    StringArray keys;
+    StringArray values;
+    IntArray occupied;
+    typeof(DEFAULT_HASHING_STRING) strategy;
+} StringTable;
 
 #define VALUE_TYPE2(range_type) typeof(*((range_type){}).data)
 #define MAKE_ARRAY_LITERAL(range_type, ...) (VALUE_TYPE2(range_type)[]){__VA_ARGS__}
@@ -711,7 +733,7 @@ void test_format_string() {
 
 void test_table_for_key_value() {
     auto table = (IntTable){};
-    table.hash = hashInt;
+    table.strategy = DEFAULT_HASHING_INT;
     SET_KEY_VALUE(1, 2, table);
     SET_KEY_VALUE(2, 3, table);
     SET_KEY_VALUE(3, 0, table);
@@ -725,7 +747,7 @@ void test_table_for_key_value() {
 
 void test_table_for_key_value_string() {
     auto table = (StringTable){};
-    table.hash = hashString;
+    table.strategy = DEFAULT_HASHING_STRING;
     SET_KEY_VALUE("1", "a", table);
     SET_KEY_VALUE("2", "ab", table);
     //SET_KEY_VALUE("3", "0", table);
@@ -739,7 +761,7 @@ void test_table_for_key_value_string() {
 
 void test_table_missing_key() {
     auto table = (IntTable){};
-    table.hash = hashInt;
+    table.strategy = DEFAULT_HASHING_INT;
     auto value = 0;
     FIND_KEY(2, v, table) {
         value = *v;
@@ -749,7 +771,7 @@ void test_table_missing_key() {
 
 void test_table_available_key() {
     auto table = (IntTable){};
-    table.hash = hashInt;
+    table.strategy = DEFAULT_HASHING_INT;
     SET_KEY_VALUE(2, 5, table);
     auto value = 0;
     FIND_KEY(2, v, table) {

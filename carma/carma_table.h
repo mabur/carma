@@ -25,7 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // FIND DATA IN TABLE
 
-#define FIND_BASE_INDEX(table, key) ((table).hash(key) % (table).keys.count)
+#define FIND_BASE_INDEX(table, key) ((table).strategy.hash(key) % (table).keys.count)
 
 #define FOR_EACH_KEY_VALUE(key, value, table) \
     auto key = BEGIN_POINTER(table.keys); \
