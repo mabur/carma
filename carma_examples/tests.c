@@ -759,6 +759,20 @@ void test_table_for_key_value_string() {
     ASSERT_EQUAL_INT("test_table_for_key_value", character_count, 6);
 }
 
+void test_table_multiple_strings() {
+    auto table = (StringTable){};
+    table.strategy = DEFAULT_HASHING_STRING;
+    SET_KEY_VALUE("1", "a", table);
+    SET_KEY_VALUE("2", "ab", table);
+    SET_KEY_VALUE("3", "x", table);
+    SET_KEY_VALUE("3", "y", table);
+    //SET_KEY_VALUE("3", "z", table);
+    //SET_KEY_VALUE("3", "w", table);
+    FOR_EACH_KEY_VALUE(k, v, table) {
+        printf("Table item: key=%s value=%s\n", *k, *v);
+    }
+}
+
 void test_table_missing_key() {
     auto table = (IntTable){};
     table.strategy = DEFAULT_HASHING_INT;
@@ -847,6 +861,8 @@ int main() {
     test_table_for_key_value_string();
     test_table_missing_key();
     test_table_available_key();
+
+    test_table_multiple_strings();
     
     summarize_tests();
     
