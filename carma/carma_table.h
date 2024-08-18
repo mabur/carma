@@ -60,6 +60,7 @@
     } \
 } while (0)
 
+// TODO: are table and new_table swapped in implementation?
 #define DOUBLE_TABLE_CAPACITY(table) do { \
     auto old_capacity = (table).keys.capacity; \
     auto new_capacity = old_capacity ? 2 * old_capacity : 1; \
@@ -69,7 +70,7 @@
         auto inner_base_index = FIND_BASE_INDEX((table), *key); \
         auto free_index_inner = inner_base_index; \
         FIND_FREE_INDEX((table), *key, free_index_inner); \
-        assert(free_index_inner !=  SIZE_MAX); \
+        assert(free_index_inner != SIZE_MAX); \
         new_table.keys.data[free_index_inner] = *key; \
         new_table.values.data[free_index_inner] = *value; \
         new_table.occupied.data[free_index_inner] = true; \
