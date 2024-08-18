@@ -691,9 +691,9 @@ void test_format_string() {
 void test_table_for_key_value() {
     auto table = (IntTable){};
     table.hash = hashInt;
-    SET_KEY_VALUE(table, 1, 2);
-    SET_KEY_VALUE(table, 2, 3);
-    SET_KEY_VALUE(table, 3, 5);
+    SET_KEY_VALUE(1, 2, table);
+    SET_KEY_VALUE(2, 3, table);
+    SET_KEY_VALUE(3, 5, table);
     auto product = 1;
     FOR_KEY_VALUE(k, v, table) {
         product *= *v;
@@ -714,7 +714,7 @@ void test_table_missing_key() {
 void test_table_available_key() {
     auto table = (IntTable){};
     table.hash = hashInt;
-    SET_KEY_VALUE(table, 2, 5);
+    SET_KEY_VALUE(2, 5, table);
     auto value = 0;
     FOR_KEY(v, table, 2) {
         value = *v;

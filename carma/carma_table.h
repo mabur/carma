@@ -76,7 +76,7 @@
     table = new_table; \
 } while (0)
 
-#define SET_KEY_VALUE(table, key, value) do { \
+#define SET_KEY_VALUE(key, value, table) do { \
     if (IS_EMPTY(table.keys)) { \
         DOUBLE_TABLE_CAPACITY(table); \
     } \
