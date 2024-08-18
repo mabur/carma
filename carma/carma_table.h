@@ -38,23 +38,21 @@
     for (typeof(value) (name) = (value), (name##count) = 0; !(name##count); ++(name##count))
 
 // TODO: extend to interval
-// TODO: allow custom comparison of keys
 #define FIND_KEY(key, value_it, table) \
     if (!IS_EMPTY((table).keys)) \
     FOR_STATE(_i, FIND_BASE_INDEX((table), (key))) \
     FOR_STATE(value_it, (table).values.data + _i) \
     if (table.occupied.data[_i]) \
-    if (table.keys.data[_i] == key)
+    if (table.strategy.equals(table.keys.data[_i], key))
 
 ////////////////////////////////////////////////////////////////////////////////
 // ADD DATA TO TABLE
 
 // TODO: extend to interval
-// TODO: allow custom comparison of keys
 #define FIND_FREE_INDEX(table, key, index) do { \
     if (!table.occupied.data[index]) { \
     } \
-    else if (table.keys.data[index] == key) { \
+    else if (table.strategy.equals(table.keys.data[index], key)) { \
     } \
     else { \
         index = SIZE_MAX; \
