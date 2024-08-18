@@ -64,12 +64,12 @@
     auto new_capacity = old_capacity ? 2 * old_capacity : 1; \
     auto new_table = table; \
     INIT_TABLE(new_table, new_capacity); \
-    FOR_EACH_KEY_VALUE(inner_key, inner_value, (table)) { \
-        auto inner_base_index = FIND_BASE_INDEX((table), *inner_key); \
+    FOR_EACH_KEY_VALUE(key, value, (table)) { \
+        auto inner_base_index = FIND_BASE_INDEX((table), *key); \
         auto free_index_inner = inner_base_index; \
-        FIND_FREE_INDEX((table), *inner_key, free_index_inner); \
-        new_table.keys.data[free_index_inner] = *inner_key; \
-        new_table.values.data[free_index_inner] = *inner_value; \
+        FIND_FREE_INDEX((table), *key, free_index_inner); \
+        new_table.keys.data[free_index_inner] = *key; \
+        new_table.values.data[free_index_inner] = *value; \
         new_table.occupied.data[free_index_inner] = true; \
     } \
     FREE_TABLE(table); \
