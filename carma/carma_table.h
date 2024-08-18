@@ -29,7 +29,6 @@
 #define FOR_STATE(name, value) \
     for (typeof(value) (name) = (value), (name##count) = 0; !(name##count); ++(name##count))
 
-// How to handle missing key? As pre-condition? Like FOR_MAX?
 // TODO: extend to interval
 #define FOR_KEY(value_it, table, key) \
     if (!IS_EMPTY((table).keys)) \
