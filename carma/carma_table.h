@@ -57,12 +57,17 @@ bool CONTAINS(IntTable table, int key) {
 }
 */
 
+#define FOR_STATE(name, value) \
+    for (typeof(value) (name) = (value), (name##count) = 0; !(name##count); ++(name##count))
+
 // How to handle missing key? As pre-condition? Like FOR_MAX?
 // TODO: extend to interval
-#define FOR_KEY(key, value_it, table) \
-    auto _i = findBaseIndex((table), (key)); \
-    auto value_it = (table).values.data + _i; \
-    if (table.occupied.data[_i] && table.keys.data[_i] == key)
+#define FOR_KEY(value_it, table, key) \
+    if (!IS_EMPTY((table).keys)) \
+    FOR_STATE(_i, findBaseIndex((table), (key))) \
+    FOR_STATE(value_it, (table).values.data + _i) \
+    if (table.occupied.data[_i]) \
+    if (table.keys.data[_i] == key)
 
 #define DOUBLE_TABLE_CAPACITY(table) do { \
     auto old_capacity = (table).keys.capacity; \
