@@ -6,13 +6,6 @@
 
 #include "carma.h"
 
-#define FOR_KEY_VALUE(key, value, table) \
-    auto key = BEGIN_POINTER(table.keys); \
-    auto value = BEGIN_POINTER(table.values); \
-    for (auto _occupied = BEGIN_POINTER(table.occupied); \
-        _occupied != END_POINTER(table.occupied); ++key, ++value, ++_occupied) \
-        if (*_occupied) 
-
 #define INIT_TABLE(table, capacity) do { \
     INIT_DARRAY((table).keys, (capacity), (capacity)); \
     INIT_DARRAY((table).values, (capacity), (capacity)); \
@@ -25,6 +18,25 @@
     FREE_DARRAY((table).values); \
     FREE_DARRAY((table).occupied); \
 } while (0)
+
+#define FOR_KEY_VALUE(key, value, table) \
+    auto key = BEGIN_POINTER(table.keys); \
+    auto value = BEGIN_POINTER(table.values); \
+    for (auto _occupied = BEGIN_POINTER(table.occupied); \
+        _occupied != END_POINTER(table.occupied); ++key, ++value, ++_occupied) \
+        if (*_occupied)
+
+#define FOR_STATE(name, value) \
+    for (typeof(value) (name) = (value), (name##count) = 0; !(name##count); ++(name##count))
+
+// How to handle missing key? As pre-condition? Like FOR_MAX?
+// TODO: extend to interval
+#define FOR_KEY(value_it, table, key) \
+    if (!IS_EMPTY((table).keys)) \
+    FOR_STATE(_i, findBaseIndex((table), (key))) \
+    FOR_STATE(value_it, (table).values.data + _i) \
+    if (table.occupied.data[_i]) \
+    if (table.keys.data[_i] == key)
 
 #define findBaseIndex(table, key) ((table).hash(key) % (table).keys.count)
 
@@ -56,18 +68,6 @@ bool CONTAINS(IntTable table, int key) {
     return false;
 }
 */
-
-#define FOR_STATE(name, value) \
-    for (typeof(value) (name) = (value), (name##count) = 0; !(name##count); ++(name##count))
-
-// How to handle missing key? As pre-condition? Like FOR_MAX?
-// TODO: extend to interval
-#define FOR_KEY(value_it, table, key) \
-    if (!IS_EMPTY((table).keys)) \
-    FOR_STATE(_i, findBaseIndex((table), (key))) \
-    FOR_STATE(value_it, (table).values.data + _i) \
-    if (table.occupied.data[_i]) \
-    if (table.keys.data[_i] == key)
 
 #define DOUBLE_TABLE_CAPACITY(table) do { \
     auto old_capacity = (table).keys.capacity; \
