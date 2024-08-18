@@ -692,6 +692,13 @@ void test_table() {
     auto table = (IntTable){};
     table.hash = hashInt;
     SET_KEY_VALUE(table, 1, 2);
+    SET_KEY_VALUE(table, 2, 3);
+    SET_KEY_VALUE(table, 3, 5);
+    auto product = 1;
+    FOR_KEY_VALUE(k, v, table) {
+        product *= *v;
+    }
+    ASSERT_EQUAL_INT("test_table", product, 30);
 }
 
 int main() {
