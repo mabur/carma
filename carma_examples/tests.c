@@ -705,7 +705,7 @@ void test_table_missing_key() {
     auto table = (IntTable){};
     table.hash = hashInt;
     auto value = 0;
-    FOR_KEY(2, v, table) {
+    FIND_KEY(2, v, table) {
         value = *v;
     }
     ASSERT_EQUAL_INT("test_table_missing_key", value, 0);
@@ -716,7 +716,7 @@ void test_table_available_key() {
     table.hash = hashInt;
     SET_KEY_VALUE(2, 5, table);
     auto value = 0;
-    FOR_KEY(2, v, table) {
+    FIND_KEY(2, v, table) {
         value = *v;
     }
     ASSERT_EQUAL_INT("test_table_available_key", value, 5);
