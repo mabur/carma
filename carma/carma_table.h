@@ -6,6 +6,9 @@
 
 #include "carma.h"
 
+////////////////////////////////////////////////////////////////////////////////
+// INIT AND FREE TABLE
+
 #define INIT_TABLE(table, capacity) do { \
     INIT_DARRAY((table).keys, (capacity), (capacity)); \
     INIT_DARRAY((table).values, (capacity), (capacity)); \
@@ -18,6 +21,11 @@
     FREE_DARRAY((table).values); \
     FREE_DARRAY((table).occupied); \
 } while (0)
+
+////////////////////////////////////////////////////////////////////////////////
+// FIND DATA IN TABLE
+
+#define FIND_BASE_INDEX(table, key) ((table).hash(key) % (table).keys.count)
 
 #define FOR_KEY_VALUE(key, value, table) \
     auto key = BEGIN_POINTER(table.keys); \
@@ -37,7 +45,8 @@
     if (table.occupied.data[_i]) \
     if (table.keys.data[_i] == key)
 
-#define FIND_BASE_INDEX(table, key) ((table).hash(key) % (table).keys.count)
+////////////////////////////////////////////////////////////////////////////////
+// ADD DATA TO TABLE
 
 // TODO: extend to interval
 #define FIND_FREE_INDEX(table, key, index) do { \
