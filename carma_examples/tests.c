@@ -695,7 +695,7 @@ void test_table_for_key_value() {
     SET_KEY_VALUE(2, 3, table);
     SET_KEY_VALUE(3, 5, table);
     auto product = 1;
-    FOR_KEY_VALUE(k, v, table) {
+    FOR_EACH_KEY_VALUE(k, v, table) {
         product *= *v;
     }
     ASSERT_EQUAL_INT("test_table_for_key_value", product, 30);

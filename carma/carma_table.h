@@ -27,7 +27,7 @@
 
 #define FIND_BASE_INDEX(table, key) ((table).hash(key) % (table).keys.count)
 
-#define FOR_KEY_VALUE(key, value, table) \
+#define FOR_EACH_KEY_VALUE(key, value, table) \
     auto key = BEGIN_POINTER(table.keys); \
     auto value = BEGIN_POINTER(table.values); \
     for (auto _occupied = BEGIN_POINTER(table.occupied); \
@@ -64,7 +64,7 @@
     auto new_capacity = old_capacity ? 2 * old_capacity : 1; \
     auto new_table = table; \
     INIT_TABLE(new_table, new_capacity); \
-    FOR_KEY_VALUE(inner_key, inner_value, (table)) { \
+    FOR_EACH_KEY_VALUE(inner_key, inner_value, (table)) { \
         auto inner_base_index = FIND_BASE_INDEX((table), *inner_key); \
         auto free_index_inner = inner_base_index; \
         FIND_FREE_INDEX((table), *inner_key, free_index_inner); \
