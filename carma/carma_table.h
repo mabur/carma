@@ -38,6 +38,7 @@
     for (typeof(value) (name) = (value), (name##count) = 0; !(name##count); ++(name##count))
 
 // TODO: extend to interval
+// TODO: allow custom comparison of keys
 #define FIND_KEY(key, value_it, table) \
     if (!IS_EMPTY((table).keys)) \
     FOR_STATE(_i, FIND_BASE_INDEX((table), (key))) \
@@ -49,6 +50,7 @@
 // ADD DATA TO TABLE
 
 // TODO: extend to interval
+// TODO: allow custom comparison of keys
 #define FIND_FREE_INDEX(table, key, index) do { \
     if (!table.occupied.data[index]) { \
     } \
