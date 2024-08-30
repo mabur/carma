@@ -17,6 +17,11 @@
   - Some memory can be allocated for a game interval, like a frame or a scene, and then deallocated/cleared after that frame or scene.
   - Some memory can be allocated on the stack using alloca (C&C++) or VLA (C). At least arrays up to ~1000 primitives.
   - What common cases are left?
+* Similar libraries:
+  - github.com/stclib/STC
+  - github.com/mickjc750/str
+  - github.com/chrizbazley/strb_t
+  - gustedt.gitlabpages.inria.fr/ellipsis/structellipsis__str8.html
 
 From Falco Girgis:
 // alloca()
