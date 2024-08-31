@@ -1,6 +1,6 @@
 <!-- docs/_sidebar.md -->
 
-- [Introduction](readme.md)
+- [Introduction](README.md)
 - [Range Algorithms](range_algorithms.md)
 - [Drop Algorithms](drop_algorithms.md)
 - [Image Algorithms](image_algorithms.md)
