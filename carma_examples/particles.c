@@ -16,14 +16,7 @@ typedef struct Particles {
 } Particles;
 
 Particle updateParticle(Particle p) {
-    return (Particle){
-        .x = p.x,
-        .y = p.y,
-        .vx = p.vx,
-        .vy = p.vy,
-        .age = p.age,
-        .mass = p.mass,
-    };
+    return (Particle){p.x + p.vx, p.y + p.vy, p.vx, p.vy, p.age, p.mass};
 }
 
 bool shouldDie(Particle p) {
@@ -31,12 +24,12 @@ bool shouldDie(Particle p) {
 }
 
 Particles explode(Particles new_particles, Particle p) {
-    while (p.mass > 0) {
-        auto a = (Particle){p.x, p.y, p.vx, p.vy, 0, p.mass / 2};
-        auto b = (Particle){p.x, p.y, p.vx, p.vy, 0, p.mass / 2};
+    auto m = p.mass / 2;
+    if (m > 0) {
+        auto a = (Particle){p.x, p.y, p.vy, -p.vx, 0, m};
+        auto b = (Particle){p.x, p.y, -p.vy, p.vx, 0, m};
         APPEND(new_particles, a);
         APPEND(new_particles, b);
-        p.mass /= 2;
     }
     return new_particles;
 }
