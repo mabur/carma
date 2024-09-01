@@ -4,14 +4,17 @@ project(carma_examples)
 add_executable(tests tests.c)
 add_executable(raytracer raytracer.c)
 add_executable(aoc22_01 aoc22_01.c)
+add_executable(particles particles.c)
 
 target_compile_features(tests PRIVATE c_std_23)
 target_compile_features(raytracer PRIVATE c_std_23)
 target_compile_features(aoc22_01 PRIVATE c_std_23)
+target_compile_features(particles PRIVATE c_std_23)
 
 target_include_directories(tests PRIVATE ..)
 target_include_directories(raytracer PRIVATE ..)
 target_include_directories(aoc22_01 PRIVATE ..)
+target_include_directories(particles PRIVATE ..)
 
 # Add warning flags for GCC
 if(CMAKE_C_COMPILER_ID MATCHES "GNU")
@@ -31,4 +34,5 @@ if(CMAKE_C_COMPILER_ID MATCHES "GNU")
     target_compile_options(tests PRIVATE ${WARN_FLAGS})
     target_compile_options(raytracer PRIVATE ${WARN_FLAGS})
     target_compile_options(aoc22_01 PRIVATE ${WARN_FLAGS})
+    target_compile_options(particles PRIVATE ${WARN_FLAGS})
 endif()
