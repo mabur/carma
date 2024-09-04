@@ -3,7 +3,9 @@
   - Related to shadowing warnings. So good that the user can get warning when this happens.
   - Could circumvent by using less generic names for local variable inside macros.
 * Simulate closures, by having extra parameters.
-* Assosiative table
+* Associative table
+  - Circumvent custom hashing and equality functions by having macros that can take multiple keys,
+    such that each key is a primitive type that we can safely call sizeof for. 
 * Json
 * Csv
 * Compare arrays and slices in Golang:
