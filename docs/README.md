@@ -1,53 +1,44 @@
 # Introduction
 
-## What is Carma?
+CARMA is a library with C ARray MAcros.
 
-CARMA is a single C header with C ARray MAcros.
+It follows the tradition of C developers implementing their own utility functions to deal with arrays, since the C standard library is so bare bone.
 
-It follows the tradition of C developers implementing their own utility
-functions to deal with arrays,
-since the C standard library is so bare bone.
+## Example
 
-## Different Kind of Arrays
+CARMA has macros like: `FOR_EACH`, `ERASE_IF`,
+`CONCAT`, `CLEAR`, that can be aplied to user-defined array structs like this:
 
-Carma does not define any concrete array structs on its own.
-Instead, it works on any structs that follow certain conventions for its member variables.
+```clike
+#include <carma/carma.h>
 
-A **range** is defined as any struct that has a member variable `data` of pointer type
-and a member variable `count` of integer type:
+typedef struct Particle {
+    int x;
+    int y;
+    int vx;
+    int vy;
+    int age;
+    int mass;
+} Particle;
 
-```c
-struct ExampleRange {
-    int* data;
-    size_t count;
-    ...
-};
+typedef struct Particles {
+    int count;
+    int capacity;
+    Particle* data;
+} Particles;
+
+Particles update(Particles particles) {
+    static Particles new_particles = {};
+
+    FOR_EACH(p, particles) {
+        *p = updateParticle(*p);
+        if (shouldDie(*p)) {
+            new_particles = explode(new_particles, *p);
+        }
+    }
+    ERASE_IF(particles, shouldDie);
+    CONCAT(particles, new_particles);
+    CLEAR(new_particles);
+    return particles;
+}
 ```
-
-A **dynamic array** is defined as a struct that is a **range**
-with the additional member variable `capacity` of integer type:
-
-```c
-struct ExampleDynamicArray {
-    int* data;
-    size_t count;
-    size_t capacity;
-    ...
-};
-```
-
-An **image** is defined as a struct that is a **range**
-with the additional member variables `width` and `height` of integer type:
-
-```c
-struct ExampleImage {
-    int* data;
-    size_t count;
-    size_t width;
-    size_t height;
-    ...
-};
-```
-
-So an **image** is a **range** but not a **dynamic array**,
-since it does not have a `capacity`.
