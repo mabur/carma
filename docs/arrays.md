@@ -3,10 +3,12 @@
 Carma does not define any concrete array structs on its own.
 Instead, it works on any structs that follow certain conventions for its member variables.
 
-A **range** is defined as any struct that has a member variable `data` of pointer type
-and a member variable `count` of integer type:
+## Range
 
-```c
+A **range** is defined as any struct that has a member variable `data` of any pointer type
+and a member variable `count` of any integer type:
+
+```clike
 struct ExampleRange {
     int* data;
     size_t count;
@@ -14,10 +16,12 @@ struct ExampleRange {
 };
 ```
 
-A **dynamic array** is defined as a struct that is a **range**
-with the additional member variable `capacity` of integer type:
+## Dynamic Array
 
-```c
+A **dynamic array** is defined as a struct that is a **range**
+with the additional member variable `capacity` of any integer type:
+
+```clike
 struct ExampleDynamicArray {
     int* data;
     size_t count;
@@ -26,10 +30,12 @@ struct ExampleDynamicArray {
 };
 ```
 
-An **image** is defined as a struct that is a **range**
-with the additional member variables `width` and `height` of integer type:
+## Image
 
-```c
+An **image** is defined as a struct that is a **range**
+with the additional member variables `width` and `height` of any integer type:
+
+```clike
 struct ExampleImage {
     int* data;
     size_t count;
