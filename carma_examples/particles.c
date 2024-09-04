@@ -10,9 +10,9 @@ typedef struct Particle {
 } Particle;
 
 typedef struct Particles {
+    Particle* data;
     int count;
     int capacity;
-    Particle* data;
 } Particles;
 
 Particle updateParticle(Particle p) {
