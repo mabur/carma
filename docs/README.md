@@ -1,6 +1,6 @@
 # Introduction
 
-CARMA is a library with C ARray MAcros.
+CARMA is a header-only library with C ARray MAcros.
 
 It follows the tradition of C developers implementing their own utility functions to deal with arrays, since the C standard library is so bare bone.
 
