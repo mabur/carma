@@ -28,6 +28,11 @@
   - github.com/mickjc750/str
   - github.com/chrizbazley/strb_t
   - gustedt.gitlabpages.inria.fr/ellipsis/structellipsis__str8.html
+* Jacob Sorber on Youtube:
+  - Understanding and implementing a Hash Table (in C)
+  - Does it matter what hash function I use? (hash table example in c)
+  - A better hash table (in C)
+  - Fixing our "better" hash table's memory leaks (in c)
 
 From Falco Girgis:
 // alloca()
