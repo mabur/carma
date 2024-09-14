@@ -71,10 +71,10 @@ size_t _hash_primitive(const char* data, size_t count) {
 
 #define SET_KEY_VALUE2(k, v, table) do { \
     if (IS_EMPTY(table)) { \
-        INIT_DARRAY(table, 1, 1); \
+        INIT_DARRAY((table), 1, 1); \
         CLEAR_TABLE2(table); \
     } \
-    auto _lvalue_key = k; \
+    auto _lvalue_key = (k); \
     auto _hash = _HASH_PRIMITIVE(_lvalue_key); \
     auto index = _hash % (table).count; \
     _FIND_FREE_INDEX2((table), (k), index); \
