@@ -56,12 +56,12 @@ size_t _hash_primitive(const char* data, size_t count) {
     CLEAR_TABLE2(new_table); \
     FOR_EACH(_item, (table)) { \
         if (!_item->occupied) continue; \
-        auto _key = _item->key; \
-        auto inner_base_index = _FIND_BASE_INDEX2((new_table), _key); \
-        auto free_index_inner = inner_base_index; \
-        _FIND_FREE_INDEX2((new_table), _key, free_index_inner); \
-        assert(free_index_inner != SIZE_MAX); \
-        new_table.data[free_index_inner] = *_item; \
+        auto _key = _item->key;             \
+        auto _inner_hash = _hash_primitive((const char*)&(_key), sizeof(_key)); \
+        auto _inner_index = _inner_hash % new_table.capacity; \
+        _FIND_FREE_INDEX2((new_table), _key, _inner_index); \
+        assert(_inner_index != SIZE_MAX); \
+        new_table.data[_inner_index] = *_item; \
     } \
     FREE_DARRAY(table); \
     table = new_table; \
