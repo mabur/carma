@@ -762,7 +762,7 @@ void test_simple_table_for_key_value() {
     auto table = (SimpleIntTable){};
     SET_KEY_VALUE2(1, 2, table);
     SET_KEY_VALUE2(2, 3, table);
-    SET_KEY_VALUE2(3, 0, table);
+    //SET_KEY_VALUE2(3, 0, table);
     //SET_KEY_VALUE2(3, 5, table);
     auto product = 1;
     FOR_EACH(item, table) {
@@ -770,7 +770,7 @@ void test_simple_table_for_key_value() {
             product *= item->value;
         }
     }
-    ASSERT_EQUAL_INT("test_simple_table_for_key_value", product, 0);
+    ASSERT_EQUAL_INT("test_simple_table_for_key_value", product, 6);
 }
 
 void test_table_for_key_value_string() {
