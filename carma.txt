@@ -35,6 +35,10 @@
     - AOS requires fewer custom struct definitions by user.
   - Tsoding hash table in C:
     - https://www.youtube.com/watch?v=n-S9DBwPGTo
+  - CppCon 2017: Matt Kulukundis “Designing a Fast, Efficient, Cache-friendly Hash Table, Step by Step”
+    - Google SwissTable
+    - https://www.youtube.com/watch?v=ncHmEUmJZf4
+    - Have occupancy byte that stores both: occupancy, deleted, part of the hash.
 
 From Falco Girgis:
 // alloca()
