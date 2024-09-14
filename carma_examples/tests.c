@@ -4,6 +4,19 @@
 #include <carma/carma.h>
 #include <carma/carma_string.h>
 #include <carma/carma_table.h>
+#include <carma/carma_simple_table.h>
+
+typedef struct {
+    int key;
+    int value;
+    bool occupied;
+} ItemIntInt;
+
+typedef struct {
+    ItemIntInt* data;
+    size_t count;
+    size_t capacity;
+} SimpleIntTable;
 
 typedef struct {
     int* data;
@@ -794,6 +807,18 @@ void test_table_available_key() {
     ASSERT_EQUAL_INT("test_table_available_key", value, 5);
 }
 
+void test_simple_table() {
+    auto table = (SimpleIntTable){};
+    SET_KEY_VALUE2(2, 3, table);
+    auto count = 0;
+    FOR_EACH(it, table) {
+        if (it->occupied) {
+            count++;
+        }
+    }
+    ASSERT_EQUAL_INT("test_simple_table", count, 1);
+}
+
 int main() {
     test_init_image();
     
@@ -863,6 +888,8 @@ int main() {
     test_table_available_key();
 
     test_table_multiple_strings();
+
+    test_simple_table();
     
     summarize_tests();
     
