@@ -73,12 +73,12 @@ size_t _hash_primitive(const char* data, size_t count) {
         CLEAR_TABLE2(table); \
     } \
     auto _lvalue_key = k; \
-    auto base_index = _FIND_BASE_INDEX2((table), _lvalue_key); \
-    auto index = base_index; \
+    auto _hash = _hash_primitive((const char*)&(_lvalue_key), sizeof(_lvalue_key)); \
+    auto index = _hash % (table).count; \
     _FIND_FREE_INDEX2((table), (k), index); \
     while (index == SIZE_MAX) { \
         _DOUBLE_TABLE_CAPACITY2(table); \
-        index = base_index;                   \
+        index = _hash % (table).count; \
         _FIND_FREE_INDEX2((table), (k), index); \
     } \
     (table).data[index].key = (k); \
