@@ -40,9 +40,12 @@ size_t _hash_primitive(const char* data, size_t count) {
 
 // TODO: extend to interval
 #define _FIND_FREE_INDEX2(table, k, index) do { \
+    auto _lvalue_key = (k); \
+    auto _hash = _HASH_PRIMITIVE(_lvalue_key); \
+    (index) = (_hash) % (table).count; \
     if (!(table).data[index].occupied) { \
     } \
-    else if ((table).data[index].key == (k)) { \
+    else if ((table).data[index].key == _lvalue_key) { \
     } \
     else { \
         (index) = SIZE_MAX; \
@@ -58,10 +61,8 @@ size_t _hash_primitive(const char* data, size_t count) {
     CLEAR_TABLE2(new_table); \
     FOR_EACH(_item, (table)) { \
         if (!_item->occupied) continue; \
-        auto _key = _item->key;             \
-        auto _inner_hash = _HASH_PRIMITIVE(_key); \
-        auto _inner_index = _inner_hash % new_table.count; \
-        _FIND_FREE_INDEX2((new_table), _key, _inner_index); \
+        size_t _inner_index; \
+        _FIND_FREE_INDEX2((new_table), _item->key, _inner_index); \
         assert(_inner_index != SIZE_MAX); \
         new_table.data[_inner_index] = *_item; \
     } \
@@ -74,13 +75,10 @@ size_t _hash_primitive(const char* data, size_t count) {
         INIT_DARRAY((table), 1, 1); \
         CLEAR_TABLE2(table); \
     } \
-    auto _lvalue_key = (k); \
-    auto _hash = _HASH_PRIMITIVE(_lvalue_key); \
-    auto index = _hash % (table).count; \
+    size_t index; \
     _FIND_FREE_INDEX2((table), (k), index); \
     while (index == SIZE_MAX) { \
         _DOUBLE_TABLE_CAPACITY2(table); \
-        index = _hash % (table).count; \
         _FIND_FREE_INDEX2((table), (k), index); \
     } \
     (table).data[index].key = (k); \
