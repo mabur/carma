@@ -79,6 +79,7 @@
     table = new_table; \
 } while (0)
 
+// TODO: base_index can refer to old table incorrectly
 #define SET_KEY_VALUE(key, value, table) do { \
     if (IS_EMPTY(table.keys)) { \
         DOUBLE_TABLE_CAPACITY(table); \
