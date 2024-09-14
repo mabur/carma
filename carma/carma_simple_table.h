@@ -55,7 +55,7 @@ size_t _hash_primitive(const char* data, size_t count) {
 #define CLEAR_TABLE2(table) FOR_EACH(item, (table)) item->occupied = false;
 
 #define _DOUBLE_TABLE_CAPACITY2(table) do { \
-    auto new_capacity = (table).capacity ? 2 * (table).capacity : 1; \
+    auto new_capacity = 2 * (table).capacity; \
     auto new_table = table; \
     INIT_DARRAY(new_table, new_capacity, new_capacity); \
     CLEAR_TABLE2(new_table); \
