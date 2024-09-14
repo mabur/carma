@@ -3,7 +3,6 @@
 
 #include <carma/carma.h>
 #include <carma/carma_string.h>
-#include <carma/carma_table.h>
 #include <carma/carma_simple_table.h>
 
 typedef struct {
@@ -34,53 +33,6 @@ typedef struct {
     size_t count;
     size_t capacity;
 } StringArray;
-
-size_t hashInt(int x) {
-    return x;
-}
-
-bool equalsInt(int a, int b) {
-    return a == b;
-}
-
-size_t hashString(const char* string) {
-    size_t hash = 5381;
-    for (const char* sub_string = string; *sub_string; ++sub_string) {
-        hash = ((hash << 5) + hash) + *sub_string;
-    }
-    return hash;
-}
-
-bool equalsString(const char* a, const char* b) {
-    return strcmp(a, b) == 0;
-}
-
-typedef struct {
-    size_t (*hash)(int);
-    bool (*equals)(int, int);
-} IntHashing;
-
-typedef struct {
-    size_t (*hash)(const char*);
-    bool (*equals)(const char*, const char*);
-} StringHashing;
-
-auto DEFAULT_HASHING_INT = (IntHashing){.hash=hashInt, .equals=equalsInt};
-auto DEFAULT_HASHING_STRING = (StringHashing){.hash=hashString, .equals=equalsString};
-
-typedef struct {
-    IntArray keys;
-    IntArray values;
-    IntArray occupied;
-    typeof(DEFAULT_HASHING_INT) strategy;
-} IntTable;
-
-typedef struct {
-    StringArray keys;
-    StringArray values;
-    IntArray occupied;
-    typeof(DEFAULT_HASHING_STRING) strategy;
-} StringTable;
 
 #define VALUE_TYPE2(range_type) typeof(*((range_type){}).data)
 #define MAKE_ARRAY_LITERAL(range_type, ...) (VALUE_TYPE2(range_type)[]){__VA_ARGS__}
@@ -744,20 +696,6 @@ void test_format_string() {
     ASSERT_DYNAMIC_STRING("test_format_string 8", s, "abbccc", 6, 8);
 }
 
-void test_table_for_key_value() {
-    auto table = (IntTable){};
-    table.strategy = DEFAULT_HASHING_INT;
-    SET_KEY_VALUE(1, 2, table);
-    SET_KEY_VALUE(2, 3, table);
-    SET_KEY_VALUE(3, 0, table);
-    SET_KEY_VALUE(3, 5, table);
-    auto product = 1;
-    FOR_EACH_KEY_VALUE(k, v, table) {
-        product *= *v;
-    }
-    ASSERT_EQUAL_INT("test_table_for_key_value", product, 30);
-}
-
 void test_simple_table_for_key_value() {
     auto table = (SimpleIntTable){};
     SET_KEY_VALUE2(1, 2, table);
@@ -786,50 +724,20 @@ void test_simple_table_duplicates() {
     ASSERT_EQUAL_INT("test_simple_table_duplicates", product, 3);
 }
 
-void test_table_for_key_value_string() {
-    auto table = (StringTable){};
-    table.strategy = DEFAULT_HASHING_STRING;
-    SET_KEY_VALUE("1", "a", table);
-    SET_KEY_VALUE("2", "ab", table);
-    //SET_KEY_VALUE("3", "0", table);
-    SET_KEY_VALUE("3", "abc", table);
-    auto character_count = 0;
-    FOR_EACH_KEY_VALUE(k, v, table) {
-        character_count += strlen(*v);
-    }
-    ASSERT_EQUAL_INT("test_table_for_key_value_string", character_count, 6);
-}
-
-void test_table_multiple_strings() {
-    auto table = (StringTable){};
-    table.strategy = DEFAULT_HASHING_STRING;
-    SET_KEY_VALUE("1", "a", table);
-    SET_KEY_VALUE("2", "ab", table);
-    SET_KEY_VALUE("3", "x", table);
-    SET_KEY_VALUE("3", "y", table);
-    //SET_KEY_VALUE("3", "z", table);
-    //SET_KEY_VALUE("3", "w", table);
-    FOR_EACH_KEY_VALUE(k, v, table) {
-        printf("Table item: key=%s value=%s\n", *k, *v);
-    }
-}
-
 void test_table_missing_key() {
-    auto table = (IntTable){};
-    table.strategy = DEFAULT_HASHING_INT;
+    auto table = (SimpleIntTable){};
     auto value = 0;
-    FIND_KEY(2, v, table) {
+    FIND_KEY2(2, v, table) {
         value = *v;
     }
     ASSERT_EQUAL_INT("test_table_missing_key", value, 0);
 }
 
 void test_table_available_key() {
-    auto table = (IntTable){};
-    table.strategy = DEFAULT_HASHING_INT;
-    SET_KEY_VALUE(2, 5, table);
+    auto table = (SimpleIntTable){};
+    SET_KEY_VALUE2(2, 5, table);
     auto value = 0;
-    FIND_KEY(2, v, table) {
+    FIND_KEY2(2, v, table) {
         value = *v;
     }
     ASSERT_EQUAL_INT("test_table_available_key", value, 5);
@@ -915,14 +823,10 @@ int main() {
     test_concat_cstring();
     test_format_string();
     
-    test_table_for_key_value();
     test_simple_table_for_key_value();
     test_simple_table_duplicates();
-    test_table_for_key_value_string();
     test_table_missing_key();
     test_table_available_key();
-
-    test_table_multiple_strings();
 
     test_simple_table();
     
