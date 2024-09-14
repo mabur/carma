@@ -18,6 +18,8 @@ size_t _hash_primitive(const char* data, size_t count) {
     return hash;
 }
 
+#define _HASH_PRIMITIVE(key) _hash_primitive((const char*)&(key), sizeof(key))
+
 #define _FIND_BASE_INDEX2(table, key) \
     (_hash_primitive((const char*)&(key), sizeof(key)) % (table).count)
 
@@ -57,7 +59,7 @@ size_t _hash_primitive(const char* data, size_t count) {
     FOR_EACH(_item, (table)) { \
         if (!_item->occupied) continue; \
         auto _key = _item->key;             \
-        auto _inner_hash = _hash_primitive((const char*)&(_key), sizeof(_key)); \
+        auto _inner_hash = _HASH_PRIMITIVE(_key); \
         auto _inner_index = _inner_hash % new_table.count; \
         _FIND_FREE_INDEX2((new_table), _key, _inner_index); \
         assert(_inner_index != SIZE_MAX); \
@@ -73,7 +75,7 @@ size_t _hash_primitive(const char* data, size_t count) {
         CLEAR_TABLE2(table); \
     } \
     auto _lvalue_key = k; \
-    auto _hash = _hash_primitive((const char*)&(_lvalue_key), sizeof(_lvalue_key)); \
+    auto _hash = _HASH_PRIMITIVE(_lvalue_key); \
     auto index = _hash % (table).count; \
     _FIND_FREE_INDEX2((table), (k), index); \
     while (index == SIZE_MAX) { \
