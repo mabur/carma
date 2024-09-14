@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // FIND DATA IN TABLE
 
-size_t hash_primitive(const char* data, size_t count) {
+size_t _hash_primitive(const char* data, size_t count) {
     size_t hash = 5381;
     for (size_t i = 0; i < count; ++i) {
         hash = ((hash << 5) + hash) + data[i];
@@ -18,8 +18,8 @@ size_t hash_primitive(const char* data, size_t count) {
     return hash;
 }
 
-#define FIND_BASE_INDEX2(table, key) \
-    (hash_primitive((const char*)&(key), sizeof(key)) % (table).count)
+#define _FIND_BASE_INDEX2(table, key) \
+    (_hash_primitive((const char*)&(key), sizeof(key)) % (table).count)
 
 #define FOR_STATE2(name, value) \
     for (typeof(value) (name) = (value), (name##count) = 0; !(name##count); ++(name##count))
@@ -28,7 +28,7 @@ size_t hash_primitive(const char* data, size_t count) {
 #define FIND_KEY2(k, value_it, table) \
     if (!IS_EMPTY(table)) \
     FOR_STATE2(_k, (k)) \
-    FOR_STATE2(_i, FIND_BASE_INDEX2((table), _k)) \
+    FOR_STATE2(_i, _FIND_BASE_INDEX2((table), _k)) \
     FOR_STATE2(value_it, &(table).data[_i].value) \
     if ((table).data[_i].occupied) \
     if ((table).data[_i].key == k)
@@ -37,7 +37,7 @@ size_t hash_primitive(const char* data, size_t count) {
 // ADD DATA TO TABLE
 
 // TODO: extend to interval
-#define FIND_FREE_INDEX2(table, k, index) do { \
+#define _FIND_FREE_INDEX2(table, k, index) do { \
     if (!(table).data[index].occupied) { \
     } \
     else if ((table).data[index].key == (k)) { \
@@ -47,7 +47,7 @@ size_t hash_primitive(const char* data, size_t count) {
     } \
 } while (0)
 
-#define DOUBLE_TABLE_CAPACITY2(table) do { \
+#define _DOUBLE_TABLE_CAPACITY2(table) do { \
     auto new_capacity = (table).capacity ? 2 * (table).capacity : 1; \
     auto new_table = table; \
     INIT_DARRAY(new_table, new_capacity, new_capacity); \
@@ -57,9 +57,9 @@ size_t hash_primitive(const char* data, size_t count) {
     FOR_EACH(_item, (table)) { \
         if (!_item->occupied) continue; \
         auto _key = _item->key; \
-        auto inner_base_index = FIND_BASE_INDEX2((new_table), _key); \
+        auto inner_base_index = _FIND_BASE_INDEX2((new_table), _key); \
         auto free_index_inner = inner_base_index; \
-        FIND_FREE_INDEX2((new_table), _key, free_index_inner); \
+        _FIND_FREE_INDEX2((new_table), _key, free_index_inner); \
         assert(free_index_inner != SIZE_MAX); \
         new_table.data[free_index_inner] = *_item; \
     } \
@@ -69,16 +69,16 @@ size_t hash_primitive(const char* data, size_t count) {
 
 #define SET_KEY_VALUE2(k, v, table) do { \
     if (IS_EMPTY(table)) { \
-        DOUBLE_TABLE_CAPACITY2(table); \
+        _DOUBLE_TABLE_CAPACITY2(table); \
     } \
     auto _lvalue_key = k; \
-    auto base_index = FIND_BASE_INDEX2((table), _lvalue_key); \
+    auto base_index = _FIND_BASE_INDEX2((table), _lvalue_key); \
     auto index = base_index; \
-    FIND_FREE_INDEX2((table), (k), index); \
+    _FIND_FREE_INDEX2((table), (k), index); \
     while (index == SIZE_MAX) { \
-        DOUBLE_TABLE_CAPACITY2(table); \
+        _DOUBLE_TABLE_CAPACITY2(table); \
         index = base_index;                   \
-        FIND_FREE_INDEX2((table), (k), index); \
+        _FIND_FREE_INDEX2((table), (k), index); \
     } \
     (table).data[index].key = (k); \
     (table).data[index].value = (v); \
