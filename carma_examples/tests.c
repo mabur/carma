@@ -758,6 +758,21 @@ void test_table_for_key_value() {
     ASSERT_EQUAL_INT("test_table_for_key_value", product, 30);
 }
 
+void test_simple_table_for_key_value() {
+    auto table = (SimpleIntTable){};
+    SET_KEY_VALUE2(1, 2, table);
+    //SET_KEY_VALUE2(2, 3, table);
+    //SET_KEY_VALUE2(3, 0, table);
+    //SET_KEY_VALUE2(3, 5, table);
+    auto product = 1;
+    FOR_EACH(item, table) {
+        if (item->occupied) {
+            product *= item->value;
+        }
+    }
+    ASSERT_EQUAL_INT("test_simple_table_for_key_value", product, 2);
+}
+
 void test_table_for_key_value_string() {
     auto table = (StringTable){};
     table.strategy = DEFAULT_HASHING_STRING;
@@ -769,7 +784,7 @@ void test_table_for_key_value_string() {
     FOR_EACH_KEY_VALUE(k, v, table) {
         character_count += strlen(*v);
     }
-    ASSERT_EQUAL_INT("test_table_for_key_value", character_count, 6);
+    ASSERT_EQUAL_INT("test_table_for_key_value_string", character_count, 6);
 }
 
 void test_table_multiple_strings() {
@@ -888,6 +903,7 @@ int main() {
     test_format_string();
     
     test_table_for_key_value();
+    test_simple_table_for_key_value();
     test_table_for_key_value_string();
     test_table_missing_key();
     test_table_available_key();
