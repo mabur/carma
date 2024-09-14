@@ -55,6 +55,7 @@ size_t hash_primitive(const char* data, size_t count) {
         _item->occupied = false; \
     } \
     FOR_EACH(_item, (table)) { \
+        if (!_item->occupied) continue; \
         auto _key = _item->key; \
         auto inner_base_index = FIND_BASE_INDEX2((new_table), _key); \
         auto free_index_inner = inner_base_index; \
