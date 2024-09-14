@@ -58,7 +58,7 @@ size_t _hash_primitive(const char* data, size_t count) {
         if (!_item->occupied) continue; \
         auto _key = _item->key;             \
         auto _inner_hash = _hash_primitive((const char*)&(_key), sizeof(_key)); \
-        auto _inner_index = _inner_hash % new_table.capacity; \
+        auto _inner_index = _inner_hash % new_table.count; \
         _FIND_FREE_INDEX2((new_table), _key, _inner_index); \
         assert(_inner_index != SIZE_MAX); \
         new_table.data[_inner_index] = *_item; \
