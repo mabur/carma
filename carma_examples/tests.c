@@ -698,10 +698,10 @@ void test_format_string() {
 
 void test_simple_table_for_key_value() {
     auto table = (SimpleIntTable){};
-    SET_KEY_VALUE2(1, 2, table);
-    SET_KEY_VALUE2(2, 3, table);
-    SET_KEY_VALUE2(3, 0, table);
-    SET_KEY_VALUE2(3, 5, table);
+    SET_KEY_VALUE(1, 2, table);
+    SET_KEY_VALUE(2, 3, table);
+    SET_KEY_VALUE(3, 0, table);
+    SET_KEY_VALUE(3, 5, table);
     auto product = 1;
     FOR_EACH(item, table) {
         if (item->occupied) {
@@ -713,8 +713,8 @@ void test_simple_table_for_key_value() {
 
 void test_simple_table_duplicates() {
     auto table = (SimpleIntTable){};
-    SET_KEY_VALUE2(1, 2, table);
-    SET_KEY_VALUE2(1, 3, table);
+    SET_KEY_VALUE(1, 2, table);
+    SET_KEY_VALUE(1, 3, table);
     auto product = 1;
     FOR_EACH(item, table) {
         if (item->occupied) {
@@ -727,7 +727,7 @@ void test_simple_table_duplicates() {
 void test_table_missing_key() {
     auto table = (SimpleIntTable){};
     auto value = 0;
-    FIND_KEY2(2, v, table) {
+    FIND_KEY(2, v, table) {
         value = *v;
     }
     ASSERT_EQUAL_INT("test_table_missing_key", value, 0);
@@ -735,9 +735,9 @@ void test_table_missing_key() {
 
 void test_table_available_key() {
     auto table = (SimpleIntTable){};
-    SET_KEY_VALUE2(2, 5, table);
+    SET_KEY_VALUE(2, 5, table);
     auto value = 0;
-    FIND_KEY2(2, v, table) {
+    FIND_KEY(2, v, table) {
         value = *v;
     }
     ASSERT_EQUAL_INT("test_table_available_key", value, 5);
@@ -745,7 +745,7 @@ void test_table_available_key() {
 
 void test_simple_table() {
     auto table = (SimpleIntTable){};
-    SET_KEY_VALUE2(2, 3, table);
+    SET_KEY_VALUE(2, 3, table);
     auto count = 0;
     FOR_EACH(it, table) {
         if (it->occupied) {
@@ -753,7 +753,7 @@ void test_simple_table() {
         }
     }
     auto value = 0;
-    FIND_KEY2(2, v, table) {
+    FIND_KEY(2, v, table) {
         value = *v;
     }
     ASSERT_EQUAL_INT("test_simple_table", count, 1);
