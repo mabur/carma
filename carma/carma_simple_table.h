@@ -69,7 +69,8 @@ size_t _hash_primitive(const char* data, size_t count) {
 
 #define SET_KEY_VALUE2(k, v, table) do { \
     if (IS_EMPTY(table)) { \
-        _DOUBLE_TABLE_CAPACITY2(table); \
+        INIT_DARRAY(table, 1, 1); \
+        CLEAR_TABLE2(table); \
     } \
     auto _lvalue_key = k; \
     auto base_index = _FIND_BASE_INDEX2((table), _lvalue_key); \
