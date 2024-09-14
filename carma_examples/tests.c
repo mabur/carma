@@ -15,7 +15,7 @@ typedef struct {
     ItemIntInt* data;
     size_t count;
     size_t capacity;
-} SimpleIntTable;
+} TableIntInt;
 
 typedef struct {
     int* data;
@@ -696,8 +696,21 @@ void test_format_string() {
     ASSERT_DYNAMIC_STRING("test_format_string 8", s, "abbccc", 6, 8);
 }
 
-void test_simple_table_for_key_value() {
-    auto table = (SimpleIntTable){};
+void test_table_set_key_value_duplicates() {
+    auto table = (TableIntInt){};
+    SET_KEY_VALUE(1, 2, table);
+    SET_KEY_VALUE(1, 3, table);
+    auto product = 1;
+    FOR_EACH(item, table) {
+        if (item->occupied) {
+            product *= item->value;
+        }
+    }
+    ASSERT_EQUAL_INT("test_table_set_key_value_duplicates", product, 3);
+}
+
+void test_table_set_key_value() {
+    auto table = (TableIntInt){};
     SET_KEY_VALUE(1, 2, table);
     SET_KEY_VALUE(2, 3, table);
     SET_KEY_VALUE(3, 0, table);
@@ -708,24 +721,11 @@ void test_simple_table_for_key_value() {
             product *= item->value;
         }
     }
-    ASSERT_EQUAL_INT("test_simple_table_for_key_value", product, 30);
-}
-
-void test_simple_table_duplicates() {
-    auto table = (SimpleIntTable){};
-    SET_KEY_VALUE(1, 2, table);
-    SET_KEY_VALUE(1, 3, table);
-    auto product = 1;
-    FOR_EACH(item, table) {
-        if (item->occupied) {
-            product *= item->value;
-        }
-    }
-    ASSERT_EQUAL_INT("test_simple_table_duplicates", product, 3);
+    ASSERT_EQUAL_INT("test_table_set_key_value", product, 30);
 }
 
 void test_table_missing_key() {
-    auto table = (SimpleIntTable){};
+    auto table = (TableIntInt){};
     auto value = 0;
     FIND_KEY(2, v, table) {
         value = *v;
@@ -734,30 +734,13 @@ void test_table_missing_key() {
 }
 
 void test_table_available_key() {
-    auto table = (SimpleIntTable){};
+    auto table = (TableIntInt){};
     SET_KEY_VALUE(2, 5, table);
     auto value = 0;
     FIND_KEY(2, v, table) {
         value = *v;
     }
     ASSERT_EQUAL_INT("test_table_available_key", value, 5);
-}
-
-void test_simple_table() {
-    auto table = (SimpleIntTable){};
-    SET_KEY_VALUE(2, 3, table);
-    auto count = 0;
-    FOR_EACH(it, table) {
-        if (it->occupied) {
-            count++;
-        }
-    }
-    auto value = 0;
-    FIND_KEY(2, v, table) {
-        value = *v;
-    }
-    ASSERT_EQUAL_INT("test_simple_table", count, 1);
-    ASSERT_EQUAL_INT("test_simple_table", value, 3);
 }
 
 int main() {
@@ -822,13 +805,11 @@ int main() {
     test_constant_string();
     test_concat_cstring();
     test_format_string();
-    
-    test_simple_table_for_key_value();
-    test_simple_table_duplicates();
+
+    test_table_set_key_value_duplicates();
+    test_table_set_key_value();
     test_table_missing_key();
     test_table_available_key();
-
-    test_simple_table();
     
     summarize_tests();
     
