@@ -773,6 +773,19 @@ void test_simple_table_for_key_value() {
     ASSERT_EQUAL_INT("test_simple_table_for_key_value", product, 6);
 }
 
+void test_simple_table_duplicates() {
+    auto table = (SimpleIntTable){};
+    SET_KEY_VALUE2(1, 2, table);
+    SET_KEY_VALUE2(1, 3, table);
+    auto product = 1;
+    FOR_EACH(item, table) {
+        if (item->occupied) {
+            product *= item->value;
+        }
+    }
+    ASSERT_EQUAL_INT("test_simple_table_duplicates", product, 3);
+}
+
 void test_table_for_key_value_string() {
     auto table = (StringTable){};
     table.strategy = DEFAULT_HASHING_STRING;
@@ -904,6 +917,7 @@ int main() {
     
     test_table_for_key_value();
     test_simple_table_for_key_value();
+    test_simple_table_duplicates();
     test_table_for_key_value_string();
     test_table_missing_key();
     test_table_available_key();
