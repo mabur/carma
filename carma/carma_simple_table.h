@@ -47,10 +47,8 @@ size_t hash_primitive(const char* data, size_t count) {
     } \
 } while (0)
 
-// TODO: are table and new_table swapped in implementation?
 #define DOUBLE_TABLE_CAPACITY2(table) do { \
-    auto old_capacity = (table).capacity; \
-    auto new_capacity = old_capacity ? 2 * old_capacity : 1; \
+    auto new_capacity = (table).capacity ? 2 * (table).capacity : 1; \
     auto new_table = table; \
     INIT_DARRAY(new_table, new_capacity, new_capacity); \
     FOR_EACH(_item, new_table) { \
@@ -58,9 +56,9 @@ size_t hash_primitive(const char* data, size_t count) {
     } \
     FOR_EACH(_item, (table)) { \
         auto _key = _item->key; \
-        auto inner_base_index = FIND_BASE_INDEX2((table), _key); \
+        auto inner_base_index = FIND_BASE_INDEX2((new_table), _key); \
         auto free_index_inner = inner_base_index; \
-        FIND_FREE_INDEX2((table), _key, free_index_inner); \
+        FIND_FREE_INDEX2((new_table), _key, free_index_inner); \
         assert(free_index_inner != SIZE_MAX); \
         new_table.data[free_index_inner] = *_item; \
     } \
