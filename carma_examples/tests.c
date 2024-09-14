@@ -816,7 +816,12 @@ void test_simple_table() {
             count++;
         }
     }
+    auto value = 0;
+    FIND_KEY2(2, v, table) {
+        value = *v;
+    }
     ASSERT_EQUAL_INT("test_simple_table", count, 1);
+    ASSERT_EQUAL_INT("test_simple_table", value, 3);
 }
 
 int main() {

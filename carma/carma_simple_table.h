@@ -25,12 +25,13 @@ size_t hash_primitive(const char* data, size_t count) {
     for (typeof(value) (name) = (value), (name##count) = 0; !(name##count); ++(name##count))
 
 // TODO: extend to interval
-#define FIND_KEY2(key, value_it, table) \
-    if (!IS_EMPTY((table).keys)) \
-    FOR_STATE2(_i, FIND_BASE_INDEX2((table), (key))) \
-    FOR_STATE2(value_it, (table).values.data + _i) \
-    if (table.occupied.data[_i]) \
-    if (table.strategy.equals(table.keys.data[_i], key))
+#define FIND_KEY2(k, value_it, table) \
+    if (!IS_EMPTY(table)) \
+    FOR_STATE2(_k, (k)) \
+    FOR_STATE2(_i, FIND_BASE_INDEX2((table), _k)) \
+    FOR_STATE2(value_it, &(table).data[_i].value) \
+    if ((table).data[_i].occupied) \
+    if ((table).data[_i].key == k)
 
 ////////////////////////////////////////////////////////////////////////////////
 // ADD DATA TO TABLE
