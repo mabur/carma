@@ -3,7 +3,7 @@
 
 #include <carma/carma.h>
 #include <carma/carma_string.h>
-#include <carma/carma_simple_table.h>
+#include <carma/carma_table.h>
 
 typedef struct {
     int key;

@@ -8,91 +8,80 @@
 #include "carma.h"
 
 ////////////////////////////////////////////////////////////////////////////////
-// INIT AND FREE TABLE
-
-#define INIT_TABLE(table, capacity) do { \
-    INIT_DARRAY((table).keys, (capacity), (capacity)); \
-    INIT_DARRAY((table).values, (capacity), (capacity)); \
-    INIT_DARRAY((table).occupied, (capacity), (capacity)); \
-    FILL((table).occupied, false); \
-} while (0)
-
-#define FREE_TABLE(table) do { \
-    FREE_DARRAY((table).keys); \
-    FREE_DARRAY((table).values); \
-    FREE_DARRAY((table).occupied); \
-} while (0)
-
-////////////////////////////////////////////////////////////////////////////////
 // FIND DATA IN TABLE
 
-#define FIND_BASE_INDEX(table, key) ((table).strategy.hash(key) % (table).keys.count)
+size_t _hash_primitive(const char* data, size_t count) {
+    size_t hash = 5381;
+    for (size_t i = 0; i < count; ++i) {
+        hash = ((hash << 5) + hash) + data[i];
+    }
+    return hash;
+}
 
-#define FOR_EACH_KEY_VALUE(key, value, table) \
-    auto key = BEGIN_POINTER(table.keys); \
-    auto value = BEGIN_POINTER(table.values); \
-    for (auto _occupied = BEGIN_POINTER(table.occupied); \
-        _occupied != END_POINTER(table.occupied); ++key, ++value, ++_occupied) \
-        if (*_occupied)
+#define _HASH_PRIMITIVE(key) _hash_primitive((const char*)&(key), sizeof(key))
 
-#define FOR_STATE(name, value) \
+#define _FIND_BASE_INDEX2(table, key) \
+    (_hash_primitive((const char*)&(key), sizeof(key)) % (table).count)
+
+#define FOR_STATE2(name, value) \
     for (typeof(value) (name) = (value), (name##count) = 0; !(name##count); ++(name##count))
 
 // TODO: extend to interval
-#define FIND_KEY(key, value_it, table) \
-    if (!IS_EMPTY((table).keys)) \
-    FOR_STATE(_i, FIND_BASE_INDEX((table), (key))) \
-    FOR_STATE(value_it, (table).values.data + _i) \
-    if (table.occupied.data[_i]) \
-    if (table.strategy.equals(table.keys.data[_i], key))
+#define FIND_KEY2(k, value_it, table) \
+    if (!IS_EMPTY(table)) \
+    FOR_STATE2(_k, (k)) \
+    FOR_STATE2(_i, _FIND_BASE_INDEX2((table), _k)) \
+    FOR_STATE2(value_it, &(table).data[_i].value) \
+    if ((table).data[_i].occupied) \
+    if ((table).data[_i].key == k)
 
 ////////////////////////////////////////////////////////////////////////////////
 // ADD DATA TO TABLE
 
 // TODO: extend to interval
-#define FIND_FREE_INDEX(table, key, index) do { \
-    if (!table.occupied.data[index]) { \
+#define _FIND_FREE_INDEX2(table, k, index) do { \
+    auto _lvalue_key = (k); \
+    auto _hash = _HASH_PRIMITIVE(_lvalue_key); \
+    (index) = (_hash) % (table).count; \
+    if (!(table).data[index].occupied) { \
     } \
-    else if (table.strategy.equals(table.keys.data[index], key)) { \
+    else if ((table).data[index].key == _lvalue_key) { \
     } \
     else { \
-        index = SIZE_MAX; \
+        (index) = SIZE_MAX; \
     } \
 } while (0)
 
-// TODO: are table and new_table swapped in implementation?
-#define DOUBLE_TABLE_CAPACITY(table) do { \
-    auto old_capacity = (table).keys.capacity; \
-    auto new_capacity = old_capacity ? 2 * old_capacity : 1; \
+#define CLEAR_TABLE2(table) FOR_EACH(item, (table)) item->occupied = false;
+
+#define _DOUBLE_TABLE_CAPACITY2(table) do { \
+    auto new_capacity = 2 * (table).capacity; \
     auto new_table = table; \
-    INIT_TABLE(new_table, new_capacity); \
-    FOR_EACH_KEY_VALUE(key, value, (table)) { \
-        auto inner_base_index = FIND_BASE_INDEX((table), *key); \
-        auto free_index_inner = inner_base_index; \
-        FIND_FREE_INDEX((table), *key, free_index_inner); \
-        assert(free_index_inner != SIZE_MAX); \
-        new_table.keys.data[free_index_inner] = *key; \
-        new_table.values.data[free_index_inner] = *value; \
-        new_table.occupied.data[free_index_inner] = true; \
+    INIT_DARRAY(new_table, new_capacity, new_capacity); \
+    CLEAR_TABLE2(new_table); \
+    FOR_EACH(_item, (table)) { \
+        if (!_item->occupied) continue; \
+        size_t _inner_index; \
+        _FIND_FREE_INDEX2((new_table), _item->key, _inner_index); \
+        assert(_inner_index != SIZE_MAX); \
+        new_table.data[_inner_index] = *_item; \
     } \
-    FREE_TABLE(table); \
+    FREE_DARRAY(table); \
     table = new_table; \
 } while (0)
 
-// TODO: base_index can refer to old table incorrectly
-#define SET_KEY_VALUE(key, value, table) do { \
-    if (IS_EMPTY(table.keys)) { \
-        DOUBLE_TABLE_CAPACITY(table); \
+#define SET_KEY_VALUE2(k, v, table) do { \
+    if (IS_EMPTY(table)) { \
+        INIT_DARRAY((table), 1, 1); \
+        CLEAR_TABLE2(table); \
     } \
-    auto base_index = FIND_BASE_INDEX((table), (key)); \
-    auto index = base_index; \
-    FIND_FREE_INDEX((table), (key), index); \
+    size_t index; \
+    _FIND_FREE_INDEX2((table), (k), index); \
     while (index == SIZE_MAX) { \
-        DOUBLE_TABLE_CAPACITY(table); \
-        index = base_index;                   \
-        FIND_FREE_INDEX((table), (key), index); \
+        _DOUBLE_TABLE_CAPACITY2(table); \
+        _FIND_FREE_INDEX2((table), (k), index); \
     } \
-    (table).keys.data[index] = (key); \
-    (table).values.data[index] = (value); \
-    (table).occupied.data[index] = true; \
+    (table).data[index].key = (k); \
+    (table).data[index].value = (v); \
+    (table).data[index].occupied = (true); \
 } while (0)
