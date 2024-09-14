@@ -10,10 +10,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 // FIND DATA IN TABLE
 
+size_t _update_hash(size_t hash, char data) {
+    return ((hash << 5) + hash) + data;
+}
+
 size_t _hash_primitive(const char* data, size_t count) {
     size_t hash = 5381;
     for (size_t i = 0; i < count; ++i) {
-        hash = ((hash << 5) + hash) + data[i];
+        hash = _update_hash(hash, data[i]);
     }
     return hash;
 }
