@@ -76,11 +76,15 @@ size_t _hash_bytes(size_t hash, const char* data, size_t count) {
 
 #define CLEAR_TABLE(table) FOR_EACH(item, (table)) item->occupied = false;
 
+#define INIT_TABLE(table, capacity) do { \
+    INIT_DARRAY(table, capacity, capacity); \
+    CLEAR_TABLE(table); \
+} while (0)
+
 #define _DOUBLE_TABLE_CAPACITY(table) do { \
     auto new_capacity = 2 * (table).capacity; \
     auto new_table = table; \
-    INIT_DARRAY(new_table, new_capacity, new_capacity); \
-    CLEAR_TABLE(new_table); \
+    INIT_TABLE(new_table, new_capacity); \
     FOR_EACH(_item, (table)) { \
         if (!_item->occupied) continue; \
         size_t _inner_index; \
@@ -95,8 +99,7 @@ size_t _hash_bytes(size_t hash, const char* data, size_t count) {
 #define _DOUBLE_TABLE_CAPACITY2(table) do { \
     auto new_capacity = 2 * (table).capacity; \
     auto new_table = table; \
-    INIT_DARRAY(new_table, new_capacity, new_capacity); \
-    CLEAR_TABLE(new_table); \
+    INIT_TABLE(new_table, new_capacity); \
     FOR_EACH(_item, (table)) { \
         if (!_item->occupied) continue; \
         size_t _inner_index; \
@@ -110,8 +113,7 @@ size_t _hash_bytes(size_t hash, const char* data, size_t count) {
 
 #define _HANDLE_EMPTY_TABLE(table) \
     if (IS_EMPTY(table)) { \
-        INIT_DARRAY((table), 1, 1); \
-        CLEAR_TABLE(table); \
+        INIT_TABLE(table, 1); \
     }
 
 #define SET_KEY_VALUE(k, v, table) do { \
