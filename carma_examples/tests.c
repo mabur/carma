@@ -12,10 +12,23 @@ typedef struct {
 } ItemIntInt;
 
 typedef struct {
+    int key0;
+    int key1;
+    int value;
+    bool occupied;
+} ItemIntIntInt;
+
+typedef struct {
     ItemIntInt* data;
     size_t count;
     size_t capacity;
 } TableIntInt;
+
+typedef struct {
+    ItemIntIntInt* data;
+    size_t count;
+    size_t capacity;
+} TableIntIntInt;
 
 typedef struct {
     int* data;
@@ -709,6 +722,19 @@ void test_table_set_key_value_duplicates() {
     ASSERT_EQUAL_INT("test_table_set_key_value_duplicates", product, 3);
 }
 
+void test_table_set_2keys_value_duplicates() {
+    auto table = (TableIntIntInt){};
+    SET_2KEYS_VALUE(1, 2, 2, table);
+    SET_2KEYS_VALUE(1, 2, 3, table);
+    auto product = 1;
+    FOR_EACH(item, table) {
+        if (item->occupied) {
+            product *= item->value;
+        }
+    }
+    ASSERT_EQUAL_INT("test_table_set_key_value_duplicates", product, 3);
+}
+
 void test_table_set_key_value() {
     auto table = (TableIntInt){};
     SET_KEY_VALUE(1, 2, table);
@@ -807,6 +833,7 @@ int main() {
     test_format_string();
 
     test_table_set_key_value_duplicates();
+    test_table_set_2keys_value_duplicates();
     test_table_set_key_value();
     test_table_missing_key();
     test_table_available_key();
