@@ -10,10 +10,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 // FIND DATA IN TABLE
 
+static inline
 size_t _hash_byte(size_t hash, char data) {
     return ((hash << 5) + hash) + data;
 }
 
+static inline
 size_t _hash_bytes(size_t hash, const char* data, size_t count) {
     for (size_t i = 0; i < count; ++i) {
         hash = _hash_byte(hash, data[i]);
@@ -76,6 +78,7 @@ size_t _hash_bytes(size_t hash, const char* data, size_t count) {
 
 #define CLEAR_TABLE(table) FOR_EACH(item, (table)) item->occupied = false;
 
+static inline
 bool _is_power_of_two(size_t n) {
     // A power of two is greater than 0 and has only one bit set.
     // If n is a power of two then n - 1 will have all bits set,
