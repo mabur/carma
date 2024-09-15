@@ -119,11 +119,14 @@ size_t _hash_2primitives(const char* data0, const char* data1, size_t count0, si
     table = new_table; \
 } while (0)
 
-#define SET_KEY_VALUE(k, v, table) do { \
+#define _HANDLE_EMPTY_TABLE(table) \
     if (IS_EMPTY(table)) { \
         INIT_DARRAY((table), 1, 1); \
         CLEAR_TABLE(table); \
-    } \
+    }
+
+#define SET_KEY_VALUE(k, v, table) do { \
+    _HANDLE_EMPTY_TABLE(table); \
     size_t index; \
     _FIND_FREE_INDEX((table), (k), index); \
     while (index == SIZE_MAX) { \
@@ -136,10 +139,7 @@ size_t _hash_2primitives(const char* data0, const char* data1, size_t count0, si
 } while (0)
 
 #define SET_2KEYS_VALUE(k0, k1, v, table) do { \
-    if (IS_EMPTY(table)) { \
-        INIT_DARRAY((table), 1, 1); \
-        CLEAR_TABLE(table); \
-    } \
+    _HANDLE_EMPTY_TABLE(table); \
     size_t index; \
     _FIND_FREE_INDEX2((table), (k0), (k1), index); \
     while (index == SIZE_MAX) { \
