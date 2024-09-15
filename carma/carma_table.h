@@ -10,36 +10,27 @@
 ////////////////////////////////////////////////////////////////////////////////
 // FIND DATA IN TABLE
 
-size_t _update_hash(size_t hash, char data) {
+size_t _hash_byte(size_t hash, char data) {
     return ((hash << 5) + hash) + data;
 }
 
-size_t _hash_primitive(const char* data, size_t count) {
-    size_t hash = 5381;
+size_t _hash_bytes(size_t hash, const char* data, size_t count) {
     for (size_t i = 0; i < count; ++i) {
-        hash = _update_hash(hash, data[i]);
+        hash = _hash_byte(hash, data[i]);
     }
     return hash;
 }
 
-size_t _hash_2primitives(const char* data0, const char* data1, size_t count0, size_t count1) {
-    size_t hash = 5381;
-    for (size_t i = 0; i < count0; ++i) {
-        hash = _update_hash(hash, data0[i]);
-    }
-    for (size_t i = 0; i < count1; ++i) {
-        hash = _update_hash(hash, data1[i]);
-    }
-    return hash;
-}
+#define _HASH_INIT 5381
 
-#define _HASH_PRIMITIVE(key) _hash_primitive((const char*)&(key), sizeof(key))
+#define _BYTES_RANGE(key) (const char*)&(key), sizeof(key)
 
-#define _HASH_2PRIMITIVES(k0, k1) _hash_2primitives( \
-    (const char*)&(k0), (const char*)&(k1), sizeof(k0), sizeof(k1))
+#define _HASH_PRIMITIVE(key) _hash_bytes(_HASH_INIT, _BYTES_RANGE(key))
 
-#define _FIND_BASE_INDEX(table, key) \
-    (_hash_primitive((const char*)&(key), sizeof(key)) % (table).count)
+#define _HASH_2PRIMITIVES(k0, k1) \
+    _hash_bytes(_hash_bytes(_HASH_INIT, _BYTES_RANGE(k0)), _BYTES_RANGE(k1))
+
+#define _FIND_BASE_INDEX(table, key) (_HASH_PRIMITIVE(key) % (table).count)
 
 #define FOR_STATE(name, value) \
     for (typeof(value) (name) = (value), (name##count) = 0; !(name##count); ++(name##count))
