@@ -30,8 +30,6 @@ size_t _hash_bytes(size_t hash, const char* data, size_t count) {
 #define _HASH_2PRIMITIVES(k0, k1) \
     _hash_bytes(_hash_bytes(_HASH_INIT, _BYTES_RANGE(k0)), _BYTES_RANGE(k1))
 
-#define _FIND_BASE_INDEX(table, key) (_HASH_PRIMITIVE(key) % (table).count)
-
 #define FOR_STATE(name, value) \
     for (typeof(value) (name) = (value), (name##count) = 0; !(name##count); ++(name##count))
 
@@ -39,7 +37,7 @@ size_t _hash_bytes(size_t hash, const char* data, size_t count) {
 #define FIND_KEY(k, value_it, table) \
     if (!IS_EMPTY(table)) \
     FOR_STATE(_k, (k)) \
-    FOR_STATE(_i, _FIND_BASE_INDEX((table), _k)) \
+    FOR_STATE(_i, _HASH_PRIMITIVE(_k) % (table).count) \
     FOR_STATE(value_it, &(table).data[_i].value) \
     if ((table).data[_i].occupied) \
     if ((table).data[_i].key == k)
