@@ -16,9 +16,7 @@ struct ExampleDynamicArray {
 The `capacity` defines the number of items that fit in the array
 before its memory needs to be reallocated. So `count` <= `capacity`.
 
-## Dynamic Array Algorithms O(1)
-
-These algorithms change the count and capacity of a dynamic array:
+## Dynamic Array Macros O(1)
 
 - `APPEND(dynamic_array, item)` adds item to the end of the dynamic_array.
   It increases count by one.
@@ -31,10 +29,10 @@ These algorithms change the count and capacity of a dynamic array:
   Decreases count by one.
   The order of the remaining items is NOT preserved.
 
-## Dynamic Array Algorithms O(count)
+## Dynamic Array Macros O(count)
 
 - `CONCAT(dynamic_array, range)` adds all items in range to the end of the dynamic_array.
-  It increases dynamic_array.count with range.count.
+  It increases `dynamic_array.count` with `range.count`.
   If the new count would be larger than the existing capacity then
   the capacity is increased and the memory of the data pointer is reallocated.
 
