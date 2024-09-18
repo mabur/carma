@@ -87,3 +87,5 @@ FOR_MAX(it, range) {
 ```
 
 - `FILL(range, value)` sets all the items in the `range` to `value`.
+
+- `ARE_EQUAL(range0, range1)` checks if the two ranges are equal or not. Returns `true` or `false`.
