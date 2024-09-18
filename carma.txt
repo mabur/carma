@@ -45,6 +45,15 @@
   - Dynamic Arrays, that can shrink or grow at the end.
   - Ranges that can shrink at the beginning.
   - Ranges that can shrink at the end.
+  - What is the right representation? Tree, Graph, something more modular? A binary periodic table over all abstract stuctures and macros?
+  - Describe as tree or graph or modular conecpts. S child is a parent, but not the other way around.
+    - Range (for loops)
+      - Directional Range / (has front and back etc)
+        - Front Shrinkable Range
+        - Back Shrinkable Range
+          - Dynamic Array
+      - Image
+      - Table
 
 From Falco Girgis:
 // alloca()
