@@ -6,6 +6,17 @@
 #include <carma/carma_table.h>
 
 typedef struct {
+    int* data;
+    size_t count;
+} IntRange;
+
+typedef struct {
+    int* data;
+    size_t count;
+    size_t capacity;
+} IntArray;
+
+typedef struct {
     int key;
     int value;
     bool occupied;
@@ -29,23 +40,6 @@ typedef struct {
     size_t count;
     size_t capacity;
 } TableIntIntInt;
-
-typedef struct {
-    int* data;
-    size_t count;
-} IntRange;
-
-typedef struct {
-    int* data;
-    size_t count;
-    size_t capacity;
-} IntArray;
-
-typedef struct {
-    const char** data;
-    size_t count;
-    size_t capacity;
-} StringArray;
 
 #define VALUE_TYPE2(range_type) typeof(*((range_type){}).data)
 #define MAKE_ARRAY_LITERAL(range_type, ...) (VALUE_TYPE2(range_type)[]){__VA_ARGS__}
