@@ -162,27 +162,7 @@ void ASSERT_EQUAL_SIZE(const char* description, size_t a, size_t b) {
 
 #define ASSERT_EQUAL_RANGE(description, left_range, right_range) do { \
     global_assert_count++; \
-    if (IS_EMPTY(left_range) && IS_EMPTY(right_range)) { \
-        printf("%s ok\n", (description)); \
-        break; \
-    } \
-    if ((left_range).count != (right_range).count) { \
-        printf("%s ", (description)); \
-        PRINT_RANGE("%i ", left_range); \
-        printf(" != "); \
-        PRINT_RANGE("%i ", right_range); \
-        printf(" bad\n"); \
-        global_assert_errors++; \
-        break; \
-    } \
-    auto are_equal = true; \
-    FOR_EACH2(_left, _right, (left_range), (right_range)) { \
-        if (*_left != *_right) { \
-            are_equal = false; \
-            break; \
-        } \
-    } \
-    if (are_equal) { \
+    if (ARE_EQUAL(left_range, right_range)) { \
         printf("%s ok\n", (description)); \
     } else { \
         printf("%s ", (description)); \
