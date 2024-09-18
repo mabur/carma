@@ -1,4 +1,4 @@
-# Range Definition
+## Range Definition
 
 A **range** is an array of items that cannot grow in size.
 A **range** is defined structurally as any struct that has at least
