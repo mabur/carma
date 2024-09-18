@@ -92,6 +92,16 @@ int add(int x, int y) {
 int global_assert_count = 0;
 int global_assert_errors = 0;
 
+void ASSERT_BOOL(const char* description, bool a) {
+    global_assert_count++;
+    if (a) {
+        printf("%s ok\n", (description));
+    } else {
+        printf("%s bad\n", (description));
+        global_assert_errors++;
+    }
+}
+
 void ASSERT_EQUAL_INT(const char* description, int a, int b) {
     global_assert_count++;
     if (a == b) {
@@ -337,6 +347,30 @@ void test_for_max() {
         ASSERT_EQUAL_INT("test_for_max element", *it, 3);
     }
     ASSERT_NOT_EQUAL_POINTER("test_for_max iterator", it, END_POINTER(actual));
+}
+
+void test_are_equal() {
+    auto a = MAKE_DARRAY(IntArray, 1, 2, 3);
+    auto b = MAKE_DARRAY(IntArray, 1, 2, 3);
+    ASSERT_BOOL("test_are_equal", ARE_EQUAL(a, b));
+}
+
+void test_are_equal_not() {
+    auto a = MAKE_DARRAY(IntArray, 1, 2, 3);
+    auto b = MAKE_DARRAY(IntArray, 1, 2, 4);
+    ASSERT_BOOL("test_are_equal", !ARE_EQUAL(a, b));
+}
+
+void test_are_equal_empty() {
+    auto a = MAKE_DARRAY(IntArray);
+    auto b = MAKE_DARRAY(IntArray);
+    ASSERT_BOOL("test_are_equal", ARE_EQUAL(a, b));
+}
+
+void test_are_equal_different_count() {
+    auto a = MAKE_DARRAY(IntArray, 1, 2);
+    auto b = MAKE_DARRAY(IntArray, 1, 2, 3);
+    ASSERT_BOOL("test_are_equal", !ARE_EQUAL(a, b));
 }
 
 void test_fill() {
@@ -817,6 +851,11 @@ int main() {
 
     test_for_min();
     test_for_max();
+
+    test_are_equal();
+    test_are_equal_not();
+    test_are_equal_empty();
+    test_are_equal_different_count();
 
     test_fill();
     

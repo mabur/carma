@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 // UTILITIES
@@ -106,6 +107,34 @@
     } \
     if (it != END_POINTER(range))
 
+
+static inline bool _are_bits_equal(
+    const void* data0,
+    const void* data1,
+    size_t item_size0,
+    size_t item_size1,
+    size_t item_count0,
+    size_t item_count1
+) {
+    if (item_size0 != item_size1) {
+        return false;
+    }
+    if (item_count0 != item_count1) {
+        return false;
+    }
+    auto byte_count = item_size0 * item_count0;
+    return memcmp(data0, data1, byte_count) == 0;
+}
+
+#define ARE_EQUAL(range0, range1) _are_bits_equal( \
+    (range0).data, \
+    (range1).data, \
+    sizeof(*((range0).data)), \
+    sizeof(*((range1).data)), \
+    (range0).count, \
+    (range1).count \
+)
+    
 ////////////////////////////////////////////////////////////////////////////////
 // RANGE ALGORITHMS - DROP
 // TODO: think about capacity when calling drop functions with a darray.
