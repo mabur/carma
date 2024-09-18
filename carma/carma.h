@@ -134,7 +134,7 @@ static inline bool _are_bits_equal(
     (range0).count, \
     (range1).count \
 )
-    
+
 ////////////////////////////////////////////////////////////////////////////////
 // RANGE ALGORITHMS - DROP
 // TODO: think about capacity when calling drop functions with a darray.
