@@ -6,7 +6,7 @@ It follows the tradition of C developers implementing their own
 utility functions and macros to deal with arrays,
 since the C standard library is so bare bone.
 
-Carma follows the idea of [Structural Typing](https://en.wikipedia.org/wiki/Structural_type_system)
+Carma follows the ideas of [Generic Programming](https://en.wikipedia.org/wiki/Generic_programming#Stepanov%E2%80%93Musser_and_other_generic_programming_paradigms) and [Structural Typing](https://en.wikipedia.org/wiki/Structural_type_system)
 and does not define any concrete array structs on its own.
 Instead, the library consists of macros that work on any user defined structs,
 as long as they follow certain conventions for the member variables.
