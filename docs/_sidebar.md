@@ -1,7 +1,6 @@
 <!-- docs/_sidebar.md -->
 
 - [Introduction](README.md)
-- [Array Data Structures](arrays.md)
 - [Ranges](range_algorithms.md)
 - [Drop Algorithms](drop_algorithms.md)
 - [Dynamic Arrays](dynamic_array_algorithms.md)

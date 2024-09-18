@@ -1,12 +1,19 @@
-# Introduction
+## Introduction
 
 CARMA is a header-only library with C ARray MAcros.
 
-It follows the tradition of C developers implementing their own utility functions to deal with arrays, since the C standard library is so bare bone.
+It follows the tradition of C developers implementing their own
+utility functions and macros to deal with arrays,
+since the C standard library is so bare bone.
+
+Carma follows the idea of [Structural Typing](https://en.wikipedia.org/wiki/Structural_type_system)
+and does not define any concrete array structs on its own.
+Instead, the library consists of macros that work on any user defined structs,
+as long as they follow certain conventions for the member variables.
 
 ## Example
 
-CARMA has macros like: `FOR_EACH`, `ERASE_IF`,
+CARMA provides macros like: `FOR_EACH`, `ERASE_IF`,
 `CONCAT`, `CLEAR`, that can be aplied to user-defined array structs like this:
 
 ```clike
