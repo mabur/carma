@@ -44,6 +44,18 @@ size_t _hash_bytes(size_t hash, const char* data, size_t count) {
     if ((table).data[_i].occupied) \
     if ((table).data[_i].key == k)
 
+
+// TODO: extend to interval
+#define FIND_2KEYS(k0, k1, value_it, table) \
+    if (!IS_EMPTY(table)) \
+    FOR_STATE(_k0, (k0)) \
+    FOR_STATE(_k1, (k1)) \
+    FOR_STATE(_i, _HASH_2PRIMITIVES(_k0, _k1) % (table).count) \
+    FOR_STATE(value_it, &(table).data[_i].value) \
+    if ((table).data[_i].occupied) \
+    if ((table).data[_i].key0 == k0) \
+    if ((table).data[_i].key1 == k1)
+    
 ////////////////////////////////////////////////////////////////////////////////
 // ADD DATA TO TABLE
 
