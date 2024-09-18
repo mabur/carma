@@ -1,3 +1,19 @@
+# Range Definition
+
+A **range** is an array of items that cannot grow in size.
+A **range** is defined structurally as any struct that has at least
+the member variables `data` and `count`.
+The member variable `data` should point to an array of `count` items,
+where `data` can be any pointer type and `count` can be any integer type.
+For example:
+
+```clike
+struct ExampleRange {
+    int* data;
+    size_t count;
+};
+```
+
 ## Range Macros O(1)
 
 - `IS_EMPTY(range)` checks if the range has a count of zero.
@@ -88,4 +104,6 @@ FOR_MAX(it, range) {
 
 - `FILL(range, value)` sets all the items in the `range` to `value`.
 
-- `ARE_EQUAL(range0, range1)` checks if the two ranges are equal or not. Returns `true` or `false`.
+- `ARE_EQUAL(range0, range1)` checks if the two ranges are equal or not.
+  Returns `true` or `false`.
+  Equality is so far only defined for ranges of primitive types.
