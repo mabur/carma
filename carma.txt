@@ -21,6 +21,7 @@
   - github.com/mickjc750/str
   - github.com/chrizbazley/strb_t
   - gustedt.gitlabpages.inria.fr/ellipsis/structellipsis__str8.html
+* Logo. Elephant and/or Sanskrit letter Ca
 * Associative table
   - Can circumvent custom hashing and equality functions
     by having macros that can take multiple keys,
