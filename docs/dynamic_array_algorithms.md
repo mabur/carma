@@ -1,4 +1,22 @@
-# Dynamic Array Algorithms
+## Dynamic Array Definition
+
+A **dynamic array** is an array that can both grow and shrink at the end of the array.
+A **dynamic array** is structurally defined as any struct that is a **range**
+with the additional member variable `capacity` of any integer type.
+For example:
+
+```c
+struct ExampleDynamicArray {
+    int* data;
+    size_t count;
+    size_t capacity;
+};
+```
+
+The `capacity` defines the number of items that fit in the array
+before its memory needs to be reallocated. So `count` <= `capacity`.
+
+## Dynamic Array Algorithms O(1)
 
 These algorithms change the count and capacity of a dynamic array:
 
@@ -7,20 +25,22 @@ These algorithms change the count and capacity of a dynamic array:
   If the new count would be larger than the existing capacity then
   the capacity is increased and the memory of the data pointer is reallocated.
 
+- `CLEAR(dynamic_array)` decreases count to zero.
+
+- `ERASE_INDEX(dynamic_array, index)` erases the item at index.
+  Decreases count by one.
+  The order of the remaining items is NOT preserved.
+
+## Dynamic Array Algorithms O(count)
+
 - `CONCAT(dynamic_array, range)` adds all items in range to the end of the dynamic_array.
   It increases dynamic_array.count with range.count.
   If the new count would be larger than the existing capacity then
   the capacity is increased and the memory of the data pointer is reallocated.
 
-- `CLEAR(dynamic_array)` decreases count to zero.
-
 - `RESERVE(dynamic_array, capacity)` sets a new capacity and reallocates the data pointer.
   If the new capacity is smaller than the old count,
   then the new count is set to the new capacity, thereby removing items at the end.
-
-- `ERASE_INDEX(dynamic_array, index)` erases the item at index.
-  Decreases count by one.
-  The order of the remaining items is NOT preserved.
 
 - `ERASE_IF(dynamic_array, predicate)` erases all items for which the
   predicate function is true.
