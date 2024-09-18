@@ -40,6 +40,11 @@
     - Google SwissTable
     - https://www.youtube.com/watch?v=ncHmEUmJZf4
     - Have occupancy byte that stores both: occupancy, deleted, part of the hash.
+* Describe range concepts as:
+  - Fixed Ranges, that cannot change size, for example image.
+  - Dynamic Arrays, that can shrink or grow at the end.
+  - Ranges that can shrink at the beginning.
+  - Ranges that can shrink at the end.
 
 From Falco Girgis:
 // alloca()
