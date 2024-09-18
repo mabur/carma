@@ -9,7 +9,7 @@ But Carma also provides some loop macros that only works for images:
 - `FOR_Y(y, image)` can be used instead of a normal for-loop
   to let `y` loop from `0` to `image.height - 1`.
 
-FOR_X and FOR_Y can be used independently,
+`FOR_X` and `FOR_Y` can be used independently,
 but they can also be used together like in this example:
 
 ```c
