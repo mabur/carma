@@ -1,6 +1,11 @@
 # Table Macros
 
-A table is a range that is implemented as a hash table for fast insertion and lookup. The items in a table are structs with the three members: `key`, `value`, `occupied`. They should all be primitive types. This is an example of an item struct for a table:
+A **table** has fast insertion and lookup, O(1).
+It is implemented as a hash table.
+The items in a table are structs with the three members:
+`key`, `value`, `occupied`.
+They should all be primitive types.
+This is an example of an item struct for a table:
 
 ```c
 typedef struct {
