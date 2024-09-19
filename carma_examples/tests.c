@@ -802,6 +802,26 @@ void test_table_set_2_keys_value() {
     ASSERT_EQUAL_INT("test_table_set_2_keys_value", product, 30);
 }
 
+void test_table_set_keys_value() {
+    auto table = (TableIntArrayInt){};
+    auto keys = (IntArray){};
+    APPEND(keys, 1);
+    SET_KEYS_VALUE(keys, 2, table);
+    APPEND(keys, 2);
+    SET_KEYS_VALUE(keys, 3, table);
+    APPEND(keys, 3);
+    SET_KEYS_VALUE(keys, 0, table);
+    SET_KEYS_VALUE(keys, 5, table);
+
+    auto product = 1;
+    FOR_EACH(item, table) {
+        if (item->occupied) {
+            product *= item->value;
+        }
+    }
+    ASSERT_EQUAL_INT("test_table_set_keys_value", product, 30);
+}
+
 void test_table_missing_key() {
     auto table = (TableIntInt){};
     auto value = 0;
@@ -914,6 +934,7 @@ int main() {
     
     test_table_set_key_value();
     test_table_set_2_keys_value();
+    test_table_set_keys_value();
     
     test_table_missing_key();
     test_table_missing_2_keys();
