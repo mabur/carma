@@ -128,12 +128,15 @@ bool _is_power_of_two(size_t n) {
     CLEAR_TABLE(table); \
 } while (0)
 
+
+#define FOR_EACH_TABLE(iterator, table) \
+    FOR_EACH(iterator, (table)) if ((iterator)->occupied)
+    
 #define _DOUBLE_TABLE_CAPACITY_KEY(table) do { \
     auto new_capacity = 2 * (table).capacity; \
     auto new_table = table; \
     INIT_TABLE(new_table, new_capacity); \
-    FOR_EACH(_item, (table)) { \
-        if (!_item->occupied) continue; \
+    FOR_EACH_TABLE(_item, (table)) { \
         size_t _inner_index; \
         _FIND_FREE_INDEX_FOR_KEY((new_table), _item->key, _inner_index); \
         assert(_inner_index != SIZE_MAX); \
@@ -147,8 +150,7 @@ bool _is_power_of_two(size_t n) {
     auto new_capacity = 2 * (table).capacity; \
     auto new_table = table; \
     INIT_TABLE(new_table, new_capacity); \
-    FOR_EACH(_item, (table)) { \
-        if (!_item->occupied) continue; \
+    FOR_EACH_TABLE(_item, (table)) { \
         size_t _inner_index; \
         _FIND_FREE_INDEX_FOR_2_KEYS((new_table), _item->key0, _item->key1, _inner_index); \
         assert(_inner_index != SIZE_MAX); \
@@ -162,8 +164,7 @@ bool _is_power_of_two(size_t n) {
     auto new_capacity = 2 * (table).capacity; \
     auto new_table = table; \
     INIT_TABLE(new_table, new_capacity); \
-    FOR_EACH(_item, (table)) { \
-        if (!_item->occupied) continue; \
+    FOR_EACH_TABLE(_item, (table)) { \
         size_t _inner_index; \
         _FIND_FREE_INDEX_FOR_KEYS((new_table), _item->keys, _inner_index); \
         assert(_inner_index != SIZE_MAX); \
