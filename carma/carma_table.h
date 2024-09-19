@@ -27,9 +27,9 @@ size_t _hash_bytes(size_t hash, const char* data, size_t count) {
 
 #define _BYTES_RANGE(key) (const char*)&(key), sizeof(key)
 
-#define _HASH_PRIMITIVE(key) _hash_bytes(_HASH_INIT, _BYTES_RANGE(key))
+#define _HASH_KEY(key) _hash_bytes(_HASH_INIT, _BYTES_RANGE(key))
 
-#define _HASH_2PRIMITIVES(k0, k1) \
+#define _HASH_2_KEYS(k0, k1) \
     _hash_bytes(_hash_bytes(_HASH_INIT, _BYTES_RANGE(k0)), _BYTES_RANGE(k1))
 
 #define FOR_STATE(name, value) \
@@ -39,18 +39,18 @@ size_t _hash_bytes(size_t hash, const char* data, size_t count) {
 #define FIND_KEY(k, value_it, table) \
     if (!IS_EMPTY(table)) \
     FOR_STATE(_k, (k)) \
-    FOR_STATE(_i, _HASH_PRIMITIVE(_k) % (table).count) \
+    FOR_STATE(_i, _HASH_KEY(_k) % (table).count) \
     FOR_STATE(value_it, &(table).data[_i].value) \
     if ((table).data[_i].occupied) \
     if ((table).data[_i].key == k)
 
 
 // TODO: extend to interval
-#define FIND_2KEYS(k0, k1, value_it, table) \
+#define FIND_2_KEYS(k0, k1, value_it, table) \
     if (!IS_EMPTY(table)) \
     FOR_STATE(_k0, (k0)) \
     FOR_STATE(_k1, (k1)) \
-    FOR_STATE(_i, _HASH_2PRIMITIVES(_k0, _k1) % (table).count) \
+    FOR_STATE(_i, _HASH_2_KEYS(_k0, _k1) % (table).count) \
     FOR_STATE(value_it, &(table).data[_i].value) \
     if ((table).data[_i].occupied) \
     if ((table).data[_i].key0 == k0) \
@@ -60,9 +60,9 @@ size_t _hash_bytes(size_t hash, const char* data, size_t count) {
 // ADD DATA TO TABLE
 
 // TODO: extend to interval
-#define _FIND_FREE_INDEX(table, k, index) do { \
+#define _FIND_FREE_INDEX_FOR_KEY(table, k, index) do { \
     auto _lvalue_key = (k); \
-    auto _hash = _HASH_PRIMITIVE(_lvalue_key); \
+    auto _hash = _HASH_KEY(_lvalue_key); \
     (index) = (_hash) % (table).count; \
     if (!(table).data[index].occupied) { \
     } \
@@ -74,10 +74,10 @@ size_t _hash_bytes(size_t hash, const char* data, size_t count) {
 } while (0)
 
 // TODO: extend to interval
-#define _FIND_FREE_INDEX2(table, k0, k1, index) do { \
+#define _FIND_FREE_INDEX_FOR_2_KEYS(table, k0, k1, index) do { \
     auto _lvalue_k0 = (k0); \
     auto _lvalue_k1 = (k1); \
-    auto _hash = _HASH_2PRIMITIVES(_lvalue_k0, _lvalue_k1); \
+    auto _hash = _HASH_2_KEYS(_lvalue_k0, _lvalue_k1); \
     (index) = (_hash) % (table).count; \
     if (!(table).data[index].occupied) { \
     } \
@@ -104,14 +104,14 @@ bool _is_power_of_two(size_t n) {
     CLEAR_TABLE(table); \
 } while (0)
 
-#define _DOUBLE_TABLE_CAPACITY(table) do { \
+#define _DOUBLE_TABLE_CAPACITY_KEY(table) do { \
     auto new_capacity = 2 * (table).capacity; \
     auto new_table = table; \
     INIT_TABLE(new_table, new_capacity); \
     FOR_EACH(_item, (table)) { \
         if (!_item->occupied) continue; \
         size_t _inner_index; \
-        _FIND_FREE_INDEX((new_table), _item->key, _inner_index); \
+        _FIND_FREE_INDEX_FOR_KEY((new_table), _item->key, _inner_index); \
         assert(_inner_index != SIZE_MAX); \
         new_table.data[_inner_index] = *_item; \
     } \
@@ -119,14 +119,14 @@ bool _is_power_of_two(size_t n) {
     table = new_table; \
 } while (0)
 
-#define _DOUBLE_TABLE_CAPACITY2(table) do { \
+#define _DOUBLE_TABLE_CAPACITY_2_KEYS(table) do { \
     auto new_capacity = 2 * (table).capacity; \
     auto new_table = table; \
     INIT_TABLE(new_table, new_capacity); \
     FOR_EACH(_item, (table)) { \
         if (!_item->occupied) continue; \
         size_t _inner_index; \
-        _FIND_FREE_INDEX2((new_table), _item->key0, _item->key1, _inner_index); \
+        _FIND_FREE_INDEX_FOR_2_KEYS((new_table), _item->key0, _item->key1, _inner_index); \
         assert(_inner_index != SIZE_MAX); \
         new_table.data[_inner_index] = *_item; \
     } \
@@ -142,23 +142,23 @@ bool _is_power_of_two(size_t n) {
 #define SET_KEY_VALUE(k, v, table) do { \
     _HANDLE_EMPTY_TABLE(table); \
     size_t index; \
-    _FIND_FREE_INDEX((table), (k), index); \
+    _FIND_FREE_INDEX_FOR_KEY((table), (k), index); \
     while (index == SIZE_MAX) { \
-        _DOUBLE_TABLE_CAPACITY(table); \
-        _FIND_FREE_INDEX((table), (k), index); \
+        _DOUBLE_TABLE_CAPACITY_KEY(table); \
+        _FIND_FREE_INDEX_FOR_KEY((table), (k), index); \
     } \
     (table).data[index].key = (k); \
     (table).data[index].value = (v); \
     (table).data[index].occupied = (true); \
 } while (0)
 
-#define SET_2KEYS_VALUE(k0, k1, v, table) do { \
+#define SET_2_KEYS_VALUE(k0, k1, v, table) do { \
     _HANDLE_EMPTY_TABLE(table); \
     size_t index; \
-    _FIND_FREE_INDEX2((table), (k0), (k1), index); \
+    _FIND_FREE_INDEX_FOR_2_KEYS((table), (k0), (k1), index); \
     while (index == SIZE_MAX) { \
-        _DOUBLE_TABLE_CAPACITY2(table); \
-        _FIND_FREE_INDEX2((table), (k0), (k1), index); \
+        _DOUBLE_TABLE_CAPACITY_2_KEYS(table); \
+        _FIND_FREE_INDEX_FOR_2_KEYS((table), (k0), (k1), index); \
     } \
     (table).data[index].key0 = (k0); \
     (table).data[index].key1 = (k1); \

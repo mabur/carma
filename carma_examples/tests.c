@@ -732,8 +732,8 @@ void test_table_set_key_value_duplicates() {
 
 void test_table_set_2keys_value_duplicates() {
     auto table = (TableIntIntInt){};
-    SET_2KEYS_VALUE(1, 2, 2, table);
-    SET_2KEYS_VALUE(1, 2, 3, table);
+    SET_2_KEYS_VALUE(1, 2, 2, table);
+    SET_2_KEYS_VALUE(1, 2, 3, table);
     auto product = 1;
     FOR_EACH(item, table) {
         if (item->occupied) {
@@ -760,10 +760,10 @@ void test_table_set_key_value() {
 
 void test_table_set_2keys_value() {
     auto table = (TableIntIntInt){};
-    SET_2KEYS_VALUE(1, -1, 2, table);
-    SET_2KEYS_VALUE(3, -3, 3, table);
-    SET_2KEYS_VALUE(3, 3, 0, table);
-    SET_2KEYS_VALUE(3, 3, 5, table);
+    SET_2_KEYS_VALUE(1, -1, 2, table);
+    SET_2_KEYS_VALUE(3, -3, 3, table);
+    SET_2_KEYS_VALUE(3, 3, 0, table);
+    SET_2_KEYS_VALUE(3, 3, 5, table);
     
     auto product = 1;
     FOR_EACH(item, table) {
@@ -786,7 +786,7 @@ void test_table_missing_key() {
 void test_table_missing_2keys() {
     auto table = (TableIntIntInt){};
     auto value = 0;
-    FIND_2KEYS(2, 3, v, table) {
+    FIND_2_KEYS(2, 3, v, table) {
         value = *v;
     }
     ASSERT_EQUAL_INT("test_table_missing_2keys", value, 0);
@@ -804,9 +804,9 @@ void test_table_available_key() {
 
 void test_table_available_2keys() {
     auto table = (TableIntIntInt){};
-    SET_2KEYS_VALUE(2, 3, 5, table);
+    SET_2_KEYS_VALUE(2, 3, 5, table);
     auto value = 0;
-    FIND_2KEYS(2, 3, v, table) {
+    FIND_2_KEYS(2, 3, v, table) {
         value = *v;
     }
     ASSERT_EQUAL_INT("test_table_available_2keys", value, 5);
