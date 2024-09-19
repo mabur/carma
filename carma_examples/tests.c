@@ -871,6 +871,18 @@ void test_table_available_2_keys() {
     ASSERT_EQUAL_INT("test_table_available_2_keys", value, 5);
 }
 
+void test_table_available_keys() {
+    auto table = (TableIntArrayInt){};
+    auto keys = (IntArray){};
+    APPEND(keys, 1);
+    SET_KEYS_VALUE(keys, 5, table);
+    auto value = 0;
+    FIND_KEYS(keys, v, table) {
+        value = *v;
+    }
+    ASSERT_EQUAL_INT("test_table_available_2_keys", value, 5);
+}
+
 int main() {
     test_init_image();
     
@@ -953,6 +965,7 @@ int main() {
     
     test_table_available_key();
     test_table_available_2_keys();
+    test_table_available_keys();
     
     summarize_tests();
     
