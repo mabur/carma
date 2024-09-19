@@ -33,7 +33,7 @@ size_t _hash_bytes(size_t hash, const char* data, size_t count) {
     _hash_bytes(_hash_bytes(_HASH_INIT, _BYTES_RANGE(k0)), _BYTES_RANGE(k1))
 
 #define _HASH_KEYS(keys) \
-    _hash_bytes(_HASH_INIT, (const char*)(BEGIN_POINTER(keys)), sizeof(VALUE_TYPE(keys)) * (keys).count)
+    _hash_bytes(_HASH_INIT, (const char*)(BEGIN_POINTER(keys)), COUNT_BYTES(keys))
     
 #define FOR_STATE(name, value) \
     for (typeof(value) (name) = (value), (name##count) = 0; !(name##count); ++(name##count))

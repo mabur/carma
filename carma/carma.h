@@ -108,6 +108,8 @@
     if (it != END_POINTER(range))
 
 
+#define COUNT_BYTES(range) (sizeof(VALUE_TYPE(range)) * (range).count)
+    
 static inline bool _are_bits_equal(
     const void* data0,
     const void* data1,
