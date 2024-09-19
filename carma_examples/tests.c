@@ -742,7 +742,7 @@ void test_table_set_key_value_duplicates() {
     ASSERT_EQUAL_INT("test_table_set_key_value_duplicates", product, 3);
 }
 
-void test_table_set_2keys_value_duplicates() {
+void test_table_set_2_keys_value_duplicates() {
     auto table = (TableIntIntInt){};
     SET_2_KEYS_VALUE(1, 2, 2, table);
     SET_2_KEYS_VALUE(1, 2, 3, table);
@@ -752,7 +752,7 @@ void test_table_set_2keys_value_duplicates() {
             product *= item->value;
         }
     }
-    ASSERT_EQUAL_INT("test_table_set_key_value_duplicates", product, 3);
+    ASSERT_EQUAL_INT("test_table_set_2_keys_value_duplicates", product, 3);
 }
 
 void test_table_set_keys_value_duplicates() {
@@ -786,7 +786,7 @@ void test_table_set_key_value() {
     ASSERT_EQUAL_INT("test_table_set_key_value", product, 30);
 }
 
-void test_table_set_2keys_value() {
+void test_table_set_2_keys_value() {
     auto table = (TableIntIntInt){};
     SET_2_KEYS_VALUE(1, -1, 2, table);
     SET_2_KEYS_VALUE(3, -3, 3, table);
@@ -799,7 +799,7 @@ void test_table_set_2keys_value() {
             product *= item->value;
         }
     }
-    ASSERT_EQUAL_INT("test_table_set_2keys_value", product, 30);
+    ASSERT_EQUAL_INT("test_table_set_2_keys_value", product, 30);
 }
 
 void test_table_missing_key() {
@@ -811,13 +811,13 @@ void test_table_missing_key() {
     ASSERT_EQUAL_INT("test_table_missing_key", value, 0);
 }
 
-void test_table_missing_2keys() {
+void test_table_missing_2_keys() {
     auto table = (TableIntIntInt){};
     auto value = 0;
     FIND_2_KEYS(2, 3, v, table) {
         value = *v;
     }
-    ASSERT_EQUAL_INT("test_table_missing_2keys", value, 0);
+    ASSERT_EQUAL_INT("test_table_missing_2_keys", value, 0);
 }
 
 void test_table_available_key() {
@@ -830,14 +830,14 @@ void test_table_available_key() {
     ASSERT_EQUAL_INT("test_table_available_key", value, 5);
 }
 
-void test_table_available_2keys() {
+void test_table_available_2_keys() {
     auto table = (TableIntIntInt){};
     SET_2_KEYS_VALUE(2, 3, 5, table);
     auto value = 0;
     FIND_2_KEYS(2, 3, v, table) {
         value = *v;
     }
-    ASSERT_EQUAL_INT("test_table_available_2keys", value, 5);
+    ASSERT_EQUAL_INT("test_table_available_2_keys", value, 5);
 }
 
 int main() {
@@ -909,17 +909,17 @@ int main() {
     test_format_string();
 
     test_table_set_key_value_duplicates();
-    test_table_set_2keys_value_duplicates();
+    test_table_set_2_keys_value_duplicates();
     test_table_set_keys_value_duplicates();
     
     test_table_set_key_value();
-    test_table_set_2keys_value();
+    test_table_set_2_keys_value();
     
     test_table_missing_key();
-    test_table_missing_2keys();
+    test_table_missing_2_keys();
     
     test_table_available_key();
-    test_table_available_2keys();
+    test_table_available_2_keys();
     
     summarize_tests();
     
