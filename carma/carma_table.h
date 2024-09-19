@@ -65,7 +65,7 @@ size_t _hash_bytes(size_t hash, const char* data, size_t count) {
     FOR_STATE(_i, _HASH_KEYS(keys) % (table).count) \
     FOR_STATE(value_it, &(table).data[_i].value) \
     if ((table).data[_i].occupied) \
-    if (ARE_EQUAL(table.data[_i].keys, keys)
+    if (ARE_EQUAL(table.data[_i].keys, keys))
     
 ////////////////////////////////////////////////////////////////////////////////
 // ADD DATA TO TABLE
