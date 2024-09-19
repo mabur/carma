@@ -32,6 +32,9 @@ size_t _hash_bytes(size_t hash, const char* data, size_t count) {
 #define _HASH_2_KEYS(k0, k1) \
     _hash_bytes(_hash_bytes(_HASH_INIT, _BYTES_RANGE(k0)), _BYTES_RANGE(k1))
 
+#define _HASH_KEYS(keys) \
+    _hash_bytes(_HASH_INIT, (const char*)(BEGIN_POINTER(keys)), sizeof(VALUE_TYPE(keys)) * (keys).count)
+    
 #define FOR_STATE(name, value) \
     for (typeof(value) (name) = (value), (name##count) = 0; !(name##count); ++(name##count))
 
@@ -55,6 +58,14 @@ size_t _hash_bytes(size_t hash, const char* data, size_t count) {
     if ((table).data[_i].occupied) \
     if ((table).data[_i].key0 == k0) \
     if ((table).data[_i].key1 == k1)
+
+// TODO: extend to interval
+#define FIND_KEYS(keys, value_it, table) \
+    if (!IS_EMPTY(table)) \
+    FOR_STATE(_i, _HASH_KEYS(keys) % (table).count) \
+    FOR_STATE(value_it, &(table).data[_i].value) \
+    if ((table).data[_i].occupied) \
+    if (ARE_EQUAL(table.data[_i].keys, keys)
     
 ////////////////////////////////////////////////////////////////////////////////
 // ADD DATA TO TABLE
@@ -82,6 +93,19 @@ size_t _hash_bytes(size_t hash, const char* data, size_t count) {
     if (!(table).data[index].occupied) { \
     } \
     else if ((table).data[index].key0 == _lvalue_k0 && (table).data[index].key1 == _lvalue_k1) { \
+    } \
+    else { \
+        (index) = SIZE_MAX; \
+    } \
+} while (0)
+
+// TODO: extend to interval
+#define _FIND_FREE_INDEX_FOR_KEYS(table, _keys, index) do { \
+    auto _hash = _HASH_KEYS(_keys); \
+    (index) = (_hash) % (table).count; \
+    if (!(table).data[index].occupied) { \
+    } \
+    else if (ARE_EQUAL((table).data[index].keys, _keys)) { \
     } \
     else { \
         (index) = SIZE_MAX; \
@@ -134,6 +158,21 @@ bool _is_power_of_two(size_t n) {
     table = new_table; \
 } while (0)
 
+#define _DOUBLE_TABLE_CAPACITY_KEYS(table) do { \
+    auto new_capacity = 2 * (table).capacity; \
+    auto new_table = table; \
+    INIT_TABLE(new_table, new_capacity); \
+    FOR_EACH(_item, (table)) { \
+        if (!_item->occupied) continue; \
+        size_t _inner_index; \
+        _FIND_FREE_INDEX_FOR_KEYS((new_table), _item->keys, _inner_index); \
+        assert(_inner_index != SIZE_MAX); \
+        new_table.data[_inner_index] = *_item; \
+    } \
+    FREE_DARRAY(table); \
+    table = new_table; \
+} while (0)
+
 #define _HANDLE_EMPTY_TABLE(table) \
     if (IS_EMPTY(table)) { \
         INIT_TABLE(table, 1); \
@@ -162,6 +201,19 @@ bool _is_power_of_two(size_t n) {
     } \
     (table).data[index].key0 = (k0); \
     (table).data[index].key1 = (k1); \
+    (table).data[index].value = (v); \
+    (table).data[index].occupied = (true); \
+} while (0)
+
+#define SET_KEYS_VALUE(keys, v, table) do { \
+    _HANDLE_EMPTY_TABLE(table); \
+    size_t index; \
+    _FIND_FREE_INDEX_FOR_KEYS((table), (keys), index); \
+    while (index == SIZE_MAX) { \
+        _DOUBLE_TABLE_CAPACITY_KEYS(table); \
+        _FIND_FREE_INDEX_FOR_KEYS((table), (keys), index); \
+    } \
+    (table).data[index].keys = (keys); \
     (table).data[index].value = (v); \
     (table).data[index].occupied = (true); \
 } while (0)

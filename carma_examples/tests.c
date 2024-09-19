@@ -30,6 +30,12 @@ typedef struct {
 } ItemIntIntInt;
 
 typedef struct {
+    IntArray keys;
+    int value;
+    bool occupied;
+} ItemIntArrayInt;
+
+typedef struct {
     ItemIntInt* data;
     size_t count;
     size_t capacity;
@@ -40,6 +46,12 @@ typedef struct {
     size_t count;
     size_t capacity;
 } TableIntIntInt;
+
+typedef struct {
+    ItemIntArrayInt* data;
+    size_t count;
+    size_t capacity;
+} TableIntArrayInt;
 
 #define VALUE_TYPE2(range_type) typeof(*((range_type){}).data)
 #define MAKE_ARRAY_LITERAL(range_type, ...) (VALUE_TYPE2(range_type)[]){__VA_ARGS__}
@@ -743,6 +755,22 @@ void test_table_set_2keys_value_duplicates() {
     ASSERT_EQUAL_INT("test_table_set_key_value_duplicates", product, 3);
 }
 
+void test_table_set_keys_value_duplicates() {
+    auto table = (TableIntArrayInt){};
+    auto keys = (IntArray){};
+    APPEND(keys, 1);
+    APPEND(keys, 2);
+    SET_KEYS_VALUE(keys, 2, table);
+    SET_KEYS_VALUE(keys, 3, table);
+    auto product = 1;
+    FOR_EACH(item, table) {
+        if (item->occupied) {
+            product *= item->value;
+        }
+    }
+    ASSERT_EQUAL_INT("test_table_set_keys_value_duplicates", product, 3);
+}
+
 void test_table_set_key_value() {
     auto table = (TableIntInt){};
     SET_KEY_VALUE(1, 2, table);
@@ -882,10 +910,14 @@ int main() {
 
     test_table_set_key_value_duplicates();
     test_table_set_2keys_value_duplicates();
+    test_table_set_keys_value_duplicates();
+    
     test_table_set_key_value();
     test_table_set_2keys_value();
+    
     test_table_missing_key();
     test_table_missing_2keys();
+    
     test_table_available_key();
     test_table_available_2keys();
     
