@@ -47,12 +47,10 @@ FIND_KEY(key, value_iterator, table) {
 
 - `CLEAR_TABLE(table)` removes all items from the table, but keeps its capacity. Has a time complexity of O(capacity).
 
-- `FOR_EACH(table)` can be used to loop over all items in a table, similar to how you can use it for ranges and dynamic arrays. However, when looping over tables you need to make sure to only check the items that are `occupied`. Example:
+- `FOR_EACH_TABLE(table)` can be used to loop over all items in a table. Example usage:
 
 ```c
-FOR_EACH(it, table) {
-    if (it->occupied) {
-      printf("key %d has value %c\n", it->key, it->value);
-    }
+FOR_EACH_TABLE(it, table) {
+    printf("key %d has value %c\n", it->key, it->value);
 }
 ```
