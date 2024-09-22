@@ -128,6 +128,7 @@ bool _is_power_of_two(size_t n) {
     CLEAR_TABLE(table); \
 } while (0)
 
+#define FREE_TABLE(table) FREE_DARRAY(table)
 
 #define FOR_EACH_TABLE(iterator, table) \
     FOR_EACH(iterator, (table)) if ((iterator)->occupied)
@@ -142,7 +143,7 @@ bool _is_power_of_two(size_t n) {
         assert(_inner_index != SIZE_MAX); \
         new_table.data[_inner_index] = *_item; \
     } \
-    FREE_DARRAY(table); \
+    FREE_TABLE(table); \
     table = new_table; \
 } while (0)
 
@@ -156,7 +157,7 @@ bool _is_power_of_two(size_t n) {
         assert(_inner_index != SIZE_MAX); \
         new_table.data[_inner_index] = *_item; \
     } \
-    FREE_DARRAY(table); \
+    FREE_TABLE(table); \
     table = new_table; \
 } while (0)
 
@@ -170,7 +171,7 @@ bool _is_power_of_two(size_t n) {
         assert(_inner_index != SIZE_MAX); \
         new_table.data[_inner_index] = *_item; \
     } \
-    FREE_DARRAY(table); \
+    FREE_TABLE(table); \
     table = new_table; \
 } while (0)
 
