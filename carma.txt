@@ -22,6 +22,7 @@
   - github.com/chrizbazley/strb_t
   - gustedt.gitlabpages.inria.fr/ellipsis/structellipsis__str8.html
 * Logo. Elephant and/or Sanskrit letter Ca
+* Use for-macro-trick for scope-based resource handling for files, memory, ...
 * Associative table
   - Can circumvent custom hashing and equality functions
     by having macros that can take multiple keys,
@@ -56,9 +57,11 @@
     - Table
 * Make it so that a table just looks like a Dynamic Array,
   but that it is only an implementation detail and that it is not a range.
-  - Add table versions of: FOR_EACH_TABLE, FILL_TABLE, COUNT_TABLE, IS_EMPTY_TABLE,
-    FOR_MIN_TABLE, FOR_MAX_TABLE, ARE_EQUAL_TABLE, ERASE_KEY, ERASE_VALUE, ERASE_IF_TABLE, CONCAT_TABLE
-  - Would it be meanmingful to re-use to share the implementation for some of them?
+  - Add table versions of?:
+    FOR_MIN_TABLE, FOR_MAX_TABLE,
+    FILL_TABLE, ERASE_KEY, ERASE_IF_TABLE, CONCAT_TABLE
+    COUNT_TABLE? IS_EMPTY_TABLE? ARE_EQUAL_TABLE?
+  - Would it be meaningful to re-use to share the implementation for some of them?
 
 
 From Falco Girgis:
