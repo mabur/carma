@@ -60,12 +60,12 @@ size_t _hash_bytes(size_t hash, const char* data, size_t count) {
     if ((table).data[_i].key1 == k1)
 
 // TODO: extend to interval
-#define FIND_KEYS(keys, value_it, table) \
+#define FIND_KEYS(k, value_it, table) \
     if (!IS_EMPTY(table)) \
-    FOR_STATE(_i, _HASH_KEYS(keys) % (table).count) \
+    FOR_STATE(_i, _HASH_KEYS(k) % (table).count) \
     FOR_STATE(value_it, &(table).data[_i].value) \
     if ((table).data[_i].occupied) \
-    if (ARE_EQUAL(table.data[_i].keys, keys))
+    if (ARE_EQUAL(table.data[_i].keys, k))
     
 ////////////////////////////////////////////////////////////////////////////////
 // ADD DATA TO TABLE
@@ -207,15 +207,15 @@ bool _is_power_of_two(size_t n) {
     (table).data[index].occupied = (true); \
 } while (0)
 
-#define SET_KEYS_VALUE(keys, v, table) do { \
+#define SET_KEYS_VALUE(k, v, table) do { \
     _HANDLE_EMPTY_TABLE(table); \
     size_t index; \
-    _FIND_FREE_INDEX_FOR_KEYS((table), (keys), index); \
+    _FIND_FREE_INDEX_FOR_KEYS((table), (k), index); \
     while (index == SIZE_MAX) { \
         _DOUBLE_TABLE_CAPACITY_KEYS(table); \
-        _FIND_FREE_INDEX_FOR_KEYS((table), (keys), index); \
+        _FIND_FREE_INDEX_FOR_KEYS((table), (k), index); \
     } \
-    (table).data[index].keys = (keys); \
+    (table).data[index].keys = (k); \
     (table).data[index].value = (v); \
     (table).data[index].occupied = (true); \
 } while (0)
