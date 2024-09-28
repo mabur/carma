@@ -55,6 +55,7 @@
           - Dynamic Array
       - Image
     - Table
+* Translate arralg to carma
 * Make it so that a table just looks like a Dynamic Array,
   but that it is only an implementation detail and that it is not a range.
   - Add table versions of?:
