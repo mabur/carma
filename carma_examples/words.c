@@ -22,6 +22,25 @@ typedef struct {
     size_t capacity;
 } Table;
 
+
+size_t find_first_character_of(const char* data, size_t max_index, int (*predicate)(int)) {
+    for (size_t i = 0; i < max_index; ++i) {
+        if (predicate(data[i])) {
+            return i;
+        }
+    }
+    return max_index;
+}
+
+size_t find_first_character_not_of(const char* data, size_t max_index, int (*predicate)(int)) {
+    for (size_t i = 0; i < max_index; ++i) {
+        if (!predicate(data[i])) {
+            return i;
+        }
+    }
+    return max_index;
+}
+
 size_t find_white_space(const char* data, size_t max_index) {
     for (size_t i = 0; i < max_index; ++i) {
         if (isspace(data[i])) {
@@ -39,6 +58,22 @@ size_t find_non_white_space(const char* data, size_t max_index) {
     }
     return max_index;
 }
+
+#define FOR_EACH_WORD(word, string, is_delimeter) \
+    for (\
+    size_t i\
+    ;\
+    i = find_first_character_of(string.data, string.count, is_delimeter),\
+    word.data = whole.data,\
+    word.count = i,\
+    whole.data += i,\
+    whole.count -= i,\
+    !IS_EMPTY(part)\
+    ;\
+    i = find_first_character_not_of(string.data, string.count, is_delimeter),\
+    string.data += i,\
+    string.count -= i\
+    )
 
 int main(int argc, char **argv) {
     if (argc < 2) {
@@ -68,21 +103,8 @@ int main(int argc, char **argv) {
 
     printf("BEGIN\n");
     auto whole = CONSTANT_STRING("hello small world");
-    auto part = (ConstantString){.data = whole.data, .count=0};
-    for (
-        size_t i
-        ;
-        i = find_white_space(whole.data, whole.count),
-        part.data = whole.data,
-        part.count = i,
-        whole.data += i,
-        whole.count -= i,
-        !IS_EMPTY(part)
-        ;
-        i = find_non_white_space(whole.data, whole.count),
-        whole.data += i,
-        whole.count -= i
-    ) {
+    auto part = (ConstantString){};
+    FOR_EACH_WORD(part, whole, isspace) {
         printf("%.*s\n", (int)part.count, part.data);
     }
     printf("END\n");
