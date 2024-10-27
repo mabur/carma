@@ -262,6 +262,8 @@ static inline bool _are_bits_equal(
 
 #define FOR_LINES(line, capacity, file) for (char line[capacity]; fgets(line, (capacity), (file)) != NULL;)
 
+#define FOR_FILE(file, filepath) for (auto file = fopen(file_path, "r"); file; fclose(file), file = 0)
+
 #define READ_LINES(line, capacity, file_path) \
-    for (auto _file = fopen(file_path, "r"); _file; fclose(_file), _file = 0) \
+    FOR_FILE(_file, file_path) \
         for (char line[capacity]; fgets(line, (capacity), (_file)) != NULL;)
