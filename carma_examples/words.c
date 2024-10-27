@@ -64,22 +64,27 @@ int main(int argc, char **argv) {
         count++;
     }
     printf("The file %s contains %d lines\n", file_path, count);
-    
-    
+
+
+    printf("BEGIN\n");
     auto whole = CONSTANT_STRING("hello small world");
     auto part = (ConstantString){.data = whole.data, .count=0};
-    for (size_t i; !IS_EMPTY(whole);) {
-        i = find_white_space(whole.data, whole.count);
-        part.data = whole.data;
-        part.count = i;
-        whole.data += i;
-        whole.count -= i;
-        i = find_non_white_space(whole.data, whole.count);
-        whole.data += i;
-        whole.count -= i;
-        
+    for (
+        size_t i
+        ;
+        i = find_white_space(whole.data, whole.count),
+        part.data = whole.data,
+        part.count = i,
+        whole.data += i,
+        whole.count -= i,
+        !IS_EMPTY(part)
+        ;
+        i = find_non_white_space(whole.data, whole.count),
+        whole.data += i,
+        whole.count -= i
+    ) {
         printf("%.*s\n", (int)part.count, part.data);
     }
-    
+    printf("END\n");
     return EXIT_SUCCESS;
 }
