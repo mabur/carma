@@ -21,6 +21,10 @@ typedef struct {
     size_t capacity;
 } Table;
 
+bool is_white_space(char c) {
+    return c == ' ';
+}
+
 int main(int argc, char **argv) {
     if (argc < 2) {
         return EXIT_FAILURE;
@@ -45,5 +49,24 @@ int main(int argc, char **argv) {
         count++;
     }
     printf("The file %s contains %d lines\n", file_path, count);
+    
+    
+    auto whole = CONSTANT_STRING("hello small world");
+    while (!IS_EMPTY(whole)) {
+        // Initialize empty part:
+        auto part = (ConstantString){.data = whole.data, .count=0};
+        // Grow part and shrink whole, until we find white space:
+        for (;END_POINTER(part) < END_POINTER(whole) &&
+            !is_white_space( *END_POINTER(part));
+        ) {
+            part.count++;
+            DROP_FRONT(whole);
+        }
+        // Remove white space from whole:
+        DROP_FRONT_WHILE(whole, is_white_space);
+        
+        printf("%.*s\n", (int)part.count, part.data);
+    }
+    
     return EXIT_SUCCESS;
 }
