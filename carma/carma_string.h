@@ -118,25 +118,9 @@ static
 inline
 DynamicString read_text_file(const char* file_path) {
     auto result = (DynamicString){};
-    FOR_FILE(file, file_path, "rb") {
-        if (file == NULL) {
-            perror("Failed to open file");
-            continue;
-        }
-        fseek(file, 0, SEEK_END);
-        size_t file_size = ftell(file);
-        rewind(file);
-        INIT_RANGE(result, file_size);
-        if (result.data == NULL) {
-            perror("Failed to allocate memory");
-            continue;
-        }
-        size_t read_size = fread(result.data, sizeof(char), file_size, file);
-        if (read_size != file_size) {
-            printf("read_size=%zu file_size=%zu\n", read_size, file_size);
-            perror("Failed to read file");
-            FREE_RANGE(result);
-            continue;
+    FOR_FILE(file, file_path, "r") {
+        for (int ch; ch = fgetc(file), ch != EOF;) {
+            APPEND(result, (char)ch);
         }
     }
     return result;
