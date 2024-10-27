@@ -106,10 +106,38 @@ size_t _find_first_character_not_of(const char* data, size_t max_index, int (*pr
 ////////////////////////////////////////////////////////////////////////////////
 // FILE ALGORITHMS
 
-#define FOR_FILE(file, filepath) for (auto (file) = fopen((file_path), "r"); (file); fclose(file), (file) = 0)
+#define FOR_FILE(file, filepath, mode) for (auto (file) = fopen((file_path), mode); (file); fclose(file), (file) = 0)
 
 #define FOR_LINES(line, capacity, file) for (char line[capacity]; fgets(line, (capacity), (file)) != NULL;)
 
 #define READ_LINES(line, capacity, file_path) \
-    FOR_FILE(_file, file_path) \
+    FOR_FILE(_file, file_path, "r") \
         FOR_LINES(line, capacity, _file)
+
+static
+inline
+DynamicString read_text_file(const char* file_path) {
+    auto result = (DynamicString){};
+    FOR_FILE(file, file_path, "rb") {
+        if (file == NULL) {
+            perror("Failed to open file");
+            continue;
+        }
+        fseek(file, 0, SEEK_END);
+        size_t file_size = ftell(file);
+        rewind(file);
+        INIT_RANGE(result, file_size);
+        if (result.data == NULL) {
+            perror("Failed to allocate memory");
+            continue;
+        }
+        size_t read_size = fread(result.data, sizeof(char), file_size, file);
+        if (read_size != file_size) {
+            printf("read_size=%zu file_size=%zu\n", read_size, file_size);
+            perror("Failed to read file");
+            FREE_RANGE(result);
+            continue;
+        }
+    }
+    return result;
+}
