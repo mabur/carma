@@ -256,14 +256,3 @@ static inline bool _are_bits_equal(
 
 #define FOR_Y(y, image) \
     for (typeof((image).height) y = 0; y < (image).height; ++y)
-
-////////////////////////////////////////////////////////////////////////////////
-// FILE ALGORITHMS
-
-#define FOR_FILE(file, filepath) for (auto (file) = fopen((file_path), "r"); (file); fclose(file), (file) = 0)
-
-#define FOR_LINES(line, capacity, file) for (char line[capacity]; fgets(line, (capacity), (file)) != NULL;)
-
-#define READ_LINES(line, capacity, file_path) \
-    FOR_FILE(_file, file_path) \
-        FOR_LINES(line, capacity, _file)

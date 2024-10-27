@@ -63,3 +63,14 @@ DynamicString carmaFormatString(DynamicString string, const char* format, ...) {
 #define FORMAT_STRING(string, format, ...) do { \
     (string) = carmaFormatString((string), (format), ##__VA_ARGS__); \
 } while (0)
+
+////////////////////////////////////////////////////////////////////////////////
+// FILE ALGORITHMS
+
+#define FOR_FILE(file, filepath) for (auto (file) = fopen((file_path), "r"); (file); fclose(file), (file) = 0)
+
+#define FOR_LINES(line, capacity, file) for (char line[capacity]; fgets(line, (capacity), (file)) != NULL;)
+
+#define READ_LINES(line, capacity, file_path) \
+    FOR_FILE(_file, file_path) \
+        FOR_LINES(line, capacity, _file)
