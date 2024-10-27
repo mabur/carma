@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <carma/carma.h>
 #include <carma/carma_string.h>
@@ -21,8 +22,13 @@ typedef struct {
     size_t capacity;
 } Table;
 
-bool is_white_space(char c) {
-    return c == ' ';
+size_t find_white_space(const char* data, size_t max_index) {
+    for (size_t i = 0; i < max_index; ++i) {
+        if (isspace(data[i])) {
+            return i;
+        }
+    }
+    return max_index;
 }
 
 int main(int argc, char **argv) {
@@ -52,18 +58,16 @@ int main(int argc, char **argv) {
     
     
     auto whole = CONSTANT_STRING("hello small world");
-    while (!IS_EMPTY(whole)) {
-        // Initialize empty part:
-        auto part = (ConstantString){.data = whole.data, .count=0};
+    auto part = (ConstantString){.data = whole.data, .count=0};
+    for (;!IS_EMPTY(whole);) {
         // Grow part and shrink whole, until we find white space:
-        for (;END_POINTER(part) < END_POINTER(whole) &&
-            !is_white_space( *END_POINTER(part));
+        for (part.data = whole.data, part.count = 0;
+            END_POINTER(part) < END_POINTER(whole) && !isspace(*END_POINTER(part));
+            part.count++, whole.data++, whole.count--
         ) {
-            part.count++;
-            DROP_FRONT(whole);
         }
         // Remove white space from whole:
-        DROP_FRONT_WHILE(whole, is_white_space);
+        DROP_FRONT_WHILE(whole, isspace);
         
         printf("%.*s\n", (int)part.count, part.data);
     }
