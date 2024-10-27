@@ -31,6 +31,15 @@ size_t find_white_space(const char* data, size_t max_index) {
     return max_index;
 }
 
+size_t find_non_white_space(const char* data, size_t max_index) {
+    for (size_t i = 0; i < max_index; ++i) {
+        if (!isspace(data[i])) {
+            return i;
+        }
+    }
+    return max_index;
+}
+
 int main(int argc, char **argv) {
     if (argc < 2) {
         return EXIT_FAILURE;
@@ -59,15 +68,15 @@ int main(int argc, char **argv) {
     
     auto whole = CONSTANT_STRING("hello small world");
     auto part = (ConstantString){.data = whole.data, .count=0};
-    for (;!IS_EMPTY(whole);) {
-        // Grow part and shrink whole, until we find white space:
-        for (part.data = whole.data, part.count = 0;
-            END_POINTER(part) < END_POINTER(whole) && !isspace(*END_POINTER(part));
-            part.count++, whole.data++, whole.count--
-        ) {
-        }
-        // Remove white space from whole:
-        DROP_FRONT_WHILE(whole, isspace);
+    for (size_t i; !IS_EMPTY(whole);) {
+        i = find_white_space(whole.data, whole.count);
+        part.data = whole.data;
+        part.count = i;
+        whole.data += i;
+        whole.count -= i;
+        i = find_non_white_space(whole.data, whole.count);
+        whole.data += i;
+        whole.count -= i;
         
         printf("%.*s\n", (int)part.count, part.data);
     }
