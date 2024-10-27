@@ -64,6 +64,41 @@ DynamicString carmaFormatString(DynamicString string, const char* format, ...) {
     (string) = carmaFormatString((string), (format), ##__VA_ARGS__); \
 } while (0)
 
+
+size_t _find_first_character_of(const char* data, size_t max_index, int (*predicate)(int)) {
+    for (size_t i = 0; i < max_index; ++i) {
+        if (predicate(data[i])) {
+            return i;
+        }
+    }
+    return max_index;
+}
+
+size_t _find_first_character_not_of(const char* data, size_t max_index, int (*predicate)(int)) {
+    for (size_t i = 0; i < max_index; ++i) {
+        if (!predicate(data[i])) {
+            return i;
+        }
+    }
+    return max_index;
+}
+
+#define FOR_EACH_WORD(word, string, is_delimeter) \
+    for (\
+    size_t _i\
+    ;\
+    _i = _find_first_character_of((string).data, (string).count, (is_delimeter)),\
+    (word).data = whole.data,\
+    (word).count = _i,\
+    (string).data += _i,\
+    (string).count -= _i,\
+    !IS_EMPTY(part)\
+    ;\
+    _i = _find_first_character_not_of((string).data, (string).count, (is_delimeter)),\
+    (string).data += _i,\
+    (string).count -= _i\
+    )
+    
 ////////////////////////////////////////////////////////////////////////////////
 // FILE ALGORITHMS
 
