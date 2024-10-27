@@ -65,6 +65,8 @@ DynamicString carmaFormatString(DynamicString string, const char* format, ...) {
 } while (0)
 
 
+static
+inline
 size_t _find_first_character_of(const char* data, size_t max_index, int (*predicate)(int)) {
     for (size_t i = 0; i < max_index; ++i) {
         if (predicate(data[i])) {
@@ -74,6 +76,8 @@ size_t _find_first_character_of(const char* data, size_t max_index, int (*predic
     return max_index;
 }
 
+static
+inline
 size_t _find_first_character_not_of(const char* data, size_t max_index, int (*predicate)(int)) {
     for (size_t i = 0; i < max_index; ++i) {
         if (!predicate(data[i])) {
