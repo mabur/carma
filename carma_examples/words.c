@@ -31,10 +31,9 @@ int main(int argc, char **argv) {
     
     FOR_EACH_WORD(word, text_view, isspace) {
         total_words++;
-        auto word_count = 1;
-        FIND_KEYS(word, value_it, table) {
-            word_count += *value_it;
-        }
+        auto word_count = 0;
+        GET_KEYS_VALUE(word, word_count, table);
+        word_count++;
         SET_KEYS_VALUE(word, word_count, table);
     }
 

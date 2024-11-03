@@ -63,6 +63,24 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
     if ((table).data[_i].occupied) \
     if (ARE_EQUAL(table.data[_i].keys, k))
     
+#define GET_KEY_VALUE(k, value, table) do { \
+    FIND_KEY((k), value_it, (table)) {\
+        value += *value_it;\
+    }\
+} while(0)
+
+#define GET_2_KEYS_VALUE(k0, k1, value, table) do { \
+    FIND_2_KEYS((k0), (k1) value_it, (table)) {\
+        value += *value_it;\
+    }\
+} while(0)
+
+#define GET_KEYS_VALUE(keys, value, table) do { \
+    FIND_KEYS((keys), value_it, (table)) {\
+        value += *value_it;\
+    }\
+} while(0)
+
 ////////////////////////////////////////////////////////////////////////////////
 // ADD DATA TO TABLE
 
