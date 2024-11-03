@@ -67,7 +67,7 @@ DynamicString carmaFormatString(DynamicString string, const char* format, ...) {
 
 static
 inline
-size_t _find_first_character_of(const char* data, size_t max_index, int (*predicate)(int)) {
+size_t carma_find_first_character_of(const char* data, size_t max_index, int (*predicate)(int)) {
     for (size_t i = 0; i < max_index; ++i) {
         if (predicate(data[i])) {
             return i;
@@ -78,7 +78,7 @@ size_t _find_first_character_of(const char* data, size_t max_index, int (*predic
 
 static
 inline
-size_t _find_first_character_not_of(const char* data, size_t max_index, int (*predicate)(int)) {
+size_t carma_find_first_character_not_of(const char* data, size_t max_index, int (*predicate)(int)) {
     for (size_t i = 0; i < max_index; ++i) {
         if (!predicate(data[i])) {
             return i;
@@ -91,14 +91,14 @@ size_t _find_first_character_not_of(const char* data, size_t max_index, int (*pr
     for (\
     size_t _i\
     ;\
-    _i = _find_first_character_of((string).data, (string).count, (is_delimeter)),\
+    _i = carma_find_first_character_of((string).data, (string).count, (is_delimeter)),\
     (word).data = whole.data,\
     (word).count = _i,\
     (string).data += _i,\
     (string).count -= _i,\
     !IS_EMPTY(part)\
     ;\
-    _i = _find_first_character_not_of((string).data, (string).count, (is_delimeter)),\
+    _i = carma_find_first_character_not_of((string).data, (string).count, (is_delimeter)),\
     (string).data += _i,\
     (string).count -= _i\
     )
