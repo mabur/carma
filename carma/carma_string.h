@@ -96,7 +96,7 @@ size_t carma_find_first_character_not_of(const char* data, size_t max_index, int
     (word).count = _i,\
     (string).data += _i,\
     (string).count -= _i,\
-    !IS_EMPTY(part)\
+    !IS_EMPTY(word)\
     ;\
     _i = carma_find_first_character_not_of((string).data, (string).count, (is_delimeter)),\
     (string).data += _i,\
