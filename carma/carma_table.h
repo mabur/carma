@@ -37,8 +37,7 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
     
 #define FOR_STATE(name, value) \
     for (typeof(value) (name) = (value), (name##count) = 0; !(name##count); ++(name##count))
-
-// TODO: extend to interval
+    
 #define FIND_KEY(k, value_it, table) \
     if (!IS_EMPTY(table)) \
     FOR_STATE(_k, (k)) \
@@ -46,9 +45,7 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
     FOR_STATE(value_it, &(table).data[_i].value) \
     if ((table).data[_i].occupied) \
     if ((table).data[_i].key == k)
-
-
-// TODO: extend to interval
+    
 #define FIND_2_KEYS(k0, k1, value_it, table) \
     if (!IS_EMPTY(table)) \
     FOR_STATE(_k0, (k0)) \
@@ -59,7 +56,6 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
     if ((table).data[_i].key0 == k0) \
     if ((table).data[_i].key1 == k1)
 
-// TODO: extend to interval
 #define FIND_KEYS(k, value_it, table) \
     if (!IS_EMPTY(table)) \
     FOR_STATE(_i, CARMA_HASH_KEYS(k) % (table).count) \
@@ -70,7 +66,6 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
 ////////////////////////////////////////////////////////////////////////////////
 // ADD DATA TO TABLE
 
-// TODO: extend to interval
 #define CARMA_FIND_FREE_INDEX_FOR_KEY(table, k, index) do { \
     auto _lvalue_key = (k); \
     auto _hash = CARMA_HASH_KEY(_lvalue_key); \
@@ -84,7 +79,6 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
     } \
 } while (0)
 
-// TODO: extend to interval
 #define CARMA_FIND_FREE_INDEX_FOR_2_KEYS(table, k0, k1, index) do { \
     auto _lvalue_k0 = (k0); \
     auto _lvalue_k1 = (k1); \
@@ -99,7 +93,6 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
     } \
 } while (0)
 
-// TODO: extend to interval
 #define CARMA_FIND_FREE_INDEX_FOR_KEYS(table, _keys, index) do { \
     auto _hash = CARMA_HASH_KEYS(_keys); \
     (index) = (_hash) % (table).count; \
