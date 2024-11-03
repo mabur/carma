@@ -89,18 +89,19 @@ size_t carma_find_first_character_not_of(const char* data, size_t max_index, int
 
 #define FOR_EACH_WORD(word, string, is_delimeter) \
     for (\
-    size_t _i\
+    size_t _word_length,\
+    _delimeter_length\
     ;\
-    _i = carma_find_first_character_of((string).data, (string).count, (is_delimeter)),\
+    _word_length = carma_find_first_character_of((string).data, (string).count, (is_delimeter)),\
     (word).data = (string).data,\
-    (word).count = _i,\
-    (string).data += _i,\
-    (string).count -= _i,\
+    (word).count = _word_length,\
+    (string).data += _word_length,\
+    (string).count -= _word_length,\
     !IS_EMPTY(word)\
     ;\
-    _i = carma_find_first_character_not_of((string).data, (string).count, (is_delimeter)),\
-    (string).data += _i,\
-    (string).count -= _i\
+    _delimeter_length = carma_find_first_character_not_of((string).data, (string).count, (is_delimeter)),\
+    (string).data += _delimeter_length,\
+    (string).count -= _delimeter_length\
     )
     
 ////////////////////////////////////////////////////////////////////////////////
