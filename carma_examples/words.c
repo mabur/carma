@@ -5,13 +5,7 @@
 #include <carma/carma_table.h>
 
 typedef struct {
-    char* data;
-    size_t count;
-    size_t capacity;
-} String;
-
-typedef struct {
-    String keys;
+    StringView keys;
     size_t value;
     bool occupied;
 } Item;
@@ -27,37 +21,31 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
     auto file_path = argv[1];
-    auto count = 0;
-    auto word = (String){};
+    auto text = read_text_file(file_path);
+    printf("%.*s\n", (int)text.count, text.data);
+    
+    auto text_view = (StringView){.data = text.data, .count=text.count};
+    auto word = (StringView){};
     auto table = (Table){};
-    READ_LINES(line, 255, file_path) {
-
-        RESERVE(word, strlen(line));
-        // Copy line to word.
-        // Split line into word.
-        // Increase count for word in table.
-
-        auto word_count = 0;
+    auto total_words = 0;
+    
+    FOR_EACH_WORD(word, text_view, isspace) {
+        total_words++;
+        auto word_count = 1;
         FIND_KEYS(word, value_it, table) {
-            word_count = *value_it;
+            word_count += *value_it;
         }
         SET_KEYS_VALUE(word, word_count, table);
-        
-        count++;
     }
-    printf("The file %s contains %d lines\n", file_path, count);
+
+    auto total_unique_words = 0;
     
-    auto text = read_text_file(file_path);
-    auto text_view = (StringView){.data = text.data, .count=text.count};
-    auto part = (StringView){};
-    printf("%.*s\n", (int)text_view.count, text_view.data);
-    printf("WORDS:\n");
-    auto word_count = 0;
-    FOR_EACH_WORD(part, text_view, isspace) {
-        ++word_count;
-        printf("%.*s\n", (int)part.count, part.data);
+    FOR_EACH_TABLE(item, table) {
+        total_unique_words++;
+        printf("%.*s (%zu)\n", (int)item->keys.count, item->keys.data, item->value);
     }
-    printf("word_count=%d\n", word_count);
+    printf("\nTotal words %d\n", total_words);
+    printf("Total unique words %d\n", total_unique_words);
     
     return EXIT_SUCCESS;
 }
