@@ -16,35 +16,32 @@ typedef struct {
     size_t capacity;
 } Table;
 
+Table count_words(StringView text) {
+    auto word = (StringView){};
+    auto table = (Table){};
+    FOR_EACH_WORD(word, text, isspace) {
+        auto word_count = 0;
+        GET_KEYS_VALUE(word, word_count, table);
+        word_count++;
+        SET_KEYS_VALUE(word, word_count, table);
+    }
+    return table;
+}
+
 int main(int argc, char **argv) {
     if (argc < 2) {
         return EXIT_FAILURE;
     }
     auto file_path = argv[1];
     auto text = read_text_file(file_path);
-    printf("%.*s\n", (int)text.count, text.data);
-    
-    auto text_view = (StringView){.data = text.data, .count=text.count};
-    auto word = (StringView){};
-    auto table = (Table){};
-    auto total_words = 0;
-    
-    FOR_EACH_WORD(word, text_view, isspace) {
-        total_words++;
-        auto word_count = 0;
-        GET_KEYS_VALUE(word, word_count, table);
-        word_count++;
-        SET_KEYS_VALUE(word, word_count, table);
-    }
-
-    auto total_unique_words = 0;
-    
+    auto table = count_words((StringView){.data = text.data, .count=text.count});
+    auto unique_word_count = 0;
     FOR_EACH_TABLE(item, table) {
-        total_unique_words++;
-        printf("%.*s (%zu)\n", (int)item->keys.count, item->keys.data, item->value);
+        unique_word_count++;
+        auto word = item->keys;
+        auto word_count = item->value;
+        printf("%.*s (%zu)\n", (int)word.count, word.data, word_count);
     }
-    printf("\nTotal words %d\n", total_words);
-    printf("Total unique words %d\n", total_unique_words);
-    
+    printf("%d unique words\n", unique_word_count);
     return EXIT_SUCCESS;
 }
