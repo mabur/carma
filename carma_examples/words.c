@@ -49,15 +49,15 @@ int main(int argc, char **argv) {
 
 
     printf("BEGIN\n");
-    auto whole = CONSTANT_STRING("hello small world");
-    auto part = (ConstantString){};
+    auto whole = STRING_VIEW("hello small world");
+    auto part = (StringView){};
     FOR_EACH_WORD(part, whole, isspace) {
         printf("%.*s\n", (int)part.count, part.data);
     }
     printf("END\n");
     
     auto text = read_text_file(file_path);
-    auto text_view = (ConstantString){.data = text.data, .count=text.count};
+    auto text_view = (StringView){.data = text.data, .count=text.count};
     printf("%.*s\n", (int)text_view.count, text_view.data);
     printf("WORDS:\n");
     auto word_count = 0;

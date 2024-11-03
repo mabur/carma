@@ -652,12 +652,12 @@ void test_for_x_y() {
     ASSERT_EQUAL_RANGE("test_for_x_y", actual, expected);
 }
 
-void test_constant_string() {
-    ASSERT_EQUAL_INT("test_constant_string", CONSTANT_STRING("").count, 0);
-    ASSERT_EQUAL_INT("test_constant_string", CONSTANT_STRING("a").count, 1);
-    ASSERT_EQUAL_INT("test_constant_string", CONSTANT_STRING("ab").count, 2);
-    ASSERT_EQUAL_INT("test_constant_string", CONSTANT_STRING("\n").count, 1);
-    ASSERT_EQUAL_INT("test_constant_string", CONSTANT_STRING("\0").count, 0);
+void test_string_view() {
+    ASSERT_EQUAL_INT("test_string_view", STRING_VIEW("").count, 0);
+    ASSERT_EQUAL_INT("test_string_view", STRING_VIEW("a").count, 1);
+    ASSERT_EQUAL_INT("test_string_view", STRING_VIEW("ab").count, 2);
+    ASSERT_EQUAL_INT("test_string_view", STRING_VIEW("\n").count, 1);
+    ASSERT_EQUAL_INT("test_string_view", STRING_VIEW("\0").count, 0);
 }
 
 void test_concat_cstring() {
@@ -947,7 +947,7 @@ int main() {
 
     test_for_x_y();
 
-    test_constant_string();
+    test_string_view();
     test_concat_cstring();
     test_format_string();
 

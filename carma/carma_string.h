@@ -7,10 +7,10 @@
 
 #include "carma.h"
 
-typedef struct ConstantString {
+typedef struct StringView {
     const char* data;
     size_t count;
-} ConstantString;
+} StringView;
 
 typedef struct DynamicString {
     char* data;
@@ -18,10 +18,10 @@ typedef struct DynamicString {
     size_t capacity;
 } DynamicString;
 
-#define CONSTANT_STRING(cstring) (ConstantString){(cstring), strlen(cstring)}
+#define STRING_VIEW(cstring) (StringView){(cstring), strlen(cstring)}
 
 #define CONCAT_CSTRING(dynamic_string, cstring) do { \
-    ConstantString tail_with_null_terminator = {(cstring), strlen(cstring) + 1}; \
+    StringView tail_with_null_terminator = {(cstring), strlen(cstring) + 1}; \
     CONCAT((dynamic_string), tail_with_null_terminator); \
     DROP_BACK(dynamic_string); \
 } while (0)
