@@ -31,13 +31,15 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
 
 #define CARMA_HASH_KEYS(keys) \
     carma_hash_bytes(CARMA_HASH_INIT, (const char*)(BEGIN_POINTER(keys)), COUNT_BYTES(keys))
-    
+
+#define GET_KEY_ITEM(key, table) \
+    ((table).data + CARMA_HASH_KEY(key) % (table).count)
+
 #define GET_KEY_VALUE(k, _value, table) do { \
     if (IS_EMPTY(table)) \
         break; \
     auto _key = (k); \
-    auto _index = CARMA_HASH_KEY(_key) % (table).count; \
-    auto _item = (table).data + _index; \
+    auto _item = GET_KEY_ITEM(_key, table); \
     if (_item->occupied && _item->key == _key) { \
         (_value) = _item->value; \
     } \
