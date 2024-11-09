@@ -825,9 +825,7 @@ void test_table_set_keys_value() {
 void test_table_missing_key() {
     auto table = (TableIntInt){};
     auto value = 0;
-    FIND_KEY(2, v, table) {
-        value = *v;
-    }
+    GET_KEY_VALUE(2, value, table);
     ASSERT_EQUAL_INT("test_table_missing_key", value, 0);
 }
 
