@@ -46,7 +46,7 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
     if (_item->occupied && _item->key == _key) { \
         (_value) = _item->value; \
     } \
-} while(0)
+} while (0)
 
 #define GET_KEYS_VALUE(_keys, _value, table) do { \
     if (IS_EMPTY(table)) \
@@ -55,7 +55,7 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
     if (_item->occupied && ARE_EQUAL(_item->keys, (_keys))) { \
         (_value) = _item->value; \
     } \
-} while(0)
+} while (0)
 
 ////////////////////////////////////////////////////////////////////////////////
 // ADD DATA TO TABLE
