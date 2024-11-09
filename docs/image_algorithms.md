@@ -6,12 +6,12 @@ with the additional member variables `width` and `height` of integer type.
 For example:
 
 ```c
-struct ExampleImage {
+typedef struct {
     int* data;
     size_t count;
     size_t width;
     size_t height;
-};
+} ExampleImage;
 ```
 
 For an image `count` == `width * height`.

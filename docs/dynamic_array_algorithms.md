@@ -6,11 +6,11 @@ with the additional member variable `capacity` of any integer type.
 For example:
 
 ```c
-struct ExampleDynamicArray {
+typedef struct {
     int* data;
     size_t count;
     size_t capacity;
-};
+} ExampleDynamicArray;
 ```
 
 The `capacity` defines the number of items that fit in the array

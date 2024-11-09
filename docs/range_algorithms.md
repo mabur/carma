@@ -8,10 +8,10 @@ where `data` can be any pointer type and `count` can be any integer type.
 For example:
 
 ```clike
-struct ExampleRange {
+typedef struct {
     int* data;
     size_t count;
-};
+} ExampleRange;
 ```
 
 ## Range Macros O(1)
