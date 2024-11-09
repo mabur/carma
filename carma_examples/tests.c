@@ -742,19 +742,6 @@ void test_table_set_key_value_duplicates() {
     ASSERT_EQUAL_INT("test_table_set_key_value_duplicates", product, 3);
 }
 
-void test_table_set_2_keys_value_duplicates() {
-    auto table = (TableIntIntInt){};
-    SET_2_KEYS_VALUE(1, 2, 2, table);
-    SET_2_KEYS_VALUE(1, 2, 3, table);
-    auto product = 1;
-    FOR_EACH(item, table) {
-        if (item->occupied) {
-            product *= item->value;
-        }
-    }
-    ASSERT_EQUAL_INT("test_table_set_2_keys_value_duplicates", product, 3);
-}
-
 void test_table_set_keys_value_duplicates() {
     auto table = (TableIntArrayInt){};
     auto keys = (IntArray){};
@@ -786,22 +773,6 @@ void test_table_set_key_value() {
     ASSERT_EQUAL_INT("test_table_set_key_value", product, 30);
 }
 
-void test_table_set_2_keys_value() {
-    auto table = (TableIntIntInt){};
-    SET_2_KEYS_VALUE(1, -1, 2, table);
-    SET_2_KEYS_VALUE(3, -3, 3, table);
-    SET_2_KEYS_VALUE(3, 3, 0, table);
-    SET_2_KEYS_VALUE(3, 3, 5, table);
-    
-    auto product = 1;
-    FOR_EACH(item, table) {
-        if (item->occupied) {
-            product *= item->value;
-        }
-    }
-    ASSERT_EQUAL_INT("test_table_set_2_keys_value", product, 30);
-}
-
 void test_table_set_keys_value() {
     auto table = (TableIntArrayInt){};
     auto keys = (IntArray){};
@@ -829,13 +800,6 @@ void test_table_missing_key() {
     ASSERT_EQUAL_INT("test_table_missing_key", value, 0);
 }
 
-void test_table_missing_2_keys() {
-    auto table = (TableIntIntInt){};
-    auto value = 0;
-    GET_2_KEYS_VALUE(2, 3, value, table);
-    ASSERT_EQUAL_INT("test_table_missing_2_keys", value, 0);
-}
-
 void test_table_missing_keys() {
     auto table = (TableIntArrayInt){};
     auto keys = (IntArray){};
@@ -851,14 +815,6 @@ void test_table_available_key() {
     auto value = 0;
     GET_KEY_VALUE(2, value, table);
     ASSERT_EQUAL_INT("test_table_available_key", value, 5);
-}
-
-void test_table_available_2_keys() {
-    auto table = (TableIntIntInt){};
-    SET_2_KEYS_VALUE(2, 3, 5, table);
-    auto value = 0;
-    GET_2_KEYS_VALUE(2, 3, value, table);
-    ASSERT_EQUAL_INT("test_table_available_2_keys", value, 5);
 }
 
 void test_table_available_keys() {
@@ -940,19 +896,15 @@ int main() {
     test_format_string();
 
     test_table_set_key_value_duplicates();
-    test_table_set_2_keys_value_duplicates();
     test_table_set_keys_value_duplicates();
     
     test_table_set_key_value();
-    test_table_set_2_keys_value();
     test_table_set_keys_value();
     
     test_table_missing_key();
-    test_table_missing_2_keys();
     test_table_missing_keys();
     
     test_table_available_key();
-    test_table_available_2_keys();
     test_table_available_keys();
     
     summarize_tests();
