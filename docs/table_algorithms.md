@@ -25,7 +25,7 @@ typedef struct {
 } Table;
 ```
 
-However, the table is not a dynamic array and you should not use the dynamic array macros on it. You should instead use the following dedicated table macros.
+However, the table is not a dynamic array since it can have wholes of items that are not occupied. You should not use the dynamic array macros on tables. You should instead use the following dedicated table macros:
 
 - `INIT_TABLE(table, capacity)` can be used to init an empty table, if you know the capacity you need from the start.
   If you don't know what capacity you want then you can just zero initialize the table instead like `(MyTable){}` or `(MyTable){0}`;
@@ -42,17 +42,19 @@ SET_KEY_VALUE(99, 'a', table);
 SET_KEY_VALUE(35, 'x', table);
 ```
 
-- `FIND_KEY(key, value_iterator, table)` looks for the `key` in the table. If the `key` is found then `value_iterator` will point at it. It is semantically similar to a for loop, but with better time complexity O(1). Example usage:
+- `GET_KEY_VALUE(key, value, table)` looks for the `key` in the table. If the `key` is found then `value` will be set to it. Time complexity O(1). Example usage:
 
 ```c
 int key = 99;
-FIND_KEY(key, value_iterator, table) {
+char value = '\0';
+GET_KEY_VALUE(key, value, table);
+if (value != '\0') {
     printf("I found the key %d in the table.\n", key)
-    printf("It contained the value %c.\n", *value_iterator);
+    printf("It contained the value %c.\n", value);
 }
 ```
 
-- `FOR_EACH_TABLE(table)` can be used to loop over all items in a table. Example usage:
+- `FOR_EACH_TABLE(table)` can be used to loop over all occupied items in a table. Time complexity O(capacity). Example usage:
 
 ```c
 FOR_EACH_TABLE(it, table) {
