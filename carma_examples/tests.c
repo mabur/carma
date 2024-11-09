@@ -841,9 +841,7 @@ void test_table_missing_keys() {
     auto keys = (IntArray){};
     APPEND(keys, 1);
     auto value = 0;
-    FIND_KEYS(keys, v, table) {
-        value = *v;
-    }
+    GET_KEYS_VALUE(keys, value, table);
     ASSERT_EQUAL_INT("test_table_missing_keys", value, 0);
 }
 
@@ -869,9 +867,7 @@ void test_table_available_keys() {
     APPEND(keys, 1);
     SET_KEYS_VALUE(keys, 5, table);
     auto value = 0;
-    FIND_KEYS(keys, v, table) {
-        value = *v;
-    }
+    GET_KEYS_VALUE(keys, value, table);
     ASSERT_EQUAL_INT("test_table_available_2_keys", value, 5);
 }
 
