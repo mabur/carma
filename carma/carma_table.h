@@ -60,27 +60,25 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
 ////////////////////////////////////////////////////////////////////////////////
 // ADD DATA TO TABLE
 
-#define CARMA_FIND_FREE_INDEX_FOR_KEY(table, k, index) do { \
-    auto _hash = CARMA_HASH_KEY(k); \
-    (index) = (_hash) % (table).count; \
-    if (!(table).data[index].occupied) { \
+#define CARMA_FIND_FREE_INDEX_FOR_KEY(table, k, _it) do { \
+    _it = CARMA_GET_FIRST_KEY_ITEM((k), (table)); \
+    if (!_it->occupied) { \
     } \
-    else if ((table).data[index].key == (k)) { \
+    else if (_it->key == (k)) { \
     } \
     else { \
-        (index) = SIZE_MAX; \
+        (_it) = NULL; \
     } \
 } while (0)
 
-#define CARMA_FIND_FREE_INDEX_FOR_KEYS(table, _keys, index) do { \
-    auto _hash = CARMA_HASH_KEYS(_keys); \
-    (index) = (_hash) % (table).count; \
-    if (!(table).data[index].occupied) { \
+#define CARMA_FIND_FREE_INDEX_FOR_KEYS(table, _keys, _it) do { \
+    _it = CARMA_GET_FIRST_KEYS_ITEM((_keys), (table)); \
+    if (!_it->occupied) { \
     } \
-    else if (ARE_EQUAL((table).data[index].keys, _keys)) { \
+    else if (ARE_EQUAL(_it->keys, _keys)) { \
     } \
     else { \
-        (index) = SIZE_MAX; \
+        (_it) = NULL; \
     } \
 } while (0)
 
@@ -109,11 +107,11 @@ bool _is_power_of_two(size_t n) {
     auto new_capacity = 2 * (table).capacity; \
     auto new_table = table; \
     INIT_TABLE(new_table, new_capacity); \
-    FOR_EACH_TABLE(_item, (table)) { \
-        size_t _inner_index; \
-        CARMA_FIND_FREE_INDEX_FOR_KEY((new_table), _item->key, _inner_index); \
-        assert(_inner_index != SIZE_MAX); \
-        new_table.data[_inner_index] = *_item; \
+    FOR_EACH_TABLE(_old_item, (table)) { \
+        auto _new_item = new_table.data; \
+        CARMA_FIND_FREE_INDEX_FOR_KEY((new_table), _old_item->key, _new_item); \
+        assert(_new_item != NULL); \
+        *_new_item = *_old_item; \
     } \
     FREE_TABLE(table); \
     table = new_table; \
@@ -123,11 +121,11 @@ bool _is_power_of_two(size_t n) {
     auto new_capacity = 2 * (table).capacity; \
     auto new_table = table; \
     INIT_TABLE(new_table, new_capacity); \
-    FOR_EACH_TABLE(_item, (table)) { \
-        size_t _inner_index; \
-        CARMA_FIND_FREE_INDEX_FOR_KEYS((new_table), _item->keys, _inner_index); \
-        assert(_inner_index != SIZE_MAX); \
-        new_table.data[_inner_index] = *_item; \
+    FOR_EACH_TABLE(_old_item, (table)) { \
+        auto _new_item = new_table.data; \
+        CARMA_FIND_FREE_INDEX_FOR_KEYS((new_table), _old_item->keys, _new_item); \
+        assert(_new_item != NULL); \
+        *_new_item = *_old_item; \
     } \
     FREE_TABLE(table); \
     table = new_table; \
@@ -141,27 +139,27 @@ bool _is_power_of_two(size_t n) {
 #define SET_KEY_VALUE(k, v, table) do { \
     CARMA_HANDLE_EMPTY_TABLE(table); \
     auto _k = (k); \
-    size_t index; \
-    CARMA_FIND_FREE_INDEX_FOR_KEY((table), _k, index); \
-    while (index == SIZE_MAX) { \
+    auto _item = (table).data; \
+    CARMA_FIND_FREE_INDEX_FOR_KEY((table), _k, _item); \
+    while (_item == NULL) { \
         CARMA_DOUBLE_TABLE_CAPACITY_KEY(table); \
-        CARMA_FIND_FREE_INDEX_FOR_KEY((table), _k, index); \
+        CARMA_FIND_FREE_INDEX_FOR_KEY((table), _k, _item); \
     } \
-    (table).data[index].key = _k; \
-    (table).data[index].value = (v); \
-    (table).data[index].occupied = (true); \
+    _item->key = _k; \
+    _item->value = (v); \
+    _item->occupied = (true); \
 } while (0)
 
 #define SET_KEYS_VALUE(k, v, table) do { \
     CARMA_HANDLE_EMPTY_TABLE(table); \
     auto _k = (k); \
-    size_t index; \
-    CARMA_FIND_FREE_INDEX_FOR_KEYS((table), _k, index); \
-    while (index == SIZE_MAX) { \
+    auto _item = (table).data; \
+    CARMA_FIND_FREE_INDEX_FOR_KEYS((table), _k, _item); \
+    while (_item == NULL) { \
         CARMA_DOUBLE_TABLE_CAPACITY_KEYS(table); \
-        CARMA_FIND_FREE_INDEX_FOR_KEYS((table), _k, index); \
+        CARMA_FIND_FREE_INDEX_FOR_KEYS((table), _k, _item); \
     } \
-    (table).data[index].keys = _k; \
-    (table).data[index].value = (v); \
-    (table).data[index].occupied = (true); \
+    _item->keys = _k; \
+    _item->value = (v); \
+    _item->occupied = (true); \
 } while (0)
