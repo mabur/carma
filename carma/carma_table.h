@@ -37,16 +37,6 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
     
 #define FOR_STATE(name, value) \
     for (typeof(value) (name) = (value), (name##count) = 0; !(name##count); ++(name##count))
-    
-#define FIND_2_KEYS(k0, k1, value_it, table) \
-    if (!IS_EMPTY(table)) \
-    FOR_STATE(_k0, (k0)) \
-    FOR_STATE(_k1, (k1)) \
-    FOR_STATE(_i, CARMA_HASH_2_KEYS(_k0, _k1) % (table).count) \
-    FOR_STATE(value_it, &(table).data[_i].value) \
-    if ((table).data[_i].occupied) \
-    if ((table).data[_i].key0 == k0) \
-    if ((table).data[_i].key1 == k1)
 
 #define FIND_KEYS(k, value_it, table) \
     if (!IS_EMPTY(table)) \
@@ -57,19 +47,25 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
     
 #define GET_KEY_VALUE(k, _value, table) do { \
     if (IS_EMPTY(table)) \
-        break;                               \
-    auto _key = k;                                         \
+        break; \
+    auto _key = (k); \
     auto _index = CARMA_HASH_KEY(_key) % (table).count; \
     auto _item = (table).data + _index; \
     if (_item->occupied && _item->key == _key) { \
-        _value = _item->value; \
+        (_value) = _item->value; \
     } \
 } while(0)
 
-#define GET_2_KEYS_VALUE(k0, k1, value, table) do { \
-    FIND_2_KEYS((k0), (k1), value_it, (table)) {\
-        value += *value_it;\
-    }\
+#define GET_2_KEYS_VALUE(k0, k1, _value, table) do { \
+    if (IS_EMPTY(table)) \
+        break; \
+    auto _key0 = (k0); \
+    auto _key1 = (k1); \
+    auto _index = CARMA_HASH_2_KEYS(_key0, _key1) % (table).count; \
+    auto _item = (table).data + _index; \
+    if (_item->occupied && _item->key0 == _key0 && _item->key1 == _key1) { \
+        (_value) = _item->value; \
+    } \
 } while(0)
 
 #define GET_KEYS_VALUE(keys, value, table) do { \
