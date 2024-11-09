@@ -35,9 +35,6 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
 #define CARMA_HASH_KEYS(keys) \
     carma_hash_bytes(CARMA_HASH_INIT, (const char*)(BEGIN_POINTER(keys)), COUNT_BYTES(keys))
     
-#define FOR_STATE(name, value) \
-    for (typeof(value) (name) = (value), (name##count) = 0; !(name##count); ++(name##count))
-    
 #define GET_KEY_VALUE(k, _value, table) do { \
     if (IS_EMPTY(table)) \
         break; \
