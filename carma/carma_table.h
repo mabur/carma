@@ -32,14 +32,17 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
 #define CARMA_HASH_KEYS(keys) \
     carma_hash_bytes(CARMA_HASH_INIT, (const char*)(BEGIN_POINTER(keys)), COUNT_BYTES(keys))
 
-#define GET_KEY_ITEM(key, table) \
+#define CARMA_GET_FIRST_KEY_ITEM(key, table) \
     ((table).data + CARMA_HASH_KEY(key) % (table).count)
 
+#define CARMA_GET_FIRST_KEYS_ITEM(keys, table) \
+    ((table).data + CARMA_HASH_KEYS(keys) % (table).count)
+    
 #define GET_KEY_VALUE(k, _value, table) do { \
     if (IS_EMPTY(table)) \
         break; \
     auto _key = (k); \
-    auto _item = GET_KEY_ITEM(_key, table); \
+    auto _item = CARMA_GET_FIRST_KEY_ITEM(_key, table); \
     if (_item->occupied && _item->key == _key) { \
         (_value) = _item->value; \
     } \
@@ -48,8 +51,7 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
 #define GET_KEYS_VALUE(_keys, _value, table) do { \
     if (IS_EMPTY(table)) \
         break; \
-    auto _index = CARMA_HASH_KEYS(_keys) % (table).count; \
-    auto _item = (table).data + _index; \
+    auto _item = CARMA_GET_FIRST_KEYS_ITEM(_keys, table); \
     if (_item->occupied && ARE_EQUAL(_item->keys, (_keys))) { \
         (_value) = _item->value; \
     } \
