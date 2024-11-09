@@ -61,12 +61,11 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
 // ADD DATA TO TABLE
 
 #define CARMA_FIND_FREE_INDEX_FOR_KEY(table, k, index) do { \
-    auto _lvalue_key = (k); \
-    auto _hash = CARMA_HASH_KEY(_lvalue_key); \
+    auto _hash = CARMA_HASH_KEY(k); \
     (index) = (_hash) % (table).count; \
     if (!(table).data[index].occupied) { \
     } \
-    else if ((table).data[index].key == _lvalue_key) { \
+    else if ((table).data[index].key == (k)) { \
     } \
     else { \
         (index) = SIZE_MAX; \
@@ -141,26 +140,28 @@ bool _is_power_of_two(size_t n) {
 
 #define SET_KEY_VALUE(k, v, table) do { \
     CARMA_HANDLE_EMPTY_TABLE(table); \
+    auto _k = (k); \
     size_t index; \
-    CARMA_FIND_FREE_INDEX_FOR_KEY((table), (k), index); \
+    CARMA_FIND_FREE_INDEX_FOR_KEY((table), _k, index); \
     while (index == SIZE_MAX) { \
         CARMA_DOUBLE_TABLE_CAPACITY_KEY(table); \
-        CARMA_FIND_FREE_INDEX_FOR_KEY((table), (k), index); \
+        CARMA_FIND_FREE_INDEX_FOR_KEY((table), _k, index); \
     } \
-    (table).data[index].key = (k); \
+    (table).data[index].key = _k; \
     (table).data[index].value = (v); \
     (table).data[index].occupied = (true); \
 } while (0)
 
 #define SET_KEYS_VALUE(k, v, table) do { \
     CARMA_HANDLE_EMPTY_TABLE(table); \
+    auto _k = (k); \
     size_t index; \
-    CARMA_FIND_FREE_INDEX_FOR_KEYS((table), (k), index); \
+    CARMA_FIND_FREE_INDEX_FOR_KEYS((table), _k, index); \
     while (index == SIZE_MAX) { \
         CARMA_DOUBLE_TABLE_CAPACITY_KEYS(table); \
-        CARMA_FIND_FREE_INDEX_FOR_KEYS((table), (k), index); \
+        CARMA_FIND_FREE_INDEX_FOR_KEYS((table), _k, index); \
     } \
-    (table).data[index].keys = (k); \
+    (table).data[index].keys = _k; \
     (table).data[index].value = (v); \
     (table).data[index].occupied = (true); \
 } while (0)
