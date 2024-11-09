@@ -855,9 +855,7 @@ void test_table_available_key() {
     auto table = (TableIntInt){};
     SET_KEY_VALUE(2, 5, table);
     auto value = 0;
-    FIND_KEY(2, v, table) {
-        value = *v;
-    }
+    GET_KEY_VALUE(2, value, table);
     ASSERT_EQUAL_INT("test_table_available_key", value, 5);
 }
 
