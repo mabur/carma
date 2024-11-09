@@ -832,9 +832,7 @@ void test_table_missing_key() {
 void test_table_missing_2_keys() {
     auto table = (TableIntIntInt){};
     auto value = 0;
-    FIND_2_KEYS(2, 3, v, table) {
-        value = *v;
-    }
+    GET_2_KEYS_VALUE(2, 3, value, table);
     ASSERT_EQUAL_INT("test_table_missing_2_keys", value, 0);
 }
 
@@ -861,9 +859,7 @@ void test_table_available_2_keys() {
     auto table = (TableIntIntInt){};
     SET_2_KEYS_VALUE(2, 3, 5, table);
     auto value = 0;
-    FIND_2_KEYS(2, 3, v, table) {
-        value = *v;
-    }
+    GET_2_KEYS_VALUE(2, 3, value, table);
     ASSERT_EQUAL_INT("test_table_available_2_keys", value, 5);
 }
 

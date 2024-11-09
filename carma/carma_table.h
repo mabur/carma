@@ -70,7 +70,7 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
 } while(0)
 
 #define GET_2_KEYS_VALUE(k0, k1, value, table) do { \
-    FIND_2_KEYS((k0), (k1) value_it, (table)) {\
+    FIND_2_KEYS((k0), (k1), value_it, (table)) {\
         value += *value_it;\
     }\
 } while(0)
