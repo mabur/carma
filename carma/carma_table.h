@@ -85,7 +85,7 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
 #define CLEAR_TABLE(table) FOR_EACH(item, (table)) item->occupied = false;
 
 static inline
-bool _is_power_of_two(size_t n) {
+bool carma_is_power_of_two(size_t n) {
     // A power of two is greater than 0 and has only one bit set.
     // If n is a power of two then n - 1 will have all bits set,
     // below the single bit set in n, and n & (n - 1) will be 0.
@@ -93,7 +93,7 @@ bool _is_power_of_two(size_t n) {
 }
 
 #define INIT_TABLE(table, capacity) do { \
-    assert(_is_power_of_two(capacity)); \
+    assert(carma_is_power_of_two(capacity)); \
     INIT_DARRAY(table, capacity, capacity); \
     CLEAR_TABLE(table); \
 } while (0)
