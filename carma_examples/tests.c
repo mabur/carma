@@ -23,14 +23,7 @@ typedef struct {
 } ItemIntInt;
 
 typedef struct {
-    int key0;
-    int key1;
-    int value;
-    bool occupied;
-} ItemIntIntInt;
-
-typedef struct {
-    IntArray keys;
+    IntArray key;
     int value;
     bool occupied;
 } ItemIntArrayInt;
@@ -40,12 +33,6 @@ typedef struct {
     size_t count;
     size_t capacity;
 } TableIntInt;
-
-typedef struct {
-    ItemIntIntInt* data;
-    size_t count;
-    size_t capacity;
-} TableIntIntInt;
 
 typedef struct {
     ItemIntArrayInt* data;

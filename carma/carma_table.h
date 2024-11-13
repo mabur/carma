@@ -29,14 +29,14 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
 
 #define CARMA_HASH_KEY(key) carma_hash_bytes(CARMA_HASH_INIT, CARMA_BYTES_RANGE(key))
 
-#define CARMA_HASH_KEYS(keys) \
-    carma_hash_bytes(CARMA_HASH_INIT, (const char*)(BEGIN_POINTER(keys)), COUNT_BYTES(keys))
+#define CARMA_HASH_KEYS(key) \
+    carma_hash_bytes(CARMA_HASH_INIT, (const char*)(BEGIN_POINTER(key)), COUNT_BYTES(key))
 
 #define CARMA_GET_FIRST_KEY_ITEM(key, table) \
     ((table).data + CARMA_HASH_KEY(key) % (table).count)
 
-#define CARMA_GET_FIRST_KEYS_ITEM(keys, table) \
-    ((table).data + CARMA_HASH_KEYS(keys) % (table).count)
+#define CARMA_GET_FIRST_KEYS_ITEM(key, table) \
+    ((table).data + CARMA_HASH_KEYS(key) % (table).count)
     
 #define GET_KEY_VALUE(k, _value, table) do { \
     if (IS_EMPTY(table)) \
@@ -48,11 +48,11 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
     } \
 } while (0)
 
-#define GET_KEYS_VALUE(_keys, _value, table) do { \
+#define GET_KEYS_VALUE(_key, _value, table) do { \
     if (IS_EMPTY(table)) \
         break; \
-    auto _item = CARMA_GET_FIRST_KEYS_ITEM(_keys, table); \
-    if (_item->occupied && ARE_EQUAL(_item->keys, (_keys))) { \
+    auto _item = CARMA_GET_FIRST_KEYS_ITEM(_key, table); \
+    if (_item->occupied && ARE_EQUAL(_item->key, (_key))) { \
         (_value) = _item->value; \
     } \
 } while (0)
@@ -71,11 +71,11 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
     } \
 } while (0)
 
-#define CARMA_FIND_FREE_INDEX_FOR_KEYS(table, _keys, _it) do { \
-    _it = CARMA_GET_FIRST_KEYS_ITEM((_keys), (table)); \
+#define CARMA_FIND_FREE_INDEX_FOR_KEYS(table, k, _it) do { \
+    _it = CARMA_GET_FIRST_KEYS_ITEM((k), (table)); \
     if (!_it->occupied) { \
     } \
-    else if (ARE_EQUAL(_it->keys, _keys)) { \
+    else if (ARE_EQUAL(_it->key, (k))) { \
     } \
     else { \
         (_it) = NULL; \
@@ -123,7 +123,7 @@ bool carma_is_power_of_two(size_t n) {
     INIT_TABLE(new_table, new_capacity); \
     FOR_EACH_TABLE(_old_item, (table)) { \
         auto _new_item = new_table.data; \
-        CARMA_FIND_FREE_INDEX_FOR_KEYS((new_table), _old_item->keys, _new_item); \
+        CARMA_FIND_FREE_INDEX_FOR_KEYS((new_table), _old_item->key, _new_item); \
         assert(_new_item != NULL); \
         *_new_item = *_old_item; \
     } \
@@ -159,7 +159,7 @@ bool carma_is_power_of_two(size_t n) {
         CARMA_DOUBLE_TABLE_CAPACITY_KEYS(table); \
         CARMA_FIND_FREE_INDEX_FOR_KEYS((table), _k, _item); \
     } \
-    _item->keys = _k; \
+    _item->key = _k; \
     _item->value = (v); \
     _item->occupied = (true); \
 } while (0)

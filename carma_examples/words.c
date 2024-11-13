@@ -5,7 +5,7 @@
 #include <carma/carma_table.h>
 
 typedef struct {
-    StringView keys;
+    StringView key;
     size_t value;
     bool occupied;
 } Item;
@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
     auto unique_word_count = 0;
     FOR_EACH_TABLE(item, table) {
         unique_word_count++;
-        auto word = item->keys;
+        auto word = item->key;
         auto word_count = item->value;
         printf("%.*s (%zu)\n", (int)word.count, word.data, word_count);
     }
