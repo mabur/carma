@@ -734,8 +734,8 @@ void test_table_set_keys_value_duplicates() {
     auto keys = (IntArray){};
     APPEND(keys, 1);
     APPEND(keys, 2);
-    SET_KEYS_VALUE(keys, 2, table);
-    SET_KEYS_VALUE(keys, 3, table);
+    SET_RANGE_KEY_VALUE(keys, 2, table);
+    SET_RANGE_KEY_VALUE(keys, 3, table);
     auto product = 1;
     FOR_EACH(item, table) {
         if (item->occupied) {
@@ -764,12 +764,12 @@ void test_table_set_keys_value() {
     auto table = (TableIntArrayInt){};
     auto keys = (IntArray){};
     APPEND(keys, 1);
-    SET_KEYS_VALUE(keys, 2, table);
+    SET_RANGE_KEY_VALUE(keys, 2, table);
     APPEND(keys, 2);
-    SET_KEYS_VALUE(keys, 3, table);
+    SET_RANGE_KEY_VALUE(keys, 3, table);
     APPEND(keys, 3);
-    SET_KEYS_VALUE(keys, 0, table);
-    SET_KEYS_VALUE(keys, 5, table);
+    SET_RANGE_KEY_VALUE(keys, 0, table);
+    SET_RANGE_KEY_VALUE(keys, 5, table);
 
     auto product = 1;
     FOR_EACH(item, table) {
@@ -792,7 +792,7 @@ void test_table_missing_keys() {
     auto keys = (IntArray){};
     APPEND(keys, 1);
     auto value = 0;
-    GET_KEYS_VALUE(keys, value, table);
+    GET_RANGE_KEY_VALUE(keys, value, table);
     ASSERT_EQUAL_INT("test_table_missing_keys", value, 0);
 }
 
@@ -808,9 +808,9 @@ void test_table_available_keys() {
     auto table = (TableIntArrayInt){};
     auto keys = (IntArray){};
     APPEND(keys, 1);
-    SET_KEYS_VALUE(keys, 5, table);
+    SET_RANGE_KEY_VALUE(keys, 5, table);
     auto value = 0;
-    GET_KEYS_VALUE(keys, value, table);
+    GET_RANGE_KEY_VALUE(keys, value, table);
     ASSERT_EQUAL_INT("test_table_available_2_keys", value, 5);
 }
 
