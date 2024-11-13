@@ -24,23 +24,17 @@
 * Logo. Elephant and/or Sanskrit letter Ca
 * Use for-macro-trick for scope-based resource handling for files, memory, ...
 * Associative table
-  - Can circumvent custom hashing and equality functions
-    by having macros that can take multiple keys,
-    such that each key is a primitive type that we can safely call sizeof for.
-  - How to handle non-primitive keys, for example c-strings?
-    - Could have macros that take a range as key.
-    - Could require that equal strings should have equal pointers,
-      which could be achieved by a string pool. 
-  - Consider AOS instead of SOA.
-    - AOS merges nicely with general range concept.
-    - AOS could re-use range macros.
-    - AOS requires fewer custom struct definitions by user.
   - Tsoding hash table in C:
     - https://www.youtube.com/watch?v=n-S9DBwPGTo
   - CppCon 2017: Matt Kulukundis “Designing a Fast, Efficient, Cache-friendly Hash Table, Step by Step”
     - Google SwissTable
     - https://www.youtube.com/watch?v=ncHmEUmJZf4
     - Have occupancy byte that stores both: occupancy, deleted, part of the hash.
+  - Add table versions of?:
+    FOR_MIN_TABLE, FOR_MAX_TABLE,
+    FILL_TABLE, ERASE_KEY, ERASE_IF_TABLE, CONCAT_TABLE
+    COUNT_TABLE? IS_EMPTY_TABLE? ARE_EQUAL_TABLE?
+  - Would it be meaningful to re-use to share the implementation for some of them?
 * Describe range concepts as:
   - Fixed Ranges, that cannot change size, for example image.
   - Dynamic Arrays, that can shrink or grow at the end.
@@ -56,13 +50,6 @@
       - Image
     - Table
 * Translate arralg to carma
-* Make it so that a table just looks like a Dynamic Array,
-  but that it is only an implementation detail and that it is not a range.
-  - Add table versions of?:
-    FOR_MIN_TABLE, FOR_MAX_TABLE,
-    FILL_TABLE, ERASE_KEY, ERASE_IF_TABLE, CONCAT_TABLE
-    COUNT_TABLE? IS_EMPTY_TABLE? ARE_EQUAL_TABLE?
-  - Would it be meaningful to re-use to share the implementation for some of them?
 
 
 From Falco Girgis:
