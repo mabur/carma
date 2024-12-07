@@ -26,14 +26,62 @@ typedef struct StringBuilder {
     DROP_BACK(dynamic_string); \
 } while (0)
 
-StringBuilder carma_format_string(StringBuilder string, const char* format, ...);
+static inline
+StringBuilder carma_format_string(StringBuilder string, const char* format, ...) {
+    va_list args0;
+    va_list args1;
+    va_start(args0, format);
+    va_copy(args1, args0);
+
+    // Try writing at the end of the string:
+    int num_characters = vsnprintf(
+        END_POINTER(string),
+        REMAINING_CAPACITY(string),
+        format,
+        args0
+    );
+    // Check if we succeed:
+    if (num_characters >= 0) {
+        size_t required_capacity = string.count + (size_t)num_characters + 1;
+        // Check if we need to reallocate the string to fit:
+        if (required_capacity > string.capacity) {
+            RESERVE_EXPONENTIAL_GROWTH(string, required_capacity);
+            // Write the string that should fit now:
+            num_characters = vsnprintf(
+                END_POINTER(string), REMAINING_CAPACITY(string), format, args1
+            );
+        }
+        string.count += (size_t)num_characters;
+    }
+
+    va_end(args0);
+    va_end(args1);
+    return string;
+}
 
 #define FORMAT_STRING(string, format, ...) do { \
     (string) = carma_format_string((string), (format), ##__VA_ARGS__); \
 } while (0)
 
-size_t carma_find_first_character_of(const char* data, size_t max_index, int (*predicate)(int));
-size_t carma_find_first_character_not_of(const char* data, size_t max_index, int (*predicate)(int));
+static inline
+size_t carma_find_first_character_of(const char* data, size_t max_index, int (*predicate)(int)) {
+    for (size_t i = 0; i < max_index; ++i) {
+        if (predicate(data[i])) {
+            return i;
+        }
+    }
+    return max_index;
+}
+
+static inline
+size_t carma_find_first_character_not_of(const char* data, size_t max_index, int (*predicate)(int)) {
+    for (size_t i = 0; i < max_index; ++i) {
+        if (!predicate(data[i])) {
+            return i;
+        }
+    }
+    return max_index;
+}
 
 #define FOR_EACH_WORD(word, string, is_delimeter) \
     for (\
@@ -62,5 +110,14 @@ size_t carma_find_first_character_not_of(const char* data, size_t max_index, int
 #define READ_LINES(line, capacity, file_path) \
     FOR_FILE(_file, file_path, "r") \
         FOR_LINES(line, capacity, _file)
-        
-StringBuilder read_text_file(const char* file_path);
+
+static inline
+StringBuilder read_text_file(const char* file_path) {
+    StringBuilder result = {};
+    FOR_FILE(file, file_path, "r") {
+        for (int ch; ch = fgetc(file), ch != EOF;) {
+            APPEND(result, (char)ch);
+        }
+    }
+    return result;
+}
