@@ -7,7 +7,7 @@ StringBuilder carma_format_string(StringBuilder string, const char* format, ...)
     va_copy(args1, args0);
 
     // Try writing at the end of the string:
-    auto num_characters = vsnprintf(
+    int num_characters = vsnprintf(
         END_POINTER(string),
         REMAINING_CAPACITY(string),
         format,
@@ -51,7 +51,7 @@ size_t carma_find_first_character_not_of(const char* data, size_t max_index, int
 }
 
 StringBuilder read_text_file(const char* file_path) {
-    auto result = (StringBuilder){};
+    StringBuilder result = {};
     FOR_FILE(file, file_path, "r") {
         for (int ch; ch = fgetc(file), ch != EOF;) {
             APPEND(result, (char)ch);
