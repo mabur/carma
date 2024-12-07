@@ -25,6 +25,9 @@
 * Logo. Elephant and/or Sanskrit letter Ca
 * Use for-macro-trick for scope-based resource handling for files, memory, ...
 * Associative table
+  - Jonathan Blow
+    - https://pastebin.com/xMUQXshn
+    - Have occupancy byte that stores both: occupancy and part of the hash
   - Tsoding hash table in C:
     - https://www.youtube.com/watch?v=n-S9DBwPGTo
   - CppCon 2017: Matt Kulukundis “Designing a Fast, Efficient, Cache-friendly Hash Table, Step by Step”
