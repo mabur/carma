@@ -1,11 +1,13 @@
 cmake_minimum_required(VERSION 3.5)
 project(carma_examples)
 
-add_executable(tests tests.c)
-add_executable(raytracer raytracer.c)
-add_executable(aoc22_01 aoc22_01.c)
-add_executable(particles particles.c)
-add_executable(words words.c)
+file(GLOB CARMA_SOURCES "../carma/*.c")
+
+add_executable(tests tests.c ${CARMA_SOURCES})
+add_executable(raytracer raytracer.c ${CARMA_SOURCES})
+add_executable(aoc22_01 aoc22_01.c ${CARMA_SOURCES})
+add_executable(particles particles.c ${CARMA_SOURCES})
+add_executable(words words.c ${CARMA_SOURCES})
 
 target_compile_features(tests PRIVATE c_std_23)
 target_compile_features(raytracer PRIVATE c_std_23)
