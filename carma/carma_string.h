@@ -12,11 +12,11 @@ typedef struct StringView {
     size_t count;
 } StringView;
 
-typedef struct DynamicString {
+typedef struct StringBuilder {
     char* data;
     size_t count;
     size_t capacity;
-} DynamicString;
+} StringBuilder;
 
 #define STRING_VIEW(cstring) (StringView){(cstring), strlen(cstring)}
 
@@ -28,7 +28,7 @@ typedef struct DynamicString {
 
 static
 inline
-DynamicString carmaFormatString(DynamicString string, const char* format, ...) {
+StringBuilder carmaFormatString(StringBuilder string, const char* format, ...) {
     va_list args0;
     va_list args1;
     va_start(args0, format);
@@ -117,8 +117,8 @@ size_t carma_find_first_character_not_of(const char* data, size_t max_index, int
 
 static
 inline
-DynamicString read_text_file(const char* file_path) {
-    auto result = (DynamicString){};
+StringBuilder read_text_file(const char* file_path) {
+    auto result = (StringBuilder){};
     FOR_FILE(file, file_path, "r") {
         for (int ch; ch = fgetc(file), ch != EOF;) {
             APPEND(result, (char)ch);

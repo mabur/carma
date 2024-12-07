@@ -187,9 +187,9 @@ void ASSERT_EQUAL_SIZE(const char* description, size_t a, size_t b) {
     } \
 } while (0);
 
-void ASSERT_DYNAMIC_STRING(
+void ASSERT_STRING_BUILDER(
     const char* description,
-    DynamicString string,
+    StringBuilder string,
     const char* data,
     size_t count,
     size_t capacity
@@ -648,72 +648,72 @@ void test_string_view() {
 }
 
 void test_concat_cstring() {
-    auto s = (DynamicString){};
+    auto s = (StringBuilder){};
 
-    s = (DynamicString){};
+    s = (StringBuilder){};
     CONCAT_CSTRING(s, "");
-    ASSERT_DYNAMIC_STRING("test_concat_cstring 0", s, "", 0, 1);
+    ASSERT_STRING_BUILDER("test_concat_cstring 0", s, "", 0, 1);
 
-    s = (DynamicString){};
+    s = (StringBuilder){};
     CONCAT_CSTRING(s, "");
     CONCAT_CSTRING(s, "");
-    ASSERT_DYNAMIC_STRING("test_concat_cstring 1", s, "", 0, 1);
+    ASSERT_STRING_BUILDER("test_concat_cstring 1", s, "", 0, 1);
 
-    s = (DynamicString){};
+    s = (StringBuilder){};
     CONCAT_CSTRING(s, "a");
     CONCAT_CSTRING(s, "");
-    ASSERT_DYNAMIC_STRING("test_concat_cstring 2", s, "a", 1, 2);
+    ASSERT_STRING_BUILDER("test_concat_cstring 2", s, "a", 1, 2);
 
-    s = (DynamicString){};
+    s = (StringBuilder){};
     CONCAT_CSTRING(s, "");
     CONCAT_CSTRING(s, "a");
-    ASSERT_DYNAMIC_STRING("test_concat_cstring 3", s, "a", 1, 2);
+    ASSERT_STRING_BUILDER("test_concat_cstring 3", s, "a", 1, 2);
 }
 
 void test_format_string() {
-    auto s = (DynamicString){};
+    auto s = (StringBuilder){};
     
-    s = (DynamicString){};
+    s = (StringBuilder){};
     FORMAT_STRING(s, "");
-    ASSERT_DYNAMIC_STRING("test_format_string 0", s, "", 0, 1);
+    ASSERT_STRING_BUILDER("test_format_string 0", s, "", 0, 1);
 
-    s = (DynamicString){};
+    s = (StringBuilder){};
     FORMAT_STRING(s, "a");
-    ASSERT_DYNAMIC_STRING("test_format_string 1", s, "a", 1, 2);
+    ASSERT_STRING_BUILDER("test_format_string 1", s, "a", 1, 2);
 
-    s = (DynamicString){};
+    s = (StringBuilder){};
     FORMAT_STRING(s, "ab");
-    ASSERT_DYNAMIC_STRING("test_format_string 2", s, "ab", 2, 4);
+    ASSERT_STRING_BUILDER("test_format_string 2", s, "ab", 2, 4);
 
-    s = (DynamicString){};
+    s = (StringBuilder){};
     FORMAT_STRING(s, "%i%s\n%i", 1, "ab", 99);
-    ASSERT_DYNAMIC_STRING("test_format_string 3", s, "1ab\n99", 6, 8);
+    ASSERT_STRING_BUILDER("test_format_string 3", s, "1ab\n99", 6, 8);
 
-    s = (DynamicString){};
+    s = (StringBuilder){};
     FORMAT_STRING(s, "");
     FORMAT_STRING(s, "");
-    ASSERT_DYNAMIC_STRING("test_format_string 4", s, "", 0, 1);
+    ASSERT_STRING_BUILDER("test_format_string 4", s, "", 0, 1);
     
-    s = (DynamicString){};
+    s = (StringBuilder){};
     FORMAT_STRING(s, "");
     FORMAT_STRING(s, "a");
-    ASSERT_DYNAMIC_STRING("test_format_string 5", s, "a", 1, 2);
+    ASSERT_STRING_BUILDER("test_format_string 5", s, "a", 1, 2);
 
-    s = (DynamicString){};
+    s = (StringBuilder){};
     FORMAT_STRING(s, "a");
     FORMAT_STRING(s, "");
-    ASSERT_DYNAMIC_STRING("test_format_string 6", s, "a", 1, 2);
+    ASSERT_STRING_BUILDER("test_format_string 6", s, "a", 1, 2);
 
-    s = (DynamicString){};
+    s = (StringBuilder){};
     FORMAT_STRING(s, "a");
     FORMAT_STRING(s, "b");
-    ASSERT_DYNAMIC_STRING("test_format_string 7", s, "ab", 2, 4);
+    ASSERT_STRING_BUILDER("test_format_string 7", s, "ab", 2, 4);
     
-    s = (DynamicString){};
+    s = (StringBuilder){};
     FORMAT_STRING(s, "a");
     FORMAT_STRING(s, "bb");
     FORMAT_STRING(s, "ccc");
-    ASSERT_DYNAMIC_STRING("test_format_string 8", s, "abbccc", 6, 8);
+    ASSERT_STRING_BUILDER("test_format_string 8", s, "abbccc", 6, 8);
 }
 
 void test_table_set_key_value_duplicates() {
