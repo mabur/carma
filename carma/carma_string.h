@@ -18,7 +18,11 @@ typedef struct StringBuilder {
     size_t capacity;
 } StringBuilder;
 
+#ifdef __cplusplus
+#define STRING_VIEW(cstring) StringView{(cstring), strlen(cstring)}
+#else
 #define STRING_VIEW(cstring) (StringView){(cstring), strlen(cstring)}
+#endif
 
 #define CONCAT_CSTRING(dynamic_string, cstring) do { \
     StringView tail_with_null_terminator = {(cstring), strlen(cstring) + 1}; \
