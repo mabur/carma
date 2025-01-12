@@ -68,7 +68,7 @@ StringBuilder carma_concat_string(StringBuilder string, const char* format, ...)
 } while (0)
 
 static inline
-StringView carma_format_string_buffer(const char* format, ...) {
+StringView FORMAT_STRING(const char* format, ...) {
     static StringBuilder string = {};
     CLEAR(string);
     va_list args;
