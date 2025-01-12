@@ -63,7 +63,7 @@ StringBuilder carma_append_format_string(StringBuilder string, const char* forma
     return string;
 }
 
-#define APPEND_FORMAT_STRING(string, format, ...) do { \
+#define CONCAT_STRING(string, format, ...) do { \
     (string) = carma_append_format_string((string), (format), ##__VA_ARGS__); \
 } while (0)
 

@@ -670,50 +670,50 @@ void test_concat_cstring() {
     ASSERT_STRING_BUILDER("test_concat_cstring 3", s, "a", 1, 2);
 }
 
-void test_append_format_string() {
+void test_concat_string() {
     auto s = (StringBuilder){};
     
     s = (StringBuilder){};
-    APPEND_FORMAT_STRING(s, "");
-    ASSERT_STRING_BUILDER("test_append_format_string 0", s, "", 0, 1);
+    CONCAT_STRING(s, "");
+    ASSERT_STRING_BUILDER("test_concat_string 0", s, "", 0, 1);
 
     s = (StringBuilder){};
-    APPEND_FORMAT_STRING(s, "a");
-    ASSERT_STRING_BUILDER("test_append_format_string 1", s, "a", 1, 2);
+    CONCAT_STRING(s, "a");
+    ASSERT_STRING_BUILDER("test_concat_string 1", s, "a", 1, 2);
 
     s = (StringBuilder){};
-    APPEND_FORMAT_STRING(s, "ab");
-    ASSERT_STRING_BUILDER("test_append_format_string 2", s, "ab", 2, 4);
+    CONCAT_STRING(s, "ab");
+    ASSERT_STRING_BUILDER("test_concat_string 2", s, "ab", 2, 4);
 
     s = (StringBuilder){};
-    APPEND_FORMAT_STRING(s, "%i%s\n%i", 1, "ab", 99);
-    ASSERT_STRING_BUILDER("test_append_format_string 3", s, "1ab\n99", 6, 8);
+    CONCAT_STRING(s, "%i%s\n%i", 1, "ab", 99);
+    ASSERT_STRING_BUILDER("test_concat_string 3", s, "1ab\n99", 6, 8);
 
     s = (StringBuilder){};
-    APPEND_FORMAT_STRING(s, "");
-    APPEND_FORMAT_STRING(s, "");
-    ASSERT_STRING_BUILDER("test_append_format_string 4", s, "", 0, 1);
+    CONCAT_STRING(s, "");
+    CONCAT_STRING(s, "");
+    ASSERT_STRING_BUILDER("test_concat_string 4", s, "", 0, 1);
     
     s = (StringBuilder){};
-    APPEND_FORMAT_STRING(s, "");
-    APPEND_FORMAT_STRING(s, "a");
-    ASSERT_STRING_BUILDER("test_append_format_string 5", s, "a", 1, 2);
+    CONCAT_STRING(s, "");
+    CONCAT_STRING(s, "a");
+    ASSERT_STRING_BUILDER("test_concat_string 5", s, "a", 1, 2);
 
     s = (StringBuilder){};
-    APPEND_FORMAT_STRING(s, "a");
-    APPEND_FORMAT_STRING(s, "");
-    ASSERT_STRING_BUILDER("test_append_format_string 6", s, "a", 1, 2);
+    CONCAT_STRING(s, "a");
+    CONCAT_STRING(s, "");
+    ASSERT_STRING_BUILDER("test_concat_string 6", s, "a", 1, 2);
 
     s = (StringBuilder){};
-    APPEND_FORMAT_STRING(s, "a");
-    APPEND_FORMAT_STRING(s, "b");
-    ASSERT_STRING_BUILDER("test_append_format_string 7", s, "ab", 2, 4);
+    CONCAT_STRING(s, "a");
+    CONCAT_STRING(s, "b");
+    ASSERT_STRING_BUILDER("test_concat_string 7", s, "ab", 2, 4);
     
     s = (StringBuilder){};
-    APPEND_FORMAT_STRING(s, "a");
-    APPEND_FORMAT_STRING(s, "bb");
-    APPEND_FORMAT_STRING(s, "ccc");
-    ASSERT_STRING_BUILDER("test_append_format_string 8", s, "abbccc", 6, 8);
+    CONCAT_STRING(s, "a");
+    CONCAT_STRING(s, "bb");
+    CONCAT_STRING(s, "ccc");
+    ASSERT_STRING_BUILDER("test_concat_string 8", s, "abbccc", 6, 8);
 }
 
 void test_table_set_key_value_duplicates() {
@@ -880,7 +880,7 @@ int main() {
 
     test_string_view();
     test_concat_cstring();
-    test_append_format_string();
+    test_concat_string();
 
     test_table_set_key_value_duplicates();
     test_table_set_keys_value_duplicates();
