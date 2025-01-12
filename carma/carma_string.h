@@ -31,7 +31,7 @@ typedef struct StringBuilder {
 } while (0)
 
 static inline
-StringBuilder carma_format_string(StringBuilder string, const char* format, ...) {
+StringBuilder carma_append_format_string(StringBuilder string, const char* format, ...) {
     va_list args0;
     va_list args1;
     va_start(args0, format);
@@ -64,8 +64,20 @@ StringBuilder carma_format_string(StringBuilder string, const char* format, ...)
 }
 
 #define FORMAT_STRING(string, format, ...) do { \
-    (string) = carma_format_string((string), (format), ##__VA_ARGS__); \
+    (string) = carma_append_format_string((string), (format), ##__VA_ARGS__); \
 } while (0)
+
+static inline
+StringView carma_format_string_buffer(const char* format, ...) {
+    static StringBuilder string = {};
+    CLEAR(string);
+    va_list args;
+    va_start(args, format);
+    string = carma_append_format_string(string, format, args);
+    va_end(args);
+    StringView result = {string.data, string.count};
+    return result;
+}
 
 static inline
 size_t carma_find_first_character_of(const char* data, size_t max_index, int (*predicate)(int)) {
