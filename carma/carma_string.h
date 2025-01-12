@@ -24,10 +24,10 @@ typedef struct StringBuilder {
 #define STRING_VIEW(cstring) (StringView){(cstring), strlen(cstring)}
 #endif
 
-#define CONCAT_CSTRING(dynamic_string, cstring) do { \
+#define CONCAT_CSTRING(string_builder, cstring) do { \
     StringView tail_with_null_terminator = {(cstring), strlen(cstring) + 1}; \
-    CONCAT((dynamic_string), tail_with_null_terminator); \
-    DROP_BACK(dynamic_string); \
+    CONCAT((string_builder), tail_with_null_terminator); \
+    DROP_BACK(string_builder); \
 } while (0)
 
 static inline
@@ -63,8 +63,8 @@ StringBuilder carma_concat_string(StringBuilder string, const char* format, ...)
     return string;
 }
 
-#define CONCAT_STRING(string, format, ...) do { \
-    (string) = carma_concat_string((string), (format), ##__VA_ARGS__); \
+#define CONCAT_STRING(string_builder, format, ...) do { \
+    (string_builder) = carma_concat_string((string_builder), (format), ##__VA_ARGS__); \
 } while (0)
 
 static inline
