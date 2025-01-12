@@ -94,3 +94,6 @@ FOR_EACH_WORD(word, text, is_comma) {
 }
 average_word_length /= word_count;
 ```
+
+- `read_text_file(file_path_cstring)` reads a text file
+  and returns a `StringBuilder` of its content.
