@@ -17,7 +17,6 @@ typedef struct {
 } Table;
 
 Table count_words(StringView text) {
-    auto word = (StringView){};
     auto table = (Table){};
     FOR_EACH_WORD(word, text, isspace) {
         auto word_count = 0;

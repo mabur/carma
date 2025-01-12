@@ -100,6 +100,7 @@ size_t carma_find_first_character_not_of(const char* data, size_t max_index, int
 }
 
 #define FOR_EACH_WORD(word, string, is_delimeter) \
+    StringView word = {}; \
     for (\
     size_t _word_length,\
     _delimeter_length\
