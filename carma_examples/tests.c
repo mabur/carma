@@ -217,11 +217,11 @@ void summarize_tests() {
 
 void test_2d_array() {
     Image image;
-    INIT_IMAGE(image, 2, 3);
+    INIT_2D_ARRAY(image, 2, 3);
     ASSERT_EQUAL_SIZE("test_2d_array width", image.width, 2);
     ASSERT_EQUAL_SIZE("test_2d_array height", image.height, 3);
     ASSERT_EQUAL_SIZE("test_2d_array count", image.count, 2 * 3);
-    FREE_IMAGE(image);
+    FREE_2D_ARRAY(image);
 }
 
 void test_3d_array() {
@@ -641,7 +641,7 @@ void test_concat() {
 
 void test_for_x_y() {
     Image actual;
-    INIT_IMAGE(actual, 4, 3);
+    INIT_2D_ARRAY(actual, 4, 3);
     auto i = 0;
     FOR_Y(y, actual) {
         FOR_X(x, actual) {

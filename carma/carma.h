@@ -36,7 +36,7 @@
     (darray).capacity = (mycapacity); \
 } while (0)
 
-#define INIT_IMAGE(array, mywidth, myheight) do { \
+#define INIT_2D_ARRAY(array, mywidth, myheight) do { \
     (array).data = (POINTER_TYPE(array))malloc((mywidth) * (myheight) * sizeof(VALUE_TYPE(array))); \
     (array).width = (mywidth); \
     (array).height = (myheight); \
@@ -67,7 +67,7 @@
     (darray).capacity = 0; \
 } while (0)
 
-#define FREE_IMAGE(array) do { \
+#define FREE_2D_ARRAY(array) do { \
     free((array).data); \
     (array).data = NULL; \
     (array).width = 0; \
