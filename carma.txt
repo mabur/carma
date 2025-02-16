@@ -1,3 +1,13 @@
+* Arrays
+  - array2d, array3d
+  - look_up_xy, look_up_xyz, at_xy, at_xyz
+* Describe Taxonomy
+  - Range
+    - Array2d, Array3d
+    - StringView
+    - Dynamic array
+      - StringBuilder
+  - Table
 * Strict warnings
 * Naming conflicts for macros that introduce local variables, that could be the same as a user variable.
   - Related to shadowing warnings. So good that the user can get warning when this happens.
