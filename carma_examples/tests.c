@@ -215,23 +215,23 @@ void summarize_tests() {
     }
 }
 
-void test_init_image() {
+void test_2d_array() {
     Image image;
     INIT_IMAGE(image, 2, 3);
-    ASSERT_EQUAL_SIZE("test_init_image width", image.width, 2);
-    ASSERT_EQUAL_SIZE("test_init_image height", image.height, 3);
-    ASSERT_EQUAL_SIZE("test_init_image count", image.count, 2 * 3);
+    ASSERT_EQUAL_SIZE("test_2d_array width", image.width, 2);
+    ASSERT_EQUAL_SIZE("test_2d_array height", image.height, 3);
+    ASSERT_EQUAL_SIZE("test_2d_array count", image.count, 2 * 3);
     FREE_IMAGE(image);
 }
 
 void test_3d_array() {
-    Voxels image;
-    INIT_3D_ARRAY(image, 2, 3, 4);
-    ASSERT_EQUAL_SIZE("test_3d_array width", image.width, 2);
-    ASSERT_EQUAL_SIZE("test_3d_array height", image.height, 3);
-    ASSERT_EQUAL_SIZE("test_3d_array depth", image.depth, 4);
-    ASSERT_EQUAL_SIZE("test_3d_array count", image.count, 2 * 3 * 4);
-    FREE_3D_ARRAY(image);
+    Voxels voxels;
+    INIT_3D_ARRAY(voxels, 2, 3, 4);
+    ASSERT_EQUAL_SIZE("test_3d_array width", voxels.width, 2);
+    ASSERT_EQUAL_SIZE("test_3d_array height", voxels.height, 3);
+    ASSERT_EQUAL_SIZE("test_3d_array depth", voxels.depth, 4);
+    ASSERT_EQUAL_SIZE("test_3d_array count", voxels.count, 2 * 3 * 4);
+    FREE_3D_ARRAY(voxels);
 }
 
 void test_is_empty() {
@@ -825,7 +825,7 @@ void test_table_available_keys() {
 }
 
 int main() {
-    test_init_image();
+    test_2d_array();
     test_3d_array();
     
     test_first_item();
