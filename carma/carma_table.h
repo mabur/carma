@@ -82,6 +82,7 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
     } \
 } while (0)
 
+// TODO
 #define CLEAR_TABLE(table) FOR_EACH(item, (table)) item->occupied = false;
 
 static inline
@@ -100,6 +101,7 @@ bool carma_is_power_of_two(size_t n) {
 
 #define FREE_TABLE(table) FREE_DARRAY(table)
 
+// TODO
 #define FOR_EACH_TABLE(iterator, table) \
     FOR_EACH(iterator, (table)) if ((iterator)->occupied)
     
@@ -131,13 +133,10 @@ bool carma_is_power_of_two(size_t n) {
     table = new_table; \
 } while (0)
 
-#define CARMA_HANDLE_EMPTY_TABLE(table) \
+#define SET_KEY_VALUE(k, v, table) do { \
     if (IS_EMPTY(table)) { \
         INIT_TABLE(table, 1); \
-    }
-
-#define SET_KEY_VALUE(k, v, table) do { \
-    CARMA_HANDLE_EMPTY_TABLE(table); \
+    } \
     auto _k = (k); \
     auto _item = (table).data; \
     CARMA_FIND_FREE_INDEX_FOR_KEY((table), _k, _item); \
@@ -151,7 +150,9 @@ bool carma_is_power_of_two(size_t n) {
 } while (0)
 
 #define SET_RANGE_KEY_VALUE(k, v, table) do { \
-    CARMA_HANDLE_EMPTY_TABLE(table); \
+    if (IS_EMPTY(table)) { \
+        INIT_TABLE(table, 1); \
+    } \
     auto _k = (k); \
     auto _item = (table).data; \
     CARMA_FIND_FREE_INDEX_FOR_RANGE_KEY((table), _k, _item); \
