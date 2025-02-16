@@ -36,11 +36,11 @@
     (darray).capacity = (mycapacity); \
 } while (0)
 
-#define INIT_IMAGE(image, mywidth, myheight) do { \
-    (image).data = (POINTER_TYPE(image))malloc((mywidth) * (myheight) * sizeof(VALUE_TYPE(image))); \
-    (image).width = (mywidth); \
-    (image).height = (myheight); \
-    (image).count = (mywidth) * (myheight); \
+#define INIT_IMAGE(array, mywidth, myheight) do { \
+    (array).data = (POINTER_TYPE(array))malloc((mywidth) * (myheight) * sizeof(VALUE_TYPE(array))); \
+    (array).width = (mywidth); \
+    (array).height = (myheight); \
+    (array).count = (mywidth) * (myheight); \
 } while (0)
 
 #define INIT_3D_ARRAY(array, mywidth, myheight, mydepth) do { \
@@ -67,12 +67,12 @@
     (darray).capacity = 0; \
 } while (0)
 
-#define FREE_IMAGE(image) do { \
-    free((image).data); \
-    (image).data = NULL; \
-    (image).width = 0; \
-    (image).height = 0; \
-    (image).count = 0; \
+#define FREE_IMAGE(array) do { \
+    free((array).data); \
+    (array).data = NULL; \
+    (array).width = 0; \
+    (array).height = 0; \
+    (array).count = 0; \
 } while (0)
 
 #define FREE_3D_ARRAY(array) do { \
