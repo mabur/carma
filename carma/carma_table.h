@@ -100,9 +100,9 @@ bool carma_is_power_of_two(size_t n) {
 
 #define FREE_TABLE(table) FREE_DARRAY(table)
 
-// TODO
 #define FOR_EACH_TABLE(iterator, table) \
-    FOR_EACH(iterator, (table)) if ((iterator)->occupied)
+    for (auto iterator = (table).data; iterator != (table).data + (table).capacity; ++iterator) \
+    if ((iterator)->occupied)
     
 #define CARMA_DOUBLE_TABLE_CAPACITY_KEY(table) do { \
     auto new_capacity = 2 * (table).capacity; \
