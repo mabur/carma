@@ -134,7 +134,7 @@ bool carma_is_power_of_two(size_t n) {
 } while (0)
 
 #define SET_KEY_VALUE(k, v, table) do { \
-    if (IS_EMPTY(table)) { \
+    if ((table).capacity == 0) { \
         INIT_TABLE(table, 1); \
     } \
     auto _k = (k); \
@@ -150,7 +150,7 @@ bool carma_is_power_of_two(size_t n) {
 } while (0)
 
 #define SET_RANGE_KEY_VALUE(k, v, table) do { \
-    if (IS_EMPTY(table)) { \
+    if ((table).capacity == 0) { \
         INIT_TABLE(table, 1); \
     } \
     auto _k = (k); \
