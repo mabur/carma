@@ -44,7 +44,7 @@
 } while (0)
 
 #define INIT_3D_ARRAY(array, mywidth, myheight, mydepth) do { \
-    (array).data = (POINTER_TYPE(image))malloc((mywidth) * (myheight) * (mydepth) * sizeof(VALUE_TYPE(array))); \
+    (array).data = (POINTER_TYPE(array))malloc((mywidth) * (myheight) * (mydepth) * sizeof(VALUE_TYPE(array))); \
     (array).width = (mywidth); \
     (array).height = (myheight); \
     (array).depth = (mydepth); \
