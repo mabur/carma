@@ -276,3 +276,9 @@ static inline bool _are_bits_equal(
 
 #define FOR_Z(z, image) \
     for (typeof((image).depth) z = 0; z < (image).depth; ++z)
+
+#define AT_XY(array, x, y) \
+    ((array).data[(array).width * (y) + (x)])
+
+#define AT_XYZ(array, x, y, z) \
+    ((array).data[(array).height * (array).width * (z) + (array).width * (y) + (x)])
