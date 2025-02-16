@@ -94,7 +94,7 @@ bool carma_is_power_of_two(size_t n) {
 
 #define INIT_TABLE(table, capacity) do { \
     assert(carma_is_power_of_two(capacity)); \
-    INIT_DARRAY(table, capacity, capacity); \
+    INIT_DARRAY(table, 0, capacity); \
     CLEAR_TABLE(table); \
 } while (0)
 
@@ -108,6 +108,7 @@ bool carma_is_power_of_two(size_t n) {
     auto new_capacity = 2 * (table).capacity; \
     auto new_table = table; \
     INIT_TABLE(new_table, new_capacity); \
+    new_table.count = (table).count; \
     FOR_EACH_TABLE(_old_item, (table)) { \
         auto _new_item = new_table.data; \
         CARMA_FIND_FREE_INDEX_FOR_KEY((new_table), _old_item->key, _new_item); \
@@ -122,6 +123,7 @@ bool carma_is_power_of_two(size_t n) {
     auto new_capacity = 2 * (table).capacity; \
     auto new_table = table; \
     INIT_TABLE(new_table, new_capacity); \
+    new_table.count = (table).count; \
     FOR_EACH_TABLE(_old_item, (table)) { \
         auto _new_item = new_table.data; \
         CARMA_FIND_FREE_INDEX_FOR_RANGE_KEY((new_table), _old_item->key, _new_item); \
@@ -143,6 +145,9 @@ bool carma_is_power_of_two(size_t n) {
         CARMA_DOUBLE_TABLE_CAPACITY_KEY(table); \
         CARMA_FIND_FREE_INDEX_FOR_KEY((table), _k, _item); \
     } \
+    if (!_item->occupied) { \
+        (table).count++; \
+    } \
     _item->key = _k; \
     _item->value = (v); \
     _item->occupied = (true); \
@@ -158,6 +163,9 @@ bool carma_is_power_of_two(size_t n) {
     while (_item == NULL) { \
         CARMA_DOUBLE_TABLE_CAPACITY_RANGE_KEY(table); \
         CARMA_FIND_FREE_INDEX_FOR_RANGE_KEY((table), _k, _item); \
+    } \
+    if (!_item->occupied) { \
+        (table).count++; \
     } \
     _item->key = _k; \
     _item->value = (v); \
