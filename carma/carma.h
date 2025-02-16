@@ -43,6 +43,14 @@
     (image).count = (mywidth) * (myheight); \
 } while (0)
 
+#define INIT_3D_ARRAY(array, mywidth, myheight, mydepth) do { \
+    (array).data = (POINTER_TYPE(image))malloc((mywidth) * (myheight) * (mydepth) * sizeof(VALUE_TYPE(array))); \
+    (array).width = (mywidth); \
+    (array).height = (myheight); \
+    (array).depth = (mydepth); \
+    (array).count = (mywidth) * (myheight) * (mydepth); \
+} while (0)
+
 ////////////////////////////////////////////////////////////////////////////////
 // FREE MEMORY
 
@@ -65,6 +73,15 @@
     (image).width = 0; \
     (image).height = 0; \
     (image).count = 0; \
+} while (0)
+
+#define FREE_3D_ARRAY(array) do { \
+    free((array).data); \
+    (array).data = NULL; \
+    (array).width = 0; \
+    (array).height = 0; \
+    (array).depth = 0; \
+    (array).count = 0; \
 } while (0)
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -249,10 +266,13 @@ static inline bool _are_bits_equal(
 } while (0)
 
 ////////////////////////////////////////////////////////////////////////////////
-// IMAGE ALGORITHMS
+// MULTI DIMENSIONAL ARRAY ALGORITHMS
 
 #define FOR_X(x, image) \
     for (typeof((image).width) x = 0; x < (image).width; ++x)
 
 #define FOR_Y(y, image) \
     for (typeof((image).height) y = 0; y < (image).height; ++y)
+
+#define FOR_Z(z, image) \
+    for (typeof((image).depth) z = 0; z < (image).depth; ++z)

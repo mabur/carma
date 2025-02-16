@@ -68,6 +68,14 @@ typedef struct {
     size_t count;
 } Image;
 
+typedef struct {
+    int* data;
+    size_t width;
+    size_t height;
+    size_t depth;
+    size_t count;
+} Voxels;
+
 int is_positive(int x) {
     return x > 0;
 }
