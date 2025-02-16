@@ -33,10 +33,10 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
     carma_hash_bytes(CARMA_HASH_INIT, (const char*)(BEGIN_POINTER(key)), COUNT_BYTES(key))
 
 #define CARMA_GET_FIRST_KEY_ITEM(key, table) \
-    ((table).data + CARMA_HASH_KEY(key) % (table).count)
+    ((table).data + CARMA_HASH_KEY(key) % (table).capacity)
 
 #define CARMA_GET_FIRST_RANGE_KEY_ITEM(key, table) \
-    ((table).data + CARMA_HASH_RANGE_KEY(key) % (table).count)
+    ((table).data + CARMA_HASH_RANGE_KEY(key) % (table).capacity)
     
 #define GET_KEY_VALUE(k, _value, table) do { \
     if (IS_EMPTY(table)) \
