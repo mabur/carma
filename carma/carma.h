@@ -268,14 +268,14 @@ static inline bool _are_bits_equal(
 ////////////////////////////////////////////////////////////////////////////////
 // MULTI DIMENSIONAL ARRAY ALGORITHMS
 
-#define FOR_X(x, image) \
-    for (typeof((image).width) x = 0; x < (image).width; ++x)
+#define FOR_X(x, array) \
+    for (typeof((array).width) x = 0; x < (array).width; ++x)
 
-#define FOR_Y(y, image) \
-    for (typeof((image).height) y = 0; y < (image).height; ++y)
+#define FOR_Y(y, array) \
+    for (typeof((array).height) y = 0; y < (array).height; ++y)
 
-#define FOR_Z(z, image) \
-    for (typeof((image).depth) z = 0; z < (image).depth; ++z)
+#define FOR_Z(z, array) \
+    for (typeof((array).depth) z = 0; z < (array).depth; ++z)
 
 #define AT_XY(array, x, y) \
     ((array).data[(array).width * (y) + (x)])
