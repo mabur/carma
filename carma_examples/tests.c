@@ -224,6 +224,16 @@ void test_init_image() {
     FREE_IMAGE(image);
 }
 
+void test_3d_array() {
+    Voxels image;
+    INIT_3D_ARRAY(image, 2, 3, 4);
+    ASSERT_EQUAL_SIZE("test_3d_array width", image.width, 2);
+    ASSERT_EQUAL_SIZE("test_3d_array height", image.height, 3);
+    ASSERT_EQUAL_SIZE("test_3d_array depth", image.depth, 4);
+    ASSERT_EQUAL_SIZE("test_3d_array count", image.count, 2 * 3 * 4);
+    FREE_3D_ARRAY(image);
+}
+
 void test_is_empty() {
     auto actual = (IntArray){};
     ASSERT_EQUAL_INT("test_is_empty", IS_EMPTY(actual), true);
@@ -816,6 +826,7 @@ void test_table_available_keys() {
 
 int main() {
     test_init_image();
+    test_3d_array();
     
     test_first_item();
     test_last_item();
