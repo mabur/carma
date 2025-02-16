@@ -34,13 +34,11 @@ int main(int argc, char **argv) {
     auto file_path = argv[1];
     auto text = read_text_file(file_path);
     auto table = count_words((StringView){.data = text.data, .count=text.count});
-    auto unique_word_count = 0;
     FOR_EACH_TABLE(item, table) {
-        unique_word_count++;
         auto word = item->key;
         auto word_count = item->value;
         printf("%.*s (%zu)\n", (int)word.count, word.data, word_count);
     }
-    printf("%d unique words\n", unique_word_count);
+    printf("%zu unique words\n", table.count);
     return EXIT_SUCCESS;
 }
