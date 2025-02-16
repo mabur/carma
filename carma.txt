@@ -1,4 +1,16 @@
-* Arrays
+                ┌─────────────┐                                ┌─────┐
+                │    Range    │                                │Table│
+                └──────┬──────┘                                └─────┘
+      ┌────────────────┼────────────────┬────────────┐                
+      ▼                ▼                ▼            ▼                
+┌──────────┐    ┌─────────────┐    ┌────────┐    ┌────────┐           
+│StringView│    │Dynamic Array│    │2D Array│    │3D Array│           
+└──────────┘    └──────┬──────┘    └────────┘    └────────┘           
+                       ▼                                              
+                ┌─────────────┐                                       
+                │StringBuilder│                                       
+                └─────────────┘                                       
+* Arrays  
   - array2d, array3d
   - look_up_xy, look_up_xyz, at_xy, at_xyz
 * Describe Taxonomy
