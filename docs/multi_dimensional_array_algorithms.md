@@ -57,3 +57,9 @@ FOR_Y(y, image) {
     printf("\n");
 }
 ```
+
+- `AT_XY(array, x, y)` looks up the item with coordinates (x,y) in a 2D array.
+  This corresponds to the index `x + y * width`.
+
+- `AT_XYZ(array, x, y, z)` looks up the item with coordinates (x,y,z) in a 3D array.
+  This corresponds to the index `x + y * width + z * width * height`.
