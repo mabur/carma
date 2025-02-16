@@ -82,8 +82,7 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
     } \
 } while (0)
 
-// TODO
-#define CLEAR_TABLE(table) FOR_EACH(item, (table)) item->occupied = false;
+#define CLEAR_TABLE(table) FOR_EACH_TABLE(item, (table)) item->occupied = false;
 
 static inline
 bool carma_is_power_of_two(size_t n) {
