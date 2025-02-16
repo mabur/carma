@@ -92,10 +92,12 @@ bool carma_is_power_of_two(size_t n) {
     return (n != 0) && ((n & (n - 1)) == 0);
 }
 
-#define INIT_TABLE(table, capacity) do { \
-    assert(carma_is_power_of_two(capacity)); \
-    INIT_DARRAY(table, 0, capacity); \
-    CLEAR_TABLE(table); \
+// Zero initializes with calloc so that occupied is false.
+#define INIT_TABLE(table, mycapacity) do { \
+    assert(carma_is_power_of_two(mycapacity)); \
+    (table).data = (POINTER_TYPE(table))calloc((mycapacity), sizeof(VALUE_TYPE(table))); \
+    (table).count = (0); \
+    (table).capacity = (mycapacity); \
 } while (0)
 
 #define FREE_TABLE(table) FREE_DARRAY(table)
