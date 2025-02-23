@@ -19,7 +19,7 @@ before its memory needs to be reallocated. So `count` <= `capacity`.
 ## Initialization
 
 `INIT_DRANGE(array, count, capacity)` allocates memory to hold up to `capacity` items
-for the given dynamic array. Sets all members of the array struct.
+for the given dynamic array. It sets all members of the array struct.
 
 ## Dynamic Array Macros O(1)
 

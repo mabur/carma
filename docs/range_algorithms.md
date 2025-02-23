@@ -17,7 +17,7 @@ typedef struct {
 ## Initialization
 
 `INIT_RANGE(range, count)` allocates memory to hold `count` items
-for the given range. Sets all members of the array struct.
+for the given range. It sets all members of the array struct.
 
 ## Range Macros O(1)
 
