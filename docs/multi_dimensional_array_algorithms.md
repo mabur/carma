@@ -56,20 +56,20 @@ But Carma also provides some loop macros that only works for multi dimensional a
 - `FOR_Z(z, array)` can be used instead of a normal for-loop
   to let `z` loop from `0` to `array.depth - 1`.
 
+- `AT_XY(array, x, y)` looks up the item with coordinates (x,y) in a 2D array.
+  This corresponds to the index `x + y * width`.
+
+- `AT_XYZ(array, x, y, z)` looks up the item with coordinates (x,y,z) in a 3D array.
+  This corresponds to the index `x + y * width + z * width * height`.
+
 `FOR_X` and `FOR_Y` and `FOR_Z` can be used independently,
 but they can also be used together like in this example:
 
 ```c
 FOR_Y(y, image) {
     FOR_X(x, image) {
-        printf("(x=%i,y=%i) ", x, y);
+        uint32_t pixel = AT_XY(image, x, y);
+        printf("(x=%i,y=%i) = %i\n", x, y, pixel);
     }
-    printf("\n");
 }
 ```
-
-- `AT_XY(array, x, y)` looks up the item with coordinates (x,y) in a 2D array.
-  This corresponds to the index `x + y * width`.
-
-- `AT_XYZ(array, x, y, z)` looks up the item with coordinates (x,y,z) in a 3D array.
-  This corresponds to the index `x + y * width + z * width * height`.
