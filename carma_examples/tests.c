@@ -639,6 +639,24 @@ void test_concat() {
     ASSERT_EQUAL_INT("CONCAT", target.capacity, 8);
 }
 
+void test_for_x_y() {
+    Voxels actual;
+    INIT_2D_ARRAY(actual, 2, 3);
+    auto i = 0;
+    FOR_Y(y, actual) {
+        FOR_X(x, actual) {
+            AT_XY(actual, x, y) = i;
+            ++i;
+        }
+    }
+    auto expected = MAKE_DARRAY(IntArray,
+        0, 1,
+        2, 3,
+        4, 5,
+    );
+    ASSERT_EQUAL_RANGE("test_for_x_y", actual, expected);
+}
+
 void test_for_x_y_z() {
     Voxels actual;
     INIT_3D_ARRAY(actual, 2, 3, 4);
@@ -893,6 +911,7 @@ int main() {
     test_append();
     test_concat();
 
+    test_for_x_y();
     test_for_x_y_z();
 
     test_string_view();
