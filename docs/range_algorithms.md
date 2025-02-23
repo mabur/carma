@@ -18,9 +18,9 @@ typedef struct {
 
 - `IS_EMPTY(range)` checks if the range has a count of zero.
 
-- `FIRST_ITEM(range)` returns the item at index 0. It assumes that the range is not empty.
+- `FIRST_ITEM(range)` returns the item at index `0`. It assumes that the range is not empty.
 
-- `LAST_ITEM(range)` returns the item at index count-1. It assumes that the range is not empty.
+- `LAST_ITEM(range)` returns the item at index `count-1`. It assumes that the range is not empty.
 
 ## Range Loop Macros O(count)
 
