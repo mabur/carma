@@ -14,6 +14,11 @@ typedef struct {
 } ExampleRange;
 ```
 
+## Initialization
+
+`INIT_RANGE(range, count)` allocates memory to hold `count` items
+for the given range. Sets all members of the array struct.
+
 ## Range Macros O(1)
 
 - `IS_EMPTY(range)` checks if the range has a count of zero.

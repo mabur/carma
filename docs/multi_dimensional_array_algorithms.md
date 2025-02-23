@@ -31,6 +31,16 @@ typedef struct Voxels {
 
 For a 3D array `count` == `width * height * depth`.
 
+## Initialization
+
+`INIT_2D_ARRAY(array, width, height)` allocates memory to hold
+`width * height` items for the given 2D array.
+Sets all members of the array struct.
+
+`INIT_3D_ARRAY(array, width, height, depth)` allocates memory to hold
+`width * height * depth` items for the given 3D array.
+Sets all members of the array struct.
+
 ## Multi Dimensional Array Macros
 
 The range loop macros can also be used for multi demensional arrays,

@@ -16,6 +16,11 @@ typedef struct {
 The `capacity` defines the number of items that fit in the array
 before its memory needs to be reallocated. So `count` <= `capacity`.
 
+## Initialization
+
+`INIT_DRANGE(array, count, capacity)` allocates memory to hold up to `capacity` items
+for the given dynamic array. Sets all members of the array struct.
+
 ## Dynamic Array Macros O(1)
 
 - `APPEND(dynamic_array, item)` adds item to the end of the dynamic_array.
