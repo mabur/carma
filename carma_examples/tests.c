@@ -458,7 +458,7 @@ void test_drop_back_until() {
     DROP_BACK_UNTIL(range, is_positive);
     ASSERT_EQUAL_INT("DROP_BACK_UNTIL", LAST_ITEM(range), 4);
     DROP_BACK_UNTIL(range, is_zero);
-    ASSERT_EQUAL_INT("DROP_BACK_UNTIL", range.count, 0);
+    ASSERT_EQUAL_SIZE("DROP_BACK_UNTIL", range.count, 0);
 }
 
 void test_drop_back_until_item() {
@@ -468,7 +468,7 @@ void test_drop_back_until_item() {
     DROP_BACK_UNTIL_ITEM(range, 4);
     ASSERT_EQUAL_INT("DROP_BACK_UNTIL_ITEM", LAST_ITEM(range), 4);
     DROP_BACK_UNTIL_ITEM(range, 0);
-    ASSERT_EQUAL_INT("DROP_BACK_UNTIL_ITEM", range.count, 0);
+    ASSERT_EQUAL_SIZE("DROP_BACK_UNTIL_ITEM", range.count, 0);
 }
 
 void test_erase_index1() {
@@ -520,7 +520,7 @@ void test_erase_if_unallocated() {
     array.capacity = 0;
 
     ERASE_IF(array, is_zero);
-    ASSERT_EQUAL_INT("ERASE_IF EMPTY", array.count, 0);
+    ASSERT_EQUAL_SIZE("ERASE_IF EMPTY", array.count, 0);
     ASSERT_EQUAL_RANGE("ERASE_IF EMPTY", array, array);
     FREE_DARRAY(array);
 }
@@ -528,7 +528,7 @@ void test_erase_if_unallocated() {
 void test_erase_if_empty() {
     auto array = (IntArray){};
     ERASE_IF(array, is_zero);
-    ASSERT_EQUAL_INT("ERASE_IF EMPTY", array.count, 0);
+    ASSERT_EQUAL_SIZE("ERASE_IF EMPTY", array.count, 0);
     ASSERT_EQUAL_RANGE("ERASE_IF EMPTY", array, array);
     FREE_DARRAY(array);
 }
@@ -599,23 +599,23 @@ void test_erase_if() {
 void test_append() {
     IntArray array;
     INIT_DARRAY(array, 0, 0);
-    ASSERT_EQUAL_INT("APPEND", array.count, 0);
-    ASSERT_EQUAL_INT("APPEND", array.capacity, 0);
+    ASSERT_EQUAL_SIZE("APPEND", array.count, 0);
+    ASSERT_EQUAL_SIZE("APPEND", array.capacity, 0);
     APPEND(array, 1);
-    ASSERT_EQUAL_INT("APPEND", array.count, 1);
-    ASSERT_EQUAL_INT("APPEND", array.capacity, 1);
+    ASSERT_EQUAL_SIZE("APPEND", array.count, 1);
+    ASSERT_EQUAL_SIZE("APPEND", array.capacity, 1);
     APPEND(array, 2);
-    ASSERT_EQUAL_INT("APPEND", array.count, 2);
-    ASSERT_EQUAL_INT("APPEND", array.capacity, 2);
+    ASSERT_EQUAL_SIZE("APPEND", array.count, 2);
+    ASSERT_EQUAL_SIZE("APPEND", array.capacity, 2);
     APPEND(array, 3);
-    ASSERT_EQUAL_INT("APPEND", array.count, 3);
-    ASSERT_EQUAL_INT("APPEND", array.capacity, 4);
+    ASSERT_EQUAL_SIZE("APPEND", array.count, 3);
+    ASSERT_EQUAL_SIZE("APPEND", array.capacity, 4);
     APPEND(array, 4);
-    ASSERT_EQUAL_INT("APPEND", array.count, 4);
-    ASSERT_EQUAL_INT("APPEND", array.capacity, 4);
+    ASSERT_EQUAL_SIZE("APPEND", array.count, 4);
+    ASSERT_EQUAL_SIZE("APPEND", array.capacity, 4);
     APPEND(array, 5);
-    ASSERT_EQUAL_INT("APPEND", array.count, 5);
-    ASSERT_EQUAL_INT("APPEND", array.capacity, 8);
+    ASSERT_EQUAL_SIZE("APPEND", array.count, 5);
+    ASSERT_EQUAL_SIZE("APPEND", array.capacity, 8);
     FREE_DARRAY(array);
 }
 
@@ -625,18 +625,18 @@ void test_concat() {
     
     auto source = MAKE_DARRAY(IntArray, 1, 2, 3);
     
-    ASSERT_EQUAL_INT("CONCAT", target.count, 0);
-    ASSERT_EQUAL_INT("CONCAT", target.capacity, 0);
+    ASSERT_EQUAL_SIZE("CONCAT", target.count, 0);
+    ASSERT_EQUAL_SIZE("CONCAT", target.capacity, 0);
 
     CONCAT(target, source);
     auto expected0 = MAKE_DARRAY(IntArray, 1, 2, 3);
     ASSERT_EQUAL_RANGE("CONCAT", target, expected0);
-    ASSERT_EQUAL_INT("CONCAT", target.capacity, 4);
+    ASSERT_EQUAL_SIZE("CONCAT", target.capacity, 4);
 
     CONCAT(target, source);
     auto expected1 = MAKE_DARRAY(IntArray, 1, 2, 3, 1, 2, 3);
     ASSERT_EQUAL_RANGE("CONCAT", target, expected1);
-    ASSERT_EQUAL_INT("CONCAT", target.capacity, 8);
+    ASSERT_EQUAL_SIZE("CONCAT", target.capacity, 8);
 }
 
 void test_for_x_y() {
