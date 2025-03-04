@@ -157,7 +157,7 @@ void ASSERT_EQUAL_SIZE(const char* description, size_t a, size_t b) {
         printf("%s %i==%i bad\n", (description), (a), (b)); \
         global_assert_errors++; \
     } \
-} while (0);
+} while (0)
 
 #define PRINT_RANGE(item_format, range) do { \
     printf("["); \
@@ -165,7 +165,7 @@ void ASSERT_EQUAL_SIZE(const char* description, size_t a, size_t b) {
         printf(item_format, *it); \
     } \
     printf("]"); \
-} while (0);
+} while (0)
 
 #define ASSERT_EQUAL_RANGE(description, left_range, right_range) do { \
     global_assert_count++; \
@@ -179,7 +179,7 @@ void ASSERT_EQUAL_SIZE(const char* description, size_t a, size_t b) {
         printf(" bad\n"); \
         global_assert_errors++; \
     } \
-} while (0);
+} while (0)
 
 #define ASSERT_EQUAL_STRINGS(description, a, b) do { \
     global_assert_count++; \
@@ -193,7 +193,7 @@ void ASSERT_EQUAL_SIZE(const char* description, size_t a, size_t b) {
         printf(" bad\n"); \
         global_assert_errors++; \
     } \
-} while (0);
+} while (0)
 
 void ASSERT_STRING_BUILDER(
     const char* description,
