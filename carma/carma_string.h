@@ -99,20 +99,20 @@ size_t carma_find_first_character_not_of(const char* data, size_t max_index, int
     return max_index;
 }
 
-#define FOR_EACH_WORD(word, string, is_delimeter) \
+#define FOR_EACH_WORD(word, string, is_delimiter) \
     StringView word = {}; \
     for (\
     size_t _word_length,\
     _delimeter_length\
     ;\
-    _word_length = carma_find_first_character_of((string).data, (string).count, (is_delimeter)),\
+    _word_length = carma_find_first_character_of((string).data, (string).count, (is_delimiter)),\
     (word).data = (string).data,\
     (word).count = _word_length,\
     (string).data += _word_length,\
     (string).count -= _word_length,\
     !IS_EMPTY(word)\
     ;\
-    _delimeter_length = carma_find_first_character_not_of((string).data, (string).count, (is_delimeter)),\
+    _delimeter_length = carma_find_first_character_not_of((string).data, (string).count, (is_delimiter)),\
     (string).data += _delimeter_length,\
     (string).count -= _delimeter_length\
     )
