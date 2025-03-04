@@ -127,7 +127,7 @@
 
 #define COUNT_BYTES(range) (sizeof(VALUE_TYPE(range)) * (range).count)
     
-static inline bool _are_bits_equal(
+static inline bool carma_are_bits_equal(
     const void* data0,
     const void* data1,
     size_t byte_count0,
@@ -140,7 +140,7 @@ static inline bool _are_bits_equal(
 }
 
 #define ARE_EQUAL(range0, range1) \
-    _are_bits_equal((range0).data, (range1).data, COUNT_BYTES(range0), COUNT_BYTES(range1))
+    carma_are_bits_equal((range0).data, (range1).data, COUNT_BYTES(range0), COUNT_BYTES(range1))
 
 ////////////////////////////////////////////////////////////////////////////////
 // RANGE ALGORITHMS - DROP
