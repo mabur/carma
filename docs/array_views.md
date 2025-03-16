@@ -1,8 +1,28 @@
+## Array View Definition
+
+An **array view** points to an array that it does not own.
+An **array view** is defined structurally as any struct that has at least
+the member variables `data` and `count`.
+The member variable `data` should point to an array of `count` items,
+where `data` can be any pointer type and `count` can be any integer type.
+For example:
+
+```clike
+typedef struct {
+    int* data;
+    size_t count;
+} ExampleRange;
+```
+
+You can drop items from the front or back of an array view.
+However, unlike a dynamic array you cannot append items to an array view.
+
 # Drop Macros
 
-These macros change the number of items in a range, by removing items in the front or back.
+These macros change the number of items in an array view,
+by removing items in the front or back.
 They do this without moving any items or reallocating any memory.
-They just change the memory interval that the range points to.
+They just change the memory interval that the array view points to.
 These macros can be used on both ranges and dynamic arrays.
 
 - If you use these macros on a range make sure that you keep a backup range,
