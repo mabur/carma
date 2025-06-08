@@ -13,6 +13,11 @@
 * Arrays  
   - array2d, array3d
   - look_up_xy, look_up_xyz, at_xy, at_xyz
+* For erase and insert allow both:
+  - ERASE_BACK, INSERT_BACK/APPEND O(1)
+  - ERASE_SWAP, INSERT_SWAP O(1)
+  - ERASE_SHIFT, INSERT_SHIFT O(n)
+  - Swap is good when we don't care about the order, and shift when we do like for strings.
 * Describe Taxonomy
   - Range
     - Array2d, Array3d
