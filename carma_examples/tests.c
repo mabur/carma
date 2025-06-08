@@ -640,7 +640,7 @@ void test_concat() {
 }
 
 void test_for_x_y() {
-    Voxels actual;
+    Image actual;
     INIT_2D_ARRAY(actual, 2, 3);
     auto i = 0;
     FOR_Y(y, actual) {
