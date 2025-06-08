@@ -302,5 +302,5 @@ static inline bool carma_are_bits_equal(
     auto height = (image).height; \
     for (typeof(height) y = 0; y < height / 2; ++y) \
         for (typeof(width) x = 0; x < width; ++x) \
-            SWAP((image).data[(height - 1 - y) * width + x], (image).data[y * width + x]); \
+            SWAP(AT_XY((image), x, y), AT_XY((image), x, height - 1 - y)); \
 } while(0)
