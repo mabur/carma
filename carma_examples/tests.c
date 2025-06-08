@@ -681,6 +681,44 @@ void test_for_x_y_z() {
     ASSERT_EQUAL_RANGE("test_for_x_y_z", actual, expected);
 }
 
+void test_flip_image_x() {
+    Image actual;
+    INIT_2D_ARRAY(actual, 2, 3);
+    auto i = 0;
+    FOR_Y(y, actual) {
+        FOR_X(x, actual) {
+            AT_XY(actual, x, y) = i;
+            ++i;
+        }
+    }
+    FLIP_IMAGE_X(actual);
+    auto expected = MAKE_DARRAY(IntArray,
+        1, 0,
+        3, 2,
+        5, 4,
+    );
+    ASSERT_EQUAL_RANGE("test_flip_image_x", actual, expected);
+}
+
+void test_flip_image_y() {
+    Image actual;
+    INIT_2D_ARRAY(actual, 2, 3);
+    auto i = 0;
+    FOR_Y(y, actual) {
+        FOR_X(x, actual) {
+            AT_XY(actual, x, y) = i;
+            ++i;
+        }
+    }
+    FLIP_IMAGE_Y(actual);
+    auto expected = MAKE_DARRAY(IntArray,
+        4, 5,
+        2, 3,
+        0, 1,
+    );
+    ASSERT_EQUAL_RANGE("test_flip_image_y", actual, expected);
+}
+
 void test_string_view() {
     ASSERT_EQUAL_INT("test_string_view", STRING_VIEW("").count, 0);
     ASSERT_EQUAL_INT("test_string_view", STRING_VIEW("a").count, 1);
@@ -913,6 +951,9 @@ int main() {
 
     test_for_x_y();
     test_for_x_y_z();
+
+    test_flip_image_x();
+    test_flip_image_y();
 
     test_string_view();
     test_concat_cstring();
