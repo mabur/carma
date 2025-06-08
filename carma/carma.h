@@ -294,7 +294,7 @@ static inline bool carma_are_bits_equal(
     auto height = (image).height; \
     for (typeof(height) y = 0; y < height; ++y) \
         for (typeof(width) x = 0; x < width / 2; ++x) \
-            SWAP((image).data[y * width + width - 1 - x], (image).data[y * width + x]); \
+            SWAP(AT_XY((image), x, y), AT_XY((image), width - 1 - x, y)); \
 } while(0)
 
 #define FLIP_IMAGE_Y(image) do { \
