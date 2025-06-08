@@ -1,11 +1,5 @@
 #pragma once
 
-#define SWAP(a, b) do { \
-    auto c = (a); \
-    (a) = (b); \
-    (b) = c; \
-} while (0)
-
 #define FLIP_IMAGE_X(image) do { \
     auto width = (image).width; \
     auto height = (image).height; \

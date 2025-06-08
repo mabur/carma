@@ -22,6 +22,12 @@
 
 #define ITEM_SIZE(range_type) sizeof(*((range_type){}).data)
 
+#define SWAP(a, b) do { \
+    auto c = (a); \
+    (a) = (b); \
+    (b) = c; \
+} while (0)
+
 ////////////////////////////////////////////////////////////////////////////////
 // ALLOCATE MEMORY
 
