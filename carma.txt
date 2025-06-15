@@ -22,6 +22,8 @@
   - CONCAT(BACK)
   - CONCAT_INSERT
   - Swap is good when we don't care about the order, and shift when we do like for strings.
+  - ROTATE, could help implementing the shifts
+    - Rotate seems to be the correct term rather than shift.
 * Describe Taxonomy
   - Range
     - Array2d, Array3d
