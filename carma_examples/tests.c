@@ -478,9 +478,9 @@ void test_erase_index1() {
     ASSERT_EQUAL_RANGE("ERASE_INDEX 1", actual, expected);
 }
 
-void test_erase_index_rotate1() {
+void test_erase_index_ordered1() {
     auto actual = MAKE_DARRAY(IntArray, 9);
-    ERASE_INDEX_ROTATE(actual, 0);
+    ERASE_INDEX_ORDERED(actual, 0);
     auto expected = (IntArray){};
     ASSERT_EQUAL_RANGE("ERASE_INDEX 1", actual, expected);
 }
@@ -492,9 +492,9 @@ void test_erase_index2a() {
     ASSERT_EQUAL_RANGE("ERASE_INDEX 2a", actual, expected);
 }
 
-void test_erase_index_rotate2a() {
+void test_erase_index_ordered2a() {
     auto actual = MAKE_DARRAY(IntArray, 9, 8);
-    ERASE_INDEX_ROTATE(actual, 0);
+    ERASE_INDEX_ORDERED(actual, 0);
     auto expected = MAKE_DARRAY(IntArray, 8);
     ASSERT_EQUAL_RANGE("ERASE_INDEX 2a", actual, expected);
 }
@@ -506,9 +506,9 @@ void test_erase_index2b() {
     ASSERT_EQUAL_RANGE("ERASE_INDEX 2b", actual, expected);
 }
 
-void test_erase_index_rotate2b() {
+void test_erase_index_ordered2b() {
     auto actual = MAKE_DARRAY(IntArray, 9, 8);
-    ERASE_INDEX_ROTATE(actual, 1);
+    ERASE_INDEX_ORDERED(actual, 1);
     auto expected = MAKE_DARRAY(IntArray, 9);
     ASSERT_EQUAL_RANGE("ERASE_INDEX 2b", actual, expected);
 }
@@ -520,9 +520,9 @@ void test_erase_index3a() {
     ASSERT_EQUAL_RANGE("ERASE_INDEX 3a", actual, expected);
 }
 
-void test_erase_index_rotate3a() {
+void test_erase_index_ordered3a() {
     auto actual = MAKE_DARRAY(IntArray, 9, 8, 7);
-    ERASE_INDEX_ROTATE(actual, 0);
+    ERASE_INDEX_ORDERED(actual, 0);
     auto expected = MAKE_DARRAY(IntArray, 8, 7);
     ASSERT_EQUAL_RANGE("ERASE_INDEX 3a", actual, expected);
 }
@@ -534,9 +534,9 @@ void test_erase_index3b() {
     ASSERT_EQUAL_RANGE("ERASE_INDEX 3b", actual, expected);
 }
 
-void test_erase_index_rotate3b() {
+void test_erase_index_ordered3b() {
     auto actual = MAKE_DARRAY(IntArray, 9, 8, 7);
-    ERASE_INDEX_ROTATE(actual, 1);
+    ERASE_INDEX_ORDERED(actual, 1);
     auto expected = MAKE_DARRAY(IntArray, 9, 7);
     ASSERT_EQUAL_RANGE("ERASE_INDEX 3b", actual, expected);
 }
@@ -549,9 +549,9 @@ void test_erase_index3c() {
     ASSERT_EQUAL_RANGE("ERASE_INDEX 3b", actual, expected);
 }
 
-void test_erase_index_rotate3c() {
+void test_erase_index_ordered3c() {
     auto actual = MAKE_DARRAY(IntArray, 9, 8, 7);
-    ERASE_INDEX_ROTATE(actual, 2);
+    ERASE_INDEX_ORDERED(actual, 2);
     auto expected = MAKE_DARRAY(IntArray, 9, 8);
     ASSERT_EQUAL_RANGE("ERASE_INDEX 3b", actual, expected);
 }
@@ -977,12 +977,12 @@ int main() {
     test_erase_index3b();
     test_erase_index3c();
 
-    test_erase_index_rotate1();
-    test_erase_index_rotate2a();
-    test_erase_index_rotate2b();
-    test_erase_index_rotate3a();
-    test_erase_index_rotate3b();
-    test_erase_index_rotate3c();
+    test_erase_index_ordered1();
+    test_erase_index_ordered2a();
+    test_erase_index_ordered2b();
+    test_erase_index_ordered3a();
+    test_erase_index_ordered3b();
+    test_erase_index_ordered3c();
 
     test_erase_if_unallocated();
     test_erase_if_empty();

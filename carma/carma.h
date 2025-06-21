@@ -254,7 +254,7 @@ static inline bool carma_are_bits_equal(
     } \
 } while (0)
 
-#define ERASE_INDEX_ROTATE(dynamic_array, index) { \
+#define ERASE_INDEX_ORDERED(dynamic_array, index) { \
     for (auto i = index; i + 1 < (dynamic_array).count; ++i) { \
         (dynamic_array).data[i] = (dynamic_array).data[i + 1]; \
     } \
