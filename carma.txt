@@ -16,10 +16,10 @@
 * For erase and insert allow both:
   - ERASE_FRONT/DROP_FRONT, INSERT_FRONT/PREPEND
   - ERASE_BACK/DROP_BACK, INSERT_BACK/APPEND O(1)
-  - ERASE_INDEX_SWAP, (INSERT_INDEX_SWAP) O(1)
-  - ERASE_INDEX_SHIFT, INSERT_INDEX_SHIFT O(n)
-  - ERASE_IF_SWAP
-  - ERASE_IF_SHIFT
+  - ERASE_INDEX, (INSERT_INDEX) O(1)
+  - ERASE_INDEX_ORDERED, INSERT_INDEX_ORDERED O(n)
+  - ERASE_IF
+  - ERASE_IF_ORDERED
   - CONCAT(BACK)
   - CONCAT_INSERT
   - Swap is good when we don't care about the order, and shift when we do like for strings.
