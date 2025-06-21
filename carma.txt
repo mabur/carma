@@ -14,6 +14,7 @@
   - array2d, array3d
   - look_up_xy, look_up_xyz, at_xy, at_xyz
 * For erase and insert allow both:
+  - ERASE_FRONT/DROP_FRONT, INSERT_FRONT/PREPEND
   - ERASE_BACK/DROP_BACK, INSERT_BACK/APPEND O(1)
   - ERASE_INDEX_SWAP, (INSERT_INDEX_SWAP) O(1)
   - ERASE_INDEX_SHIFT, INSERT_INDEX_SHIFT O(n)
