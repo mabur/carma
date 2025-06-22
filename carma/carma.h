@@ -245,6 +245,14 @@ static inline bool carma_are_bits_equal(
     (dynamic_array).count = new_count; \
 } while (0)
 
+#define INSERT_INDEX(dynamic_array, index, item) do { \
+    APPEND((dynamic_array), (item)); \
+    for (auto i = (dynamic_array).count - 1; i > (index); --i) { \
+        (dynamic_array).data[i] = (dynamic_array).data[i - 1]; \
+    } \
+    (dynamic_array).data[index] = (item); \
+} while (0)
+
 #define CLEAR(dynamic_array) do {(dynamic_array).count = 0;} while (0)
 
 #define ERASE_INDEX(dynamic_array, index) do { \

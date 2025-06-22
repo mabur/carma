@@ -662,6 +662,48 @@ void test_append() {
     FREE_DARRAY(array);
 }
 
+void test_insert_index0() {
+    auto actual = (IntArray){};
+    INSERT_INDEX(actual, 0, 1);
+    auto expected = MAKE_DARRAY(IntArray, 1);
+    ASSERT_EQUAL_RANGE("INSERT_INDEX0", actual, expected);
+}
+
+void test_insert_index1a() {
+    auto actual = MAKE_DARRAY(IntArray, 1);
+    INSERT_INDEX(actual, 0, 2);
+    auto expected = MAKE_DARRAY(IntArray, 2, 1);
+    ASSERT_EQUAL_RANGE("INSERT_INDEX1a", actual, expected);
+}
+
+void test_insert_index1b() {
+    auto actual = MAKE_DARRAY(IntArray, 1);
+    INSERT_INDEX(actual, 1, 2);
+    auto expected = MAKE_DARRAY(IntArray, 1, 2);
+    ASSERT_EQUAL_RANGE("INSERT_INDEX1b", actual, expected);
+}
+
+void test_insert_index2a() {
+    auto actual = MAKE_DARRAY(IntArray, 1, 2);
+    INSERT_INDEX(actual, 0, 3);
+    auto expected = MAKE_DARRAY(IntArray, 3, 1, 2);
+    ASSERT_EQUAL_RANGE("INSERT_INDEX2a", actual, expected);
+}
+
+void test_insert_index2b() {
+    auto actual = MAKE_DARRAY(IntArray, 1, 2);
+    INSERT_INDEX(actual, 1, 3);
+    auto expected = MAKE_DARRAY(IntArray, 1, 3, 2);
+    ASSERT_EQUAL_RANGE("INSERT_INDEX2b", actual, expected);
+}
+
+void test_insert_index2c() {
+    auto actual = MAKE_DARRAY(IntArray, 1, 2);
+    INSERT_INDEX(actual, 2, 3);
+    auto expected = MAKE_DARRAY(IntArray, 1, 2, 3);
+    ASSERT_EQUAL_RANGE("INSERT_INDEX2b", actual, expected);
+}
+
 void test_concat() {
     IntArray target;
     INIT_DARRAY(target, 0, 0);
@@ -998,6 +1040,13 @@ int main() {
     
     test_append();
     test_concat();
+
+    test_insert_index0();
+    test_insert_index1a();
+    test_insert_index1b();
+    test_insert_index2a();
+    test_insert_index2b();
+    test_insert_index2c();
 
     test_for_x_y();
     test_for_x_y_z();
