@@ -659,6 +659,9 @@ void test_append() {
     APPEND(array, 5);
     ASSERT_EQUAL_SIZE("APPEND", array.count, 5);
     ASSERT_EQUAL_SIZE("APPEND", array.capacity, 8);
+
+    auto expected = MAKE_DARRAY(IntArray, 1, 2, 3, 4, 5);
+    ASSERT_EQUAL_RANGE("APPEND", array, expected);
     FREE_DARRAY(array);
 }
 
@@ -682,6 +685,9 @@ void test_prepend() {
     PREPEND(array, 5);
     ASSERT_EQUAL_SIZE("PREPEND", array.count, 5);
     ASSERT_EQUAL_SIZE("PREPEND", array.capacity, 8);
+
+    auto expected = MAKE_DARRAY(IntArray, 5, 4, 3, 2, 1);
+    ASSERT_EQUAL_RANGE("APPEND", array, expected);
     FREE_DARRAY(array);
 }
 
