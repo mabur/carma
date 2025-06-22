@@ -234,6 +234,8 @@ static inline bool carma_are_bits_equal(
     (dynamic_array).count++; \
 } while (0)
 
+#define PREPEND(dynamic_array, item) INSERT_INDEX((dynamic_array), 0, (item))
+
 #define CONCAT(dynamic_array, range) do { \
     auto new_count = (dynamic_array).count + (range).count; \
     if (new_count > (dynamic_array).capacity) { \

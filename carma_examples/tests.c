@@ -662,6 +662,29 @@ void test_append() {
     FREE_DARRAY(array);
 }
 
+void test_prepend() {
+    IntArray array;
+    INIT_DARRAY(array, 0, 0);
+    ASSERT_EQUAL_SIZE("PREPEND", array.count, 0);
+    ASSERT_EQUAL_SIZE("PREPEND", array.capacity, 0);
+    PREPEND(array, 1);
+    ASSERT_EQUAL_SIZE("PREPEND", array.count, 1);
+    ASSERT_EQUAL_SIZE("PREPEND", array.capacity, 1);
+    PREPEND(array, 2);
+    ASSERT_EQUAL_SIZE("PREPEND", array.count, 2);
+    ASSERT_EQUAL_SIZE("PREPEND", array.capacity, 2);
+    PREPEND(array, 3);
+    ASSERT_EQUAL_SIZE("PREPEND", array.count, 3);
+    ASSERT_EQUAL_SIZE("PREPEND", array.capacity, 4);
+    PREPEND(array, 4);
+    ASSERT_EQUAL_SIZE("PREPEND", array.count, 4);
+    ASSERT_EQUAL_SIZE("PREPEND", array.capacity, 4);
+    PREPEND(array, 5);
+    ASSERT_EQUAL_SIZE("PREPEND", array.count, 5);
+    ASSERT_EQUAL_SIZE("PREPEND", array.capacity, 8);
+    FREE_DARRAY(array);
+}
+
 void test_insert_index0() {
     auto actual = (IntArray){};
     INSERT_INDEX(actual, 0, 1);
@@ -1039,6 +1062,7 @@ int main() {
     test_erase_if010();
     
     test_append();
+    test_prepend();
     test_concat();
 
     test_insert_index0();
