@@ -25,6 +25,8 @@
   - INSERT_INDEX (ORDERED) O(n)
   - ERASE_RANGE O(m), when would this be useful?
   - ERASE_RANGE_ORDERED O(n+m), like cut selection. Missing
+  - ERASE_ITEM, like remove inf. Missing
+  - ERASE_ITEM_ORDERED, like remove spaces. Missing
   - ERASE_IF O(1)
   - ERASE_IF_ORDERED O(n), like remove white space. Missing
   - CONCAT (BACK), APPEND_RANGE O(m)
