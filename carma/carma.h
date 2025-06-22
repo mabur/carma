@@ -275,6 +275,8 @@ static inline bool carma_are_bits_equal(
     (dynamic_array).count--; \
 } while (0)
 
+#define ERASE_FRONT(dynamic_array) ERASE_INDEX_ORDERED((dynamic_array), 0)
+
 #define ERASE_IF(dynamic_array, predicate) do { \
     auto a = (dynamic_array).data; \
     auto b = (dynamic_array).data + (dynamic_array).count; \

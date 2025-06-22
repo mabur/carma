@@ -478,6 +478,13 @@ void test_drop_back_until_item() {
     ASSERT_EQUAL_SIZE("DROP_BACK_UNTIL_ITEM", range.count, 0);
 }
 
+void test_erase_front() {
+    auto actual = MAKE_DARRAY(IntArray, 1, 2, 3);
+    ERASE_FRONT(actual);
+    auto expected = MAKE_DARRAY(IntArray, 2, 3);
+    ASSERT_EQUAL_RANGE("ERASE_FRONT", actual, expected);
+}
+
 void test_erase_index1() {
     auto actual = MAKE_DARRAY(IntArray, 9);
     ERASE_INDEX(actual, 0);
@@ -1049,6 +1056,7 @@ int main() {
     test_drop_back_until_item();
 
     test_erase_back();
+    test_erase_front();
 
     test_erase_index1();
     test_erase_index2a();
