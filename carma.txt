@@ -14,14 +14,24 @@
   - array2d, array3d
   - look_up_xy, look_up_xyz, at_xy, at_xyz
 * For erase and insert allow both:
-  - ERASE_FRONT/DROP_FRONT, INSERT_FRONT/PREPEND
-  - ERASE_BACK/DROP_BACK, INSERT_BACK/APPEND O(1)
-  - ERASE_INDEX, (INSERT_INDEX) O(1)
-  - ERASE_INDEX_ORDERED, INSERT_INDEX_ORDERED O(n)
-  - ERASE_IF
-  - ERASE_IF_ORDERED
-  - CONCAT(BACK)
-  - CONCAT_INSERT
+  - ERASE* for dynamic arrays and DROP* for ranges.
+  - ERASE_FRONT O(n)
+  - PREPEND/INSERT_FRONT O(n)
+  - ERASE_BACK O(1)
+  - APPEND/INSERT_BACK/INSERT O(1)
+  - ERASE_INDEX O(1)
+  - Unordered INSERT_INDEX does not make sense, since it is like APPEND, so no index required.
+  - ERASE_INDEX_ORDERED O(n)
+  - INSERT_INDEX (ORDERED) O(n)
+  - ERASE_RANGE O(m), when would this be useful?
+  - ERASE_RANGE_ORDERED O(n+m), like cut selection. Missing
+  - ERASE_IF O(1)
+  - ERASE_IF_ORDERED O(n), like remove white space. Missing
+  - CONCAT (BACK), APPEND_RANGE O(m)
+  - CONCAT_FRONT, PREPEND_RANGE O(n+m). Missing
+  - CONCAT_INSERT, INSERT_RANGE O(n+m), like paste selection. Missing
+  - COPY
+  - SHIFT, LEFT, RIGHT
   - Swap is good when we don't care about the order, and shift when we do like for strings.
   - ROTATE, could help implementing the shifts
     - Rotate seems to be the correct term rather than shift.
