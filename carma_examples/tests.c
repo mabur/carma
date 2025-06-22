@@ -391,6 +391,13 @@ void test_drop_back() {
     ASSERT_EQUAL_RANGE("drop_back", actual, expected);
 }
 
+void test_erase_back() {
+    auto actual = MAKE_RANGE(IntRange, -1, 4, -2, 1);
+    ERASE_BACK(actual);
+    auto expected = MAKE_RANGE(IntRange, -1, 4, -2);
+    ASSERT_EQUAL_RANGE("erase_back", actual, expected);
+}
+
 void test_drop_front_while() {
     auto range = MAKE_RANGE(IntRange, -1, 4, -2, 1);
     DROP_FRONT_WHILE(range, is_negative);
@@ -1040,6 +1047,8 @@ int main() {
     test_drop_front_until_item();
     test_drop_back_while_item();
     test_drop_back_until_item();
+
+    test_erase_back();
 
     test_erase_index1();
     test_erase_index2a();

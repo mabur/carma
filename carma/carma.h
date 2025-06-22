@@ -268,7 +268,11 @@ static inline bool carma_are_bits_equal(
     for (typeof((dynamic_array).count) i = index; i + 1 < (dynamic_array).count; ++i) { \
         (dynamic_array).data[i] = (dynamic_array).data[i + 1]; \
     } \
-    DROP_BACK(dynamic_array); \
+    ERASE_BACK(dynamic_array); \
+} while (0)
+
+#define ERASE_BACK(dynamic_array) do { \
+    (dynamic_array).count--; \
 } while (0)
 
 #define ERASE_IF(dynamic_array, predicate) do { \
