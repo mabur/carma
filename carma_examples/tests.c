@@ -40,9 +40,8 @@ typedef struct {
     size_t capacity;
 } TableIntArrayInt;
 
-#define VALUE_TYPE2(range_type) typeof(*((range_type){}).data)
-#define MAKE_ARRAY_LITERAL(range_type, ...) (VALUE_TYPE2(range_type)[]){__VA_ARGS__}
-#define COUNT_VARGS(range_type, ...) sizeof((VALUE_TYPE2(range_type)[]){__VA_ARGS__}) / ITEM_SIZE(range_type)
+#define MAKE_ARRAY_LITERAL(range_type, ...) (VALUE_TYPE((range_type){})[]){__VA_ARGS__}
+#define COUNT_VARGS(range_type, ...) sizeof((VALUE_TYPE((range_type){})[]){__VA_ARGS__}) / ITEM_SIZE(range_type)
 
 #define COPY_VARARGS_RAW(range_type, ...) memcpy(\
     malloc(sizeof(MAKE_ARRAY_LITERAL(range_type, __VA_ARGS__))),\
