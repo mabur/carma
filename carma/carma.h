@@ -85,7 +85,7 @@
 #define CARMA_COUNT_HOMOGENEOUS_VARGS_BYTES(range_type, ...) sizeof(CARMA_MAKE_ARRAY_LITERAL(range_type, __VA_ARGS__))
 #define CARMA_COUNT_HOMOGENEOUS_VARGS(range_type, ...) CARMA_COUNT_HOMOGENEOUS_VARGS_BYTES(range_type, __VA_ARGS__) / ITEM_SIZE((range_type){})
 
-#define CARMA_COPY_HOMOGENEOUS_VARGS(range_type, ...) memcpy(\
+#define CARMA_COPY_HOMOGENEOUS_VARGS(range_type, ...) (POINTER_TYPE((range_type){}))memcpy(\
     malloc(CARMA_COUNT_HOMOGENEOUS_VARGS_BYTES(range_type, __VA_ARGS__)),\
     CARMA_MAKE_ARRAY_LITERAL(range_type, __VA_ARGS__),\
     CARMA_COUNT_HOMOGENEOUS_VARGS_BYTES(range_type, __VA_ARGS__)\
