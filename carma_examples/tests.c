@@ -41,12 +41,13 @@ typedef struct {
 } TableIntArrayInt;
 
 #define MAKE_ARRAY_LITERAL(range_type, ...) (VALUE_TYPE((range_type){})[]){__VA_ARGS__}
-#define COUNT_VARGS(range_type, ...) sizeof((VALUE_TYPE((range_type){})[]){__VA_ARGS__}) / ITEM_SIZE((range_type){})
+#define COUNT_ARRAY_LITERAL_BYTES(range_type, ...) sizeof(MAKE_ARRAY_LITERAL(range_type, __VA_ARGS__))
+#define COUNT_VARGS(range_type, ...) COUNT_ARRAY_LITERAL_BYTES(range_type, __VA_ARGS__) / ITEM_SIZE((range_type){})
 
 #define COPY_VARARGS_RAW(range_type, ...) memcpy(\
-    malloc(sizeof(MAKE_ARRAY_LITERAL(range_type, __VA_ARGS__))),\
+    malloc(COUNT_ARRAY_LITERAL_BYTES(range_type, __VA_ARGS__)),\
     MAKE_ARRAY_LITERAL(range_type, __VA_ARGS__),\
-    sizeof(MAKE_ARRAY_LITERAL(range_type, __VA_ARGS__))\
+    COUNT_ARRAY_LITERAL_BYTES(range_type, __VA_ARGS__)\
 )
 
 #define MAKE_RANGE(range_type, ...) (range_type){\
