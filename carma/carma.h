@@ -17,9 +17,6 @@
 
 #define REMAINING_CAPACITY(darray) ((darray).capacity + (darray).count)
 
-#define POINTER_TYPE(range) typeof((range).data)
-#define VALUE_TYPE(range) typeof(*(range).data)
-
 #define ITEM_SIZE(range) sizeof(*(range).data)
 
 #define SWAP(a, b) do { \
@@ -27,6 +24,20 @@
     (a) = (b); \
     (b) = c; \
 } while (0)
+
+
+////////////////////////////////////////////////////////////////////////////////
+// MEMBER TYPES
+
+#if defined(__GNUC__) || defined(__clang__)
+    #define TYPE_OF_EXPRESSION(x) typeof(x)
+#elif defined(__cplusplus)
+    #define TYPE_OF_EXPRESSION(x) decltype(x)
+#endif
+
+#define POINTER_TYPE(range) TYPE_OF_EXPRESSION((range).data)
+#define VALUE_TYPE(range) TYPE_OF_EXPRESSION(*(range).data)
+#define INDEX_TYPE(range) TYPE_OF_EXPRESSION((range).count)
 
 ////////////////////////////////////////////////////////////////////////////////
 // ALLOCATE MEMORY
@@ -112,7 +123,7 @@
     for (; iterator0 != END_POINTER(range0) && iterator1 != END_POINTER(range1) && iterator2 != END_POINTER(range2); ++iterator0, ++iterator1, ++iterator2)
     
 #define FOR_INDEX(index, range) \
-    for (typeof((range).count) index = 0; index < (range).count; ++index)
+    for (INDEX_TYPE(range) index = 0; index < (range).count; ++index)
 
 #define FILL(range, value) FOR_EACH(it, (range)) *it = (value)
 
@@ -265,7 +276,7 @@ static inline bool carma_are_bits_equal(
 } while (0)
 
 #define ERASE_INDEX_ORDERED(dynamic_array, index) { \
-    for (typeof((dynamic_array).count) i = index; i + 1 < (dynamic_array).count; ++i) { \
+    for (INDEX_TYPE(dynamic_array) i = index; i + 1 < (dynamic_array).count; ++i) { \
         (dynamic_array).data[i] = (dynamic_array).data[i + 1]; \
     } \
     ERASE_BACK(dynamic_array); \
@@ -298,13 +309,13 @@ static inline bool carma_are_bits_equal(
 // MULTI DIMENSIONAL ARRAY ALGORITHMS
 
 #define FOR_X(x, array) \
-    for (typeof((array).width) x = 0; x < (array).width; ++x)
+    for (INDEX_TYPE(array) x = 0; x < (array).width; ++x)
 
 #define FOR_Y(y, array) \
-    for (typeof((array).height) y = 0; y < (array).height; ++y)
+    for (INDEX_TYPE(array) y = 0; y < (array).height; ++y)
 
 #define FOR_Z(z, array) \
-    for (typeof((array).depth) z = 0; z < (array).depth; ++z)
+    for (INDEX_TYPE(array) z = 0; z < (array).depth; ++z)
 
 #define AT_XY(array, x, y) \
     ((array).data[(array).width * (y) + (x)])
@@ -315,15 +326,15 @@ static inline bool carma_are_bits_equal(
 #define FLIP_IMAGE_X(image) do { \
     auto width = (image).width; \
     auto height = (image).height; \
-    for (typeof(height) y = 0; y < height; ++y) \
-        for (typeof(width) x = 0; x < width / 2; ++x) \
+    for (INDEX_TYPE(image) y = 0; y < height; ++y) \
+        for (INDEX_TYPE(image) x = 0; x < width / 2; ++x) \
             SWAP(AT_XY((image), x, y), AT_XY((image), width - 1 - x, y)); \
 } while(0)
 
 #define FLIP_IMAGE_Y(image) do { \
     auto width = (image).width; \
     auto height = (image).height; \
-    for (typeof(height) y = 0; y < height / 2; ++y) \
-        for (typeof(width) x = 0; x < width; ++x) \
+    for (INDEX_TYPE(image) y = 0; y < height / 2; ++y) \
+        for (INDEX_TYPE(image) x = 0; x < width; ++x) \
             SWAP(AT_XY((image), x, y), AT_XY((image), x, height - 1 - y)); \
 } while(0)
