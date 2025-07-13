@@ -74,7 +74,7 @@
 #ifdef __cplusplus
     #define CARMA_MAKE_ARRAY_LITERAL(range_type, ...) \
         ([]() { \
-            static VALUE_TYPE((range_type){}) a[] = { __VA_ARGS__ }; \
+            VALUE_TYPE((range_type){}) a[] = { __VA_ARGS__ }; \
             return a; \
         }())
 #else
