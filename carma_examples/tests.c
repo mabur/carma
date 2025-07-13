@@ -40,27 +40,6 @@ typedef struct {
     size_t capacity;
 } TableIntArrayInt;
 
-#define MAKE_ARRAY_LITERAL(range_type, ...) (VALUE_TYPE((range_type){})[]){__VA_ARGS__}
-#define COUNT_ARRAY_LITERAL_BYTES(range_type, ...) sizeof(MAKE_ARRAY_LITERAL(range_type, __VA_ARGS__))
-#define COUNT_VARGS(range_type, ...) COUNT_ARRAY_LITERAL_BYTES(range_type, __VA_ARGS__) / ITEM_SIZE((range_type){})
-
-#define COPY_VARARGS_RAW(range_type, ...) memcpy(\
-    malloc(COUNT_ARRAY_LITERAL_BYTES(range_type, __VA_ARGS__)),\
-    MAKE_ARRAY_LITERAL(range_type, __VA_ARGS__),\
-    COUNT_ARRAY_LITERAL_BYTES(range_type, __VA_ARGS__)\
-)
-
-#define MAKE_RANGE(range_type, ...) (range_type){\
-    .data=COPY_VARARGS_RAW(range_type, __VA_ARGS__),\
-    .count=COUNT_VARGS(range_type, __VA_ARGS__)\
-}
-
-#define MAKE_DARRAY(darray_type, ...) (darray_type){\
-    .data=COPY_VARARGS_RAW(darray_type, __VA_ARGS__),\
-    .count=COUNT_VARGS(darray_type, __VA_ARGS__),\
-    .capacity=COUNT_VARGS(darray_type, __VA_ARGS__)\
-}
-
 typedef struct {
     int* data;
     size_t width;

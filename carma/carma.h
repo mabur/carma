@@ -69,6 +69,30 @@
 } while (0)
 
 ////////////////////////////////////////////////////////////////////////////////
+// ALLOCATE FROM LIST OF ITEMS
+
+#define CARMA_MAKE_ARRAY_LITERAL(range_type, ...) (VALUE_TYPE((range_type){})[]){__VA_ARGS__}
+#define CARMA_COUNT_HOMOGENEOUS_VARGS_BYTES(range_type, ...) sizeof(CARMA_MAKE_ARRAY_LITERAL(range_type, __VA_ARGS__))
+#define CARMA_COUNT_HOMOGENEOUS_VARGS(range_type, ...) CARMA_COUNT_HOMOGENEOUS_VARGS_BYTES(range_type, __VA_ARGS__) / ITEM_SIZE((range_type){})
+
+#define CARMA_COPY_HOMOGENEOUS_VARGS(range_type, ...) memcpy(\
+    malloc(CARMA_COUNT_HOMOGENEOUS_VARGS_BYTES(range_type, __VA_ARGS__)),\
+    CARMA_MAKE_ARRAY_LITERAL(range_type, __VA_ARGS__),\
+    CARMA_COUNT_HOMOGENEOUS_VARGS_BYTES(range_type, __VA_ARGS__)\
+)
+
+#define MAKE_RANGE(range_type, ...) (range_type){\
+    .data=CARMA_COPY_HOMOGENEOUS_VARGS(range_type, __VA_ARGS__),\
+    .count=CARMA_COUNT_HOMOGENEOUS_VARGS(range_type, __VA_ARGS__)\
+}
+
+#define MAKE_DARRAY(darray_type, ...) (darray_type){\
+    .data=CARMA_COPY_HOMOGENEOUS_VARGS(darray_type, __VA_ARGS__),\
+    .count=CARMA_COUNT_HOMOGENEOUS_VARGS(darray_type, __VA_ARGS__),\
+    .capacity=CARMA_COUNT_HOMOGENEOUS_VARGS(darray_type, __VA_ARGS__)\
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // FREE MEMORY
 
 #define FREE_RANGE(range) do { \
