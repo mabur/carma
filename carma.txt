@@ -10,7 +10,9 @@
                 ┌─────────────┐                                       
                 │StringBuilder│                                       
                 └─────────────┘                                       
-* Arrays  
+* typeof, is not standard C. It is supported by gcc and clang. C++ uses decltype.
+  - Figure out how to deal with this in main carma header.
+* Arrays
   - array2d, array3d
   - look_up_xy, look_up_xyz, at_xy, at_xyz
 * For erase and insert allow both:
