@@ -71,7 +71,17 @@
 ////////////////////////////////////////////////////////////////////////////////
 // ALLOCATE FROM LIST OF ITEMS
 
-#define CARMA_MAKE_ARRAY_LITERAL(range_type, ...) (VALUE_TYPE((range_type){})[]){__VA_ARGS__}
+#ifdef __cplusplus
+    #define CARMA_MAKE_ARRAY_LITERAL(range_type, ...) \
+        ([]() { \
+            static VALUE_TYPE((range_type){}) a[] = { __VA_ARGS__ }; \
+            return a; \
+        }())
+#else
+    #define CARMA_MAKE_ARRAY_LITERAL(range_type, ...) \
+        ((VALUE_TYPE((range_type){})[]){ __VA_ARGS__ })
+#endif
+
 #define CARMA_COUNT_HOMOGENEOUS_VARGS_BYTES(range_type, ...) sizeof(CARMA_MAKE_ARRAY_LITERAL(range_type, __VA_ARGS__))
 #define CARMA_COUNT_HOMOGENEOUS_VARGS(range_type, ...) CARMA_COUNT_HOMOGENEOUS_VARGS_BYTES(range_type, __VA_ARGS__) / ITEM_SIZE((range_type){})
 
