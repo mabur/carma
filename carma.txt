@@ -106,6 +106,7 @@
   - let
   - integer types: f32, f64, u8, u32, u64, i8, i32, i64
   - make(my_struct, .x=0, .y=2)
+  - BEGIN_EXTERN_C, END_EXTERN_C
 
 
 From Falco Girgis:
