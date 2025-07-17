@@ -72,7 +72,7 @@
 // ALLOCATE FROM ITEMS AS VARGS
 
 #ifdef __cplusplus
-    #define MAKE_RANGE(range_type, ...) ([]() { \
+    #define MAKE_RANGE(range_type, ...) ([&]() { \
         using T = VALUE_TYPE((range_type){}); \
         T carray[] = {__VA_ARGS__}; \
         auto item_size = sizeof(carray[0]); \
@@ -83,7 +83,7 @@
         return (range_type){.data=data, .count=count}; \
     }())
 
-    #define MAKE_DARRAY(darray_type, ...) ([]() { \
+    #define MAKE_DARRAY(darray_type, ...) ([&]() { \
         using T = VALUE_TYPE((darray_type){}); \
         T carray[] = {__VA_ARGS__}; \
         auto item_size = sizeof(carray[0]); \
