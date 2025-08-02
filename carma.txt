@@ -10,6 +10,11 @@
                 ┌─────────────┐                                       
                 │StringBuilder│                                       
                 └─────────────┘                                       
+* Macros not related to arrays:
+  - let / var (Make it portable across c and C++ compilers, including msvc)
+  - make(my_struct, .x=0, .y=2) (Make it portable across c and C++ compilers, including msvc)
+  - BEGIN_EXTERN_C, END_EXTERN_C
+  - integer types: f32, f64, u8, u32, u64, i8, i32, i64
 * typeof, is not standard C. It is supported by gcc and clang. C++ uses decltype.
   - Figure out how to deal with this in main carma header.
 * Arrays
@@ -102,11 +107,6 @@
       - Image
     - Table
 * Translate arralg to carma
-* Macros not related to arrays:
-  - let
-  - integer types: f32, f64, u8, u32, u64, i8, i32, i64
-  - make(my_struct, .x=0, .y=2)
-  - BEGIN_EXTERN_C, END_EXTERN_C
 
 
 From Falco Girgis:
