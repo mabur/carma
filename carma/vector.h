@@ -4,17 +4,17 @@
 
 #if defined(__clang__) || defined(__GNUC__)
 
-typedef int Vec2i __attribute__((vector_size(8)));
-typedef int Vec3i __attribute__((vector_size(16))); // Including padding
-typedef int Vec4i __attribute__((vector_size(16)));
+typedef int int2 __attribute__((vector_size(8)));
+typedef int int3 __attribute__((vector_size(16))); // Including padding
+typedef int int4 __attribute__((vector_size(16)));
 
-typedef float Vec2f __attribute__((vector_size(8)));
-typedef float Vec3f __attribute__((vector_size(16))); // Including padding
-typedef float Vec4f __attribute__((vector_size(16)));
+typedef float float2 __attribute__((vector_size(8)));
+typedef float float3 __attribute__((vector_size(16))); // Including padding
+typedef float float4 __attribute__((vector_size(16)));
 
-typedef double Vec2d __attribute__((vector_size(16)));
-typedef double Vec3d __attribute__((vector_size(32))); // Including padding
-typedef double Vec4d __attribute__((vector_size(32)));
+typedef double double2 __attribute__((vector_size(16)));
+typedef double double3 __attribute__((vector_size(32))); // Including padding
+typedef double double4 __attribute__((vector_size(32)));
 
 #elif defined(__cplusplus)
 
@@ -62,17 +62,17 @@ struct VecTemp {
     friend VecTemp operator-(const VecTemp& v) {return VecTemp{} -= v;}
 };
 
-typedef VecTemp<int, 2> Vec2i;
-typedef VecTemp<int, 3> Vec3i;
-typedef VecTemp<int, 4> Vec4i;
+typedef VecTemp<int, 2> int2;
+typedef VecTemp<int, 3> int3;
+typedef VecTemp<int, 4> int4;
 
-typedef VecTemp<float, 2> Vec2f;
-typedef VecTemp<float, 3> Vec3f;
-typedef VecTemp<float, 4> Vec4f;
+typedef VecTemp<float, 2> float2;
+typedef VecTemp<float, 3> float3;
+typedef VecTemp<float, 4> float4;
 
-typedef VecTemp<double, 2> Vec2d;
-typedef VecTemp<double, 3> Vec3d;
-typedef VecTemp<double, 4> Vec4d;
+typedef VecTemp<double, 2> double2;
+typedef VecTemp<double, 3> double3;
+typedef VecTemp<double, 4> double4;
 
 #else
 #error "The vector types require either clang or gcc or C++"
