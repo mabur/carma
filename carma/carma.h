@@ -286,9 +286,9 @@ static inline bool carma_are_bits_equal(
 } while (0)
 
 #define APPEND(dynamic_array, item) do { \
-    auto new_count = (dynamic_array).count + 1; \
-    if (new_count > (dynamic_array).capacity) { \
-        RESERVE_EXPONENTIAL_GROWTH((dynamic_array), new_count); \
+    if ((dynamic_array).count == (dynamic_array).capacity) { \
+        (dynamic_array).capacity = (dynamic_array).capacity == 0 ? 1 : (dynamic_array).capacity * 2; \
+        (dynamic_array).data = (POINTER_TYPE(dynamic_array))realloc((dynamic_array).data, (dynamic_array).capacity * sizeof(VALUE_TYPE(dynamic_array))); \
     } \
     ((dynamic_array).data)[(dynamic_array).count] = (item); \
     (dynamic_array).count++; \
