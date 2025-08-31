@@ -11,10 +11,13 @@
                 │StringBuilder│                                       
                 └─────────────┘                                       
 
+* Small string on stack struct String64 {char data[64]; size_t count;}
+  - A common use-case is to do something like: String64 file_path = FORMAT_STRING64("%s%s", dir_path, file_name);
+  - Can have multiple: String16, String32, String64, String128, String256, String512
 * Macros not related to arrays:
   - let / var (Make it portable across c and C++ compilers, including msvc)
   - make(my_struct, .x=0, .y=2) (Make it portable across c and C++ compilers, including msvc)
-  - BEGIN_EXTERN_C, END_EXTERN_C
+  - BEGIN_EXTERN_C, END_EXTERN_C, #include <carma/begin_c_header.h>, #include <carma/end_c_header.h>
   - integer types: f32, f64, u8, u32, u64, i8, i32, i64
 * typeof, is not standard C. It is supported by gcc and clang. C++ uses decltype.
   - Figure out how to deal with this in main carma header.
