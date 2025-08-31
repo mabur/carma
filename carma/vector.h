@@ -80,6 +80,7 @@ typedef VecTemp<double, 4> double4;
 
 #define DOT2(a, b) ((a)[0] * (b)[0] + (a)[1] * (b)[1])
 #define DOT3(a, b) ((a)[0] * (b)[0] + (a)[1] * (b)[1] + (a)[2] * (b)[2])
+#define DOT4(a, b) ((a)[0] * (b)[0] + (a)[1] * (b)[1] + (a)[2] * (b)[2] + (a)[3] * (b)[3])
 
 #define SQUARED_NORM2(a) DOT2((a), (a))
 #define SQUARED_NORM3(a) DOT3((a), (a))
