@@ -11,7 +11,6 @@
                 │StringBuilder│                                       
                 └─────────────┘                                       
 
-* Debug CONCAT_STRING
 * Defer
   - https://www.reddit.com/r/C_Programming/comments/1n62v63/defer_in_c89/
 * Small string on stack struct String64 {char data[64]; size_t count;}
