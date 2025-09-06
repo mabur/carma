@@ -321,10 +321,8 @@ static inline bool carma_are_bits_equal(
         RESERVE_EXPONENTIAL_GROWTH((dynamic_array), new_count); \
     } \
     FOR_INDEX(i, (range)) { \
-        auto old_item = (dynamic_array).data[i + (index)];     \
-        auto new_item = (range).data[i]; \
-        (dynamic_array).data[i + (index) + (range).count] = old_item; \
-        (dynamic_array).data[i + (index)] = new_item; \
+        (dynamic_array).data[i + (index) + (range).count] = (dynamic_array).data[i + (index)]; \
+        (dynamic_array).data[i + (index)] = (range).data[i]; \
     } \
     (dynamic_array).count = new_count; \
 } while (0)
