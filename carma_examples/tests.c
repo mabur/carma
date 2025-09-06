@@ -549,7 +549,7 @@ void test_erase_index_ordered3c() {
     ASSERT_EQUAL_RANGE("ERASE_INDEX 3b", actual, expected);
 }
 
-void test_erase_range_ordered1() {
+void test_erase_many_ordered1() {
     auto actual = MAKE_DARRAY(IntArray, 9);
     ERASE_MANY_ORDERED(actual, 0, 1);
     auto expected = MAKE_DARRAY(IntArray);
@@ -1058,7 +1058,7 @@ int main() {
     test_erase_index_ordered3b();
     test_erase_index_ordered3c();
 
-    test_erase_range_ordered1();
+    test_erase_many_ordered1();
 
     test_erase_if_unallocated();
     test_erase_if_empty();
