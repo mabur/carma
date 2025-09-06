@@ -315,6 +315,20 @@ static inline bool carma_are_bits_equal(
     (dynamic_array).data[index] = (item); \
 } while (0)
 
+#define INSERT_RANGE(dynamic_array, index, range) do { \
+    auto new_count = (dynamic_array).count + (range).count; \
+    if (new_count > (dynamic_array).capacity) { \
+        RESERVE_EXPONENTIAL_GROWTH((dynamic_array), new_count); \
+    } \
+    FOR_INDEX(i, (range)) { \
+        auto old_item = (dynamic_array).data[i + (index)];     \
+        auto new_item = (range).data[i]; \
+        (dynamic_array).data[i + (index) + (range).count] = old_item; \
+        (dynamic_array).data[i + (index)] = new_item; \
+    } \
+    (dynamic_array).count = new_count; \
+} while (0)
+
 ////////////////////////////////////////////////////////////////////////////////
 // ERASE ALGORITHMS FOR DYNAMIC ARRAYS
 

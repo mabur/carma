@@ -747,6 +747,38 @@ void test_insert_index2c() {
     ASSERT_EQUAL_RANGE("INSERT_INDEX2b", actual, expected);
 }
 
+void test_insert_range0a() {
+    auto actual = MAKE_DARRAY(IntArray);
+    auto part = MAKE_DARRAY(IntArray, 9);
+    INSERT_RANGE(actual, 0, part);
+    auto expected = MAKE_DARRAY(IntArray, 9);
+    ASSERT_EQUAL_RANGE("INSERT_RANGE0a", actual, expected);
+}
+
+void test_insert_range0b() {
+    auto actual = MAKE_DARRAY(IntArray);
+    auto part = MAKE_DARRAY(IntArray, 8, 9);
+    INSERT_RANGE(actual, 0, part);
+    auto expected = MAKE_DARRAY(IntArray, 8, 9);
+    ASSERT_EQUAL_RANGE("INSERT_RANGE0b", actual, expected);
+}
+
+void test_insert_range1a() {
+    auto actual = MAKE_DARRAY(IntArray, 1);
+    auto part = MAKE_DARRAY(IntArray, 8, 9);
+    INSERT_RANGE(actual, 0, part);
+    auto expected = MAKE_DARRAY(IntArray, 8, 9, 1);
+    ASSERT_EQUAL_RANGE("INSERT_RANGE1a", actual, expected);
+}
+
+void test_insert_range1b() {
+    auto actual = MAKE_DARRAY(IntArray, 1);
+    auto part = MAKE_DARRAY(IntArray, 8, 9);
+    INSERT_RANGE(actual, 1, part);
+    auto expected = MAKE_DARRAY(IntArray, 1, 8, 9);
+    ASSERT_EQUAL_RANGE("INSERT_RANGE1b", actual, expected);
+}
+
 void test_concat() {
     IntArray target;
     INIT_DARRAY(target, 0, 0);
@@ -1098,6 +1130,11 @@ int main() {
     test_insert_index2a();
     test_insert_index2b();
     test_insert_index2c();
+
+    test_insert_range0a();
+    test_insert_range0b();
+    test_insert_range1a();
+    test_insert_range1b();
 
     test_for_x_y();
     test_for_x_y_z();
