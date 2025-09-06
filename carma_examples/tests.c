@@ -556,6 +556,20 @@ void test_erase_many_ordered1() {
     ASSERT_EQUAL_RANGE("ERASE_MANY_ORDERED 1", actual, expected);
 }
 
+void test_erase_many_ordered2() {
+    auto actual = MAKE_DARRAY(IntArray, 9, 8, 7, 6, 5);
+    ERASE_MANY_ORDERED(actual, 0, 2);
+    auto expected = MAKE_DARRAY(IntArray, 7, 6, 5);
+    ASSERT_EQUAL_RANGE("ERASE_MANY_ORDERED 1", actual, expected);
+}
+
+void test_erase_many_ordered3() {
+    auto actual = MAKE_DARRAY(IntArray, 9, 8, 7, 6, 5);
+    ERASE_MANY_ORDERED(actual, 3, 2);
+    auto expected = MAKE_DARRAY(IntArray, 9, 8, 7);
+    ASSERT_EQUAL_RANGE("ERASE_MANY_ORDERED 1", actual, expected);
+}
+
 void test_erase_if_unallocated() {
     IntArray array;
     array.data = 0;
@@ -1059,6 +1073,8 @@ int main() {
     test_erase_index_ordered3c();
 
     test_erase_many_ordered1();
+    test_erase_many_ordered2();
+    test_erase_many_ordered3();
 
     test_erase_if_unallocated();
     test_erase_if_empty();
