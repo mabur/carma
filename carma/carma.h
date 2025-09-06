@@ -315,6 +315,9 @@ static inline bool carma_are_bits_equal(
     (dynamic_array).data[index] = (item); \
 } while (0)
 
+////////////////////////////////////////////////////////////////////////////////
+// ERASE ALGORITHMS FOR DYNAMIC ARRAYS
+
 #define CLEAR(dynamic_array) do {(dynamic_array).count = 0;} while (0)
 
 #define ERASE_INDEX(dynamic_array, index) do { \
