@@ -302,14 +302,13 @@ static inline bool carma_are_bits_equal(
 #define PREPEND(dynamic_array, item) INSERT_INDEX((dynamic_array), 0, (item))
 
 #define CONCAT(dynamic_array, range) do { \
-    auto new_count = (dynamic_array).count + (range).count; \
-    if (new_count > (dynamic_array).capacity) { \
-        RESERVE_EXPONENTIAL_GROWTH((dynamic_array), new_count); \
+    auto _new_count = (dynamic_array).count + (range).count; \
+    if (_new_count > (dynamic_array).capacity) { \
+        RESERVE_EXPONENTIAL_GROWTH((dynamic_array), _new_count); \
     } \
-    FOR_INDEX(i, (range)) { \
-        ((dynamic_array).data)[(dynamic_array).count + i] = (range).data[i]; \
-    } \
-    (dynamic_array).count = new_count; \
+    TYPE_OF_EXPRESSION(dynamic_array) _back = SUB_RANGE(dynamic_array, (dynamic_array).count, (range).count); \
+    COPY(range, _back); \
+    (dynamic_array).count = _new_count; \
 } while (0)
 
 #define INSERT_INDEX(dynamic_array, index, item) do { \
