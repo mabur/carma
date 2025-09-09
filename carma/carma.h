@@ -188,6 +188,9 @@
     } \
     if (it != END_POINTER(range))
 
+#define SUB_RANGE(range, start_index, new_count) \
+    (TYPE_OF_EXPRESSION(range)){.data=(range).data + start_index, .count=new_count}
+
 #define FILL(range, value) FOR_EACH(it, (range)) *it = (value)
 
 #define COPY(source_range, target_range) \

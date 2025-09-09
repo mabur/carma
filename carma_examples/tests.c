@@ -309,6 +309,55 @@ void test_for_index() {
     ASSERT_EQUAL_RANGE("test_for_index", actual, expected);
 }
 
+void test_sub_range0() {
+    auto source = MAKE_DARRAY(IntArray);
+    auto actual = SUB_RANGE(source, 0, 0);
+    auto expected = MAKE_DARRAY(IntArray);
+    ASSERT_EQUAL_RANGE("test_sub_range0", actual, expected);
+}
+
+void test_sub_range1a() {
+    auto source = MAKE_DARRAY(IntArray, 1);
+    auto actual = SUB_RANGE(source, 0, 0);
+    auto expected = MAKE_DARRAY(IntArray);
+    ASSERT_EQUAL_RANGE("test_sub_range1a", actual, expected);
+}
+
+void test_sub_range1b() {
+    auto source = MAKE_DARRAY(IntArray, 1);
+    auto actual = SUB_RANGE(source, 1, 0);
+    auto expected = MAKE_DARRAY(IntArray);
+    ASSERT_EQUAL_RANGE("test_sub_range1b", actual, expected);
+}
+
+void test_sub_range1c() {
+    auto source = MAKE_DARRAY(IntArray, 1);
+    auto actual = SUB_RANGE(source, 0, 1);
+    auto expected = MAKE_DARRAY(IntArray, 1);
+    ASSERT_EQUAL_RANGE("test_sub_range1c", actual, expected);
+}
+
+void test_sub_range2a() {
+    auto source = MAKE_DARRAY(IntArray, 1, 2);
+    auto actual = SUB_RANGE(source, 0, 1);
+    auto expected = MAKE_DARRAY(IntArray, 1);
+    ASSERT_EQUAL_RANGE("test_sub_range2a", actual, expected);
+}
+
+void test_sub_range2b() {
+    auto source = MAKE_DARRAY(IntArray, 1, 2);
+    auto actual = SUB_RANGE(source, 1, 1);
+    auto expected = MAKE_DARRAY(IntArray, 2);
+    ASSERT_EQUAL_RANGE("test_sub_range2b", actual, expected);
+}
+
+void test_sub_range2c() {
+    auto source = MAKE_DARRAY(IntArray, 1, 2);
+    auto actual = SUB_RANGE(source, 0, 2);
+    auto expected = MAKE_DARRAY(IntArray, 1, 2);
+    ASSERT_EQUAL_RANGE("test_sub_range2c", actual, expected);
+}
+
 void test_for_min() {
     auto actual = MAKE_DARRAY(IntArray, 1, -3, 2);
     FOR_MIN(it, actual) {
@@ -1082,6 +1131,14 @@ int main() {
     test_for_each2();
     test_for_each3();
     test_for_index();
+
+    test_sub_range0();
+    test_sub_range1a();
+    test_sub_range1b();
+    test_sub_range1c();
+    test_sub_range2a();
+    test_sub_range2b();
+    test_sub_range2c();
 
     test_for_each_backward0();
     test_for_each_backward1();
