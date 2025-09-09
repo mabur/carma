@@ -356,6 +356,30 @@ void test_fill() {
     ASSERT_EQUAL_RANGE("test_fill", actual, expected);
 }
 
+void test_copy0() {
+    auto source = MAKE_DARRAY(IntArray);
+    auto actual = MAKE_DARRAY(IntArray);
+    COPY(source, actual);
+    auto expected = MAKE_DARRAY(IntArray);
+    ASSERT_EQUAL_RANGE("test_copy0", actual, expected);
+}
+
+void test_copy1() {
+    auto source = MAKE_DARRAY(IntArray, 1);
+    auto actual = MAKE_DARRAY(IntArray, 2);
+    COPY(source, actual);
+    auto expected = MAKE_DARRAY(IntArray, 1);
+    ASSERT_EQUAL_RANGE("test_copy1", actual, expected);
+}
+
+void test_copy2() {
+    auto source = MAKE_DARRAY(IntArray, 1, 2);
+    auto actual = MAKE_DARRAY(IntArray, 3, 4);
+    COPY(source, actual);
+    auto expected = MAKE_DARRAY(IntArray, 1, 2);
+    ASSERT_EQUAL_RANGE("test_copy2", actual, expected);
+}
+
 void test_drop_front() {
     auto actual = MAKE_RANGE(IntRange, -1, 4, -2, 1);
     DROP_FRONT(actual);
@@ -1073,7 +1097,11 @@ int main() {
     test_are_equal_different_count();
 
     test_fill();
-    
+
+    test_copy0();
+    test_copy1();
+    test_copy2();
+
     test_drop_front();
     test_drop_back();
     

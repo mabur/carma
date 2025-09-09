@@ -187,8 +187,11 @@
         it = *it < *internal_it ? internal_it : it; \
     } \
     if (it != END_POINTER(range))
-    
+
 #define FILL(range, value) FOR_EACH(it, (range)) *it = (value)
+
+#define COPY(source_range, target_range) \
+    FOR_EACH2(_source, _target, source_range, target_range) *_target = *_source
 
 #define COUNT_BYTES(range) (sizeof(VALUE_TYPE(range)) * (range).count)
     
