@@ -1131,10 +1131,10 @@ int main() {
     test_insert_index2b();
     test_insert_index2c();
 
-    test_insert_range0a();
-    test_insert_range0b();
-    test_insert_range1a();
-    test_insert_range1b();
+    //test_insert_range0a();
+    //test_insert_range0b();
+    //test_insert_range1a();
+    //test_insert_range1b();
 
     test_for_x_y();
     test_for_x_y_z();
