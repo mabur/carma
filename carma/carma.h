@@ -174,8 +174,6 @@
 #define FOR_INDEX(index, range) \
     for (INDEX_TYPE(range) index = 0; index < (range).count; ++index)
 
-#define FILL(range, value) FOR_EACH(it, (range)) *it = (value)
-
 #define FOR_MIN(it, range) \
     auto it = (range).data; \
     FOR_EACH(internal_it, (range)) { \
@@ -189,7 +187,8 @@
         it = *it < *internal_it ? internal_it : it; \
     } \
     if (it != END_POINTER(range))
-
+    
+#define FILL(range, value) FOR_EACH(it, (range)) *it = (value)
 
 #define COUNT_BYTES(range) (sizeof(VALUE_TYPE(range)) * (range).count)
     
