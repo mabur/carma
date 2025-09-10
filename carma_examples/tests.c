@@ -441,6 +441,24 @@ void test_copy2() {
     ASSERT_EQUAL_RANGE("test_copy2", actual, expected);
 }
 
+void test_copy_inplace() {
+    auto actual = MAKE_DARRAY(IntArray, 1, 2, 3);
+    auto source = SUB_RANGE(actual, 1, 2);
+    auto target = SUB_RANGE(actual, 0, 2);
+    COPY(source, target);
+    auto expected = MAKE_DARRAY(IntArray, 2, 3, 3);
+    ASSERT_EQUAL_RANGE("test_copy_inplace", actual, expected);
+}
+
+void test_copy_backward_inplace() {
+    auto actual = MAKE_DARRAY(IntArray, 1, 2, 3);
+    auto source = SUB_RANGE(actual, 0, 2);
+    auto target = SUB_RANGE(actual, 1, 2);
+    COPY_BACKWARD(source, target);
+    auto expected = MAKE_DARRAY(IntArray, 1, 1, 2);
+    ASSERT_EQUAL_RANGE("test_copy_backward_inplace", actual, expected);
+}
+
 void test_drop_front() {
     auto actual = MAKE_RANGE(IntRange, -1, 4, -2, 1);
     DROP_FRONT(actual);
@@ -1172,6 +1190,9 @@ int main() {
     test_copy0();
     test_copy1();
     test_copy2();
+
+    test_copy_inplace();
+    test_copy_backward_inplace();
 
     test_drop_front();
     test_drop_back();

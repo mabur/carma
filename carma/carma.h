@@ -202,6 +202,9 @@
 #define COPY(source_range, target_range) \
     FOR_EACH2(_source, _target, source_range, target_range) *_target = *_source
 
+#define COPY_BACKWARD(source_range, target_range) \
+    FOR_EACH_BACKWARD2(_source, _target, source_range, target_range) *_target = *_source
+
 #define COUNT_BYTES(range) (sizeof(VALUE_TYPE(range)) * (range).count)
     
 static inline bool carma_are_bits_equal(
