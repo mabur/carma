@@ -195,15 +195,15 @@
     if (it != END_POINTER(range))
 
 #define SUB_RANGE(range, start_index, new_count) \
-    (TYPE_OF_EXPRESSION(range)){.data=(range).data + start_index, .count=new_count}
+    (TYPE_OF_EXPRESSION(range)){.data=(range).data + (start_index), .count=(new_count)}
 
 #define FILL(range, value) FOR_EACH(it, (range)) *it = (value)
 
 #define COPY(source_range, target_range) \
-    FOR_EACH2(_source, _target, source_range, target_range) *_target = *_source
+    FOR_EACH2(_source, _target, (source_range), (target_range)) *_target = *_source
 
 #define COPY_BACKWARD(source_range, target_range) \
-    FOR_EACH_BACKWARD2(_source, _target, source_range, target_range) *_target = *_source
+    FOR_EACH_BACKWARD2(_source, _target, (source_range), (target_range)) *_target = *_source
 
 #define COUNT_BYTES(range) (sizeof(VALUE_TYPE(range)) * (range).count)
     
