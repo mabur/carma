@@ -322,9 +322,11 @@ static inline bool carma_are_bits_equal(
 
 #define INSERT_INDEX(dynamic_array, index, item) do { \
     APPEND((dynamic_array), (item)); \
-    for (auto i = (dynamic_array).count - 1; i > (index); --i) { \
-        (dynamic_array).data[i] = (dynamic_array).data[i - 1]; \
-    } \
+    auto _tail_count = (dynamic_array).count - 1 - index; \
+    COPY_BACKWARD( \
+        SUB_RANGE((dynamic_array), (index), _tail_count), \
+        SUB_RANGE((dynamic_array), (index + 1), _tail_count) \
+    ); \
     (dynamic_array).data[index] = (item); \
 } while (0)
 
