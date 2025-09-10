@@ -165,6 +165,12 @@
     auto iterator1 = BEGIN_POINTER(range1); \
     for (; iterator0 != END_POINTER(range0) && iterator1 != END_POINTER(range1); ++iterator0, ++iterator1)
 
+#define FOR_EACH_BACKWARD2(iterator0, iterator1, range0, range1) \
+    auto iterator0 = END_POINTER(range0); \
+    auto iterator1 = END_POINTER(range1); \
+    for (; iterator0 != BEGIN_POINTER(range0) && iterator1 != BEGIN_POINTER(range1);) \
+    if ((--iterator0 && --iterator1) || true)
+
 #define FOR_EACH3(iterator0, iterator1, iterator2, range0, range1, range2) \
     auto iterator0 = BEGIN_POINTER(range0); \
     auto iterator1 = BEGIN_POINTER(range1); \

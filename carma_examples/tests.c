@@ -249,6 +249,18 @@ void test_for_each2() {
     ASSERT_EQUAL_RANGE("test_for_each2", actual, expected);
 }
 
+void test_for_each_backward2() {
+    auto input0 = MAKE_DARRAY(IntArray, 1, 2, 4);
+    auto input1 = MAKE_DARRAY(IntArray, 8, 16, 32);
+    auto expected = MAKE_DARRAY(IntArray, 28, 14, 7);
+    auto actual = MAKE_DARRAY(IntArray);
+    FOR_EACH_BACKWARD2(a, b, input0, input1) {
+        auto item = *b - *a;
+        APPEND(actual, item);
+    }
+    ASSERT_EQUAL_RANGE("test_for_each_backward2", actual, expected);
+}
+
 void test_for_each3() {
     auto left = MAKE_DARRAY(IntArray, 1, 2, 3);
     auto right = MAKE_DARRAY(IntArray, 0, 1, 2);
@@ -260,7 +272,7 @@ void test_for_each3() {
     ASSERT_EQUAL_RANGE("test_for_each3", actual, expected);
 }
 
-void test_for_each_backward0() {
+void test_for_each_backward_a() {
     auto inputs = (IntArray){};
     auto actual = (IntArray){};
     FOR_EACH_BACKWARD(it, inputs) {
@@ -270,7 +282,7 @@ void test_for_each_backward0() {
     ASSERT_EQUAL_RANGE("test_for_each_backward0", actual, expected);
 }
 
-void test_for_each_backward1() {
+void test_for_each_backward_b() {
     auto inputs = MAKE_DARRAY(IntArray, 1);
     auto actual = (IntArray){};
     FOR_EACH_BACKWARD(it, inputs) {
@@ -280,7 +292,7 @@ void test_for_each_backward1() {
     ASSERT_EQUAL_RANGE("test_for_each_backward1", actual, expected);
 }
 
-void test_for_each_backward2() {
+void test_for_each_backward_c() {
     auto inputs = MAKE_DARRAY(IntArray, 1, 2);
     auto actual = (IntArray){};
     FOR_EACH_BACKWARD(it, inputs) {
@@ -290,7 +302,7 @@ void test_for_each_backward2() {
     ASSERT_EQUAL_RANGE("test_for_each_backward2", actual, expected);
 }
 
-void test_for_each_backward3() {
+void test_for_each_backward_d() {
     auto inputs = MAKE_DARRAY(IntArray, 1, 2, 3);
     auto actual = (IntArray){};
     FOR_EACH_BACKWARD(it, inputs) {
@@ -1140,10 +1152,12 @@ int main() {
     test_sub_range2b();
     test_sub_range2c();
 
-    test_for_each_backward0();
-    test_for_each_backward1();
     test_for_each_backward2();
-    test_for_each_backward3();
+
+    test_for_each_backward_a();
+    test_for_each_backward_b();
+    test_for_each_backward_c();
+    test_for_each_backward_d();
 
     test_for_min();
     test_for_max();
