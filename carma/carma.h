@@ -321,12 +321,11 @@ static inline bool carma_are_bits_equal(
 
 #define INSERT_INDEX(dynamic_array, index, item) do { \
     APPEND((dynamic_array), (item)); \
-    auto _tail_count = (dynamic_array).count - 1 - index; \
     COPY_BACKWARD( \
-        SUB_RANGE((dynamic_array), (index), _tail_count), \
-        SUB_RANGE((dynamic_array), (index + 1), _tail_count) \
+        SUB_RANGE((dynamic_array), (index), (dynamic_array).count - 1 - (index)), \
+        SUB_RANGE((dynamic_array), (index) + 1, (dynamic_array).count - 1 - (index)) \
     ); \
-    (dynamic_array).data[index] = (item); \
+    (dynamic_array).data[(index)] = (item); \
 } while (0)
 
 // TODO: fix and test more. Is wrong to just loop over range.
