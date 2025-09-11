@@ -315,8 +315,7 @@ static inline bool carma_are_bits_equal(
     if (_new_count > (dynamic_array).capacity) { \
         RESERVE_EXPONENTIAL_GROWTH((dynamic_array), _new_count); \
     } \
-    TYPE_OF_EXPRESSION(dynamic_array) _back = SUB_RANGE(dynamic_array, (dynamic_array).count, (range).count); \
-    COPY(range, _back); \
+    COPY(range, SUB_RANGE(dynamic_array, (dynamic_array).count, (range).count)); \
     (dynamic_array).count = _new_count; \
 } while (0)
 
