@@ -339,10 +339,14 @@ static inline bool carma_are_bits_equal(
     if (new_count > (dynamic_array).capacity) { \
         RESERVE_EXPONENTIAL_GROWTH((dynamic_array), new_count); \
     } \
-    FOR_INDEX(i, (range)) { \
-        (dynamic_array).data[i + (index) + (range).count] = (dynamic_array).data[i + (index)]; \
-        (dynamic_array).data[i + (index)] = (range).data[i]; \
-    } \
+    COPY_BACKWARD( \
+        SUB_RANGE((dynamic_array), (index), (dynamic_array).count - (range).count - (index)), \
+        SUB_RANGE((dynamic_array), (index) + (range).count, (dynamic_array).count - (range).count - (index)) \
+    ); \
+    COPY( \
+        range, \
+        SUB_RANGE((dynamic_array), (index), (range).count) \
+    ); \
     (dynamic_array).count = new_count; \
 } while (0)
 
