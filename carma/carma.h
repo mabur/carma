@@ -332,21 +332,22 @@ static inline bool carma_are_bits_equal(
     (dynamic_array).data[(index)] = (item); \
 } while (0)
 
-// TODO: fix and test more.
 #define INSERT_RANGE(dynamic_array, index, range) do { \
+    auto old_count = (dynamic_array).count; \
     auto new_count = (dynamic_array).count + (range).count; \
+    auto tail_count = old_count - (index); \
     if (new_count > (dynamic_array).capacity) { \
         RESERVE_EXPONENTIAL_GROWTH((dynamic_array), new_count); \
     } \
+    (dynamic_array).count = new_count; \
     COPY_BACKWARD( \
-        SUB_RANGE((dynamic_array), (index), (dynamic_array).count - (range).count - (index)), \
-        SUB_RANGE((dynamic_array), (index) + (range).count, (dynamic_array).count - (range).count - (index)) \
+        SUB_RANGE((dynamic_array), (index), tail_count), \
+        SUB_RANGE((dynamic_array), (index) + (range).count, tail_count) \
     ); \
     COPY( \
         range, \
         SUB_RANGE((dynamic_array), (index), (range).count) \
     ); \
-    (dynamic_array).count = new_count; \
 } while (0)
 
 ////////////////////////////////////////////////////////////////////////////////
