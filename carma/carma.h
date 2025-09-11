@@ -364,10 +364,11 @@ static inline bool carma_are_bits_equal(
 } while (0)
 
 #define ERASE_MANY_ORDERED(dynamic_array, index, erase_count) { \
-    for (INDEX_TYPE(dynamic_array) i = index; i + erase_count < (dynamic_array).count; ++i) { \
-        (dynamic_array).data[i] = (dynamic_array).data[i + erase_count]; \
-    } \
-    (dynamic_array).count -= erase_count; \
+    COPY( \
+        SUB_RANGE((dynamic_array), (index) + (erase_count), (dynamic_array).count - (index) - (erase_count)), \
+        SUB_RANGE((dynamic_array), (index), (dynamic_array).count - (index) - (erase_count)) \
+    ); \
+    (dynamic_array).count -= (erase_count); \
 } while (0)
 
 #define ERASE_BACK(dynamic_array) do { \
