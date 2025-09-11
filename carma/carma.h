@@ -199,11 +199,15 @@
 
 #define FILL(range, value) FOR_EACH(it, (range)) *it = (value)
 
-#define COPY(source_range, target_range) \
-    FOR_EACH2(_source, _target, (source_range), (target_range)) *_target = *_source
+#define COPY(source_range, target_range) do { \
+    FOR_EACH2(_source, _target, (source_range), (target_range)) \
+        *_target = *_source; \
+} while (0)
 
-#define COPY_BACKWARD(source_range, target_range) \
-    FOR_EACH_BACKWARD2(_source, _target, (source_range), (target_range)) *_target = *_source
+#define COPY_BACKWARD(source_range, target_range) do { \
+    FOR_EACH_BACKWARD2(_source, _target, (source_range), (target_range)) \
+        *_target = *_source; \
+} while (0)
 
 #define COUNT_BYTES(range) (sizeof(VALUE_TYPE(range)) * (range).count)
     
