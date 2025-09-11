@@ -332,8 +332,7 @@ static inline bool carma_are_bits_equal(
     (dynamic_array).data[(index)] = (item); \
 } while (0)
 
-// TODO: fix and test more. Is wrong to just loop over range.
-// TODO: add COPY macro and implement using that
+// TODO: fix and test more.
 #define INSERT_RANGE(dynamic_array, index, range) do { \
     auto new_count = (dynamic_array).count + (range).count; \
     if (new_count > (dynamic_array).capacity) { \
