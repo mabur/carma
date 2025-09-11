@@ -356,9 +356,10 @@ static inline bool carma_are_bits_equal(
 } while (0)
 
 #define ERASE_INDEX_ORDERED(dynamic_array, index) { \
-    for (INDEX_TYPE(dynamic_array) i = index; i + 1 < (dynamic_array).count; ++i) { \
-        (dynamic_array).data[i] = (dynamic_array).data[i + 1]; \
-    } \
+    COPY( \
+        SUB_RANGE((dynamic_array), (index) + 1, (dynamic_array).count - index - 1), \
+        SUB_RANGE((dynamic_array), (index), (dynamic_array).count - index - 1) \
+    ); \
     ERASE_BACK(dynamic_array); \
 } while (0)
 
