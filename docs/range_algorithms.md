@@ -14,10 +14,13 @@ typedef struct {
 } ExampleRange;
 ```
 
-## Initialization
+## Memory Handling
 
-`INIT_RANGE(range, count)` allocates memory to hold `count` items
-for the given range. It sets all members of the array struct.
+- `INIT_RANGE(range, count)` allocates memory to hold `count` items
+  for the given range.
+
+- `FREE_RANGE(range)` frees the memory of the range.
+  Sets its count and data pointer to zero.
 
 ## Range Macros O(1)
 
