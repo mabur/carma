@@ -30,6 +30,9 @@ for the given dynamic array. It sets all members of the array struct.
 
 - `CLEAR(dynamic_array)` decreases count to zero.
 
+- `ERASE_BACK(dynamic_array)` erases the item at the back.
+  Decreases count by one.
+
 - `ERASE_INDEX(dynamic_array, index)` erases the item at index.
   Decreases count by one.
   The order of the remaining items is NOT preserved.
