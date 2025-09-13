@@ -75,6 +75,10 @@ for the given dynamic array. It sets all members of the array struct.
   The order of the remaining items is preserved.
   It shifts the remaining items from index up to the end by one.
 
+- `ERASE_MANY_ORDERED(dynamic_array, index, erase_count)` erases `erase_count` neighbouring items starting at `index`.
+  The remaining items that comes after are shifted.
+  The order of the remaining items is preserved.
+
 - `ERASE_IF(dynamic_array, predicate)` erases all items for which the
   predicate function is true.
   It reduces the count of the dynamic array accordingly.
