@@ -16,10 +16,17 @@ typedef struct {
 The `capacity` defines the number of items that fit in the array
 before its memory needs to be reallocated. So `count` <= `capacity`.
 
-## Initialization
+## Memory Handling
 
-`INIT_DRANGE(array, count, capacity)` allocates memory to hold up to `capacity` items
-for the given dynamic array. It sets all members of the array struct.
+- `INIT_DARRAY(dynamic_array, count, capacity)` allocates memory to hold up to `capacity` items
+  for the given `dynamic_array`. The `count` is set to zero.
+
+- `FREE_DARRAY(dynamic_array)` frees the memory of the `dynamic_array`.
+  Its count, capacity, and data pointer are set to zero.
+
+- `RESERVE(dynamic_array, capacity)` sets a new capacity and reallocates the data pointer.
+  If the new capacity is smaller than the old count,
+  then the new count is set to the new capacity, thereby removing items at the end.
 
 ## Dynamic Array Macros O(1)
 
@@ -65,10 +72,6 @@ for the given dynamic array. It sets all members of the array struct.
   It increases `dynamic_array.count` with `range.count`.
   If the new count would be larger than the existing capacity then
   the capacity is increased and the memory of the data pointer is reallocated.
-
-- `RESERVE(dynamic_array, capacity)` sets a new capacity and reallocates the data pointer.
-  If the new capacity is smaller than the old count,
-  then the new count is set to the new capacity, thereby removing items at the end.
 
 - `ERASE_INDEX_ORDERED(dynamic_array, index)` erases the item at index.
   Decreases count by one.
