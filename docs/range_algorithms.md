@@ -121,8 +121,14 @@ FOR_MAX(it, range) {
 }
 ```
 
-- `FILL(range, value)` sets all the items in the `range` to `value`.
-
 - `ARE_EQUAL(range0, range1)` checks if the two ranges are equal or not.
   Returns `true` or `false`.
   Equality is so far only defined for ranges of primitive types.
+
+- `FILL(range, value)` sets all the items in the `range` to `value`.
+
+- `COPY(source_range, target_range)` overwrites all items in the `target_range` with the correposnding item from the `source_range`.
+  Iterates from the start to the end of each range, which only matters if the source and target overlap.
+
+- `COPY_BACKWARD(source_range, target_range)` overwrites all items in the `target_range` with the correposnding item from the `source_range`.
+  Iterates from the end to the start of each range, which only matters if the source and target overlap.
