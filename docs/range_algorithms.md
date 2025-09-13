@@ -77,6 +77,20 @@ FOR_EACH_BACKWARD(it, range) {
 }
 ```
 
+- `FOR_EACH_BACKWARD2(iterator0, iterator1, range0, range1)` can be used instead of a
+  normal for-loop to loop over the pairwise items in two ranges in reverse order.
+  It is similar to a zip-function.
+  Two loop variables with the name given by `iterator0` and `iterator1` will be
+  allocated, unfortunately in the scope surrounding the loop,
+  and they will point to the pairwise items in the two ranges.
+  Example:
+
+```c
+FOR_EACH_BACKWARD2(a, b, range0, range1) {
+    *a = *b;
+}
+```
+
 - `FOR_MIN(iterator, range)` find the min item in the range and do something with it.
   The body will be run once, if the min item exists,
   and zero times if it does not exist since the range is empty.
