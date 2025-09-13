@@ -31,15 +31,21 @@ typedef struct Voxels {
 
 For a 3D array `count` == `width * height * depth`.
 
-## Initialization
+## Memory Handling
 
-`INIT_2D_ARRAY(array, width, height)` allocates memory to hold
-`width * height` items for the given 2D array.
-It sets all members of the array struct.
+- `INIT_2D_ARRAY(array, width, height)` allocates memory to hold
+  `width * height` items for the given 2D array.
+  Sets its `count` to `width * height`.
 
-`INIT_3D_ARRAY(array, width, height, depth)` allocates memory to hold
-`width * height * depth` items for the given 3D array.
-It sets all members of the array struct.
+- `INIT_3D_ARRAY(array, width, height, depth)` allocates memory to hold
+  `width * height * depth` items for the given 3D array.
+  Sets its `count` to `width * height * depth`.
+
+- `FREE_2D_ARRAY(array)` frees the memory used by `array`.
+  Sets its count, width, height and data pointer to zero.
+
+- `FREE_3D_ARRAY(array)` frees the memory used by `array`.
+  Sets its count, width, height, depth and data pointer to zero.
 
 ## Multi Dimensional Array Macros
 
