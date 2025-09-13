@@ -70,6 +70,11 @@ for the given dynamic array. It sets all members of the array struct.
   If the new capacity is smaller than the old count,
   then the new count is set to the new capacity, thereby removing items at the end.
 
+- `ERASE_INDEX_ORDERED(dynamic_array, index)` erases the item at index.
+  Decreases count by one.
+  The order of the remaining items is preserved.
+  It shifts the remaining items from index up to the end by one.
+
 - `ERASE_IF(dynamic_array, predicate)` erases all items for which the
   predicate function is true.
   It reduces the count of the dynamic array accordingly.
