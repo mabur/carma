@@ -36,6 +36,12 @@ for the given dynamic array. It sets all members of the array struct.
 
 ## Dynamic Array Macros O(count)
 
+- `PREPEND(dynamic_array, item)` adds item to the beginning of the dynamic_array.
+  It shifts all previosuly existing items by one index.
+  It increases count by one.
+  If the new count would be larger than the existing capacity then
+  the capacity is increased and the memory of the data pointer is reallocated.
+
 - `CONCAT(dynamic_array, range)` adds all items in range to the end of the dynamic_array.
   It increases `dynamic_array.count` with `range.count`.
   If the new count would be larger than the existing capacity then
