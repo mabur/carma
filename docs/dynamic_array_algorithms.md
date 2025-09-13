@@ -30,7 +30,7 @@ for the given dynamic array. It sets all members of the array struct.
 
 - `CLEAR(dynamic_array)` decreases count to zero.
 
-- `ERASE_BACK(dynamic_array)` erases the item at the back.
+- `ERASE_BACK(dynamic_array)` erases the last item.
   Decreases count by one.
 
 - `ERASE_INDEX(dynamic_array, index)` erases the item at index.
@@ -38,6 +38,10 @@ for the given dynamic array. It sets all members of the array struct.
   The order of the remaining items is NOT preserved.
 
 ## Dynamic Array Macros O(count)
+
+- `ERASE_FRONT(dynamic_array)` erases the first item.
+  Decreases count by one.
+  All remaining items are shifted by one index.
 
 - `PREPEND(dynamic_array, item)` adds item to the beginning of the dynamic_array.
   It shifts all previously existing items by one index.
