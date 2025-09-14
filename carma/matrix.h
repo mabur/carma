@@ -74,32 +74,52 @@ inline double2x2 inverse_double2x2(double2x2 A) {
     return result;
 }
 
+#define SET_INVERSE_3x3(in, out) do { \
+    auto a00 = (in).columns[0][0]; \
+    auto a01 = (in).columns[1][0]; \
+    auto a02 = (in).columns[2][0]; \
+    auto a10 = (in).columns[0][1]; \
+    auto a11 = (in).columns[1][1]; \
+    auto a12 = (in).columns[2][1]; \
+    auto a20 = (in).columns[0][2]; \
+    auto a21 = (in).columns[1][2]; \
+    auto a22 = (in).columns[2][2]; \
+    \
+    auto C00 =  (a11 * a22 - a12 * a21); \
+    auto C01 = -(a10 * a22 - a12 * a20); \
+    auto C02 =  (a10 * a21 - a11 * a20); \
+    \
+    auto C10 = -(a01 * a22 - a02 * a21); \
+    auto C11 =  (a00 * a22 - a02 * a20); \
+    auto C12 = -(a00 * a21 - a01 * a20); \
+    \
+    auto C20 =  (a01 * a12 - a02 * a11); \
+    auto C21 = -(a00 * a12 - a02 * a10); \
+    auto C22 =  (a00 * a11 - a01 * a10); \
+    \
+    auto det = a00 * C00 + a01 * C01 + a02 * C02; \
+    auto inv_det = (1) / det; \
+    \
+    (out).columns[0][0] = C00; (out).columns[1][0] = C01; (out).columns[2][0] = C02; \
+    (out).columns[0][1] = C10; (out).columns[1][1] = C11; (out).columns[2][1] = C12; \
+    (out).columns[0][2] = C20; (out).columns[1][2] = C21; (out).columns[2][2] = C22; \
+    \
+    (out).columns[0] *= inv_det; \
+    (out).columns[1] *= inv_det; \
+    (out).columns[2] *= inv_det; \
+} while (0)
+
+
 inline float3x3 inverse_float3x3(float3x3 A) {
-    float a = A.columns[0][0], b = A.columns[1][0], c = A.columns[2][0];
-    float d = A.columns[0][1], e = A.columns[1][1], f = A.columns[2][1];
-    float g = A.columns[0][2], h = A.columns[1][2], i = A.columns[2][2];
+    float3x3 result;
+    SET_INVERSE_3x3(A, result);
+    return result;
+}
 
-    // Cofactors (of A), then we'll transpose to get adj(A)
-    float C00 =  e*i - f*h;
-    float C01 = -(d*i - f*g);
-    float C02 =  d*h - e*g;
-
-    float C10 = -(b*i - c*h);
-    float C11 =  a*i - c*g;
-    float C12 = -(a*h - b*g);
-
-    float C20 =  b*f - c*e;
-    float C21 = -(a*f - c*d);
-    float C22 =  a*e - b*d;
-
-    float det = a*C00 + b*C01 + c*C02;
-    float inv_det = 1.f / det;
-
-    float3x3 R;
-    R.columns[0] = (float3){ C00, C10, C20 } * inv_det;
-    R.columns[1] = (float3){ C01, C11, C21 } * inv_det;
-    R.columns[2] = (float3){ C02, C12, C22 } * inv_det;
-    return R;
+inline double3x3 inverse_double3x3(double3x3 A) {
+    double3x3 result;
+    SET_INVERSE_3x3(A, result);
+    return result;
 }
 
 inline float4x4 inverse_float4x4(float4x4 A) {
