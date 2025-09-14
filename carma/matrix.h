@@ -227,7 +227,7 @@ static inline double4x4 INVERSE(double4x4 A) {return inverse_double4x4(A);}
     \
     double2x2: inverse_double2x2, \
     double3x3: inverse_double3x3, \
-    double4x4: inverse_double4x4, \
+    double4x4: inverse_double4x4 \
 )(A)
 
 #endif
