@@ -47,19 +47,31 @@ inline float4 mul_float4x4_float4(float4x4 A, const float4 b) {
     return MUL_4x4_4(A, b);
 }
 
+#define SET_INVERSE_2x2(in, out) do { \
+    auto a = (in).columns[0][0]; \
+    auto b = (in).columns[1][0]; \
+    auto c = (in).columns[0][1]; \
+    auto d = (in).columns[1][1]; \
+    auto det = a * d - b * c; \
+    auto inv_det = 1 / det; \
+    (out).columns[0][0] = d; \
+    (out).columns[0][1] = -c; \
+    (out).columns[1][0] = -b; \
+    (out).columns[1][1] = a; \
+    (out).columns[0] *= inv_det; \
+    (out).columns[1] *= inv_det; \
+} while (0)
+
 inline float2x2 inverse_float2x2(float2x2 A) {
-    float a = A.columns[0][0];
-    float b = A.columns[1][0];
-    float c = A.columns[0][1];
-    float d = A.columns[1][1];
+    float2x2 result;
+    SET_INVERSE_2x2(A, result);
+    return result;
+}
 
-    float det = a * d - b * c;
-    float inv_det = 1.f / det;
-
-    float2 result_c0 = (float2){ d, -c } * inv_det;
-    float2 result_c1 = (float2){ -b, a } * inv_det;
-
-    return (float2x2){.columns = {result_c0, result_c1}};
+inline double2x2 inverse_double2x2(double2x2 A) {
+    double2x2 result;
+    SET_INVERSE_2x2(A, result);
+    return result;
 }
 
 inline float3x3 inverse_float3x3(float3x3 A) {
