@@ -1,6 +1,13 @@
 #pragma once
 
+#include "make.h"
 #include "vector.h"
+
+#if defined(__GNUC__) || defined(__clang__)
+    #define TYPE_OF_EXPRESSION(x) typeof(x)
+#elif defined(__cplusplus)
+    #define TYPE_OF_EXPRESSION(x) decltype(x)
+#endif
 
 typedef struct int2x2 {int2 columns[2];} int2x2;
 typedef struct int3x3 {int3 columns[3];} int3x3;
@@ -14,25 +21,34 @@ typedef struct double2x2 {double2 columns[2];} double2x2;
 typedef struct double3x3 {double3 columns[3];} double3x3;
 typedef struct double4x4 {double4 columns[4];} double4x4;
 
-inline float2 mul_float2x2_float2(float2x2 A, float2 v) {
-    return
-        A.columns[0] * v[0] +
-        A.columns[1] * v[1];
+#define MUL_2x2_2(A, b) ( \
+    (A).columns[0] * (b)[0] + \
+    (A).columns[1] * (b)[1]   \
+)
+
+#define MUL_3x3_3(A, b) ( \
+    (A).columns[0] * (b)[0] + \
+    (A).columns[1] * (b)[1] + \
+    (A).columns[2] * (b)[2]   \
+)
+
+#define MUL_4x4_4(A, b) ( \
+    (A).columns[0] * (b)[0] + \
+    (A).columns[1] * (b)[1] + \
+    (A).columns[2] * (b)[2] + \
+    (A).columns[3] * (b)[3]   \
+)
+
+inline float2 mul_float2x2_float2(float2x2 A, float2 b) {
+    return MUL_2x2_2(A, b);
 }
 
-inline float3 mul_float3x3_float3(float3x3 A, const float3 v) {
-    return
-        A.columns[0] * v[0] +
-        A.columns[1] * v[1] +
-        A.columns[2] * v[2];
+inline float3 mul_float3x3_float3(float3x3 A, float3 b) {
+    return MUL_3x3_3(A, b);
 }
 
 inline float4 mul_float4x4_float4(float4x4 A, const float4 b) {
-    return
-        A.columns[0] * b[0] +
-        A.columns[1] * b[1] +
-        A.columns[2] * b[2] +
-        A.columns[3] * b[3];
+    return MUL_4x4_4(A, b);
 }
 
 inline float2x2 inverse_float2x2(float2x2 A) {
