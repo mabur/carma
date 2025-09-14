@@ -91,18 +91,11 @@ inline float3x3 inverse_float3x3(float3x3 A) {
 }
 
 inline float4x4 inverse_float4x4(float4x4 A) {
-    float4 c0 = A.columns[0]; // {a00, a10, a20, a30}
-    float4 c1 = A.columns[1]; // {a01, a11, a21, a31}
-    float4 c2 = A.columns[2]; // {a02, a12, a22, a32}
-    float4 c3 = A.columns[3]; // {a03, a13, a23, a33}
+    float a00 = A.columns[0][0], a01 = A.columns[1][0], a02 = A.columns[2][0], a03 = A.columns[3][0];
+    float a10 = A.columns[0][1], a11 = A.columns[1][1], a12 = A.columns[2][1], a13 = A.columns[3][1];
+    float a20 = A.columns[0][2], a21 = A.columns[1][2], a22 = A.columns[2][2], a23 = A.columns[3][2];
+    float a30 = A.columns[0][3], a31 = A.columns[1][3], a32 = A.columns[2][3], a33 = A.columns[3][3];
 
-    float a00 = c0[0], a10 = c0[1], a20 = c0[2], a30 = c0[3];
-    float a01 = c1[0], a11 = c1[1], a21 = c1[2], a31 = c1[3];
-    float a02 = c2[0], a12 = c2[1], a22 = c2[2], a32 = c2[3];
-    float a03 = c3[0], a13 = c3[1], a23 = c3[2], a33 = c3[3];
-
-    // Cofactors Cij (unrolled). Column-major output later uses
-    // column j = {C0j, C1j, C2j, C3j}.
     float C00 =  a11*a22*a33 - a11*a23*a32 - a21*a12*a33 + a21*a13*a32 + a31*a12*a23 - a31*a13*a22;
     float C01 = -a01*a22*a33 + a01*a23*a32 + a21*a02*a33 - a21*a03*a32 - a31*a02*a23 + a31*a03*a22;
     float C02 =  a01*a12*a33 - a01*a13*a32 - a11*a02*a33 + a11*a03*a32 + a31*a02*a13 - a31*a03*a12;
@@ -123,7 +116,6 @@ inline float4x4 inverse_float4x4(float4x4 A) {
     float C32 = -a00*a11*a32 + a00*a12*a31 + a10*a01*a32 - a10*a02*a31 - a30*a01*a12 + a30*a02*a11;
     float C33 =  a00*a11*a22 - a00*a12*a21 - a10*a01*a22 + a10*a02*a21 + a20*a01*a12 - a20*a02*a11;
 
-    // Determinant via first row expansion: det = a00*C00 + a01*C10 + a02*C20 + a03*C30
     float det = a00*C00 + a01*C10 + a02*C20 + a03*C30;
     float inv_det = 1.0f / det;
 
