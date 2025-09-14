@@ -17,6 +17,9 @@ typedef struct double2x2 {double2 columns[2];} double2x2;
 typedef struct double3x3 {double3 columns[3];} double3x3;
 typedef struct double4x4 {double4 columns[4];} double4x4;
 
+////////////////////////////////////////////////////////////////////////////////
+// Matrix-vector multiplication:
+
 #define MUL_2x2_2(A, b) ( \
     (A).columns[0] * (b)[0] + \
     (A).columns[1] * (b)[1]   \
@@ -46,6 +49,9 @@ static inline float3 mul_float3x3_float3(float3x3 A, float3 b) {
 static inline float4 mul_float4x4_float4(float4x4 A, const float4 b) {
     return MUL_4x4_4(A, b);
 }
+
+////////////////////////////////////////////////////////////////////////////////
+// Matrix-inverse
 
 #define SET_INVERSE_2x2(in, out) do { \
     auto a = (in).columns[0][0]; \
@@ -208,7 +214,7 @@ static inline double4x4 inverse_double4x4(double4x4 A) {
     return result;
 }
 
-// ---------------------------------------
+////////////////////////////////////////////////////////////////////////////////
 // DEFINE OVERLOADED/GENERIC FUNCTIONS
 
 #ifdef __cplusplus
