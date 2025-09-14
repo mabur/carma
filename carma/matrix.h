@@ -35,15 +35,15 @@ typedef struct double4x4 {double4 columns[4];} double4x4;
     (A).columns[3] * (b)[3]   \
 )
 
-inline float2 mul_float2x2_float2(float2x2 A, float2 b) {
+static inline float2 mul_float2x2_float2(float2x2 A, float2 b) {
     return MUL_2x2_2(A, b);
 }
 
-inline float3 mul_float3x3_float3(float3x3 A, float3 b) {
+static inline float3 mul_float3x3_float3(float3x3 A, float3 b) {
     return MUL_3x3_3(A, b);
 }
 
-inline float4 mul_float4x4_float4(float4x4 A, const float4 b) {
+static inline float4 mul_float4x4_float4(float4x4 A, const float4 b) {
     return MUL_4x4_4(A, b);
 }
 
@@ -62,13 +62,13 @@ inline float4 mul_float4x4_float4(float4x4 A, const float4 b) {
     (out).columns[1] *= inv_det; \
 } while (0)
 
-inline float2x2 inverse_float2x2(float2x2 A) {
+static inline float2x2 inverse_float2x2(float2x2 A) {
     float2x2 result;
     SET_INVERSE_2x2(A, result);
     return result;
 }
 
-inline double2x2 inverse_double2x2(double2x2 A) {
+static inline double2x2 inverse_double2x2(double2x2 A) {
     double2x2 result;
     SET_INVERSE_2x2(A, result);
     return result;
@@ -117,13 +117,13 @@ inline double2x2 inverse_double2x2(double2x2 A) {
     (out).columns[2] *= inv_det; \
 } while (0)
 
-inline float3x3 inverse_float3x3(float3x3 A) {
+static inline float3x3 inverse_float3x3(float3x3 A) {
     float3x3 result;
     SET_INVERSE_3x3(A, result);
     return result;
 }
 
-inline double3x3 inverse_double3x3(double3x3 A) {
+static inline double3x3 inverse_double3x3(double3x3 A) {
     double3x3 result;
     SET_INVERSE_3x3(A, result);
     return result;
@@ -196,13 +196,13 @@ inline double3x3 inverse_double3x3(double3x3 A) {
     (out).columns[3] *= inv_det; \
 } while (0)
 
-inline float4x4 inverse_float4x4(float4x4 A) {
+static inline float4x4 inverse_float4x4(float4x4 A) {
     float4x4 result;
     SET_INVERSE_4x4(A, result);
     return result;
 }
 
-inline double4x4 inverse_double4x4(double4x4 A) {
+static inline double4x4 inverse_double4x4(double4x4 A) {
     double4x4 result;
     SET_INVERSE_4x4(A, result);
     return result;
@@ -210,8 +210,8 @@ inline double4x4 inverse_double4x4(double4x4 A) {
 
 #ifdef __cplusplus
 
-inline float4x4 INVERSE_4x4(float4x4 A) {return inverse_float4x4(A);}
-inline double4x4 INVERSE_4x4(double4x4 A) {return inverse_double4x4(A);}
+static inline float4x4 INVERSE_4x4(float4x4 A) {return inverse_float4x4(A);}
+static inline double4x4 INVERSE_4x4(double4x4 A) {return inverse_double4x4(A);}
 
 #else
 
