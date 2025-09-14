@@ -9,10 +9,6 @@
     #define TYPE_OF_EXPRESSION(x) decltype(x)
 #endif
 
-typedef struct int2x2 {int2 columns[2];} int2x2;
-typedef struct int3x3 {int3 columns[3];} int3x3;
-typedef struct int4x4 {int4 columns[4];} int4x4;
-
 typedef struct float2x2 {float2 columns[2];} float2x2;
 typedef struct float3x3 {float3 columns[3];} float3x3;
 typedef struct float4x4 {float4 columns[4];} float4x4;
