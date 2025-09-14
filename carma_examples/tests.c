@@ -4,8 +4,6 @@
 #include <carma/carma.h>
 #include <carma/carma_string.h>
 #include <carma/carma_table.h>
-#include <carma/matrix.h>
-#include <carma/vector.h>
 
 typedef struct {
     int* data;
