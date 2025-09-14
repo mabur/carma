@@ -36,13 +36,10 @@ inline float4 mul_float4x4_float4(float4x4 A, const float4 b) {
 }
 
 inline float2x2 inverse_float2x2(float2x2 A) {
-    float2 c0 = A.columns[0];
-    float2 c1 = A.columns[1];
-
-    float a = c0[0];
-    float b = c1[0];
-    float c = c0[1];
-    float d = c1[1];
+    float a = A.columns[0][0];
+    float b = A.columns[1][0];
+    float c = A.columns[0][1];
+    float d = A.columns[1][1];
 
     float det = a * d - b * c;
     float inv_det = 1.f / det;
@@ -54,13 +51,9 @@ inline float2x2 inverse_float2x2(float2x2 A) {
 }
 
 inline float3x3 inverse_float3x3(float3x3 A) {
-    float3 c0 = A.columns[0];
-    float3 c1 = A.columns[1];
-    float3 c2 = A.columns[2];
-
-    float a = c0[0], b = c1[0], c = c2[0];
-    float d = c0[1], e = c1[1], f = c2[1];
-    float g = c0[2], h = c1[2], i = c2[2];
+    float a = A.columns[0][0], b = A.columns[1][0], c = A.columns[2][0];
+    float d = A.columns[0][1], e = A.columns[1][1], f = A.columns[2][1];
+    float g = A.columns[0][2], h = A.columns[1][2], i = A.columns[2][2];
 
     // Cofactors (of A), then we'll transpose to get adj(A)
     float C00 =  e*i - f*h;
