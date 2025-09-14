@@ -207,3 +207,17 @@ inline double4x4 inverse_double4x4(double4x4 A) {
     SET_INVERSE_4x4(A, result);
     return result;
 }
+
+#ifdef __cplusplus
+
+inline float4x4 INVERSE_4x4(float4x4 A) {return inverse_float4x4(A);}
+inline double4x4 INVERSE_4x4(double4x4 A) {return inverse_double4x4(A);}
+
+#else
+
+#define INVERSE_4x4(A) _Generic((A), \
+    float4x4: inverse_float4x4, \
+    double4x4: inverse_double4x4 \
+)(A)
+
+#endif
