@@ -42,11 +42,23 @@ static inline float2 mul_float2x2_float2(float2x2 A, float2 b) {
     return MUL_2x2_2(A, b);
 }
 
+static inline double2 mul_double2x2_double2(double2x2 A, double2 b) {
+    return MUL_2x2_2(A, b);
+}
+
 static inline float3 mul_float3x3_float3(float3x3 A, float3 b) {
     return MUL_3x3_3(A, b);
 }
 
-static inline float4 mul_float4x4_float4(float4x4 A, const float4 b) {
+static inline double3 mul_double3x3_double3(double3x3 A, double3 b) {
+    return MUL_3x3_3(A, b);
+}
+
+static inline float4 mul_float4x4_float4(float4x4 A, float4 b) {
+    return MUL_4x4_4(A, b);
+}
+
+static inline double4 mul_double4x4_double4(double4x4 A, double4 b) {
     return MUL_4x4_4(A, b);
 }
 
