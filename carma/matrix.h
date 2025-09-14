@@ -282,13 +282,21 @@ static inline double4x4 inverse_double4x4(double4x4 A) {
 
 #ifdef __cplusplus
 
-static inline float2 MUL(float2x2 A, float2 b) {return mul_float2x2_float2(A, b);}
-static inline float3 MUL(float3x3 A, float3 b) {return mul_float3x3_float3(A, b);}
-static inline float4 MUL(float4x4 A, float4 b) {return mul_float4x4_float4(A, b);}
+static inline float2 MUL(float2x2 A, float2 B) { return mul_float2x2_float2(A, B); }
+static inline float3 MUL(float3x3 A, float3 B) { return mul_float3x3_float3(A, B); }
+static inline float4 MUL(float4x4 A, float4 B) { return mul_float4x4_float4(A, B); }
 
-static inline double2 MUL(double2x2 A, double2 b) {return mul_double2x2_double2(A, b);}
-static inline double3 MUL(double3x3 A, double3 b) {return mul_double3x3_double3(A, b);}
-static inline double4 MUL(double4x4 A, double4 b) {return mul_double4x4_double4(A, b);}
+static inline float2x2 MUL(float2x2 A, float2x2 B) { return mul_float2x2_float2x2(A, B); }
+static inline float3x3 MUL(float3x3 A, float3x3 B) { return mul_float3x3_float3x3(A, B); }
+static inline float4x4 MUL(float4x4 A, float4x4 B) { return mul_float4x4_float4x4(A, B); }
+
+static inline double2 MUL(double2x2 A, double2 B) { return mul_double2x2_double2(A, B); }
+static inline double3 MUL(double3x3 A, double3 B) { return mul_double3x3_double3(A, B); }
+static inline double4 MUL(double4x4 A, double4 B) { return mul_double4x4_double4(A, B); }
+
+static inline double2x2 MUL(double2x2 A, double2x2 B) { return mul_double2x2_double2x2(A, B); }
+static inline double3x3 MUL(double3x3 A, double3x3 B) { return mul_double3x3_double3x3(A, B); }
+static inline double4x4 MUL(double4x4 A, double4x4 B) { return mul_double4x4_double4x4(A, B); }
 
 static inline float2x2 INVERSE(float2x2 A) {return inverse_float2x2(A);}
 static inline float3x3 INVERSE(float3x3 A) {return inverse_float3x3(A);}
@@ -300,15 +308,14 @@ static inline double4x4 INVERSE(double4x4 A) {return inverse_double4x4(A);}
 
 #else
 
-#define MUL(A) _Generic((A), \
-    float2x2: mul_float2x2_float2, \
-    float3x3: mul_float3x3_float3, \
-    float4x4: mul_float4x4_float4, \
-    \
-    double2x2: mul_double2x2_double2, \
-    double3x3: mul_double3x3_double3, \
-    double4x4: mul_double4x4_double4 \
-)(A)
+#define MUL(A, B) _Generic((A), \
+    float2x2:  _Generic((B), float2:  mul_float2x2_float2,  float2x2:  mul_float2x2_float2x2), \
+    float3x3:  _Generic((B), float3:  mul_float3x3_float3,  float3x3:  mul_float3x3_float3x3), \
+    float4x4:  _Generic((B), float4:  mul_float4x4_float4,  float4x4:  mul_float4x4_float4x4), \
+    double2x2: _Generic((B), double2: mul_double2x2_double2, double2x2: mul_double2x2_double2x2), \
+    double3x3: _Generic((B), double3: mul_double3x3_double3, double3x3: mul_double3x3_double3x3), \
+    double4x4: _Generic((B), double4: mul_double4x4_double4, double4x4: mul_double4x4_double4x4) \
+)(A, B)
 
 #define INVERSE(A) _Generic((A), \
     float2x2: inverse_float2x2, \
