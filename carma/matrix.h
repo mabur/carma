@@ -100,15 +100,22 @@ inline double2x2 inverse_double2x2(double2x2 A) {
     auto det = a00 * C00 + a01 * C01 + a02 * C02; \
     auto inv_det = (1) / det; \
     \
-    (out).columns[0][0] = C00; (out).columns[1][0] = C01; (out).columns[2][0] = C02; \
-    (out).columns[0][1] = C10; (out).columns[1][1] = C11; (out).columns[2][1] = C12; \
-    (out).columns[0][2] = C20; (out).columns[1][2] = C21; (out).columns[2][2] = C22; \
+    (out).columns[0][0] = C00; \
+    (out).columns[1][0] = C01; \
+    (out).columns[2][0] = C02; \
+    \
+    (out).columns[0][1] = C10; \
+    (out).columns[1][1] = C11; \
+    (out).columns[2][1] = C12; \
+    \
+    (out).columns[0][2] = C20; \
+    (out).columns[1][2] = C21; \
+    (out).columns[2][2] = C22; \
     \
     (out).columns[0] *= inv_det; \
     (out).columns[1] *= inv_det; \
     (out).columns[2] *= inv_det; \
 } while (0)
-
 
 inline float3x3 inverse_float3x3(float3x3 A) {
     float3x3 result;
