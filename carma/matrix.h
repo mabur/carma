@@ -210,14 +210,24 @@ static inline double4x4 inverse_double4x4(double4x4 A) {
 
 #ifdef __cplusplus
 
-static inline float4x4 INVERSE_4x4(float4x4 A) {return inverse_float4x4(A);}
-static inline double4x4 INVERSE_4x4(double4x4 A) {return inverse_double4x4(A);}
+static inline float2x2 INVERSE(float2x2 A) {return inverse_float2x2(A);}
+static inline float3x3 INVERSE(float3x3 A) {return inverse_float3x3(A);}
+static inline float4x4 INVERSE(float4x4 A) {return inverse_float4x4(A);}
+
+static inline double2x2 INVERSE(double2x2 A) {return inverse_double2x2(A);}
+static inline double3x3 INVERSE(double3x3 A) {return inverse_double3x3(A);}
+static inline double4x4 INVERSE(double4x4 A) {return inverse_double4x4(A);}
 
 #else
 
-#define INVERSE_4x4(A) _Generic((A), \
+#define INVERSE(A) _Generic((A), \
+    float2x2: inverse_float2x2, \
+    float3x3: inverse_float3x3, \
     float4x4: inverse_float4x4, \
-    double4x4: inverse_double4x4 \
+    \
+    double2x2: inverse_double2x2, \
+    double3x3: inverse_double3x3, \
+    double4x4: inverse_double4x4, \
 )(A)
 
 #endif
