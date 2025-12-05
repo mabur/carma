@@ -280,7 +280,6 @@ static inline bool carma_are_bits_equal(
         DROP_BACK(range); \
     }
 
-
 ////////////////////////////////////////////////////////////////////////////////
 // OPTIONAL ALGORITHMS
 
