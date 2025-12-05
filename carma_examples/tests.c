@@ -6,6 +6,11 @@
 #include <carma/carma_table.h>
 
 typedef struct {
+    int data[1];
+    size_t count;
+} OptionalInt;
+
+typedef struct {
     int* data;
     size_t count;
 } IntRange;
@@ -902,6 +907,23 @@ void test_concat() {
     ASSERT_EQUAL_SIZE("CONCAT", target.capacity, 8);
 }
 
+void test_optional() {
+    auto optional = (OptionalInt){};
+    ASSERT_EQUAL_SIZE("Optional init", optional.count, 0);
+    SET_OPTIONAL(optional, 3);
+    ASSERT_EQUAL_SIZE("SET_OPTIONAL count", optional.count, 1);
+    FOR_EACH(x, optional) {
+        ASSERT_EQUAL_INT("Optional FOR_EACH 3", *x, 3);
+    }
+    SET_OPTIONAL(optional, 4);
+    ASSERT_EQUAL_SIZE("Redo SET_OPTIONAL count", optional.count, 1);
+    FOR_EACH(x, optional) {
+        ASSERT_EQUAL_INT("Optional FOR_EACH 4", *x, 4);
+    }
+    CLEAR(optional);
+    ASSERT_EQUAL_SIZE("Optional CLEAR", optional.count, 0);
+}
+
 void test_for_x_y() {
     Image actual;
     INIT_2D_ARRAY(actual, 2, 3);
@@ -1255,6 +1277,8 @@ int main() {
     test_insert_range0b();
     test_insert_range1a();
     test_insert_range1b();
+
+    test_optional();
 
     test_for_x_y();
     test_for_x_y_z();

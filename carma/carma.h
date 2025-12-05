@@ -280,6 +280,13 @@ static inline bool carma_are_bits_equal(
         DROP_BACK(range); \
     }
 
+
+////////////////////////////////////////////////////////////////////////////////
+// OPTIONAL ALGORITHMS
+
+#define SET_OPTIONAL(optional, item) \
+    do {(optional).data[0] = (item); (optional).count = 1;} while (0)
+
 ////////////////////////////////////////////////////////////////////////////////
 // DYNAMIC ARRAY ALGORITHMS
 
