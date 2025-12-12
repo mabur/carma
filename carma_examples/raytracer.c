@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include <carma/carma.h>
+#include <carma/carma_make.h>
 
 typedef struct {
     double x;
@@ -11,19 +12,19 @@ typedef struct {
 } Vec3d;
 
 Vec3d add(Vec3d a, Vec3d b) {
-    return (Vec3d){a.x + b.x, a.y + b.y, a.z + b.z};
+    return MAKE(Vec3d, a.x + b.x, a.y + b.y, a.z + b.z);
 }
 
 Vec3d sub(Vec3d a, Vec3d b) {
-    return (Vec3d){a.x - b.x, a.y - b.y, a.z - b.z};
+    return MAKE(Vec3d, a.x - b.x, a.y - b.y, a.z - b.z);
 }
 
 Vec3d mul(Vec3d a, Vec3d b) {
-    return (Vec3d){a.x * b.x, a.y * b.y, a.z * b.z};
+    return MAKE(Vec3d, a.x * b.x, a.y * b.y, a.z * b.z);
 }
 
 Vec3d muls(double a, Vec3d b) {
-    return (Vec3d){a * b.x, a * b.y, a * b.z};
+    return MAKE(Vec3d, a * b.x, a * b.y, a * b.z);
 }
 
 double dot(Vec3d a, Vec3d b) {
@@ -79,7 +80,7 @@ typedef struct {
 } Intersection;
 
 Intersection makeIntersection() {
-    return (Intersection){.distance = INFINITY};
+    return MAKE(Intersection, .distance = INFINITY);
 }
 
 World makeWorld() {
@@ -87,19 +88,19 @@ World makeWorld() {
     auto MAX_C = 1.0;
     auto MIN_C = 0.1;
     
-    auto spheres = (Spheres){};
-    APPEND(spheres, ((Sphere){(Vec3d){-2, 0, 6}, 1, (Vec3d){MAX_C, MAX_C, MIN_C}}));
-    APPEND(spheres, ((Sphere){(Vec3d){0, 0, 5}, 1, (Vec3d){MAX_C, MIN_C, MIN_C}}));
-    APPEND(spheres, ((Sphere){(Vec3d){2, 0, 4}, 1, (Vec3d){2 * MIN_C, 4 * MIN_C, MAX_C}}));
-    APPEND(spheres, ((Sphere){(Vec3d){0, 1 + R, 0}, R * R, (Vec3d){MIN_C, MAX_C, MIN_C}}));
-    APPEND(spheres, ((Sphere){(Vec3d){0, -1 - R, 0}, R * R, (Vec3d){MAX_C, MAX_C, MAX_C}}));
+    auto spheres = MAKE(Spheres);
+    APPEND(spheres, MAKE(Sphere, MAKE(Vec3d, -2, 0, 6), 1, MAKE(Vec3d, MAX_C, MAX_C, MIN_C)));
+    APPEND(spheres, MAKE(Sphere, MAKE(Vec3d, 0, 0, 5), 1, MAKE(Vec3d, MAX_C, MIN_C, MIN_C)));
+    APPEND(spheres, MAKE(Sphere, MAKE(Vec3d, 2, 0, 4), 1, MAKE(Vec3d, 2 * MIN_C, 4 * MIN_C, MAX_C)));
+    APPEND(spheres, MAKE(Sphere, MAKE(Vec3d, 0, 1 + R, 0), R * R, MAKE(Vec3d, MIN_C, MAX_C, MIN_C)));
+    APPEND(spheres, MAKE(Sphere, MAKE(Vec3d, 0, -1 - R, 0), R * R, MAKE(Vec3d, MAX_C, MAX_C, MAX_C)));
     
-    auto lights = (Lights){};
-    APPEND(lights, ((Light){(Vec3d){+1, +1, +2}, muls(0.4, (Vec3d){1, 0.8, 0.5})}));
-    APPEND(lights, ((Light){(Vec3d){-1, -1, -2}, muls(0.4, (Vec3d){0.5, 0.5, 1})}));
+    auto lights = MAKE(Lights);
+    APPEND(lights, MAKE(Light, MAKE(Vec3d, +1, +1, +2), muls(0.4, MAKE(Vec3d, 1, 0.8, 0.5))));
+    APPEND(lights, MAKE(Light, MAKE(Vec3d, -1, -1, -2), muls(0.4, MAKE(Vec3d, 0.5, 0.5, 1))));
     
-    auto atmosphere_color = muls(0.3, (Vec3d){0.5, 0.5, 1});
-    return (World){.spheres=spheres, .lights=lights, .atmosphere_color=atmosphere_color};
+    auto atmosphere_color = muls(0.3, MAKE(Vec3d, 0.5, 0.5, 1));
+    return MAKE(World, .spheres=spheres, .lights=lights, .atmosphere_color=atmosphere_color);
 }
 
 Intersection findSingleIntersection(
@@ -144,7 +145,7 @@ Vec3d shadeAtmosphere(Intersection intersection, Vec3d atmosphere_color) {
 
 Vec3d shade(Intersection intersection, World world) {
     if (isinf(intersection.distance)) {
-        return (Vec3d){ 1, 1, 1 };
+        return MAKE(Vec3d, 1, 1, 1 );
     }
     auto color = shadeAtmosphere(intersection, world.atmosphere_color);
     FOR_EACH(light, world.lights) {
@@ -165,11 +166,11 @@ void writePixel(
     int height,
     World world
 ) {
-    auto start = (Vec3d){0, 0, 0};
+    auto start = MAKE(Vec3d, 0, 0, 0);
     auto xd = (double)(x - width / 2);
     auto yd = (double)(y - height / 2);
     auto zd = (double)(height / 2);
-    auto direction = normalize((Vec3d){xd, yd, zd});
+    auto direction = normalize(MAKE(Vec3d, xd, yd, zd));
     auto intersection = findIntersection(start, direction, world.spheres);
     auto color = shade(intersection, world);
     auto r = colorU8fromF64(color.x);
