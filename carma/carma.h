@@ -4,6 +4,8 @@
 #include <string.h>
 #include <stdbool.h>
 
+#include "carma_type_inference.h"
+
 ////////////////////////////////////////////////////////////////////////////////
 // UTILITIES
 
@@ -20,7 +22,7 @@
 #define ITEM_SIZE(range) sizeof(*(range).data)
 
 #define SWAP(a, b) do { \
-    auto c = (a); \
+    CARMA_AUTO c = (a); \
     (a) = (b); \
     (b) = c; \
 } while (0)
@@ -75,10 +77,10 @@
     #define MAKE_RANGE(range_type, ...) ([&]() { \
         using T = VALUE_TYPE((range_type){}); \
         T carray[] = {__VA_ARGS__}; \
-        auto item_size = sizeof(carray[0]); \
-        auto byte_count = sizeof(carray); \
-        auto count = byte_count / item_size; \
-        auto data = (T*)malloc(byte_count); \
+        CARMA_AUTO item_size = sizeof(carray[0]); \
+        CARMA_AUTO byte_count = sizeof(carray); \
+        CARMA_AUTO count = byte_count / item_size; \
+        CARMA_AUTO data = (T*)malloc(byte_count); \
         memcpy(data, carray, byte_count); \
         return (range_type){.data=data, .count=count}; \
     }())
@@ -86,10 +88,10 @@
     #define MAKE_DARRAY(darray_type, ...) ([&]() { \
         using T = VALUE_TYPE((darray_type){}); \
         T carray[] = {__VA_ARGS__}; \
-        auto item_size = sizeof(carray[0]); \
-        auto byte_count = sizeof(carray); \
-        auto count = byte_count / item_size; \
-        auto data = (T*)malloc(byte_count); \
+        CARMA_AUTO item_size = sizeof(carray[0]); \
+        CARMA_AUTO byte_count = sizeof(carray); \
+        CARMA_AUTO count = byte_count / item_size; \
+        CARMA_AUTO data = (T*)malloc(byte_count); \
         memcpy(data, carray, byte_count); \
         return (darray_type){.data=data, .count=count, .capacity=count}; \
     }())
@@ -154,41 +156,41 @@
 // RANGE ALGORITHMS
 
 #define FOR_EACH(iterator, range) \
-    for (auto iterator = BEGIN_POINTER(range); iterator != END_POINTER(range); ++iterator)
+    for (CARMA_AUTO iterator = BEGIN_POINTER(range); iterator != END_POINTER(range); ++iterator)
 
 #define FOR_EACH_BACKWARD(iterator, range) \
-    for (auto iterator = END_POINTER(range); iterator != BEGIN_POINTER(range);) \
+    for (CARMA_AUTO iterator = END_POINTER(range); iterator != BEGIN_POINTER(range);) \
         if (--iterator || true)
     
 #define FOR_EACH2(iterator0, iterator1, range0, range1) \
-    auto iterator0 = BEGIN_POINTER(range0); \
-    auto iterator1 = BEGIN_POINTER(range1); \
+    CARMA_AUTO iterator0 = BEGIN_POINTER(range0); \
+    CARMA_AUTO iterator1 = BEGIN_POINTER(range1); \
     for (; iterator0 != END_POINTER(range0) && iterator1 != END_POINTER(range1); ++iterator0, ++iterator1)
 
 #define FOR_EACH_BACKWARD2(iterator0, iterator1, range0, range1) \
-    auto iterator0 = END_POINTER(range0); \
-    auto iterator1 = END_POINTER(range1); \
+    CARMA_AUTO iterator0 = END_POINTER(range0); \
+    CARMA_AUTO iterator1 = END_POINTER(range1); \
     for (; iterator0 != BEGIN_POINTER(range0) && iterator1 != BEGIN_POINTER(range1);) \
     if ((--iterator0 && --iterator1) || true)
 
 #define FOR_EACH3(iterator0, iterator1, iterator2, range0, range1, range2) \
-    auto iterator0 = BEGIN_POINTER(range0); \
-    auto iterator1 = BEGIN_POINTER(range1); \
-    auto iterator2 = BEGIN_POINTER(range2); \
+    CARMA_AUTO iterator0 = BEGIN_POINTER(range0); \
+    CARMA_AUTO iterator1 = BEGIN_POINTER(range1); \
+    CARMA_AUTO iterator2 = BEGIN_POINTER(range2); \
     for (; iterator0 != END_POINTER(range0) && iterator1 != END_POINTER(range1) && iterator2 != END_POINTER(range2); ++iterator0, ++iterator1, ++iterator2)
     
 #define FOR_INDEX(index, range) \
     for (INDEX_TYPE(range) index = 0; index < (range).count; ++index)
 
 #define FOR_MIN(it, range) \
-    auto it = (range).data; \
+    CARMA_AUTO it = (range).data; \
     FOR_EACH(internal_it, (range)) { \
         it = *it < *internal_it ? it : internal_it; \
     } \
     if (it != END_POINTER(range))
 
 #define FOR_MAX(it, range) \
-    auto it = (range).data; \
+    CARMA_AUTO it = (range).data; \
     FOR_EACH(internal_it, (range)) { \
         it = *it < *internal_it ? internal_it : it; \
     } \
@@ -321,7 +323,7 @@ static inline bool carma_are_bits_equal(
 #define PREPEND(dynamic_array, item) INSERT_INDEX((dynamic_array), 0, (item))
 
 #define CONCAT(dynamic_array, range) do { \
-    auto _new_count = (dynamic_array).count + (range).count; \
+    CARMA_AUTO _new_count = (dynamic_array).count + (range).count; \
     if (_new_count > (dynamic_array).capacity) { \
         RESERVE_EXPONENTIAL_GROWTH((dynamic_array), _new_count); \
     } \
@@ -339,9 +341,9 @@ static inline bool carma_are_bits_equal(
 } while (0)
 
 #define INSERT_RANGE(dynamic_array, index, range) do { \
-    auto old_count = (dynamic_array).count; \
-    auto new_count = (dynamic_array).count + (range).count; \
-    auto tail_count = old_count - (index); \
+    CARMA_AUTO old_count = (dynamic_array).count; \
+    CARMA_AUTO new_count = (dynamic_array).count + (range).count; \
+    CARMA_AUTO tail_count = old_count - (index); \
     if (new_count > (dynamic_array).capacity) { \
         RESERVE_EXPONENTIAL_GROWTH((dynamic_array), new_count); \
     } \
@@ -391,8 +393,8 @@ static inline bool carma_are_bits_equal(
 #define ERASE_FRONT(dynamic_array) ERASE_INDEX_ORDERED((dynamic_array), 0)
 
 #define ERASE_IF(dynamic_array, predicate) do { \
-    auto a = (dynamic_array).data; \
-    auto b = (dynamic_array).data + (dynamic_array).count; \
+    CARMA_AUTO a = (dynamic_array).data; \
+    CARMA_AUTO b = (dynamic_array).data + (dynamic_array).count; \
     while (a < b) { \
         for (; a < b && !(predicate)(*a); ++a) { \
         } \
@@ -426,16 +428,16 @@ static inline bool carma_are_bits_equal(
     ((array).data[(array).height * (array).width * (z) + (array).width * (y) + (x)])
 
 #define FLIP_IMAGE_X(image) do { \
-    auto width = (image).width; \
-    auto height = (image).height; \
+    CARMA_AUTO width = (image).width; \
+    CARMA_AUTO height = (image).height; \
     for (INDEX_TYPE(image) y = 0; y < height; ++y) \
         for (INDEX_TYPE(image) x = 0; x < width / 2; ++x) \
             SWAP(AT_XY((image), x, y), AT_XY((image), width - 1 - x, y)); \
 } while(0)
 
 #define FLIP_IMAGE_Y(image) do { \
-    auto width = (image).width; \
-    auto height = (image).height; \
+    CARMA_AUTO width = (image).width; \
+    CARMA_AUTO height = (image).height; \
     for (INDEX_TYPE(image) y = 0; y < height / 2; ++y) \
         for (INDEX_TYPE(image) x = 0; x < width; ++x) \
             SWAP(AT_XY((image), x, y), AT_XY((image), x, height - 1 - y)); \

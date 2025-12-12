@@ -120,7 +120,7 @@ size_t carma_find_first_character_not_of(const char* data, size_t max_index, int
 ////////////////////////////////////////////////////////////////////////////////
 // FILE ALGORITHMS
 
-#define FOR_FILE(file, filepath, mode) for (auto file = fopen((file_path), mode); (file); fclose(file), (file) = 0)
+#define FOR_FILE(file, filepath, mode) for (CARMA_AUTO file = fopen((file_path), mode); (file); fclose(file), (file) = 0)
 
 #define FOR_LINES(line, capacity, file) for (char line[capacity]; fgets(line, (capacity), (file)) != NULL;)
 

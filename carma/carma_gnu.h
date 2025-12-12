@@ -47,7 +47,7 @@
 })
 
 #define EQUAL_RANGES(left_range, right_range) ({ \
-    auto result = true; \
+    CARMA_AUTO result = true; \
     if ((left_range).count != (right_range).count) { \
         result = false; \
     } else { \
@@ -62,42 +62,42 @@
 })
 
 #define FIND_IF(range, predicate) ({ \
-    auto it = (range).data; \
+    CARMA_AUTO it = (range).data; \
     for (; it != END_POINTER(range) && !(predicate)(*it); ++it) { \
     } \
     it; \
 })
 
 #define FIND_IF_ITERATOR(first, last, predicate) ({ \
-    auto it = (first); \
+    CARMA_AUTO it = (first); \
     for (; it < last && !(predicate)(*it); ++it) { \
     } \
     it; \
 })
 
 #define FIND_IF_NOT(range, predicate) ({ \
-    auto it = (range).data; \
+    CARMA_AUTO it = (range).data; \
     for (; it != END_POINTER(range) && (predicate)(*it); ++it) { \
     } \
     it; \
 })
 
 #define FIND_IF_BACKWARDS(range, predicate) ({ \
-    auto it = END_POINTER(range) - 1; \
+    CARMA_AUTO it = END_POINTER(range) - 1; \
     for (; it != (range).data - 1 && !(predicate)(*it); --it) { \
     } \
     it; \
 })
 
 #define FIND_IF_NOT_BACKWARDS(range, predicate) ({ \
-    auto it = END_POINTER(range) - 1; \
+    CARMA_AUTO it = END_POINTER(range) - 1; \
     for (; it != (range).data - 1 && (predicate)(*it); --it) { \
     } \
     it; \
 })
 
 #define FIND_IF_NOT_BACKWARDS_ITERATOR(first, last, predicate) ({ \
-    auto it = (last) - 1; \
+    CARMA_AUTO it = (last) - 1; \
     for (; it != (range).data - 1 && (predicate)(*it); --it) { \
     } \
     it; \
