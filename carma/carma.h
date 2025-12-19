@@ -421,12 +421,6 @@ static inline bool carma_are_bits_equal(
 #define FOR_Z(z, array) \
     for (INDEX_TYPE(array) z = 0; z < (array).depth; ++z)
 
-#define AT_XY(array, x, y) \
-    ((array).data[(array).width * (y) + (x)])
-
-#define AT_XYZ(array, x, y, z) \
-    ((array).data[(array).height * (array).width * (z) + (array).width * (y) + (x)])
-
 #define IS_INSIDE_ARRAY(array, i) \
     (0 <= (i) && (i) < (array).count)
 
@@ -435,6 +429,12 @@ static inline bool carma_are_bits_equal(
 
 #define IS_INSIDE_ARRAY3D(array, x, y, z) \
     (0 <= (x) && (x) < (array).width && 0 <= (y) && (y) < (array).height && 0 <= (z) && (z) < (array).depth)
+
+#define AT_XY(array, x, y) \
+    ((array).data[(array).width * (y) + (x)])
+
+#define AT_XYZ(array, x, y, z) \
+    ((array).data[(array).height * (array).width * (z) + (array).width * (y) + (x)])
 
 #define FLIP_IMAGE_X(image) do { \
     CARMA_AUTO width = (image).width; \
