@@ -436,6 +436,12 @@ static inline bool carma_are_bits_equal(
 #define AT_XYZ(array, x, y, z) \
     ((array).data[(array).height * (array).width * (z) + (array).width * (y) + (x)])
 
+#define AT_XY_OR(array, x, y, default_value) \
+    (IS_INSIDE_ARRAY2D((array), (x), (y)) ? AT_XY((array), (x), (y)) : (default_value));
+
+#define AT_XYZ_OR(array, x, y, z, default_value) \
+    (IS_INSIDE_ARRAY3D((array), (x), (y)) ? AT_XYZ((array), (x), (y), (z)) : (default_value));
+
 #define FLIP_IMAGE_X(image) do { \
     CARMA_AUTO width = (image).width; \
     CARMA_AUTO height = (image).height; \

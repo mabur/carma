@@ -33,9 +33,6 @@ Map readMap(const char* file_path) {
     return map;
 }
 
-#define AT_XY_OR(image, x, y, default_value) \
-    IS_INSIDE_ARRAY2D((image), (x), (y)) ? AT_XY((image), (x), (y)) : (default_value);
-
 int main() {
     auto file_path = "day04.txt";
     auto map = readMap(file_path);
