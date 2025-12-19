@@ -430,11 +430,17 @@ static inline bool carma_are_bits_equal(
 #define IS_INSIDE_ARRAY3D(array, x, y, z) \
     (0 <= (x) && (x) < (array).width && 0 <= (y) && (y) < (array).height && 0 <= (z) && (z) < (array).depth)
 
+#define AT_INDEX(array, i) \
+    ((array).data[(i)])
+
 #define AT_XY(array, x, y) \
     ((array).data[(array).width * (y) + (x)])
 
 #define AT_XYZ(array, x, y, z) \
     ((array).data[(array).height * (array).width * (z) + (array).width * (y) + (x)])
+
+#define AT_INDEX_OR(array, i, default_value) \
+    (IS_INSIDE_ARRAY((array), (I)) ? AT_INDEX((array), (i)) : (default_value));
 
 #define AT_XY_OR(array, x, y, default_value) \
     (IS_INSIDE_ARRAY2D((array), (x), (y)) ? AT_XY((array), (x), (y)) : (default_value));
