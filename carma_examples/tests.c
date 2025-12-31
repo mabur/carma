@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include <carma/carma.h>
+#include <carma/carma_parse.h>
 #include <carma/carma_string.h>
 #include <carma/carma_table.h>
 
@@ -1171,6 +1172,13 @@ void test_table_available_keys() {
     ASSERT_EQUAL_INT("test_table_available_2_keys", value, 5);
 }
 
+void test_parse_int() {
+    auto s = STRING_VIEW("15");
+    auto x = 0;
+    parse_int(&s, &x);
+    ASSERT_EQUAL_INT("parse_int", x, 15);
+}
+
 int main() {
     test_2d_array();
     test_3d_array();
@@ -1301,7 +1309,9 @@ int main() {
     
     test_table_available_key();
     test_table_available_keys();
-    
+
+    test_parse_int();
+
     summarize_tests();
     
     return 0;
