@@ -3,6 +3,7 @@
 #include <limits.h>
 #include <stddef.h>
 
+#include "carma.h"
 #include "carma_string.h"
 
 /*
@@ -60,5 +61,21 @@ void parse_int(StringView* s, int* value) {
     if (has_parsed_digits) {
         *value = parsed_value * sign;
         *s = parsed_string;
+    }
+}
+
+static inline
+void parse_line(StringView* s, StringView* value) {
+    value->data = s->data;
+    value->count = 0;
+    while (!IS_EMPTY(*s) && FIRST_ITEM(*s) != '\r' && FIRST_ITEM(*s) != '\n') {
+        DROP_FRONT(*s);
+        value->count++;
+    }
+    if (!IS_EMPTY(*s) && FIRST_ITEM(*s) == '\r') {
+        DROP_FRONT(*s);
+    }
+    if (!IS_EMPTY(*s) && FIRST_ITEM(*s) == '\n') {
+        DROP_FRONT(*s);
     }
 }

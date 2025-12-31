@@ -1173,10 +1173,19 @@ void test_table_available_keys() {
 }
 
 void test_parse_int() {
-    auto s = STRING_VIEW("15");
-    auto x = 0;
-    parse_int(&s, &x);
-    ASSERT_EQUAL_INT("parse_int", x, 15);
+    auto string = STRING_VIEW("15");
+    auto value = 0;
+    parse_int(&string, &value);
+    ASSERT_EQUAL_INT("parse_int", value, 15);
+    ASSERT_EQUAL_RANGE("parse_int", string, (STRING_VIEW("")));
+}
+
+void test_parse_line() {
+    auto string = STRING_VIEW("ab\ncd");
+    auto value = (StringView){};
+    parse_line(&string, &value);
+    ASSERT_EQUAL_RANGE("parse_line", value, (STRING_VIEW("ab")));
+    ASSERT_EQUAL_RANGE("parse_line", string, (STRING_VIEW("cd")));
 }
 
 int main() {
@@ -1311,6 +1320,7 @@ int main() {
     test_table_available_keys();
 
     test_parse_int();
+    test_parse_line();
 
     summarize_tests();
     
