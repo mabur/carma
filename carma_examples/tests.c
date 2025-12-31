@@ -1188,6 +1188,13 @@ void test_parse_line() {
     ASSERT_EQUAL_RANGE("parse_line", string, (STRING_VIEW("cd")));
 }
 
+void test_parse_whitespace() {
+    auto string = STRING_VIEW(" \n a \n b");
+    parse_whitespace(&string);
+    ASSERT_EQUAL_RANGE("parse_line", string, (STRING_VIEW("a \n b")));
+}
+
+
 int main() {
     test_2d_array();
     test_3d_array();
@@ -1321,6 +1328,7 @@ int main() {
 
     test_parse_int();
     test_parse_line();
+    test_parse_whitespace();
 
     summarize_tests();
     

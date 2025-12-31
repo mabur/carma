@@ -37,6 +37,11 @@ bool is_digit(char c) {
 }
 
 static inline
+bool is_whitespace(char c) {
+    return c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\v' || c == '\f';
+}
+
+static inline
 void parse_int(StringView* s, int* value) {
     StringView parsed_string = *s;
     int parsed_value = 0;
@@ -76,6 +81,13 @@ void parse_line(StringView* s, StringView* value) {
         DROP_FRONT(*s);
     }
     if (!IS_EMPTY(*s) && FIRST_ITEM(*s) == '\n') {
+        DROP_FRONT(*s);
+    }
+}
+
+static inline
+void parse_whitespace(StringView* s) {
+    while (!IS_EMPTY(*s) && is_whitespace(FIRST_ITEM(*s))) {
         DROP_FRONT(*s);
     }
 }
