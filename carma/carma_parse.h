@@ -91,3 +91,36 @@ void parse_whitespace(StringView* s) {
         DROP_FRONT(*s);
     }
 }
+
+static inline
+void parse_quoted_string(StringView* s, StringView* value) {
+    if (IS_EMPTY(*s) || FIRST_ITEM(*s) != '"') {
+        return;
+    }
+    auto remaining = *s;
+    DROP_FRONT(remaining); // Opening quote
+    value->data = remaining.data;
+    value->count = 0;
+    while (!IS_EMPTY(remaining)) {
+        if (FIRST_ITEM(remaining) == '"') {
+            DROP_FRONT(remaining); // Closing quote
+            *s = remaining;
+            return; // Success
+        }
+        else if (FIRST_ITEM(remaining) == '\\') {
+            // Skip escape sequences
+            DROP_FRONT(remaining);
+            value->count++;
+            if (IS_EMPTY(remaining)) {
+                return; // Dangling escape error
+            }
+            DROP_FRONT(remaining);
+            value->count++;
+        }
+        else {
+            DROP_FRONT(remaining);
+            value->count++;
+        }
+    }
+    // Unterminated string error
+}

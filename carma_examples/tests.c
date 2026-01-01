@@ -1194,6 +1194,13 @@ void test_parse_whitespace() {
     ASSERT_EQUAL_RANGE("parse_line", string, (STRING_VIEW("a \n b")));
 }
 
+void test_parse_quoted_string() {
+    auto string = STRING_VIEW("\"Hello \\\"name\\\" \\n and welcome!\", 1, 2");
+    auto value = (StringView){};
+    parse_quoted_string(&string, &value);
+    ASSERT_EQUAL_RANGE("parse_quoted_string", value, (STRING_VIEW("Hello \\\"name\\\" \\n and welcome!")));
+    ASSERT_EQUAL_RANGE("parse_quoted_string", string, (STRING_VIEW(", 1, 2")));
+}
 
 int main() {
     test_2d_array();
@@ -1329,6 +1336,7 @@ int main() {
     test_parse_int();
     test_parse_line();
     test_parse_whitespace();
+    test_parse_quoted_string();
 
     summarize_tests();
     
