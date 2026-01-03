@@ -97,36 +97,36 @@ void parse_whitespace(StringView* s) {
 }
 
 static inline
-void parse_quoted_string(StringView* s, StringView* value) {
+StringView parse_quoted_string(StringView* s) {
     if (IS_EMPTY(*s) || FIRST_ITEM(*s) != '"') {
         return;
     }
     auto remaining = *s;
     DROP_FRONT(remaining); // Opening quote
-    value->data = remaining.data;
-    value->count = 0;
+    StringView value = {remaining.data, 0};
     while (!IS_EMPTY(remaining)) {
         if (FIRST_ITEM(remaining) == '"') {
             DROP_FRONT(remaining); // Closing quote
             *s = remaining;
-            return; // Success
+            return value; // Success
         }
         else if (FIRST_ITEM(remaining) == '\\') {
             // Skip escape sequences
             DROP_FRONT(remaining);
-            value->count++;
+            value.count++;
             if (IS_EMPTY(remaining)) {
-                return; // Dangling escape error
+                return value; // Dangling escape error
             }
             DROP_FRONT(remaining);
-            value->count++;
+            value.count++;
         }
         else {
             DROP_FRONT(remaining);
-            value->count++;
+            value.count++;
         }
     }
     // Unterminated string error
+    return value;
 }
 
 static inline
@@ -165,8 +165,7 @@ void parse_json_item(StringView* s) {
         return;
     }
     parse_int(s);
-    StringView temp_string = {};
-    parse_quoted_string(s, &temp_string);
+    parse_quoted_string(s);
     StringView temp_list = {};
     parse_json_list(s, &temp_list);
 }
