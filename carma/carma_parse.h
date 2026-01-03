@@ -45,13 +45,13 @@ static inline
 void parse_json_item(StringView* s);
 
 static inline
-void parse_int(StringView* s, int* value) {
+int parse_int(StringView* s) {
     StringView parsed_string = *s;
     int parsed_value = 0;
     int sign = +1;
     bool has_parsed_digits = false;
     if (IS_EMPTY(parsed_string)) {
-        return;
+        return 0;
     }
     if (FIRST_ITEM(parsed_string) == '-') {
         sign = -1;
@@ -67,9 +67,10 @@ void parse_int(StringView* s, int* value) {
         has_parsed_digits = true;
     }
     if (has_parsed_digits) {
-        *value = parsed_value * sign;
+
         *s = parsed_string;
     }
+    return parsed_value * sign;
 }
 
 static inline
@@ -163,8 +164,7 @@ void parse_json_item(StringView* s) {
     if (IS_EMPTY(*s)) {
         return;
     }
-    int temp_int = {};
-    parse_int(s, &temp_int);
+    parse_int(s);
     StringView temp_string = {};
     parse_quoted_string(s, &temp_string);
     StringView temp_list = {};

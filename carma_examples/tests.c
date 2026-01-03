@@ -1174,8 +1174,7 @@ void test_table_available_keys() {
 
 void test_parse_int() {
     auto string = STRING_VIEW("15");
-    auto value = 0;
-    parse_int(&string, &value);
+    auto value = parse_int(&string);
     ASSERT_EQUAL_INT("parse_int", value, 15);
     ASSERT_EQUAL_RANGE("parse_int", string, (STRING_VIEW("")));
 }
