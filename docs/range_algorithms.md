@@ -30,6 +30,8 @@ typedef struct {
 
 - `LAST_ITEM(range)` returns the item at index `count-1`. It assumes that the range is not empty.
 
+- `STARTS_WITH_ITEM(range, item)` returns `true` if the `range` is non-empty and its first item is `item`. Otherwise `false` is returned.
+
 - `SUB_RANGE(range, start_index, new_count)` returns a new range that points to the sub-range of `range` starting and `start_index` and containing `new_count` items.
 
 ## Range Loop Macros O(count)
