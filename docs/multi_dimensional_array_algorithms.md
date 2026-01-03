@@ -62,12 +62,6 @@ But Carma also provides some loop macros that only works for multi dimensional a
 - `FOR_Z(z, array)` can be used instead of a normal for-loop
   to let `z` loop from `0` to `array.depth - 1`.
 
-- `AT_XY(array, x, y)` looks up the item with coordinates (x,y) in a 2D array.
-  This corresponds to the index `x + y * width`.
-
-- `AT_XYZ(array, x, y, z)` looks up the item with coordinates (x,y,z) in a 3D array.
-  This corresponds to the index `x + y * width + z * width * height`.
-
 `FOR_X` and `FOR_Y` and `FOR_Z` can be used independently,
 but they can also be used together like in this example:
 
@@ -79,3 +73,17 @@ FOR_Y(y, image) {
     }
 }
 ```
+
+- `AT_XY(array, x, y)` returns the item with coordinates (x,y) in a 2D array.
+  This corresponds to the index `x + y * width`. It assumes that the coordinates are within bounds.
+
+- `AT_XYZ(array, x, y, z)` returns the item with coordinates (x,y,z) in a 3D array.
+  This corresponds to the index `x + y * width + z * width * height`. It assumes that the coordinates are within bounds.
+
+- `AT_XY_OR(array, x, y, default_value)` returns the item with coordinates (x,y) in a 2D array, if they are within bounds. Otherwise the `default_value` is returned.
+
+- `AT_XYZ_OR(array, x, y, z, default_value)` returns the item with coordinates (x,y,z) in a 3D array, if they are within bounds. Otherwise the `default_value` is returned.
+
+- `IS_INSIDE_ARRAY2D(array, x, y)` returns `true` if the `x` & `y` coordinates are within the bounds of the `array`.
+
+- `IS_INSIDE_ARRAY3D(array, x, y, z)` returns `true` if the `x` & `y` & `z` coordinates are within the bounds of the `array`.
