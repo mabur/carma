@@ -101,7 +101,7 @@ void parse_whitespace(StringView* s) {
 static inline
 StringView parse_quoted_string(StringView* s) {
     if (IS_EMPTY(*s) || FIRST_ITEM(*s) != '"') {
-        return;
+        return (StringView){};
     }
     auto remaining = *s;
     DROP_FRONT(remaining); // Opening quote
@@ -132,14 +132,13 @@ StringView parse_quoted_string(StringView* s) {
 }
 
 static inline
-void parse_json_list(StringView* s, StringView* list) {
+StringView parse_json_list(StringView* s) {
     StringView parsed_string = *s;
     parse_whitespace(&parsed_string);
     if (!STARTS_WITH_ITEM(parsed_string, '[')) {
-        return;
+        return (StringView){};
     }
-    list->data = parsed_string.data;
-    list->count = 0;
+    StringView list = {parsed_string.data, 0};
     DROP_FRONT(parsed_string);
     while (!IS_EMPTY(parsed_string) && FIRST_ITEM(parsed_string) != ']') {
         parse_json_item(&parsed_string);
@@ -153,11 +152,12 @@ void parse_json_list(StringView* s, StringView* list) {
         }
     }
     if (!STARTS_WITH_ITEM(parsed_string, ']')) {
-        return;
+        return (StringView){};
     }
     DROP_FRONT(parsed_string);
-    list->count = parsed_string.data - list->data;
+    list.count = parsed_string.data - list.data;
     *s = parsed_string;
+    return list;
 }
 
 static inline
@@ -166,8 +166,7 @@ void parse_json_item(StringView* s) {
     if (IS_EMPTY(*s)) {
         return;
     }
-    parse_int(s);
-    parse_quoted_string(s);
-    StringView temp_list = {};
-    parse_json_list(s, &temp_list);
+    (void)parse_int(s);
+    (void)parse_quoted_string(s);
+    (void)parse_json_list(s);
 }

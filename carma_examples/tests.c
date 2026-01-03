@@ -1201,8 +1201,7 @@ void test_parse_quoted_string() {
 
 void test_parse_json_list() {
     auto string = STRING_VIEW("[ 1, 2 ,3 ], 4");
-    auto value = (StringView){};
-    parse_json_list(&string, &value);
+    auto value = parse_json_list(&string);
     ASSERT_EQUAL_RANGE("parse_json_list", value, (STRING_VIEW("[ 1, 2 ,3 ]")));
     ASSERT_EQUAL_RANGE("parse_json_list", string, (STRING_VIEW(", 4")));
 }
