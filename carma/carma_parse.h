@@ -29,6 +29,8 @@ auto x = PARSE_INT(s);
 auto result = PARSE_INT(s);
 auto x = result.value;
 s = result.string;
+
+Return optional, for error handling?
 */
 
 static inline
@@ -74,12 +76,11 @@ int parse_int(StringView* s) {
 }
 
 static inline
-void parse_line(StringView* s, StringView* value) {
-    value->data = s->data;
-    value->count = 0;
+StringView parse_line(StringView* s) {
+    StringView value = {s->data, 0};
     while (!IS_EMPTY(*s) && FIRST_ITEM(*s) != '\r' && FIRST_ITEM(*s) != '\n') {
         DROP_FRONT(*s);
-        value->count++;
+        value.count++;
     }
     if (STARTS_WITH_ITEM(*s, '\r')) {
         DROP_FRONT(*s);
@@ -87,6 +88,7 @@ void parse_line(StringView* s, StringView* value) {
     if (STARTS_WITH_ITEM(*s, '\n')) {
         DROP_FRONT(*s);
     }
+    return value;
 }
 
 static inline

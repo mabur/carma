@@ -1181,8 +1181,7 @@ void test_parse_int() {
 
 void test_parse_line() {
     auto string = STRING_VIEW("ab\ncd");
-    auto value = (StringView){};
-    parse_line(&string, &value);
+    auto value = parse_line(&string);
     ASSERT_EQUAL_RANGE("parse_line", value, (STRING_VIEW("ab")));
     ASSERT_EQUAL_RANGE("parse_line", string, (STRING_VIEW("cd")));
 }
