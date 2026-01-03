@@ -143,8 +143,11 @@ void parse_json_list(StringView* s, StringView* list) {
         parse_whitespace(&parsed_string);
         if (!IS_EMPTY(parsed_string) && FIRST_ITEM(parsed_string) == ',') {
             DROP_FRONT(parsed_string);
+            parse_whitespace(&parsed_string);
         }
-        parse_whitespace(&parsed_string);
+        else {
+            break;
+        }
     }
     if (IS_EMPTY(parsed_string) || FIRST_ITEM(parsed_string) != ']') {
         return;
