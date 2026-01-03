@@ -163,9 +163,6 @@ StringView parse_json_list(StringView* s) {
 static inline
 void parse_json_item(StringView* s) {
     parse_whitespace(s);
-    if (IS_EMPTY(*s)) {
-        return;
-    }
     (void)parse_int(s);
     (void)parse_quoted_string(s);
     (void)parse_json_list(s);
