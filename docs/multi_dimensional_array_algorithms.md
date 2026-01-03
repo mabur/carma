@@ -49,9 +49,9 @@ For a 3D array `count` == `width * height * depth`.
 
 ## Multi Dimensional Array Macros
 
-The range loop macros can also be used for multi demensional arrays,
+The general range macros can also be used for multi demensional arrays,
 since they are ranges.
-But Carma also provides some loop macros that only works for multi dimensional arrays:
+But Carma also provides some macros that only works for multi dimensional arrays:
 
 - `FOR_X(x, array)` can be used instead of a normal for-loop
   to let `x` loop from `0` to `array.width - 1`.
