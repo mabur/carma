@@ -32,6 +32,12 @@ typedef struct {
 
 - `STARTS_WITH_ITEM(range, item)` returns `true` if the `range` is non-empty and its first item is `item`. Otherwise `false` is returned.
 
+- `AT_INDEX(array, index)` returns the item with the given `index`. It assumes that the `index` is within bounds.
+
+- `AT_INDEX_OR(array, index, default_value)` returns the item with the given `index`, if it is within bounds. Otherwise the `default_value` is returned.
+
+- `IS_INSIDE_ARRAY(array, index)` returns `true` if `index` is within the bounds of the `array`.
+
 - `SUB_RANGE(range, start_index, new_count)` returns a new range that points to the sub-range of `range` starting and `start_index` and containing `new_count` items.
 
 ## Range Loop Macros O(count)
