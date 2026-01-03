@@ -42,6 +42,9 @@ bool is_whitespace(char c) {
 }
 
 static inline
+void parse_json_item(StringView* s);
+
+static inline
 void parse_int(StringView* s, int* value) {
     StringView parsed_string = *s;
     int parsed_value = 0;
@@ -123,4 +126,44 @@ void parse_quoted_string(StringView* s, StringView* value) {
         }
     }
     // Unterminated string error
+}
+
+static inline
+void parse_json_list(StringView* s, StringView* list) {
+    StringView parsed_string = *s;
+    parse_whitespace(&parsed_string);
+    if (IS_EMPTY(parsed_string) || FIRST_ITEM(parsed_string) != '[') {
+        return;
+    }
+    list->data = parsed_string.data;
+    list->count = 0;
+    DROP_FRONT(parsed_string);
+    while (!IS_EMPTY(parsed_string) && FIRST_ITEM(parsed_string) != ']') {
+        parse_json_item(&parsed_string);
+        parse_whitespace(&parsed_string);
+        if (!IS_EMPTY(parsed_string) && FIRST_ITEM(parsed_string) == ',') {
+            DROP_FRONT(parsed_string);
+        }
+        parse_whitespace(&parsed_string);
+    }
+    if (IS_EMPTY(parsed_string) || FIRST_ITEM(parsed_string) != ']') {
+        return;
+    }
+    DROP_FRONT(parsed_string);
+    list->count = parsed_string.data - list->data;
+    *s = parsed_string;
+}
+
+static inline
+void parse_json_item(StringView* s) {
+    parse_whitespace(s);
+    if (IS_EMPTY(*s)) {
+        return;
+    }
+    int temp_int = {};
+    parse_int(s, &temp_int);
+    StringView temp_string = {};
+    parse_quoted_string(s, &temp_string);
+    StringView temp_list = {};
+    parse_json_list(s, &temp_list);
 }
