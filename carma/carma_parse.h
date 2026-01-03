@@ -80,10 +80,10 @@ void parse_line(StringView* s, StringView* value) {
         DROP_FRONT(*s);
         value->count++;
     }
-    if (!IS_EMPTY(*s) && FIRST_ITEM(*s) == '\r') {
+    if (STARTS_WITH_ITEM(*s, '\r')) {
         DROP_FRONT(*s);
     }
-    if (!IS_EMPTY(*s) && FIRST_ITEM(*s) == '\n') {
+    if (STARTS_WITH_ITEM(*s, '\n')) {
         DROP_FRONT(*s);
     }
 }
@@ -132,7 +132,7 @@ static inline
 void parse_json_list(StringView* s, StringView* list) {
     StringView parsed_string = *s;
     parse_whitespace(&parsed_string);
-    if (IS_EMPTY(parsed_string) || FIRST_ITEM(parsed_string) != '[') {
+    if (!STARTS_WITH_ITEM(parsed_string, '[')) {
         return;
     }
     list->data = parsed_string.data;
@@ -141,7 +141,7 @@ void parse_json_list(StringView* s, StringView* list) {
     while (!IS_EMPTY(parsed_string) && FIRST_ITEM(parsed_string) != ']') {
         parse_json_item(&parsed_string);
         parse_whitespace(&parsed_string);
-        if (!IS_EMPTY(parsed_string) && FIRST_ITEM(parsed_string) == ',') {
+        if (STARTS_WITH_ITEM(parsed_string, ',')) {
             DROP_FRONT(parsed_string);
             parse_whitespace(&parsed_string);
         }
@@ -149,7 +149,7 @@ void parse_json_list(StringView* s, StringView* list) {
             break;
         }
     }
-    if (IS_EMPTY(parsed_string) || FIRST_ITEM(parsed_string) != ']') {
+    if (!STARTS_WITH_ITEM(parsed_string, ']')) {
         return;
     }
     DROP_FRONT(parsed_string);
