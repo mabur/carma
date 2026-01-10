@@ -1206,6 +1206,14 @@ void test_parse_json_list() {
     ASSERT_EQUAL_RANGE("parse_json_list", string, (STRING_VIEW(", 4")));
 }
 
+void test_parse_json_object() {
+    auto string = STRING_VIEW("{\"key\" : 1}, 2");
+    auto value = parse_json_object(&string);
+    ASSERT_EQUAL_RANGE("parse_json_object", value, (STRING_VIEW("{\"key\" : 1}")));
+    ASSERT_EQUAL_RANGE("parse_json_object", string, (STRING_VIEW(", 2")));
+}
+
+
 int main() {
     test_2d_array();
     test_3d_array();
@@ -1342,6 +1350,7 @@ int main() {
     test_parse_whitespace();
     test_parse_quoted_string();
     test_parse_json_list();
+    test_parse_json_object();
 
     summarize_tests();
     

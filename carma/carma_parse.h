@@ -161,9 +161,56 @@ StringView parse_json_list(StringView* s) {
 }
 
 static inline
+StringView parse_json_object(StringView* s) {
+    StringView parsed_string = *s;
+    parse_whitespace(&parsed_string);
+    if (!STARTS_WITH_ITEM(parsed_string, '{')) {
+        return (StringView){};
+    }
+    StringView object = {parsed_string.data, 0};
+    DROP_FRONT(parsed_string);
+    parse_whitespace(&parsed_string);
+
+    while (!IS_EMPTY(parsed_string) && FIRST_ITEM(parsed_string) != '}') {
+        StringView key = parse_quoted_string(&parsed_string);
+        if (IS_EMPTY(key)) {
+            return (StringView){};
+        }
+
+        parse_whitespace(&parsed_string);
+        if (!STARTS_WITH_ITEM(parsed_string, ':')) {
+            return (StringView){};
+        }
+        DROP_FRONT(parsed_string);
+        parse_whitespace(&parsed_string);
+
+        parse_json_item(&parsed_string);
+        parse_whitespace(&parsed_string);
+
+        if (STARTS_WITH_ITEM(parsed_string, ',')) {
+            DROP_FRONT(parsed_string);
+            parse_whitespace(&parsed_string);
+        }
+        else {
+            break;
+        }
+    }
+
+    if (!STARTS_WITH_ITEM(parsed_string, '}')) {
+        return (StringView){};
+    }
+    DROP_FRONT(parsed_string);
+
+    object.count = parsed_string.data - object.data;
+    *s = parsed_string;
+    return object;
+}
+
+static inline
 void parse_json_item(StringView* s) {
     parse_whitespace(s);
     (void)parse_int(s);
     (void)parse_quoted_string(s);
     (void)parse_json_list(s);
+    (void)parse_json_object(s);
 }
