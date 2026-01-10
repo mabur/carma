@@ -176,17 +176,14 @@ StringView parse_json_object(StringView* s) {
         if (IS_EMPTY(key)) {
             return (StringView){};
         }
-
         parse_whitespace(&parsed_string);
         if (!STARTS_WITH_ITEM(parsed_string, ':')) {
             return (StringView){};
         }
         DROP_FRONT(parsed_string);
         parse_whitespace(&parsed_string);
-
         parse_json_item(&parsed_string);
         parse_whitespace(&parsed_string);
-
         if (STARTS_WITH_ITEM(parsed_string, ',')) {
             DROP_FRONT(parsed_string);
             parse_whitespace(&parsed_string);
@@ -195,12 +192,10 @@ StringView parse_json_object(StringView* s) {
             break;
         }
     }
-
     if (!STARTS_WITH_ITEM(parsed_string, '}')) {
         return (StringView){};
     }
     DROP_FRONT(parsed_string);
-
     object.count = parsed_string.data - object.data;
     *s = parsed_string;
     return object;
