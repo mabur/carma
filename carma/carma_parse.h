@@ -100,7 +100,7 @@ void parse_whitespace(StringView* s) {
 
 static inline
 StringView parse_quoted_string(StringView* s) {
-    if (IS_EMPTY(*s) || FIRST_ITEM(*s) != '"') {
+    if (!STARTS_WITH_ITEM(*s, '"')) {
         return (StringView){};
     }
     auto remaining = *s;
