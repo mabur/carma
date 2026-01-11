@@ -25,6 +25,12 @@ you get an new copy.
 - `SET_OPTIONAL(optional, item)` stores the item in the optional.
   It sets the optional's count to one.
 
+- `GET_OPTIONAL(optional)` returns the item in the optional.
+  It assumes that the optional is not empty.
+
+- `GET_OPTIONAL_OR(optional, default_item)` returns the item in the optional,
+  if it is not empty, and otherwise the default item is returned.
+
 - `CLEAR(optional)` decreases count to zero.
   This works the same way for optionals as for dynamic arrays in general.
 
