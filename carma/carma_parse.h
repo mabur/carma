@@ -195,11 +195,7 @@ StringView parse_json_list(StringView* s) {
     while (!IS_EMPTY(parsed_string) && FIRST_ITEM(parsed_string) != ']') {
         parse_json_item(&parsed_string);
         parse_whitespace(&parsed_string);
-        if (STARTS_WITH_ITEM(parsed_string, ',')) {
-            DROP_FRONT(parsed_string);
-            parse_whitespace(&parsed_string);
-        }
-        else {
+        if (!parse_structural_character(&parsed_string, ',')) {
             break;
         }
     }
