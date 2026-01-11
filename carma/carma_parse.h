@@ -145,26 +145,6 @@ bool parse_structural_character(StringView* s, char c) {
 }
 
 static inline
-bool parse_json_list_beginning(StringView* s) {
-    return parse_structural_character(s, '[');
-}
-
-static inline
-bool parse_json_object_beginning(StringView* s) {
-return parse_structural_character(s, '{');
-}
-
-static inline
-bool parse_json_list_end(StringView* s) {
-    return parse_structural_character(s, ']');
-}
-
-static inline
-bool parse_json_object_end(StringView* s) {
-    return parse_structural_character(s, '}');
-}
-
-static inline
 StringView parse_json_object_key(StringView* s) {
     StringView parsed_string = *s;
     parse_whitespace(&parsed_string);
@@ -209,7 +189,7 @@ static inline
 StringView parse_json_list(StringView* s) {
     StringView parsed_string = *s;
     StringView list = {parsed_string.data, 0};
-    if (!parse_json_list_beginning(&parsed_string)) {
+    if (!parse_structural_character(&parsed_string, '[')) {
         return (StringView){};
     }
     while (!IS_EMPTY(parsed_string) && FIRST_ITEM(parsed_string) != ']') {
@@ -223,7 +203,7 @@ StringView parse_json_list(StringView* s) {
             break;
         }
     }
-    if (!parse_json_list_end(&parsed_string)) {
+    if (!parse_structural_character(&parsed_string, ']')) {
         return (StringView){};
     }
     list.count = parsed_string.data - list.data;
@@ -235,7 +215,7 @@ static inline
 StringView parse_json_object(StringView* s) {
     StringView parsed_string = *s;
     StringView object = {parsed_string.data, 0};
-    if (!parse_json_object_beginning(&parsed_string)) {
+    if (!parse_structural_character(&parsed_string, '{')) {
         return (StringView){};
     }
     for(;;) {
@@ -250,7 +230,7 @@ StringView parse_json_object(StringView* s) {
             return (StringView){};
         }
     }
-    if (!parse_json_object_end(&parsed_string)) {
+    if (!parse_structural_character(&parsed_string, '}')) {
         return (StringView){};
     }
     object.count = parsed_string.data - object.data;
