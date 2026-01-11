@@ -193,7 +193,9 @@ StringView parse_json_list(StringView* s) {
         return (StringView){};
     }
     while (!IS_EMPTY(parsed_string) && FIRST_ITEM(parsed_string) != ']') {
-        parse_json_item(&parsed_string);
+        if (!parse_json_item(&parsed_string)) {
+            return (StringView){};
+        }
         if (!parse_structural_character(&parsed_string, ',')) {
             break;
         }
