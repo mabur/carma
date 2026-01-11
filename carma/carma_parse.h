@@ -225,12 +225,10 @@ StringView parse_json_object_value(StringView* s) {
 static inline
 StringView parse_json_list(StringView* s) {
     StringView parsed_string = *s;
-    parse_whitespace(&parsed_string);
-    if (!STARTS_WITH_ITEM(parsed_string, '[')) {
+    StringView list = {parsed_string.data, 0};
+    if (!parse_json_list_beginning(&parsed_string)) {
         return (StringView){};
     }
-    StringView list = {parsed_string.data, 0};
-    DROP_FRONT(parsed_string);
     while (!IS_EMPTY(parsed_string) && FIRST_ITEM(parsed_string) != ']') {
         parse_json_item(&parsed_string);
         parse_whitespace(&parsed_string);
@@ -242,10 +240,9 @@ StringView parse_json_list(StringView* s) {
             break;
         }
     }
-    if (!STARTS_WITH_ITEM(parsed_string, ']')) {
+    if (!parse_json_list_end(&parsed_string)) {
         return (StringView){};
     }
-    DROP_FRONT(parsed_string);
     list.count = parsed_string.data - list.data;
     *s = parsed_string;
     return list;
