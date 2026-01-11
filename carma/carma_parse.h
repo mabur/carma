@@ -132,6 +132,19 @@ StringView parse_quoted_string(StringView* s) {
 }
 
 static inline
+bool parse_json_list_beginning(StringView* s) {
+    StringView parsed_string = *s;
+    parse_whitespace(&parsed_string);
+    if (!STARTS_WITH_ITEM(parsed_string, '[')) {
+        return false;
+    }
+    DROP_FRONT(parsed_string);
+    parse_whitespace(&parsed_string);
+    *s = parsed_string;
+    return true;
+}
+
+static inline
 bool parse_json_object_beginning(StringView* s) {
     StringView parsed_string = *s;
     parse_whitespace(&parsed_string);
@@ -140,6 +153,18 @@ bool parse_json_object_beginning(StringView* s) {
     }
     DROP_FRONT(parsed_string);
     parse_whitespace(&parsed_string);
+    *s = parsed_string;
+    return true;
+}
+
+static inline
+bool parse_json_list_end(StringView* s) {
+    StringView parsed_string = *s;
+    parse_whitespace(&parsed_string);
+    if (!STARTS_WITH_ITEM(parsed_string, ']')) {
+        return false;
+    }
+    DROP_FRONT(parsed_string);
     *s = parsed_string;
     return true;
 }
