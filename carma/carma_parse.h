@@ -148,18 +148,13 @@ static inline
 StringView parse_json_object_key(StringView* s) {
     StringView parsed_string = *s;
     parse_whitespace(&parsed_string);
-    if (IS_EMPTY(parsed_string) || FIRST_ITEM(parsed_string) == '}') {
-        return (StringView){};
-    }
     auto key = parse_quoted_string(&parsed_string);
     if (IS_EMPTY(key)) {
         return (StringView){};
     }
-    parse_whitespace(&parsed_string);
-    if (!STARTS_WITH_ITEM(parsed_string, ':')) {
+    if (!parse_structural_character(&parsed_string, ':')) {
         return (StringView){};
     }
-    DROP_FRONT(parsed_string);
     *s = parsed_string;
     return key;
 }
