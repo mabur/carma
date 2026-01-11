@@ -33,6 +33,11 @@ s = result.string;
 Return optional, for error handling?
 */
 
+typedef struct OptionalInt {
+    int data[1];
+    int count;
+} OptionalInt;
+
 static inline
 bool is_digit(char c) {
     return '0' <= c && c <= '9';
@@ -44,16 +49,16 @@ bool is_whitespace(char c) {
 }
 
 static inline
-void parse_json_item(StringView* s);
+bool parse_json_item(StringView* s);
 
 static inline
-int parse_int(StringView* s) {
+OptionalInt parse_int(StringView* s) {
     StringView parsed_string = *s;
     int parsed_value = 0;
     int sign = +1;
     bool has_parsed_digits = false;
     if (IS_EMPTY(parsed_string)) {
-        return 0;
+        return (OptionalInt){};
     }
     if (FIRST_ITEM(parsed_string) == '-') {
         sign = -1;
@@ -72,7 +77,7 @@ int parse_int(StringView* s) {
 
         *s = parsed_string;
     }
-    return parsed_value * sign;
+    return (OptionalInt){.data={parsed_value * sign}, .count=1};
 }
 
 static inline
@@ -222,12 +227,13 @@ StringView parse_json_object(StringView* s) {
 }
 
 static inline
-void parse_json_item(StringView* s) {
+bool parse_json_item(StringView* s) {
     parse_whitespace(s);
-    (void)parse_int(s);
-    (void)parse_quoted_string(s);
-    (void)parse_json_list(s);
-    (void)parse_json_object(s);
+    return
+        !IS_EMPTY(parse_int(s)) ||
+        !IS_EMPTY(parse_quoted_string(s)) ||
+        !IS_EMPTY(parse_json_list(s)) ||
+        !IS_EMPTY(parse_json_object(s));
 }
 
 #define FOR_EACH_JSON_OBJECT(key, value, json) \

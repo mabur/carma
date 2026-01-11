@@ -7,11 +7,6 @@
 #include <carma/carma_table.h>
 
 typedef struct {
-    int data[1];
-    size_t count;
-} OptionalInt;
-
-typedef struct {
     int* data;
     size_t count;
 } IntRange;
@@ -1175,7 +1170,7 @@ void test_table_available_keys() {
 void test_parse_int() {
     auto string = STRING_VIEW("15");
     auto value = parse_int(&string);
-    ASSERT_EQUAL_INT("parse_int", value, 15);
+    ASSERT_EQUAL_INT("parse_int", GET_OPTIONAL(value), 15);
     ASSERT_EQUAL_RANGE("parse_int", string, (STRING_VIEW("")));
 }
 
