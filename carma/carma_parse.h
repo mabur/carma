@@ -213,20 +213,13 @@ StringView parse_json_object(StringView* s) {
     if (!parse_structural_character(&parsed_string, '{')) {
         return (StringView){};
     }
-    for(;;) {
-        parse_whitespace(&parsed_string);
-        if (STARTS_WITH_ITEM(parsed_string, '}')) {
-            break;
-        }
+    while (!parse_structural_character(&parsed_string, '}')) {
         if (IS_EMPTY(parse_json_object_key(&parsed_string))) {
             return (StringView){};
         }
         if (IS_EMPTY(parse_json_object_value(&parsed_string))) {
             return (StringView){};
         }
-    }
-    if (!parse_structural_character(&parsed_string, '}')) {
-        return (StringView){};
     }
     object.count = parsed_string.data - object.data;
     *s = parsed_string;
