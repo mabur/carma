@@ -1208,6 +1208,19 @@ void test_parse_json_list() {
     ASSERT_EQUAL_RANGE("parse_json_list", string, (STRING_VIEW(", 4")));
 }
 
+void test_parse_json_list_item_by_item() {
+    auto string = STRING_VIEW("[ 1, 2 ,3 ]");
+    auto expected = MAKE_DARRAY(IntArray, 1, 2, 3);
+    auto actual = (IntArray){};
+    for (auto item = parse_first_json_list_item(&string); !IS_EMPTY(item); item = parse_next_json_list_item(&string)) {
+        auto optional_int = parse_int(&item);
+        FOR_EACH(it, optional_int) {
+            APPEND(actual, *it);
+        }
+    }
+    ASSERT_EQUAL_RANGE("test_parse_json_list_item_by_item", actual, expected);
+}
+
 void test_parse_json_object() {
     auto string = STRING_VIEW("{\"key\" : 1}, 2");
     auto value = parse_json_object(&string);
@@ -1354,6 +1367,7 @@ int main() {
     test_parse_quoted_string();
     test_parse_json_list();
     test_parse_json_object();
+    test_parse_json_list_item_by_item();
 
     summarize_tests();
     
