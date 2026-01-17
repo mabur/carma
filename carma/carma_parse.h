@@ -250,11 +250,23 @@ StringView parse_json_object(StringView* s) {
 static inline
 bool parse_json_item(StringView* s) {
     parse_whitespace(s);
-    return
-        !IS_EMPTY(parse_int(s)) ||
-        !IS_EMPTY(parse_quoted_string(s)) ||
-        !IS_EMPTY(parse_json_list(s)) ||
-        !IS_EMPTY(parse_json_object(s));
+    auto number = parse_int_as_string(s);
+    if (!IS_EMPTY(number)) {
+        return true;
+    }
+    auto string = parse_quoted_string(s);
+    if (!IS_EMPTY(string)) {
+        return true;
+    }
+    auto list = parse_json_list(s);
+    if (!IS_EMPTY(list)) {
+        return true;
+    }
+    auto object = parse_json_object(s);
+    if (!IS_EMPTY(object)) {
+        return true;
+    }
+    return false;
 }
 
 #define FOR_EACH_JSON_OBJECT(key, value, json) \
