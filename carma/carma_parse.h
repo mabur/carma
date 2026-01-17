@@ -82,22 +82,17 @@ OptionalInt parse_int(StringView* s) {
 static inline
 StringView parse_int_as_string(StringView* s) {
     StringView parsed_string = *s;
-    bool has_parsed_digits = false;
     if (IS_EMPTY(parsed_string)) {
         return (StringView){};
     }
-    if (FIRST_ITEM(parsed_string) == '-') {
+    if (FIRST_ITEM(parsed_string) == '+' || FIRST_ITEM(parsed_string) == '-') {
         DROP_FRONT(parsed_string);
     }
-    else if (FIRST_ITEM(parsed_string) == '+') {
-        DROP_FRONT(parsed_string);
+    if (IS_EMPTY(parsed_string) || !is_digit(FIRST_ITEM(parsed_string))) {
+        return (StringView){};
     }
     while (!IS_EMPTY(parsed_string) && is_digit(FIRST_ITEM(parsed_string))) {
         DROP_FRONT(parsed_string);
-        has_parsed_digits = true;
-    }
-    if (!has_parsed_digits) {
-        return (StringView){};
     }
     auto result = (StringView){.data=s->data, .count = s->count - parsed_string.count};
     *s = parsed_string;
