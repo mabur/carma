@@ -204,6 +204,50 @@ StringView parse_json_object_value(StringView* s) {
     return value;
 }
 
+// for (auto item = parse_first_json_list_item(s); !IS_EMPTY(item); item = parse_next_json_list_item(s))
+
+static inline
+StringView parse_first_json_list_item(StringView* s) {
+    // In case of "[]" it advances the input past "[]", and returns an empty string.
+    // In case of "[item]" it advances the input past "[item", and returns the item.
+    // In case of "[item,]" it advances the input past "[item", and returns the item.
+    StringView parsed_string = *s;
+    if (!parse_structural_character(&parsed_string, '[')) {
+        return (StringView){};
+    }
+    if (parse_structural_character(&parsed_string, ']')) {
+        *s = parsed_string;
+        return (StringView){};
+    }
+    auto result = parse_json_item(&parsed_string);
+    if (IS_EMPTY(result)){
+        return (StringView){};
+    }
+    *s = parsed_string;
+    return result;
+}
+
+static inline
+StringView parse_next_json_list_item(StringView* s) {
+    // In case of "]" it advances the input past "]", and returns an empty string.
+    // In case of ",item]" it advances the input past ",item", and returns the item.
+    // In case of ",item,]" it advances the input past the ",item", and returns the item.
+    StringView parsed_string = *s;
+    if (parse_structural_character(&parsed_string, ']')) {
+        *s = parsed_string;
+        return (StringView){};
+    }
+    if (!parse_structural_character(&parsed_string, ',')) {
+        return (StringView){};
+    }
+    auto result = parse_json_item(&parsed_string);
+    if (IS_EMPTY(result)){
+        return (StringView){};
+    }
+    *s = parsed_string;
+    return result;
+}
+
 static inline
 StringView parse_json_list(StringView* s) {
     StringView parsed_string = *s;
