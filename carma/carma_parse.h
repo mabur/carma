@@ -49,7 +49,7 @@ bool is_whitespace(char c) {
 }
 
 static inline
-bool parse_json_item(StringView* s);
+StringView parse_json_item(StringView* s);
 
 static inline
 OptionalInt parse_int(StringView* s) {
@@ -212,7 +212,7 @@ StringView parse_json_list(StringView* s) {
         return (StringView){};
     }
     while (!IS_EMPTY(parsed_string) && FIRST_ITEM(parsed_string) != ']') {
-        if (!parse_json_item(&parsed_string)) {
+        if (IS_EMPTY(parse_json_item(&parsed_string))) {
             return (StringView){};
         }
         if (!parse_structural_character(&parsed_string, ',')) {
@@ -248,25 +248,25 @@ StringView parse_json_object(StringView* s) {
 }
 
 static inline
-bool parse_json_item(StringView* s) {
+StringView parse_json_item(StringView* s) {
     parse_whitespace(s);
     auto number = parse_int_as_string(s);
     if (!IS_EMPTY(number)) {
-        return true;
+        return number;
     }
     auto string = parse_quoted_string(s);
     if (!IS_EMPTY(string)) {
-        return true;
+        return string;
     }
     auto list = parse_json_list(s);
     if (!IS_EMPTY(list)) {
-        return true;
+        return list;
     }
     auto object = parse_json_object(s);
     if (!IS_EMPTY(object)) {
-        return true;
+        return object;
     }
-    return false;
+    return (StringView){};
 }
 
 #define FOR_EACH_JSON_OBJECT(key, value, json) \
