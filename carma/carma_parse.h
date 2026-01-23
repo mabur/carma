@@ -270,6 +270,61 @@ StringView parse_json_list(StringView* s) {
 }
 
 static inline
+StringView parse_first_json_object_key(StringView* s) {
+    // In case of {} it advances the input past {}, and returns an empty string.
+    // In case of {"k":v} it advances the input past {"k" and returns k.
+    StringView parsed_string = *s;
+    if (!parse_structural_character(&parsed_string, '{')) {
+        return (StringView){};
+    }
+    if (parse_structural_character(&parsed_string, '}')) {
+        *s = parsed_string;
+        return (StringView){};
+    }
+    auto result = parse_quoted_string(&parsed_string);
+    if (IS_EMPTY(result)){
+        return (StringView){};
+    }
+    *s = parsed_string;
+    return result;
+}
+
+static inline
+StringView parse_next_json_object_value(StringView* s) {
+    // In case of :v} it advances the input past :v and returns the value.
+    StringView parsed_string = *s;
+    if (!parse_structural_character(&parsed_string, ':')) {
+        return (StringView){};
+    }
+    auto result = parse_json_item(&parsed_string);
+    if (IS_EMPTY(result)){
+        return (StringView){};
+    }
+    *s = parsed_string;
+    return result;
+}
+
+static inline
+StringView parse_next_json_object_key(StringView* s) {
+    // In case of } it advances the input past } and returns an empty string.
+    // In case of ,"k":v} it advances the input past ,"key" and returns the key.
+    StringView parsed_string = *s;
+    if (parse_structural_character(&parsed_string, '}')) {
+        *s = parsed_string;
+        return (StringView){};
+    }
+    if (!parse_structural_character(&parsed_string, ',')) {
+        return (StringView){};
+    }
+    auto result = parse_quoted_string(&parsed_string);
+    if (IS_EMPTY(result)){
+        return (StringView){};
+    }
+    *s = parsed_string;
+    return result;
+}
+
+static inline
 StringView parse_json_object(StringView* s) {
     StringView parsed_string = *s;
     StringView object = {parsed_string.data, 0};

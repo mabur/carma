@@ -1241,6 +1241,24 @@ void test_parse_json_object() {
     ASSERT_EQUAL_RANGE("parse_json_object", string, (STRING_VIEW(", 2")));
 }
 
+void test_parse_json_object_item_by_item() {
+    auto string = STRING_VIEW("{ \"a\" : 1 , \"b\": 2 }");
+    auto expected_values = MAKE_DARRAY(IntArray, 1, 2);
+    auto actual_values = (IntArray){};
+    for (
+        StringView k = parse_first_json_object_key(&string),
+        v = parse_next_json_object_value(&string);
+        !IS_EMPTY(k) && !IS_EMPTY(v);
+        k = parse_next_json_object_key(&string),
+        v = parse_next_json_object_value(&string)
+    ) {
+        auto optional_int = parse_int(&v);
+        FOR_EACH(it, optional_int) {
+            APPEND(actual_values, *it);
+        }
+    }
+    ASSERT_EQUAL_RANGE("test_parse_json_object_item_by_item", actual_values, expected_values);
+}
 
 int main() {
     test_2d_array();
@@ -1382,6 +1400,7 @@ int main() {
     test_parse_json_object();
     test_parse_json_list_item_by_item();
     test_for_each_json_list_item();
+    test_parse_json_object_item_by_item();
 
     summarize_tests();
     
