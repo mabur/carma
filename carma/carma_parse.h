@@ -371,14 +371,11 @@ StringView parse_json_item(StringView* s) {
     !IS_EMPTY(item); \
     (item) = parse_next_json_list_item(&list))
 
-#define FOR_EACH_JSON_OBJECT(key, value, json) \
+#define FOR_EACH_JSON_OBJECT_ITEM(key, value, object) \
     for ( \
-        bool do_continue = parse_json_object_beginning(&(json)); \
-        do_continue; \
-        do_continue = (void)parse_json_object_end(&(json)) \
-        ) \
-        for ( \
-            StringView (key) = parse_json_object_key(&(json)), (value) = parse_json_object_value(&(json)); \
-            !IS_EMPTY(key) && !IS_EMPTY(value); \
-            (key) = parse_json_object_key(&(json)), (value) = parse_json_object_value(&(json)) \
-        )
+        StringView (key) = parse_first_json_object_key(&object), \
+        (value) = parse_next_json_object_value(&object); \
+        !IS_EMPTY(key) && !IS_EMPTY(value); \
+        (key) = parse_next_json_object_key(&object), \
+        (value) = parse_next_json_object_value(&object) \
+    )
