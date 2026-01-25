@@ -1216,37 +1216,37 @@ void test_parse_quoted_string() {
     ASSERT_EQUAL_RANGE("parse_quoted_string", string, (STRING_VIEW(", 1, 2")));
 }
 
-void test_parse_json_list() {
+void test_parse_json_array() {
     auto string = STRING_VIEW("[ 1, 2 ,3 ], 4");
-    auto value = parse_json_list(&string);
-    ASSERT_EQUAL_RANGE("parse_json_list", value, (STRING_VIEW("[ 1, 2 ,3 ]")));
-    ASSERT_EQUAL_RANGE("parse_json_list", string, (STRING_VIEW(", 4")));
+    auto value = parse_json_array(&string);
+    ASSERT_EQUAL_RANGE("parse_json_array", value, (STRING_VIEW("[ 1, 2 ,3 ]")));
+    ASSERT_EQUAL_RANGE("parse_json_array", string, (STRING_VIEW(", 4")));
 }
 
-void test_parse_json_list_item_by_item() {
+void test_parse_json_array_item_by_item() {
     auto string = STRING_VIEW("[ 1, 2 ,3 ]");
     auto expected = MAKE_DARRAY(IntArray, 1, 2, 3);
     auto actual = (IntArray){};
-    for (auto item = parse_first_json_list_item(&string); !IS_EMPTY(item); item = parse_next_json_list_item(&string)) {
+    for (auto item = parse_first_json_array_item(&string); !IS_EMPTY(item); item = parse_next_json_array_item(&string)) {
         auto optional_int = parse_int(&item);
         FOR_EACH(it, optional_int) {
             APPEND(actual, *it);
         }
     }
-    ASSERT_EQUAL_RANGE("test_parse_json_list_item_by_item", actual, expected);
+    ASSERT_EQUAL_RANGE("test_parse_json_array_item_by_item", actual, expected);
 }
 
-void test_for_each_json_list_item() {
+void test_for_each_json_array_item() {
     auto string = STRING_VIEW("[ 1, 2 ,3 ]");
     auto expected = MAKE_DARRAY(IntArray, 1, 2, 3);
     auto actual = (IntArray){};
-    FOR_EACH_JSON_LIST_ITEM(item, string) {
+    FOR_EACH_JSON_ARRAY_ITEM(item, string) {
         auto optional_int = parse_int(&item);
         FOR_EACH(it, optional_int) {
             APPEND(actual, *it);
         }
     }
-    ASSERT_EQUAL_RANGE("test_for_each_json_list_item", actual, expected);
+    ASSERT_EQUAL_RANGE("test_for_each_json_array_item", actual, expected);
 }
 
 void test_parse_json_object() {
@@ -1502,10 +1502,10 @@ int main() {
     test_parse_line();
     test_parse_whitespace();
     test_parse_quoted_string();
-    test_parse_json_list();
+    test_parse_json_array();
     test_parse_json_object();
-    test_parse_json_list_item_by_item();
-    test_for_each_json_list_item();
+    test_parse_json_array_item_by_item();
+    test_for_each_json_array_item();
     test_parse_json_object_item_by_item();
     test_for_each_json_object_item();
     test_add_json_int();

@@ -205,7 +205,7 @@ StringView parse_json_object_value(StringView* s) {
 }
 
 static inline
-StringView parse_first_json_list_item(StringView* s) {
+StringView parse_first_json_array_item(StringView* s) {
     // In case of "[]" it advances the input past "[]", and returns an empty string.
     // In case of "[item]" it advances the input past "[item", and returns the item.
     // In case of "[item,]" it advances the input past "[item", and returns the item.
@@ -226,7 +226,7 @@ StringView parse_first_json_list_item(StringView* s) {
 }
 
 static inline
-StringView parse_next_json_list_item(StringView* s) {
+StringView parse_next_json_array_item(StringView* s) {
     // In case of "]" it advances the input past "]", and returns an empty string.
     // In case of ",item]" it advances the input past ",item", and returns the item.
     // In case of ",item,]" it advances the input past the ",item", and returns the item.
@@ -247,9 +247,9 @@ StringView parse_next_json_list_item(StringView* s) {
 }
 
 static inline
-StringView parse_json_list(StringView* s) {
+StringView parse_json_array(StringView* s) {
     StringView parsed_string = *s;
-    StringView list = {parsed_string.data, 0};
+    StringView array = {parsed_string.data, 0};
     if (!parse_structural_character(&parsed_string, '[')) {
         return (StringView){};
     }
@@ -264,9 +264,9 @@ StringView parse_json_list(StringView* s) {
     if (!parse_structural_character(&parsed_string, ']')) {
         return (StringView){};
     }
-    list.count = parsed_string.data - list.data;
+    array.count = parsed_string.data - array.data;
     *s = parsed_string;
-    return list;
+    return array;
 }
 
 static inline
@@ -355,9 +355,9 @@ StringView parse_json_item(StringView* s) {
     if (!IS_EMPTY(string)) {
         return string;
     }
-    auto list = parse_json_list(s);
-    if (!IS_EMPTY(list)) {
-        return list;
+    auto array = parse_json_array(s);
+    if (!IS_EMPTY(array)) {
+        return array;
     }
     auto object = parse_json_object(s);
     if (!IS_EMPTY(object)) {
@@ -366,10 +366,10 @@ StringView parse_json_item(StringView* s) {
     return (StringView){};
 }
 
-#define FOR_EACH_JSON_LIST_ITEM(item, list) \
-    for (auto (item) = parse_first_json_list_item(&list); \
+#define FOR_EACH_JSON_ARRAY_ITEM(item, array) \
+    for (auto (item) = parse_first_json_array_item(&array); \
     !IS_EMPTY(item); \
-    (item) = parse_next_json_list_item(&list))
+    (item) = parse_next_json_array_item(&array))
 
 #define FOR_EACH_JSON_OBJECT_ITEM(key, value, object) \
     for ( \
