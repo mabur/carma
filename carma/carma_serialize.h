@@ -102,5 +102,10 @@ typedef struct Json {
     JsonContextStack context_stack;
 } Json;
 
-#define ADD_JSON_INT(json, i) CONCAT_STRING((json).string, "%i", i)
-#define ADD_JSON_BOOL(json, b) CONCAT_STRING((json).string, "%s", b ? "true" : "false")
+#define ADD_JSON_INT(json, i) do { \
+        CONCAT_STRING((json).string, "%i", i); \
+    } while(0)
+
+#define ADD_JSON_BOOL(json, b) do { \
+        CONCAT_STRING((json).string, "%s", b ? "true" : "false"); \
+    } while(0)
