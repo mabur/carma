@@ -117,6 +117,11 @@ typedef struct Json {
     } while(0)
 
 #define ADD_JSON_KEY(json, k) do { \
+        if (ENDS_WITH_ITEM((json).context_stack, JSON_OBJECT)) { \
+            if (!ENDS_WITH_ITEM((json).string, '{')) { \
+                APPEND((json).string, ','); \
+            } \
+        } \
         CONCAT_STRING((json).string, "\"%s\":", k); \
     } while(0)
 
