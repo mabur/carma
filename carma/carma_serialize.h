@@ -118,6 +118,7 @@ Json carma_handle_json_list_delimiter(Json* json) {
     } while(0)
 
 #define ADD_JSON_BOOL(json, b) do { \
+        carma_handle_json_list_delimiter(&json); \
         CONCAT_STRING((json).string, "%s", b ? "true" : "false"); \
     } while(0)
 
@@ -131,6 +132,7 @@ Json carma_handle_json_list_delimiter(Json* json) {
     } while(0)
 
 void carma_begin_json_list(Json* json) {
+    carma_handle_json_list_delimiter(json);
     APPEND(json->string, '[');
     APPEND(json->context_stack, JSON_LIST);
 }
@@ -141,6 +143,7 @@ void carma_end_json_list(Json* json) {
 }
 
 void carma_begin_json_object(Json* json) {
+    carma_handle_json_list_delimiter(json);
     APPEND(json->string, '{');
     APPEND(json->context_stack, JSON_OBJECT);
 }
