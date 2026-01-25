@@ -21,25 +21,11 @@ serialize_int(&s, x);
 serialize_double(&s, x);
 serialize_bool(&s, x);
 serialize_quoted_string(&s, x);
-serialize_json_list_begin(&s);
-serialize_json_list_end(&s);
+serialize_json_array_begin(&s);
+serialize_json_array_end(&s);
 serialize_json_object_begin(&s);
 serialize_json_object_key(&s, "key");
 serialize_json_object_end(&s);
-
-auto s = (StringView){};
-begin_json_object(&s);
-    add_json_key(&s, "visible");
-    add_json_bool(&s, true);
-    add_json_key(&s, "width");
-    add_json_int(&s, 640);
-    add_json_key(&s, "height");
-    add_json_int(&s, 480);
-    add_json_key(&s, "pixel");
-    begin_json_list(&s);
-        add_json_int(&s, 0xFF00FF);
-    end_json_list(&s);
-end_json_object(&s);
 
 auto j = (JsonBuilder){};
 ADD_JSON_OBJECT(j) {
@@ -50,14 +36,14 @@ ADD_JSON_OBJECT(j) {
     ADD_JSON_KEY(j, "height");
     ADD_JSON_INT(j, 480);
     ADD_JSON_KEY(j, "pixels");
-    ADD_JSON_LIST(j) {
+    ADD_JSON_ARRAY(j) {
         ADD_JSON_INT(j, 0xFF00FF);
     }
 }
 
 */
 
-typedef enum JsonContext {JSON_LIST, JSON_OBJECT} JsonContext;
+typedef enum JsonContext {JSON_ARRAY, JSON_OBJECT} JsonContext;
 
 typedef struct JsonContextStack {
     JsonContext* data;
@@ -70,8 +56,8 @@ typedef struct Json {
     JsonContextStack context_stack;
 } Json;
 
-static inline void carma_handle_json_list_delimiter(Json* json) {
-    if (ENDS_WITH_ITEM(json->context_stack, JSON_LIST)) {
+static inline void carma_handle_json_array_delimiter(Json* json) {
+    if (ENDS_WITH_ITEM(json->context_stack, JSON_ARRAY)) {
         if (!ENDS_WITH_ITEM(json->string, '[')) {
             APPEND(json->string, ',');
         }
@@ -86,19 +72,19 @@ static inline void carma_handle_json_object_delimiter(Json* json) {
     }
 }
 
-static inline void carma_begin_json_list(Json* json) {
-    carma_handle_json_list_delimiter(json);
+static inline void carma_begin_json_array(Json* json) {
+    carma_handle_json_array_delimiter(json);
     APPEND(json->string, '[');
-    APPEND(json->context_stack, JSON_LIST);
+    APPEND(json->context_stack, JSON_ARRAY);
 }
 
-static inline void carma_end_json_list(Json* json) {
+static inline void carma_end_json_array(Json* json) {
     APPEND(json->string, ']');
     DROP_BACK(json->context_stack);
 }
 
 static inline void carma_begin_json_object(Json* json) {
-    carma_handle_json_list_delimiter(json);
+    carma_handle_json_array_delimiter(json);
     APPEND(json->string, '{');
     APPEND(json->context_stack, JSON_OBJECT);
 }
@@ -109,12 +95,12 @@ static inline void carma_end_json_object(Json* json) {
 }
 
 #define ADD_JSON_INT(json, i) do { \
-    carma_handle_json_list_delimiter(&json); \
+    carma_handle_json_array_delimiter(&json); \
     CONCAT_STRING((json).string, "%i", i); \
 } while(0)
 
 #define ADD_JSON_BOOL(json, b) do { \
-    carma_handle_json_list_delimiter(&json); \
+    carma_handle_json_array_delimiter(&json); \
     CONCAT_STRING((json).string, "%s", b ? "true" : "false"); \
 } while(0)
 
@@ -123,10 +109,10 @@ static inline void carma_end_json_object(Json* json) {
     CONCAT_STRING((json).string, "\"%s\":", k); \
 } while(0)
 
-#define ADD_JSON_LIST(json) for ( \
-    bool run = (carma_begin_json_list(&json), true); \
+#define ADD_JSON_ARRAY(json) for ( \
+    bool run = (carma_begin_json_array(&json), true); \
     run; \
-    run=false, carma_end_json_list(&json))
+    run=false, carma_end_json_array(&json))
 
 #define ADD_JSON_OBJECT(json) for ( \
     bool run = (carma_begin_json_object(&json), true); \

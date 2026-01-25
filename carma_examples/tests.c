@@ -1309,31 +1309,31 @@ void test_add_json_bool_false() {
     ASSERT_EQUAL_RANGE("test_add_json_bool_false", actual.string, expected);
 }
 
-void test_add_json_list_empty() {
+void test_add_json_array_empty() {
     auto actual = (Json){};
-    ADD_JSON_LIST(actual) {
+    ADD_JSON_ARRAY(actual) {
     }
     auto expected = STRING_VIEW("[]");
-    ASSERT_EQUAL_RANGE("test_add_json_list_empty", actual.string, expected);
+    ASSERT_EQUAL_RANGE("test_add_json_array_empty", actual.string, expected);
 }
 
-void test_add_json_list_single() {
+void test_add_json_array_single() {
     auto actual = (Json){};
-    ADD_JSON_LIST(actual) {
+    ADD_JSON_ARRAY(actual) {
         ADD_JSON_INT(actual, 1);
     }
     auto expected = STRING_VIEW("[1]");
-    ASSERT_EQUAL_RANGE("test_add_json_list_single", actual.string, expected);
+    ASSERT_EQUAL_RANGE("test_add_json_array_single", actual.string, expected);
 }
 
-void test_add_json_list_multiple() {
+void test_add_json_array_multiple() {
     auto actual = (Json){};
-    ADD_JSON_LIST(actual) {
+    ADD_JSON_ARRAY(actual) {
         ADD_JSON_INT(actual, 1);
         ADD_JSON_INT(actual, 2);
     }
     auto expected = STRING_VIEW("[1,2]");
-    ASSERT_EQUAL_CARMA_STRINGS("test_add_json_list_multiple", actual.string, expected);
+    ASSERT_EQUAL_CARMA_STRINGS("test_add_json_array_multiple", actual.string, expected);
 }
 
 void test_add_json_object_empty() {
@@ -1512,9 +1512,9 @@ int main() {
     test_add_json_bool_true();
     test_add_json_bool_false();
 
-    test_add_json_list_empty();
-    test_add_json_list_single();
-    test_add_json_list_multiple();
+    test_add_json_array_empty();
+    test_add_json_array_single();
+    test_add_json_array_multiple();
 
     test_add_json_object_empty();
     test_add_json_object_single();
