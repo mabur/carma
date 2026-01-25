@@ -87,4 +87,5 @@ ADD_JSON_OBJECT(j) {
 
 */
 
-#define ADD_JSON_INT(string_builder, number) CONCAT_STRING(string_builder, "%i", number)
+#define ADD_JSON_INT(string_builder, i) CONCAT_STRING(string_builder, "%i", i)
+#define ADD_JSON_BOOL(string_builder, b) CONCAT_STRING(string_builder, "%s", b ? "true" : "false")
