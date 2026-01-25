@@ -103,12 +103,17 @@ typedef struct Json {
     JsonContextStack context_stack;
 } Json;
 
+static inline
+Json carma_handle_json_list_delimiter(Json* json) {
+    if (ENDS_WITH_ITEM(json->context_stack, JSON_LIST)) {
+        if (!ENDS_WITH_ITEM(json->string, '[')) {
+            APPEND(json->string, ',');
+        }
+    }
+}
+
 #define ADD_JSON_INT(json, i) do { \
-        if (ENDS_WITH_ITEM((json).context_stack, JSON_LIST)) { \
-            if (!ENDS_WITH_ITEM((json).string, '[')) { \
-                APPEND((json).string, ','); \
-            } \
-        } \
+        carma_handle_json_list_delimiter(&json); \
         CONCAT_STRING((json).string, "%i", i); \
     } while(0)
 
