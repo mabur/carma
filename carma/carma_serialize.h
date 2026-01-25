@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stddef.h>
+
 #include "carma_string.h"
 
 /*
@@ -87,8 +89,17 @@ ADD_JSON_OBJECT(j) {
 
 */
 
+typedef enum JsonContext {JSON_LIST, JSON_OBJECT} JsonContext;
+
+typedef struct JsonContextStack {
+    JsonContext* data;
+    size_t count;
+    size_t capacity;
+} JsonContextStack;
+
 typedef struct Json {
     StringBuilder string;
+    JsonContextStack context_stack;
 } Json;
 
 #define ADD_JSON_INT(json, i) CONCAT_STRING((json).string, "%i", i)
