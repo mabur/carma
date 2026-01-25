@@ -126,7 +126,22 @@ void carma_end_json_list(Json* json) {
     DROP_BACK(json->context_stack);
 }
 
+void carma_begin_json_object(Json* json) {
+    APPEND(json->string, '{');
+    APPEND(json->context_stack, JSON_OBJECT);
+}
+
+void carma_end_json_object(Json* json) {
+    APPEND(json->string, '}');
+    DROP_BACK(json->context_stack);
+}
+
 #define ADD_JSON_LIST(json) for ( \
     bool run = (carma_begin_json_list(&json), true); \
     run; \
     run=false, carma_end_json_list(&json))
+
+#define ADD_JSON_OBJECT(json) for ( \
+    bool run = (carma_begin_json_object(&json), true); \
+    run; \
+    run=false, carma_end_json_object(&json))

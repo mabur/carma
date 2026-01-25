@@ -1336,6 +1336,14 @@ void test_add_json_list_multiple() {
     ASSERT_EQUAL_CARMA_STRINGS("test_add_json_list_multiple", actual.string, expected);
 }
 
+void test_add_json_object_empty() {
+    auto actual = (Json){};
+    ADD_JSON_OBJECT(actual) {
+    }
+    auto expected = STRING_VIEW("{}");
+    ASSERT_EQUAL_RANGE("test_add_json_object_empty", actual.string, expected);
+}
+
 int main() {
     test_2d_array();
     test_3d_array();
@@ -1481,9 +1489,12 @@ int main() {
     test_add_json_int();
     test_add_json_bool_true();
     test_add_json_bool_false();
+
     test_add_json_list_empty();
     test_add_json_list_single();
     test_add_json_list_multiple();
+
+    test_add_json_object_empty();
 
     summarize_tests();
     
