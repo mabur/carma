@@ -1275,24 +1275,24 @@ void test_for_each_json_object_item() {
 }
 
 void test_add_json_int() {
-    auto actual = (StringBuilder){};
+    auto actual = (Json){};
     ADD_JSON_INT(actual, 1);
     auto expected = STRING_VIEW("1");
-    ASSERT_EQUAL_RANGE("test_add_json_int", actual, expected);
+    ASSERT_EQUAL_RANGE("test_add_json_int", actual.string, expected);
 }
 
 void test_add_json_bool_true() {
-    auto actual = (StringBuilder){};
+    auto actual = (Json){};
     ADD_JSON_BOOL(actual, true);
     auto expected = STRING_VIEW("true");
-    ASSERT_EQUAL_RANGE("test_add_json_bool_true", actual, expected);
+    ASSERT_EQUAL_RANGE("test_add_json_bool_true", actual.string, expected);
 }
 
 void test_add_json_bool_false() {
-    auto actual = (StringBuilder){};
+    auto actual = (Json){};
     ADD_JSON_BOOL(actual, false);
     auto expected = STRING_VIEW("false");
-    ASSERT_EQUAL_RANGE("test_add_json_bool_false", actual, expected);
+    ASSERT_EQUAL_RANGE("test_add_json_bool_false", actual.string, expected);
 }
 
 int main() {
