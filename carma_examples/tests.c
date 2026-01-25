@@ -1361,8 +1361,10 @@ void test_add_json_object_multiple() {
         ADD_JSON_INT(actual, 1);
         ADD_JSON_KEY(actual, "b");
         ADD_JSON_DOUBLE(actual, 2.0);
+        ADD_JSON_KEY(actual, "c");
+        ADD_JSON_CSTRING(actual, "d");
     }
-    auto expected = STRING_VIEW("{\"a\":1,\"b\":2.000000}");
+    auto expected = STRING_VIEW("{\"a\":1,\"b\":2.000000,\"c\":\"d\"}");
     ASSERT_EQUAL_CARMA_STRINGS("test_add_json_object_multiple", actual.string, expected);
 }
 

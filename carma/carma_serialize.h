@@ -93,6 +93,11 @@ static inline void carma_end_json_object(JsonBuilder* json) {
     CONCAT_STRING((json).string, "%s", b ? "true" : "false"); \
 } while(0)
 
+#define ADD_JSON_CSTRING(json, s) do { \
+    carma_handle_json_array_delimiter(&json); \
+    CONCAT_STRING((json).string, "\"%s\"", s); \
+} while(0)
+
 #define ADD_JSON_KEY(json, k) do { \
     carma_handle_json_object_delimiter(&json); \
     CONCAT_STRING((json).string, "\"%s\":", k); \
