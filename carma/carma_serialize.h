@@ -6,27 +6,6 @@
 #include "carma_string.h"
 
 /*
-
-* Use Generic to overload a single serialization function?
-  - bool/true/false/int gotchas.
-* serialize vs format
-* Have OpenGL like state machine, that checks grammar and manages indentation?
-
-These concat to s:
-serialize_indentation(&s, 4);
-serialize_newline(&s, x);
-serialize_string(&s, x);
-serialize_char(&s, x);
-serialize_int(&s, x);
-serialize_double(&s, x);
-serialize_bool(&s, x);
-serialize_quoted_string(&s, x);
-serialize_json_array_begin(&s);
-serialize_json_array_end(&s);
-serialize_json_object_begin(&s);
-serialize_json_object_key(&s, "key");
-serialize_json_object_end(&s);
-
 auto j = (JsonBuilder){};
 ADD_JSON_OBJECT(j) {
     ADD_JSON_KEY(j, "visible");
@@ -37,10 +16,14 @@ ADD_JSON_OBJECT(j) {
     ADD_JSON_INT(j, 480);
     ADD_JSON_KEY(j, "pixels");
     ADD_JSON_ARRAY(j) {
-        ADD_JSON_INT(j, 0xFF00FF);
+        ADD_JSON_INT(j, 255);
+    }
+    ADD_JSON_KEY(j, "circle");
+    ADD_JSON_OBJECT(j) {
+        ADD_JSON_KEY(j, "radius");
+        ADD_JSON_DOUBLE(j, 2.0);
     }
 }
-
 */
 
 typedef enum JsonContext {JSON_ARRAY, JSON_OBJECT} JsonContext;
