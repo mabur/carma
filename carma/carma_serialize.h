@@ -99,6 +99,11 @@ static inline void carma_end_json_object(Json* json) {
     CONCAT_STRING((json).string, "%i", i); \
 } while(0)
 
+#define ADD_JSON_DOUBLE(json, d) do { \
+    carma_handle_json_array_delimiter(&json); \
+    CONCAT_STRING((json).string, "%f", d); \
+} while(0)
+
 #define ADD_JSON_BOOL(json, b) do { \
     carma_handle_json_array_delimiter(&json); \
     CONCAT_STRING((json).string, "%s", b ? "true" : "false"); \
