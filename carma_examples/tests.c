@@ -1504,6 +1504,7 @@ int main() {
     test_parse_line();
     test_parse_whitespace();
     test_parse_quoted_string();
+
     test_parse_json_array();
     test_parse_json_object();
     test_parse_json_array_item_by_item();

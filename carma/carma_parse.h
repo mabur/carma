@@ -31,6 +31,8 @@ auto x = result.value;
 s = result.string;
 
 Return optional, for error handling?
+
+Can wrap function calls in a macro to skip pointer syntax noise.
 */
 
 typedef struct OptionalInt {
