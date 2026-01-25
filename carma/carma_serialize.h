@@ -34,12 +34,12 @@ typedef struct JsonContextStack {
     size_t capacity;
 } JsonContextStack;
 
-typedef struct Json {
+typedef struct JsonBuilder {
     StringBuilder string;
     JsonContextStack context_stack;
-} Json;
+} JsonBuilder;
 
-static inline void carma_handle_json_array_delimiter(Json* json) {
+static inline void carma_handle_json_array_delimiter(JsonBuilder* json) {
     if (ENDS_WITH_ITEM(json->context_stack, JSON_ARRAY)) {
         if (!ENDS_WITH_ITEM(json->string, '[')) {
             APPEND(json->string, ',');
@@ -47,7 +47,7 @@ static inline void carma_handle_json_array_delimiter(Json* json) {
     }
 }
 
-static inline void carma_handle_json_object_delimiter(Json* json) {
+static inline void carma_handle_json_object_delimiter(JsonBuilder* json) {
     if (ENDS_WITH_ITEM(json->context_stack, JSON_OBJECT)) {
         if (!ENDS_WITH_ITEM(json->string, '{')) {
             APPEND(json->string, ',');
@@ -55,24 +55,24 @@ static inline void carma_handle_json_object_delimiter(Json* json) {
     }
 }
 
-static inline void carma_begin_json_array(Json* json) {
+static inline void carma_begin_json_array(JsonBuilder* json) {
     carma_handle_json_array_delimiter(json);
     APPEND(json->string, '[');
     APPEND(json->context_stack, JSON_ARRAY);
 }
 
-static inline void carma_end_json_array(Json* json) {
+static inline void carma_end_json_array(JsonBuilder* json) {
     APPEND(json->string, ']');
     DROP_BACK(json->context_stack);
 }
 
-static inline void carma_begin_json_object(Json* json) {
+static inline void carma_begin_json_object(JsonBuilder* json) {
     carma_handle_json_array_delimiter(json);
     APPEND(json->string, '{');
     APPEND(json->context_stack, JSON_OBJECT);
 }
 
-static inline void carma_end_json_object(Json* json) {
+static inline void carma_end_json_object(JsonBuilder* json) {
     APPEND(json->string, '}');
     DROP_BACK(json->context_stack);
 }

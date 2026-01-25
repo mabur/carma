@@ -1289,28 +1289,28 @@ void test_for_each_json_object_item() {
 }
 
 void test_add_json_int() {
-    auto actual = (Json){};
+    auto actual = (JsonBuilder){};
     ADD_JSON_INT(actual, 1);
     auto expected = STRING_VIEW("1");
     ASSERT_EQUAL_RANGE("test_add_json_int", actual.string, expected);
 }
 
 void test_add_json_bool_true() {
-    auto actual = (Json){};
+    auto actual = (JsonBuilder){};
     ADD_JSON_BOOL(actual, true);
     auto expected = STRING_VIEW("true");
     ASSERT_EQUAL_RANGE("test_add_json_bool_true", actual.string, expected);
 }
 
 void test_add_json_bool_false() {
-    auto actual = (Json){};
+    auto actual = (JsonBuilder){};
     ADD_JSON_BOOL(actual, false);
     auto expected = STRING_VIEW("false");
     ASSERT_EQUAL_RANGE("test_add_json_bool_false", actual.string, expected);
 }
 
 void test_add_json_array_empty() {
-    auto actual = (Json){};
+    auto actual = (JsonBuilder){};
     ADD_JSON_ARRAY(actual) {
     }
     auto expected = STRING_VIEW("[]");
@@ -1318,7 +1318,7 @@ void test_add_json_array_empty() {
 }
 
 void test_add_json_array_single() {
-    auto actual = (Json){};
+    auto actual = (JsonBuilder){};
     ADD_JSON_ARRAY(actual) {
         ADD_JSON_INT(actual, 1);
     }
@@ -1327,7 +1327,7 @@ void test_add_json_array_single() {
 }
 
 void test_add_json_array_multiple() {
-    auto actual = (Json){};
+    auto actual = (JsonBuilder){};
     ADD_JSON_ARRAY(actual) {
         ADD_JSON_INT(actual, 1);
         ADD_JSON_INT(actual, 2);
@@ -1337,7 +1337,7 @@ void test_add_json_array_multiple() {
 }
 
 void test_add_json_object_empty() {
-    auto actual = (Json){};
+    auto actual = (JsonBuilder){};
     ADD_JSON_OBJECT(actual) {
     }
     auto expected = STRING_VIEW("{}");
@@ -1345,7 +1345,7 @@ void test_add_json_object_empty() {
 }
 
 void test_add_json_object_single() {
-    auto actual = (Json){};
+    auto actual = (JsonBuilder){};
     ADD_JSON_OBJECT(actual) {
         ADD_JSON_KEY(actual, "a");
         ADD_JSON_INT(actual, 1);
@@ -1355,7 +1355,7 @@ void test_add_json_object_single() {
 }
 
 void test_add_json_object_multiple() {
-    auto actual = (Json){};
+    auto actual = (JsonBuilder){};
     ADD_JSON_OBJECT(actual) {
         ADD_JSON_KEY(actual, "a");
         ADD_JSON_INT(actual, 1);
