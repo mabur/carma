@@ -104,9 +104,18 @@ typedef struct Json {
 } Json;
 
 static inline
-Json carma_handle_json_list_delimiter(Json* json) {
+void carma_handle_json_list_delimiter(Json* json) {
     if (ENDS_WITH_ITEM(json->context_stack, JSON_LIST)) {
         if (!ENDS_WITH_ITEM(json->string, '[')) {
+            APPEND(json->string, ',');
+        }
+    }
+}
+
+static inline
+void carma_handle_json_object_delimiter(Json* json) {
+    if (ENDS_WITH_ITEM(json->context_stack, JSON_OBJECT)) {
+        if (!ENDS_WITH_ITEM(json->string, '{')) {
             APPEND(json->string, ',');
         }
     }
@@ -123,11 +132,7 @@ Json carma_handle_json_list_delimiter(Json* json) {
     } while(0)
 
 #define ADD_JSON_KEY(json, k) do { \
-        if (ENDS_WITH_ITEM((json).context_stack, JSON_OBJECT)) { \
-            if (!ENDS_WITH_ITEM((json).string, '{')) { \
-                APPEND((json).string, ','); \
-            } \
-        } \
+        carma_handle_json_object_delimiter(&json); \
         CONCAT_STRING((json).string, "\"%s\":", k); \
     } while(0)
 
