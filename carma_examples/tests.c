@@ -162,6 +162,20 @@ void ASSERT_EQUAL_SIZE(const char* description, size_t a, size_t b) {
     } \
 } while (0)
 
+#define ASSERT_EQUAL_CARMA_STRINGS(description, left_string, right_string) do { \
+    global_assert_count++; \
+    if (ARE_EQUAL(left_string, right_string)) { \
+        printf("%s ok\n", (description)); \
+    } else { \
+        printf("%s ", (description)); \
+        PRINT_CARMA_STRING(left_string); \
+        printf(" != "); \
+        PRINT_CARMA_STRING(right_string); \
+        printf(" bad\n"); \
+        global_assert_errors++; \
+    } \
+} while (0)
+
 #define ASSERT_EQUAL_STRINGS(description, a, b) do { \
     global_assert_count++; \
     if (strcmp(a, b) == 0) { \
