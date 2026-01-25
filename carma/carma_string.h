@@ -116,7 +116,16 @@ size_t carma_find_first_character_not_of(const char* data, size_t max_index, int
     (string).data += _delimeter_length,\
     (string).count -= _delimeter_length\
     )
-    
+
+////////////////////////////////////////////////////////////////////////////////
+// PRINTING
+
+#define PRINT_CARMA_STRING(string) do { \
+    FOR_EACH(c, (string)) { \
+        putchar(*c); \
+    } \
+} while (0)
+
 ////////////////////////////////////////////////////////////////////////////////
 // FILE ALGORITHMS
 
