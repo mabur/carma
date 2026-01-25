@@ -116,6 +116,10 @@ typedef struct Json {
         CONCAT_STRING((json).string, "%s", b ? "true" : "false"); \
     } while(0)
 
+#define ADD_JSON_KEY(json, k) do { \
+        CONCAT_STRING((json).string, "\"%s\":", k); \
+    } while(0)
+
 void carma_begin_json_list(Json* json) {
     APPEND(json->string, '[');
     APPEND(json->context_stack, JSON_LIST);

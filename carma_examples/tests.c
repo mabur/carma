@@ -1341,7 +1341,17 @@ void test_add_json_object_empty() {
     ADD_JSON_OBJECT(actual) {
     }
     auto expected = STRING_VIEW("{}");
-    ASSERT_EQUAL_RANGE("test_add_json_object_empty", actual.string, expected);
+    ASSERT_EQUAL_CARMA_STRINGS("test_add_json_object_empty", actual.string, expected);
+}
+
+void test_add_json_object_single() {
+    auto actual = (Json){};
+    ADD_JSON_OBJECT(actual) {
+        ADD_JSON_KEY(actual, "a");
+        ADD_JSON_INT(actual, 1);
+    }
+    auto expected = STRING_VIEW("{\"a\":1}");
+    ASSERT_EQUAL_CARMA_STRINGS("test_add_json_object_single", actual.string, expected);
 }
 
 int main() {
@@ -1495,6 +1505,7 @@ int main() {
     test_add_json_list_multiple();
 
     test_add_json_object_empty();
+    test_add_json_object_single();
 
     summarize_tests();
     
