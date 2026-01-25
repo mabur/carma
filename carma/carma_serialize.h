@@ -2,6 +2,7 @@
 
 #include <stddef.h>
 
+#include "carma.h"
 #include "carma_string.h"
 
 /*
@@ -103,6 +104,11 @@ typedef struct Json {
 } Json;
 
 #define ADD_JSON_INT(json, i) do { \
+        if (ENDS_WITH_ITEM((json).context_stack, JSON_LIST)) { \
+            if (!ENDS_WITH_ITEM((json).string, '[')) { \
+                APPEND((json).string, ','); \
+            } \
+        } \
         CONCAT_STRING((json).string, "%i", i); \
     } while(0)
 
