@@ -1,5 +1,7 @@
 #pragma once
 
+#include "carma_string.h"
+
 /*
 
 * Use Generic to overload a single serialization function?
@@ -84,3 +86,5 @@ ADD_JSON_OBJECT(j) {
 }
 
 */
+
+#define ADD_JSON_INT(string_builder, number) CONCAT_STRING(string_builder, "%i", number)

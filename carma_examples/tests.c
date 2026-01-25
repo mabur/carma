@@ -3,6 +3,7 @@
 
 #include <carma/carma.h>
 #include <carma/carma_parse.h>
+#include <carma/carma_serialize.h>
 #include <carma/carma_string.h>
 #include <carma/carma_table.h>
 
@@ -1273,6 +1274,13 @@ void test_for_each_json_object_item() {
     ASSERT_EQUAL_RANGE("test_for_each_json_object_item", actual_values, expected_values);
 }
 
+void test_add_json_int() {
+    auto expected = STRING_VIEW("1");
+    auto actual = (StringBuilder){};
+    ADD_JSON_INT(actual, 1);
+    ASSERT_EQUAL_RANGE("test_add_json_int", actual, expected);
+}
+
 int main() {
     test_2d_array();
     test_3d_array();
@@ -1415,6 +1423,7 @@ int main() {
     test_for_each_json_list_item();
     test_parse_json_object_item_by_item();
     test_for_each_json_object_item();
+    test_add_json_int();
 
     summarize_tests();
     
