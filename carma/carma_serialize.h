@@ -103,8 +103,7 @@ typedef struct Json {
     JsonContextStack context_stack;
 } Json;
 
-static inline
-void carma_handle_json_list_delimiter(Json* json) {
+static inline void carma_handle_json_list_delimiter(Json* json) {
     if (ENDS_WITH_ITEM(json->context_stack, JSON_LIST)) {
         if (!ENDS_WITH_ITEM(json->string, '[')) {
             APPEND(json->string, ',');
@@ -112,8 +111,7 @@ void carma_handle_json_list_delimiter(Json* json) {
     }
 }
 
-static inline
-void carma_handle_json_object_delimiter(Json* json) {
+static inline void carma_handle_json_object_delimiter(Json* json) {
     if (ENDS_WITH_ITEM(json->context_stack, JSON_OBJECT)) {
         if (!ENDS_WITH_ITEM(json->string, '{')) {
             APPEND(json->string, ',');
@@ -121,42 +119,42 @@ void carma_handle_json_object_delimiter(Json* json) {
     }
 }
 
-#define ADD_JSON_INT(json, i) do { \
-        carma_handle_json_list_delimiter(&json); \
-        CONCAT_STRING((json).string, "%i", i); \
-    } while(0)
-
-#define ADD_JSON_BOOL(json, b) do { \
-        carma_handle_json_list_delimiter(&json); \
-        CONCAT_STRING((json).string, "%s", b ? "true" : "false"); \
-    } while(0)
-
-#define ADD_JSON_KEY(json, k) do { \
-        carma_handle_json_object_delimiter(&json); \
-        CONCAT_STRING((json).string, "\"%s\":", k); \
-    } while(0)
-
-void carma_begin_json_list(Json* json) {
+static inline void carma_begin_json_list(Json* json) {
     carma_handle_json_list_delimiter(json);
     APPEND(json->string, '[');
     APPEND(json->context_stack, JSON_LIST);
 }
 
-void carma_end_json_list(Json* json) {
+static inline void carma_end_json_list(Json* json) {
     APPEND(json->string, ']');
     DROP_BACK(json->context_stack);
 }
 
-void carma_begin_json_object(Json* json) {
+static inline void carma_begin_json_object(Json* json) {
     carma_handle_json_list_delimiter(json);
     APPEND(json->string, '{');
     APPEND(json->context_stack, JSON_OBJECT);
 }
 
-void carma_end_json_object(Json* json) {
+static inline void carma_end_json_object(Json* json) {
     APPEND(json->string, '}');
     DROP_BACK(json->context_stack);
 }
+
+#define ADD_JSON_INT(json, i) do { \
+    carma_handle_json_list_delimiter(&json); \
+    CONCAT_STRING((json).string, "%i", i); \
+} while(0)
+
+#define ADD_JSON_BOOL(json, b) do { \
+    carma_handle_json_list_delimiter(&json); \
+    CONCAT_STRING((json).string, "%s", b ? "true" : "false"); \
+} while(0)
+
+#define ADD_JSON_KEY(json, k) do { \
+    carma_handle_json_object_delimiter(&json); \
+    CONCAT_STRING((json).string, "\"%s\":", k); \
+} while(0)
 
 #define ADD_JSON_LIST(json) for ( \
     bool run = (carma_begin_json_list(&json), true); \
