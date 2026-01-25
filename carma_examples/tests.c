@@ -3,7 +3,7 @@
 
 #include <carma/carma.h>
 #include <carma/carma_parse.h>
-#include <carma/carma_serialize.h>
+#include <carma/carma_json_serialize.h>
 #include <carma/carma_string.h>
 #include <carma/carma_table.h>
 
