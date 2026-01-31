@@ -115,7 +115,12 @@
       - Image
     - Table
 * Translate arralg to carma
-
+* Carma för C23, gcc, clang, msvc c++
+  - auto som funkar för all
+  - block expressions som funkar för alla
+    - Immediately invoked lambda för msvc C++
+    - Extensions for gcc & clang
+  - MAKE(Particle, x, y) istället för (Particle){x, y} eller Particle{x, y}
 
 From Falco Girgis:
 // alloca()
