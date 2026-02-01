@@ -1534,6 +1534,8 @@ int main() {
 
     CHECK_INTERNAL(true);
     CHECK_EXTERNAL(true, "Some external error");
+    (void)CHECK_INTERNAL_VALUE(1, true);
+    (void)CHECK_EXTERNAL_VALUE(1, true, "Some external error");
 
     summarize_tests();
     
