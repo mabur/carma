@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include <carma/carma.h>
+#include <carma/carma_assert.h>
 #include <carma/carma_parse.h>
 #include <carma/carma_json_serialize.h>
 #include <carma/carma_string.h>
@@ -1530,6 +1531,9 @@ int main() {
     test_add_json_object_empty();
     test_add_json_object_single();
     test_add_json_object_multiple();
+
+    CHECK_INTERNAL(true);
+    CHECK_EXTERNAL(true, "check external");
 
     summarize_tests();
     
