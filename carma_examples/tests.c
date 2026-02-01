@@ -1533,7 +1533,7 @@ int main() {
     test_add_json_object_multiple();
 
     CHECK_INTERNAL(true);
-    CHECK_EXTERNAL(true, "check external");
+    CHECK_EXTERNAL(true, "Some external error");
 
     summarize_tests();
     
