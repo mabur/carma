@@ -1297,6 +1297,12 @@ void test_parse_json_key() {
     ASSERT_EQUAL_RANGE("test_parse_json_key", value, (STRING_VIEW("2")));
 }
 
+void test_parse_json_key_int_or_exit() {
+    auto string = STRING_VIEW("{ \"a\" : 1 , \"b\": 2 , \"c\": 3 }");
+    auto value = parse_json_key_int_or_exit(string, "b");
+    ASSERT_EQUAL_INT("test_parse_json_key_int_or_exit", value, 2);
+}
+
 void test_add_json_int() {
     auto actual = (JsonBuilder){};
     ADD_JSON_INT(actual, 1);
@@ -1521,6 +1527,7 @@ int main() {
     test_parse_json_object_item_by_item();
     test_for_each_json_object_item();
     test_parse_json_key();
+    test_parse_json_key_int_or_exit();
 
     test_add_json_int();
     test_add_json_bool_true();

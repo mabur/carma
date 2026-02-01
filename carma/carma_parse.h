@@ -4,6 +4,7 @@
 #include <stddef.h>
 
 #include "carma.h"
+#include "carma_assert.h"
 #include "carma_string.h"
 
 /*
@@ -391,4 +392,12 @@ StringView parse_json_key(StringView s, const char* key) {
         }
     }
     return (StringView){};
+}
+
+static inline
+int parse_json_key_int_or_exit(StringView s, const char* key) {
+    auto value = parse_json_key(s, key);
+    auto optional_int = parse_int(&value);
+    CHECK_EXTERNAL(!IS_EMPTY(optional_int), "Could not parse int");
+    return GET_OPTIONAL(optional_int);
 }
