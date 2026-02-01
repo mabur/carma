@@ -1288,6 +1288,12 @@ void test_for_each_json_object_item() {
     ASSERT_EQUAL_RANGE("test_for_each_json_object_item", actual_values, expected_values);
 }
 
+void test_parse_json_key() {
+    auto string = STRING_VIEW("{ \"a\" : 1 , \"b\": 2 , \"c\": 3 }");
+    auto value = parse_json_key(string, "b");
+    ASSERT_EQUAL_RANGE("test_parse_json_key", value, (STRING_VIEW("2")));
+}
+
 void test_add_json_int() {
     auto actual = (JsonBuilder){};
     ADD_JSON_INT(actual, 1);
@@ -1511,6 +1517,8 @@ int main() {
     test_for_each_json_array_item();
     test_parse_json_object_item_by_item();
     test_for_each_json_object_item();
+    test_parse_json_key();
+
     test_add_json_int();
     test_add_json_bool_true();
     test_add_json_bool_false();

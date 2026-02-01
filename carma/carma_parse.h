@@ -381,3 +381,13 @@ StringView parse_json_item(StringView* s) {
         (key) = parse_next_json_object_key(&object), \
         (value) = parse_next_json_object_value(&object) \
     )
+
+static inline
+StringView parse_json_key(StringView s, const char* key) {
+    auto key2 = STRING_VIEW(key);
+    FOR_EACH_JSON_OBJECT_ITEM(k, v, s) {
+        if (ARE_EQUAL(key2, k)) {
+            return v;
+        }
+    }
+}
