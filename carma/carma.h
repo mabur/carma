@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdbool.h>
 
+#include "carma_assert.h"
 #include "carma_type_inference.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -295,6 +296,12 @@ static inline bool carma_are_bits_equal(
 
 #define GET_OPTIONAL_OR(optional, default_item) \
     (IS_EMPTY(optional) ? (default_item) : GET_OPTIONAL(optional))
+
+#define GET_OPTIONAL_OR_ABORT(optional) \
+    CHECK_INTERNAL_VALUE(GET_OPTIONAL(optional), !IS_EMPTY(optional))
+
+#define GET_OPTIONAL_OR_EXIT(optional, fmt, ...) \
+    CHECK_EXTERNAL_VALUE(GET_OPTIONAL(optional), !IS_EMPTY(optional), fmt, ##__VA_ARGS__)
 
 ////////////////////////////////////////////////////////////////////////////////
 // DYNAMIC ARRAY ALGORITHMS

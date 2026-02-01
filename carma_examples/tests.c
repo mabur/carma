@@ -932,6 +932,8 @@ void test_optional() {
     FOR_EACH(x, optional) {
         ASSERT_EQUAL_INT("Optional FOR_EACH 4", *x, 4);
     }
+    (void)GET_OPTIONAL_OR_ABORT(optional);
+    (void)GET_OPTIONAL_OR_EXIT(optional, "error message");
     CLEAR(optional);
     ASSERT_EQUAL_SIZE("Optional CLEAR", optional.count, 0);
 }
