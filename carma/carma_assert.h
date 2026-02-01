@@ -22,13 +22,13 @@
 #define CHECK_INTERNAL_VALUE(value, condition) \
     ((condition) ? (value) \
         : (fprintf(stderr, "CHECK_INTERNAL failed at %s:%d\n", __FILE__, __LINE__), \
-           fflush(stderr), \
-           abort(), \
-           (value)) )
+            fflush(stderr), \
+            abort(), \
+            (value)))
 
 #define CHECK_EXTERNAL_VALUE(value, condition, fmt, ...) \
     ((condition) ? (value) \
         : (fprintf(stderr, "CHECK_EXTERNAL failed at %s:%d: " fmt "\n", __FILE__, __LINE__, ##__VA_ARGS__), \
             fflush(stderr), \
             exit(EXIT_FAILURE), \
-            (value)) )
+            (value)))
