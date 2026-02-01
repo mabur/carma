@@ -34,6 +34,9 @@ s = result.string;
 Return optional, for error handling?
 
 Can wrap function calls in a macro to skip pointer syntax noise.
+
+* Make parse_json_key_int_or_exit report outer file and line on failure.
+* Have either both parse_int_advance(&s) and parse_int(s) functions, or convert to macro
 */
 
 typedef struct OptionalInt {
