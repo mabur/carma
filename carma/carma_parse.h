@@ -390,4 +390,5 @@ StringView parse_json_key(StringView s, const char* key) {
             return v;
         }
     }
+    return (StringView){};
 }
