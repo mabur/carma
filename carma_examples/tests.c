@@ -1192,6 +1192,13 @@ void test_parse_int() {
     ASSERT_EQUAL_RANGE("PARSE_INT", string, (STRING_VIEW("")));
 }
 
+void test_parse_int_or_exit() {
+    auto string = STRING_VIEW("15");
+    auto value = PARSE_INT_OR_EXIT(string);
+    ASSERT_EQUAL_INT("PARSE_INT_OR_EXIT", value, 15);
+    ASSERT_EQUAL_RANGE("PARSE_INT_OR_EXIT", string, (STRING_VIEW("")));
+}
+
 void test_parse_int_as_string() {
     auto string = STRING_VIEW("+15 , 17");
     auto value = parse_int_as_string(&string);
@@ -1515,6 +1522,7 @@ int main() {
     test_table_available_keys();
 
     test_parse_int();
+    test_parse_int_or_exit();
     test_parse_int_as_string();
     test_parse_line();
     test_parse_whitespace();

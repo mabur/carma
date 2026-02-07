@@ -87,6 +87,15 @@ OptionalInt parse_int(StringView* s) {
 #define PARSE_INT(s) parse_int(&(s))
 
 static inline
+int parse_int_or_exit(StringView* s) {
+    auto optional_int = parse_int(s);
+    CHECK_EXTERNAL(!IS_EMPTY(optional_int), "Could not parse int");
+    return GET_OPTIONAL(optional_int);
+}
+
+#define PARSE_INT_OR_EXIT(s) parse_int_or_exit(&(s))
+
+static inline
 StringView parse_int_as_string(StringView* s) {
     auto input_data = s->data;
     auto input_count = s->count;
