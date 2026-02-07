@@ -2,6 +2,7 @@
 
 #include <limits.h>
 #include <stddef.h>
+#include <stdint.h>
 
 #include "carma.h"
 #include "carma_assert.h"
@@ -27,6 +28,11 @@ typedef struct OptionalInt {
     size_t count;
 } OptionalInt;
 
+typedef struct OptionalU64 {
+    uint64_t data[1];
+    size_t count;
+} OptionalU64;
+
 typedef struct OptionalDouble {
     double data[1];
     size_t count;
@@ -44,6 +50,24 @@ bool is_whitespace(char c) {
 
 static inline
 StringView parse_json_item(StringView* s);
+
+static inline
+OptionalU64 parse_u64(StringView* s) {
+    uint64_t parsed_value = 0;
+    int has_parsed_digits = false;
+    while (!IS_EMPTY(*s) && is_digit(FIRST_ITEM(*s))) {
+        parsed_value *= 10;
+        parsed_value += FIRST_ITEM(*s) - '0';
+        DROP_FRONT(*s);
+        has_parsed_digits = true;
+    }
+    if (has_parsed_digits) {
+        return (OptionalU64){.data={parsed_value}, .count=1};
+    }
+    return (OptionalU64){};
+}
+
+#define PARSE_U64(s) parse_u64(&(s))
 
 static inline
 OptionalInt parse_int(StringView* s) {

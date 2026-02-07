@@ -1195,6 +1195,13 @@ void test_table_available_keys() {
     ASSERT_EQUAL_INT("test_table_available_2_keys", value, 5);
 }
 
+void test_parse_u64() {
+    auto string = STRING_VIEW("15");
+    auto value = PARSE_U64(string);
+    ASSERT_EQUAL_SIZE("PARSE_U64", GET_OPTIONAL(value), 15);
+    ASSERT_EQUAL_RANGE("PARSE_U64", string, (STRING_VIEW("")));
+}
+
 void test_parse_int() {
     auto string = STRING_VIEW("15");
     auto value = PARSE_INT(string);
@@ -1534,6 +1541,7 @@ int main() {
     test_table_available_key();
     test_table_available_keys();
 
+    test_parse_u64();
     test_parse_int();
     test_parse_int_or_exit();
     test_parse_int_as_string();
