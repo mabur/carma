@@ -291,19 +291,16 @@ static inline
 StringView parse_next_json_object_key(StringView* s) {
     // In case of } it advances the input past } and returns an empty string.
     // In case of ,"k":v} it advances the input past ,"key" and returns the key.
-    StringView parsed_string = *s;
-    if (parse_structural_character(&parsed_string, '}')) {
-        *s = parsed_string;
+    if (parse_structural_character(s, '}')) {
         return (StringView){};
     }
-    if (!parse_structural_character(&parsed_string, ',')) {
+    if (!parse_structural_character(s, ',')) {
         return (StringView){};
     }
-    auto result = parse_quoted_string(&parsed_string);
+    auto result = parse_quoted_string(s);
     if (IS_EMPTY(result)){
         return (StringView){};
     }
-    *s = parsed_string;
     return result;
 }
 
