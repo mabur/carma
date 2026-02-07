@@ -161,14 +161,12 @@ StringView parse_quoted_string(StringView* s) {
 
 static inline
 bool parse_structural_character(StringView* s, char c) {
-    StringView parsed_string = *s;
-    parse_whitespace(&parsed_string);
-    if (!STARTS_WITH_ITEM(parsed_string, c)) {
+    parse_whitespace(s);
+    if (!STARTS_WITH_ITEM(*s, c)) {
         return false;
     }
-    DROP_FRONT(parsed_string);
-    parse_whitespace(&parsed_string);
-    *s = parsed_string;
+    DROP_FRONT(*s);
+    parse_whitespace(s);
     return true;
 }
 
