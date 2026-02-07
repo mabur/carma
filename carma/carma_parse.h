@@ -71,27 +71,18 @@ OptionalU64 parse_u64(StringView* s) {
 
 static inline
 OptionalInt parse_int(StringView* s) {
-    int parsed_value = 0;
     int sign = +1;
-    int has_parsed_digits = false;
-    if (IS_EMPTY(*s)) {
-        return (OptionalInt){};
-    }
-    if (FIRST_ITEM(*s) == '-') {
+    if (STARTS_WITH_ITEM(*s, '-')) {
         sign = -1;
         DROP_FRONT(*s);
     }
-    while (!IS_EMPTY(*s) && is_digit(FIRST_ITEM(*s))) {
-        parsed_value *= 10;
-        parsed_value += FIRST_ITEM(*s) - '0';
-        DROP_FRONT(*s);
-        has_parsed_digits = true;
-    }
-    if (!has_parsed_digits) {
+    OptionalU64 x = parse_u64(s);
+    if (IS_EMPTY(x)) {
         return (OptionalInt){};
     }
-    return (OptionalInt){.data={parsed_value * sign}, .count=1};
+    return (OptionalInt){.data={(int)x.data[0] * sign}, .count=1};
 }
+
 
 #define PARSE_INT(s) parse_int(&(s))
 
