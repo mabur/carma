@@ -1251,10 +1251,8 @@ void test_for_each_json_array_item() {
     auto expected = MAKE_DARRAY(IntArray, 1, 2, 3);
     auto actual = (IntArray){};
     FOR_EACH_JSON_ARRAY_ITEM(item, string) {
-        auto optional_int = PARSE_INT(item);
-        FOR_EACH(it, optional_int) {
-            APPEND(actual, *it);
-        }
+        auto number = PARSE_INT_OR_EXIT(item);
+        APPEND(actual, number);
     }
     ASSERT_EQUAL_RANGE("test_for_each_json_array_item", actual, expected);
 }
