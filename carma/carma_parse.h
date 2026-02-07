@@ -17,26 +17,9 @@ parse_quoted_string
 parse_word
 parse_white_space
 
-auto x = 0;
-parse_int(&s, &x);
-
-auto x = 0;
-PARSE_INT(s, x);
-
-auto x = parse_int(&s);
-
-auto x = PARSE_INT(s);
-
-auto result = PARSE_INT(s);
-auto x = result.value;
-s = result.string;
-
-Return optional, for error handling?
-
-Can wrap function calls in a macro to skip pointer syntax noise.
-
 * Make parse_json_key_int_or_exit report outer file and line on failure.
-* Have either both parse_int_advance(&s) and parse_int(s) functions, or convert to macro
+* More principled distinction between empty collections and parsing failure for
+  strings, arrays, objects.
 */
 
 typedef struct OptionalInt {
