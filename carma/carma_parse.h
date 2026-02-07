@@ -193,9 +193,7 @@ static inline
 StringView parse_json_object_value(StringView* s) {
     StringView parsed_string = *s;
     parse_whitespace(&parsed_string);
-    StringView value = {parsed_string.data, 0};
-    parse_json_item(&parsed_string);
-    value.count = parsed_string.data - value.data;
+    auto value = parse_json_item(&parsed_string);
     if (IS_EMPTY(value)) {
         return (StringView){};
     }
