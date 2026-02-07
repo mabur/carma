@@ -376,7 +376,5 @@ StringView parse_json_key(StringView s, const char* key) {
 static inline
 int parse_json_key_int_or_exit(StringView s, const char* key) {
     auto value = parse_json_key(s, key);
-    auto optional_int = PARSE_INT(value);
-    CHECK_EXTERNAL(!IS_EMPTY(optional_int), "Could not parse int");
-    return GET_OPTIONAL(optional_int);
+    return PARSE_INT_OR_EXIT(value);
 }
