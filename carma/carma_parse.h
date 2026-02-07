@@ -238,24 +238,22 @@ StringView parse_next_json_array_item(StringView* s) {
 
 static inline
 StringView parse_json_array(StringView* s) {
-    StringView parsed_string = *s;
-    StringView array = {parsed_string.data, 0};
-    if (!parse_structural_character(&parsed_string, '[')) {
+    StringView array = {s->data, 0};
+    if (!parse_structural_character(s, '[')) {
         return (StringView){};
     }
-    while (!IS_EMPTY(parsed_string) && FIRST_ITEM(parsed_string) != ']') {
-        if (IS_EMPTY(parse_json_item(&parsed_string))) {
+    while (!IS_EMPTY(*s) && FIRST_ITEM(*s) != ']') {
+        if (IS_EMPTY(parse_json_item(s))) {
             return (StringView){};
         }
-        if (!parse_structural_character(&parsed_string, ',')) {
+        if (!parse_structural_character(s, ',')) {
             break;
         }
     }
-    if (!parse_structural_character(&parsed_string, ']')) {
+    if (!parse_structural_character(s, ']')) {
         return (StringView){};
     }
-    array.count = parsed_string.data - array.data;
-    *s = parsed_string;
+    array.count = s->data - array.data;
     return array;
 }
 
