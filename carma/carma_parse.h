@@ -277,15 +277,13 @@ StringView parse_first_json_object_key(StringView* s) {
 static inline
 StringView parse_next_json_object_value(StringView* s) {
     // In case of :v} it advances the input past :v and returns the value.
-    StringView parsed_string = *s;
-    if (!parse_structural_character(&parsed_string, ':')) {
+    if (!parse_structural_character(s, ':')) {
         return (StringView){};
     }
-    auto result = parse_json_item(&parsed_string);
+    auto result = parse_json_item(s);
     if (IS_EMPTY(result)){
         return (StringView){};
     }
-    *s = parsed_string;
     return result;
 }
 
