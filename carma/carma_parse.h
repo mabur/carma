@@ -306,21 +306,19 @@ StringView parse_next_json_object_key(StringView* s) {
 
 static inline
 StringView parse_json_object(StringView* s) {
-    StringView parsed_string = *s;
-    StringView object = {parsed_string.data, 0};
-    if (!parse_structural_character(&parsed_string, '{')) {
+    StringView object = {s->data, 0};
+    if (!parse_structural_character(s, '{')) {
         return (StringView){};
     }
-    while (!parse_structural_character(&parsed_string, '}')) {
-        if (IS_EMPTY(parse_json_object_key(&parsed_string))) {
+    while (!parse_structural_character(s, '}')) {
+        if (IS_EMPTY(parse_json_object_key(s))) {
             return (StringView){};
         }
-        if (IS_EMPTY(parse_json_object_value(&parsed_string))) {
+        if (IS_EMPTY(parse_json_object_value(s))) {
             return (StringView){};
         }
     }
-    object.count = parsed_string.data - object.data;
-    *s = parsed_string;
+    object.count = s->data - object.data;
     return object;
 }
 
