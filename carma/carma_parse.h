@@ -174,6 +174,8 @@ StringView parse_quoted_string(StringView* s) {
     return value;
 }
 
+#define PARSE_QUOTED_STRING(s) parse_quoted_string(&(s))
+
 static inline
 bool parse_structural_character(StringView* s, char c) {
     parse_whitespace(s);
