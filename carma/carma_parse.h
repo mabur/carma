@@ -84,6 +84,8 @@ OptionalInt parse_int(StringView* s) {
     return (OptionalInt){.data={parsed_value * sign}, .count=1};
 }
 
+#define PARSE_INT(s) parse_int(&(s))
+
 static inline
 StringView parse_int_as_string(StringView* s) {
     auto input_data = s->data;
@@ -365,7 +367,7 @@ StringView parse_json_key(StringView s, const char* key) {
 static inline
 int parse_json_key_int_or_exit(StringView s, const char* key) {
     auto value = parse_json_key(s, key);
-    auto optional_int = parse_int(&value);
+    auto optional_int = PARSE_INT(value);
     CHECK_EXTERNAL(!IS_EMPTY(optional_int), "Could not parse int");
     return GET_OPTIONAL(optional_int);
 }

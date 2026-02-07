@@ -1187,9 +1187,9 @@ void test_table_available_keys() {
 
 void test_parse_int() {
     auto string = STRING_VIEW("15");
-    auto value = parse_int(&string);
-    ASSERT_EQUAL_INT("parse_int", GET_OPTIONAL(value), 15);
-    ASSERT_EQUAL_RANGE("parse_int", string, (STRING_VIEW("")));
+    auto value = PARSE_INT(string);
+    ASSERT_EQUAL_INT("PARSE_INT", GET_OPTIONAL(value), 15);
+    ASSERT_EQUAL_RANGE("PARSE_INT", string, (STRING_VIEW("")));
 }
 
 void test_parse_int_as_string() {
@@ -1231,7 +1231,7 @@ void test_parse_json_array_item_by_item() {
     auto expected = MAKE_DARRAY(IntArray, 1, 2, 3);
     auto actual = (IntArray){};
     for (auto item = parse_first_json_array_item(&string); !IS_EMPTY(item); item = parse_next_json_array_item(&string)) {
-        auto optional_int = parse_int(&item);
+        auto optional_int = PARSE_INT(item);
         FOR_EACH(it, optional_int) {
             APPEND(actual, *it);
         }
@@ -1244,7 +1244,7 @@ void test_for_each_json_array_item() {
     auto expected = MAKE_DARRAY(IntArray, 1, 2, 3);
     auto actual = (IntArray){};
     FOR_EACH_JSON_ARRAY_ITEM(item, string) {
-        auto optional_int = parse_int(&item);
+        auto optional_int = PARSE_INT(item);
         FOR_EACH(it, optional_int) {
             APPEND(actual, *it);
         }
@@ -1270,7 +1270,7 @@ void test_parse_json_object_item_by_item() {
         k = parse_next_json_object_key(&string),
         v = parse_next_json_object_value(&string)
     ) {
-        auto optional_int = parse_int(&v);
+        auto optional_int = PARSE_INT(v);
         FOR_EACH(it, optional_int) {
             APPEND(actual_values, *it);
         }
@@ -1283,7 +1283,7 @@ void test_for_each_json_object_item() {
     auto expected_values = MAKE_DARRAY(IntArray, 1, 2);
     auto actual_values = (IntArray){};
     FOR_EACH_JSON_OBJECT_ITEM(k, v, string) {
-        auto optional_int = parse_int(&v);
+        auto optional_int = PARSE_INT(v);
         FOR_EACH(it, optional_int) {
             APPEND(actual_values, *it);
         }
