@@ -52,9 +52,6 @@ OptionalInt parse_int(StringView* s) {
         sign = -1;
         DROP_FRONT(*s);
     }
-    else if (FIRST_ITEM(*s) == '+') {
-        DROP_FRONT(*s);
-    }
     while (!IS_EMPTY(*s) && is_digit(FIRST_ITEM(*s))) {
         parsed_value *= 10;
         parsed_value += FIRST_ITEM(*s) - '0';
