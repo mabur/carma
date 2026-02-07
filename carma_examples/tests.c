@@ -1228,9 +1228,9 @@ void test_parse_quoted_string() {
 
 void test_parse_json_array() {
     auto string = STRING_VIEW("[ 1, 2 ,3 ], 4");
-    auto value = parse_json_array(&string);
-    ASSERT_EQUAL_RANGE("parse_json_array", value, (STRING_VIEW("[ 1, 2 ,3 ]")));
-    ASSERT_EQUAL_RANGE("parse_json_array", string, (STRING_VIEW(", 4")));
+    auto value = PARSE_JSON_ARRAY(string);
+    ASSERT_EQUAL_RANGE("PARSE_JSON_ARRAY", value, (STRING_VIEW("[ 1, 2 ,3 ]")));
+    ASSERT_EQUAL_RANGE("PARSE_JSON_ARRAY", string, (STRING_VIEW(", 4")));
 }
 
 void test_parse_json_array_item_by_item() {

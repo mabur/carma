@@ -274,6 +274,8 @@ StringView parse_json_array(StringView* s) {
     return array;
 }
 
+#define PARSE_JSON_ARRAY(s) parse_json_array(&(s))
+
 static inline
 StringView parse_first_json_object_key(StringView* s) {
     // In case of {} it advances the input past {}, and returns an empty string.
