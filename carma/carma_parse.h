@@ -373,9 +373,9 @@ StringView parse_json_item(StringView* s) {
     )
 
 static inline
-StringView parse_json_key(StringView s, const char* key) {
+StringView parse_json_key(StringView* s, const char* key) {
     auto key2 = STRING_VIEW(key);
-    FOR_EACH_JSON_OBJECT_ITEM(k, v, s) {
+    FOR_EACH_JSON_OBJECT_ITEM(k, v, *s) {
         if (ARE_EQUAL(key2, k)) {
             return v;
         }
@@ -383,8 +383,10 @@ StringView parse_json_key(StringView s, const char* key) {
     return (StringView){};
 }
 
+#define PARSE_JSON_KEY(s, key) parse_json_key(&(s), (key))
+
 static inline
 int parse_json_key_int_or_exit(StringView s, const char* key) {
-    auto value = parse_json_key(s, key);
+    auto value = parse_json_key(&s, key);
     return PARSE_INT_OR_EXIT(value);
 }
