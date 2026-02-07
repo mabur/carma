@@ -341,6 +341,8 @@ StringView parse_json_object(StringView* s) {
     return object;
 }
 
+#define PARSE_JSON_OBJECT(s) parse_json_object(&(s))
+
 static inline
 StringView parse_json_item(StringView* s) {
     parse_whitespace(s);

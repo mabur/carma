@@ -1259,9 +1259,9 @@ void test_for_each_json_array_item() {
 
 void test_parse_json_object() {
     auto string = STRING_VIEW("{\"key\" : 1}, 2");
-    auto value = parse_json_object(&string);
-    ASSERT_EQUAL_RANGE("parse_json_object", value, (STRING_VIEW("{\"key\" : 1}")));
-    ASSERT_EQUAL_RANGE("parse_json_object", string, (STRING_VIEW(", 2")));
+    auto value = PARSE_JSON_OBJECT(string);
+    ASSERT_EQUAL_RANGE("PARSE_JSON_OBJECT", value, (STRING_VIEW("{\"key\" : 1}")));
+    ASSERT_EQUAL_RANGE("PARSE_JSON_OBJECT", string, (STRING_VIEW(", 2")));
 }
 
 void test_parse_json_object_item_by_item() {
