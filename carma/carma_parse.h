@@ -86,22 +86,21 @@ OptionalInt parse_int(StringView* s) {
 
 static inline
 StringView parse_int_as_string(StringView* s) {
-    StringView parsed_string = *s;
-    if (IS_EMPTY(parsed_string)) {
+    auto input_data = s->data;
+    auto input_count = s->count;
+    if (IS_EMPTY(*s)) {
         return (StringView){};
     }
-    if (FIRST_ITEM(parsed_string) == '+' || FIRST_ITEM(parsed_string) == '-') {
-        DROP_FRONT(parsed_string);
+    if (FIRST_ITEM(*s) == '+' || FIRST_ITEM(*s) == '-') {
+        DROP_FRONT(*s);
     }
-    if (IS_EMPTY(parsed_string) || !is_digit(FIRST_ITEM(parsed_string))) {
+    if (IS_EMPTY(*s) || !is_digit(FIRST_ITEM(*s))) {
         return (StringView){};
     }
-    while (!IS_EMPTY(parsed_string) && is_digit(FIRST_ITEM(parsed_string))) {
-        DROP_FRONT(parsed_string);
+    while (!IS_EMPTY(*s) && is_digit(FIRST_ITEM(*s))) {
+        DROP_FRONT(*s);
     }
-    auto result = (StringView){.data=s->data, .count = s->count - parsed_string.count};
-    *s = parsed_string;
-    return result;
+    return (StringView){.data=input_data, .count=input_count - s->count};
 }
 
 static inline
