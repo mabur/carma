@@ -71,16 +71,16 @@ OptionalU64 parse_u64(StringView* s) {
 
 static inline
 OptionalInt parse_int(StringView* s) {
-    int sign = +1;
+    auto sign = +1;
     if (STARTS_WITH_ITEM(*s, '-')) {
         sign = -1;
         DROP_FRONT(*s);
     }
-    OptionalU64 x = parse_u64(s);
-    if (IS_EMPTY(x)) {
-        return (OptionalInt){};
+    auto abs_value = parse_u64(s);
+    FOR_EACH(it, abs_value) {
+        return (OptionalInt){.data={sign * (int)(*it)}, .count=1};
     }
-    return (OptionalInt){.data={(int)x.data[0] * sign}, .count=1};
+    return (OptionalInt){};
 }
 
 
