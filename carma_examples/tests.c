@@ -1288,10 +1288,8 @@ void test_for_each_json_object_item() {
     auto expected_values = MAKE_DARRAY(IntArray, 1, 2);
     auto actual_values = (IntArray){};
     FOR_EACH_JSON_OBJECT_ITEM(k, v, string) {
-        auto optional_int = PARSE_INT(v);
-        FOR_EACH(it, optional_int) {
-            APPEND(actual_values, *it);
-        }
+        auto number = PARSE_INT_OR_EXIT(v);
+        APPEND(actual_values, number);
     }
     ASSERT_EQUAL_RANGE("test_for_each_json_object_item", actual_values, expected_values);
 }
