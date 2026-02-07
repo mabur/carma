@@ -121,30 +121,28 @@ static inline OptionalDouble parse_double(StringView* s) {
         sign = -1.0;
         DROP_FRONT(*s);
     }
-    auto int_part = parse_u64(s);
-    auto int_value = 0.0;
-    if (int_part.count) {
-        int_value = (double)int_part.data[0];
+    auto integral = 0.0;
+    auto optional_integral = parse_u64(s);
+    FOR_EACH(it, optional_integral) {
+        integral = (double)(*it);
         has_any_digits = true;
     }
-    auto fraction_value = 0.0;
+    auto fractional = 0.0;
     if (STARTS_WITH_ITEM(*s, '.')) {
         DROP_FRONT(*s);
-        StringView frac_start = *s;
-        OptionalU64 frac_part = parse_u64(s);
-        if (frac_part.count) {
-            uint64_t frac_u = frac_part.data[0];
-            int frac_digits = (int)(frac_start.count - s->count);
-            double frac = (double)frac_u;
-            while (frac_digits--) {
-                frac *= 0.1;
+        auto count_before = s->count;
+        auto optional_fractional = parse_u64(s);
+        FOR_EACH(it, optional_fractional) {
+            fractional = (double)(*it);
+            auto digit_count = (int)(count_before - s->count);
+            while (digit_count--) {
+                fractional *= 0.1;
             }
-            fraction_value += frac;
             has_any_digits = true;
         }
     }
     if (has_any_digits) {
-        return (OptionalDouble){.data={sign * (int_value + fraction_value)}, .count=1};
+        return (OptionalDouble){.data={sign * (integral + fractional)}, .count=1};
     }
     return (OptionalDouble){};
 }
