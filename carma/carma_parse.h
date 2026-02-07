@@ -24,7 +24,7 @@ parse_white_space
 
 typedef struct OptionalInt {
     int data[1];
-    int count;
+    size_t count;
 } OptionalInt;
 
 static inline
