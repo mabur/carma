@@ -116,7 +116,6 @@ StringView parse_int_as_string(StringView* s) {
 
 static inline OptionalDouble parse_double(StringView* s) {
     auto sign = +1.0;
-    auto has_any_digits = false;
     if (STARTS_WITH_ITEM(*s, '-')) {
         sign = -1.0;
         DROP_FRONT(*s);
@@ -125,23 +124,21 @@ static inline OptionalDouble parse_double(StringView* s) {
     auto optional_integral = parse_u64(s);
     FOR_EACH(it, optional_integral) {
         integral = (double)(*it);
-        has_any_digits = true;
     }
     auto fractional = 0.0;
+    auto optional_fractional = (OptionalU64){};
     if (STARTS_WITH_ITEM(*s, '.')) {
         DROP_FRONT(*s);
-        auto count_before = s->count;
-        auto optional_fractional = parse_u64(s);
+        auto count = s->count;
+        optional_fractional = parse_u64(s);
         FOR_EACH(it, optional_fractional) {
             fractional = (double)(*it);
-            auto digit_count = (int)(count_before - s->count);
-            while (digit_count--) {
+            for (; count > s->count; --count) {
                 fractional *= 0.1;
             }
-            has_any_digits = true;
         }
     }
-    if (has_any_digits) {
+    if (!IS_EMPTY(optional_integral) || !IS_EMPTY(optional_fractional)) {
         return (OptionalDouble){.data={sign * (integral + fractional)}, .count=1};
     }
     return (OptionalDouble){};
