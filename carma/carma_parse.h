@@ -115,40 +115,40 @@ StringView parse_int_as_string(StringView* s) {
 }
 
 static inline OptionalDouble parse_double(StringView* s) {
-    auto parsed_value = 0.0;
-    auto frac_scale = 0.1;
     auto sign = +1.0;
-    auto has_parsed_any_digits = false;
-    if (IS_EMPTY(*s)) {
-        return (OptionalDouble){};
-    }
-    if (FIRST_ITEM(*s) == '-') {
+    auto has_any_digits = false;
+    if (STARTS_WITH_ITEM(*s, '-')) {
         sign = -1.0;
         DROP_FRONT(*s);
     }
-    while (!IS_EMPTY(*s) && is_digit(FIRST_ITEM(*s))) {
-        parsed_value *= 10.0;
-        parsed_value += (double)(FIRST_ITEM(*s) - '0');
-        DROP_FRONT(*s);
-        has_parsed_any_digits = true;
+    auto int_part = parse_u64(s);
+    auto int_value = 0.0;
+    if (int_part.count) {
+        int_value = (double)int_part.data[0];
+        has_any_digits = true;
     }
-    if (STARTS_WITH_ITEM(*s,  '.')) {
+    auto fraction_value = 0.0;
+    if (STARTS_WITH_ITEM(*s, '.')) {
         DROP_FRONT(*s);
-        while (!IS_EMPTY(*s) && is_digit(FIRST_ITEM(*s))) {
-            parsed_value += (double)(FIRST_ITEM(*s) - '0') * frac_scale;
-            frac_scale *= 0.1;
-            DROP_FRONT(*s);
-            has_parsed_any_digits = true;
+        StringView frac_start = *s;
+        OptionalU64 frac_part = parse_u64(s);
+        if (frac_part.count) {
+            uint64_t frac_u = frac_part.data[0];
+            int frac_digits = (int)(frac_start.count - s->count);
+            double frac = (double)frac_u;
+            while (frac_digits--) {
+                frac *= 0.1;
+            }
+            fraction_value += frac;
+            has_any_digits = true;
         }
     }
-    if (!has_parsed_any_digits) {
-        return (OptionalDouble){};
+    if (has_any_digits) {
+        return (OptionalDouble){.data={sign * (int_value + fraction_value)}, .count=1};
     }
-    if (STARTS_WITH_ITEM(*s, 'e') || STARTS_WITH_ITEM(*s, 'E')) {
-        return (OptionalDouble){};
-    }
-    return (OptionalDouble){.data={parsed_value * sign}, .count=1};
+    return (OptionalDouble){};
 }
+
 
 #define PARSE_DOUBLE(s) parse_double(&(s))
 
