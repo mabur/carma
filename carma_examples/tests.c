@@ -1302,7 +1302,7 @@ void test_parse_json_key() {
 
 void test_parse_json_key_int_or_exit() {
     auto string = STRING_VIEW("{ \"a\" : 1 , \"b\": 2 , \"c\": 3 }");
-    auto value = parse_json_key_int_or_exit(string, "b");
+    auto value = PARSE_JSON_KEY_INT_OR_EXIT(string, "b");
     ASSERT_EQUAL_INT("test_parse_json_key_int_or_exit", value, 2);
 }
 
