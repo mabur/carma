@@ -172,16 +172,14 @@ bool parse_structural_character(StringView* s, char c) {
 
 static inline
 StringView parse_json_object_key(StringView* s) {
-    StringView parsed_string = *s;
-    parse_whitespace(&parsed_string);
-    auto key = parse_quoted_string(&parsed_string);
+    parse_whitespace(s);
+    auto key = parse_quoted_string(s);
     if (IS_EMPTY(key)) {
         return (StringView){};
     }
-    if (!parse_structural_character(&parsed_string, ':')) {
+    if (!parse_structural_character(s, ':')) {
         return (StringView){};
     }
-    *s = parsed_string;
     return key;
 }
 
