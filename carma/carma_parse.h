@@ -353,23 +353,16 @@ StringView parse_json_object(StringView* s) {
 static inline
 StringView parse_json_item(StringView* s) {
     parse_whitespace(s);
-    auto number = parse_int_as_string(s);
-    if (!IS_EMPTY(number)) {
-        return number;
+    if (IS_EMPTY(*s)) {
+        return (StringView){};
     }
-    auto string = parse_quoted_string(s);
-    if (!IS_EMPTY(string)) {
-        return string;
+    auto c = FIRST_ITEM(*s);
+    switch (c) {
+        case '{': return parse_json_object(s);
+        case '[': return parse_json_array(s);
+        case '"': return parse_quoted_string(s);
     }
-    auto array = parse_json_array(s);
-    if (!IS_EMPTY(array)) {
-        return array;
-    }
-    auto object = parse_json_object(s);
-    if (!IS_EMPTY(object)) {
-        return object;
-    }
-    return (StringView){};
+    return parse_int_as_string(s);
 }
 
 #define FOR_EACH_JSON_ARRAY_ITEM(item, array) \
