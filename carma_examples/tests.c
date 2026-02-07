@@ -101,6 +101,16 @@ void ASSERT_EQUAL_INT(const char* description, int a, int b) {
     }
 }
 
+void ASSERT_EQUAL_DOUBLE(const char* description, double a, double b) {
+    global_assert_count++;
+    if (a == b) {
+        printf("%s ok\n", (description));
+    } else {
+        printf("%s %f!=%f bad\n", (description), (a), (b));
+        global_assert_errors++;
+    }
+}
+
 void ASSERT_EQUAL_POINTER(const char* description, const void* a, const void* b) {
     global_assert_count++;
     if (a == b) {
@@ -1206,6 +1216,13 @@ void test_parse_int_as_string() {
     ASSERT_EQUAL_RANGE("parse_int_as_string rest", string, (STRING_VIEW(" , 17")));
 }
 
+void test_parse_double() {
+    auto string = STRING_VIEW("15.4");
+    auto value = PARSE_DOUBLE(string);
+    ASSERT_EQUAL_DOUBLE("PARSE_DOUBLE", GET_OPTIONAL(value), 15.4);
+    ASSERT_EQUAL_RANGE("PARSE_DOUBLE", string, (STRING_VIEW("")));
+}
+
 void test_parse_line() {
     auto string = STRING_VIEW("ab\ncd");
     auto value = PARSE_LINE(string);
@@ -1520,6 +1537,7 @@ int main() {
     test_parse_int();
     test_parse_int_or_exit();
     test_parse_int_as_string();
+    test_parse_double();
     test_parse_line();
     test_parse_whitespace();
     test_parse_quoted_string();

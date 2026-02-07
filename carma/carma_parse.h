@@ -135,7 +135,7 @@ static inline OptionalDouble parse_double(StringView* s) {
     return (OptionalDouble){.data={parsed_value * sign}, .count=1};
 }
 
-
+#define PARSE_DOUBLE(s) parse_double(&(s))
 
 static inline
 StringView parse_line(StringView* s) {
