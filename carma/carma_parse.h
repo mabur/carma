@@ -27,6 +27,11 @@ typedef struct OptionalInt {
     size_t count;
 } OptionalInt;
 
+typedef struct OptionalDouble {
+    double data[1];
+    size_t count;
+} OptionalDouble;
+
 static inline
 bool is_digit(char c) {
     return '0' <= c && c <= '9';
@@ -93,6 +98,44 @@ StringView parse_int_as_string(StringView* s) {
     }
     return (StringView){.data=input_data, .count=input_count - s->count};
 }
+
+static inline OptionalDouble parse_double(StringView* s) {
+    auto parsed_value = 0.0;
+    auto frac_scale = 0.1;
+    auto sign = +1.0;
+    auto has_parsed_any_digits = false;
+    if (IS_EMPTY(*s)) {
+        return (OptionalDouble){};
+    }
+    if (FIRST_ITEM(*s) == '-') {
+        sign = -1.0;
+        DROP_FRONT(*s);
+    }
+    while (!IS_EMPTY(*s) && is_digit(FIRST_ITEM(*s))) {
+        parsed_value *= 10.0;
+        parsed_value += (double)(FIRST_ITEM(*s) - '0');
+        DROP_FRONT(*s);
+        has_parsed_any_digits = true;
+    }
+    if (STARTS_WITH_ITEM(*s,  '.')) {
+        DROP_FRONT(*s);
+        while (!IS_EMPTY(*s) && is_digit(FIRST_ITEM(*s))) {
+            parsed_value += (double)(FIRST_ITEM(*s) - '0') * frac_scale;
+            frac_scale *= 0.1;
+            DROP_FRONT(*s);
+            has_parsed_any_digits = true;
+        }
+    }
+    if (!has_parsed_any_digits) {
+        return (OptionalDouble){};
+    }
+    if (STARTS_WITH_ITEM(*s, 'e') || STARTS_WITH_ITEM(*s, 'E')) {
+        return (OptionalDouble){};
+    }
+    return (OptionalDouble){.data={parsed_value * sign}, .count=1};
+}
+
+
 
 static inline
 StringView parse_line(StringView* s) {
