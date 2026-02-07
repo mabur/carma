@@ -139,6 +139,8 @@ void parse_whitespace(StringView* s) {
     }
 }
 
+#define PARSE_WHITESPACE(s) parse_whitespace(&(s))
+
 static inline
 StringView parse_quoted_string(StringView* s) {
     if (!STARTS_WITH_ITEM(*s, '"')) {

@@ -1215,8 +1215,8 @@ void test_parse_line() {
 
 void test_parse_whitespace() {
     auto string = STRING_VIEW(" \n a \n b");
-    parse_whitespace(&string);
-    ASSERT_EQUAL_RANGE("parse_line", string, (STRING_VIEW("a \n b")));
+    PARSE_WHITESPACE(string);
+    ASSERT_EQUAL_RANGE("PARSE_WHITESPACE", string, (STRING_VIEW("a \n b")));
 }
 
 void test_parse_quoted_string() {
