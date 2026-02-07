@@ -1208,9 +1208,9 @@ void test_parse_int_as_string() {
 
 void test_parse_line() {
     auto string = STRING_VIEW("ab\ncd");
-    auto value = parse_line(&string);
-    ASSERT_EQUAL_RANGE("parse_line", value, (STRING_VIEW("ab")));
-    ASSERT_EQUAL_RANGE("parse_line", string, (STRING_VIEW("cd")));
+    auto value = PARSE_LINE(string);
+    ASSERT_EQUAL_RANGE("PARSE_LINE", value, (STRING_VIEW("ab")));
+    ASSERT_EQUAL_RANGE("PARSE_LINE", string, (STRING_VIEW("cd")));
 }
 
 void test_parse_whitespace() {

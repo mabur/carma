@@ -130,6 +130,8 @@ StringView parse_line(StringView* s) {
     return value;
 }
 
+#define PARSE_LINE(s) parse_line(&(s))
+
 static inline
 void parse_whitespace(StringView* s) {
     while (!IS_EMPTY(*s) && is_whitespace(FIRST_ITEM(*s))) {
