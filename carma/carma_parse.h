@@ -185,20 +185,18 @@ StringView parse_json_object_key(StringView* s) {
 
 static inline
 StringView parse_json_object_value(StringView* s) {
-    StringView parsed_string = *s;
-    parse_whitespace(&parsed_string);
-    auto value = parse_json_item(&parsed_string);
+    parse_whitespace(s);
+    auto value = parse_json_item(s);
     if (IS_EMPTY(value)) {
         return (StringView){};
     }
-    parse_whitespace(&parsed_string);
-    if (STARTS_WITH_ITEM(parsed_string, ',')) {
-        DROP_FRONT(parsed_string);
+    parse_whitespace(s);
+    if (STARTS_WITH_ITEM(*s, ',')) {
+        DROP_FRONT(*s);
     }
-    else if (!STARTS_WITH_ITEM(parsed_string, '}')) {
+    else if (!STARTS_WITH_ITEM(*s, '}')) {
         return (StringView){};
     }
-    *s = parsed_string;
     return value;
 }
 
