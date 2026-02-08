@@ -5,6 +5,7 @@
 #include <carma/carma_assert.h>
 #include <carma/carma_parse.h>
 #include <carma/carma_json_serialize.h>
+#include <carma/carma_json_parse.h>
 #include <carma/carma_string.h>
 #include <carma/carma_table.h>
 
