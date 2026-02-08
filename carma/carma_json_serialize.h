@@ -40,6 +40,11 @@ typedef struct JsonBuilder {
     JsonContextStack context_stack;
 } JsonBuilder;
 
+#define FREE_JSON_BUILDER(json) do { \
+    FREE_DARRAY((json).string); \
+    FREE_DARRAY((json).context_stack); \
+} while (0)
+
 static inline void carma_handle_json_array_delimiter(JsonBuilder* json) {
     if (ENDS_WITH_ITEM(json->context_stack, JSON_ARRAY)) {
         if (!ENDS_WITH_ITEM(json->string, '[')) {

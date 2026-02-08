@@ -1335,6 +1335,7 @@ void test_add_json_int() {
     ADD_JSON_INT(actual, 1);
     auto expected = STRING_VIEW("1");
     ASSERT_EQUAL_RANGE("test_add_json_int", actual.string, expected);
+    FREE_JSON_BUILDER(actual);
 }
 
 void test_add_json_bool_true() {
@@ -1342,6 +1343,7 @@ void test_add_json_bool_true() {
     ADD_JSON_BOOL(actual, true);
     auto expected = STRING_VIEW("true");
     ASSERT_EQUAL_RANGE("test_add_json_bool_true", actual.string, expected);
+    FREE_JSON_BUILDER(actual);
 }
 
 void test_add_json_bool_false() {
@@ -1349,6 +1351,7 @@ void test_add_json_bool_false() {
     ADD_JSON_BOOL(actual, false);
     auto expected = STRING_VIEW("false");
     ASSERT_EQUAL_RANGE("test_add_json_bool_false", actual.string, expected);
+    FREE_JSON_BUILDER(actual);
 }
 
 void test_add_json_array_empty() {
@@ -1357,6 +1360,7 @@ void test_add_json_array_empty() {
     }
     auto expected = STRING_VIEW("[]");
     ASSERT_EQUAL_RANGE("test_add_json_array_empty", actual.string, expected);
+    FREE_JSON_BUILDER(actual);
 }
 
 void test_add_json_array_single() {
@@ -1376,6 +1380,7 @@ void test_add_json_array_multiple() {
     }
     auto expected = STRING_VIEW("[1,2]");
     ASSERT_EQUAL_CARMA_STRINGS("test_add_json_array_multiple", actual.string, expected);
+    FREE_JSON_BUILDER(actual);
 }
 
 void test_add_json_object_empty() {
@@ -1384,6 +1389,7 @@ void test_add_json_object_empty() {
     }
     auto expected = STRING_VIEW("{}");
     ASSERT_EQUAL_CARMA_STRINGS("test_add_json_object_empty", actual.string, expected);
+    FREE_JSON_BUILDER(actual);
 }
 
 void test_add_json_object_single() {
@@ -1394,6 +1400,7 @@ void test_add_json_object_single() {
     }
     auto expected = STRING_VIEW("{\"a\":1}");
     ASSERT_EQUAL_CARMA_STRINGS("test_add_json_object_single", actual.string, expected);
+    FREE_JSON_BUILDER(actual);
 }
 
 void test_add_json_object_multiple() {
@@ -1408,6 +1415,7 @@ void test_add_json_object_multiple() {
     }
     auto expected = STRING_VIEW("{\"a\":1,\"b\":2.000000,\"c\":\"d\"}");
     ASSERT_EQUAL_CARMA_STRINGS("test_add_json_object_multiple", actual.string, expected);
+    FREE_JSON_BUILDER(actual);
 }
 
 int main() {
