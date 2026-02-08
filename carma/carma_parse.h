@@ -60,8 +60,6 @@ OptionalU64 parse_u64(StringView* s) {
     return (OptionalU64){};
 }
 
-#define PARSE_U64(s) parse_u64(&(s))
-
 static inline
 OptionalInt parse_int(StringView* s) {
     auto sign = +1;
@@ -75,18 +73,6 @@ OptionalInt parse_int(StringView* s) {
     }
     return (OptionalInt){};
 }
-
-
-#define PARSE_INT(s) parse_int(&(s))
-
-static inline
-int parse_int_or_exit(StringView* s) {
-    auto optional_int = parse_int(s);
-    CHECK_EXTERNAL(!IS_EMPTY(optional_int), "Could not parse int");
-    return GET_OPTIONAL(optional_int);
-}
-
-#define PARSE_INT_OR_EXIT(s) parse_int_or_exit(&(s))
 
 static inline
 StringView parse_int_as_string(StringView* s) {
@@ -137,7 +123,16 @@ static inline OptionalDouble parse_double(StringView* s) {
     return (OptionalDouble){};
 }
 
+static inline
+int parse_int_or_exit(StringView* s) {
+    auto optional_int = parse_int(s);
+    CHECK_EXTERNAL(!IS_EMPTY(optional_int), "Could not parse int");
+    return GET_OPTIONAL(optional_int);
+}
 
+#define PARSE_U64(s) parse_u64(&(s))
+#define PARSE_INT(s) parse_int(&(s))
+#define PARSE_INT_OR_EXIT(s) parse_int_or_exit(&(s))
 #define PARSE_DOUBLE(s) parse_double(&(s))
 
 static inline
