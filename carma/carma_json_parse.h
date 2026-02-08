@@ -209,10 +209,15 @@ StringView parse_json_key(StringView* s, const char* key) {
 
 #define PARSE_JSON_KEY(s, key) parse_json_key(&(s), (key))
 
-static inline
-int parse_json_key_int_or_exit(StringView* s, const char* key) {
+static inline int parse_json_key_int_or_exit(StringView* s, const char* key) {
     auto value = parse_json_key(s, key);
     return PARSE_INT_OR_EXIT(value);
 }
 
+static inline double parse_json_key_double_or_exit(StringView* s, const char* key) {
+    auto value = parse_json_key(s, key);
+    return PARSE_DOUBLE_OR_EXIT(value);
+}
+
 #define PARSE_JSON_KEY_INT_OR_EXIT(s, key) parse_json_key_int_or_exit(&(s), key)
+#define PARSE_JSON_KEY_DOUBLE_OR_EXIT(s, key) parse_json_key_double_or_exit(&(s), key)
