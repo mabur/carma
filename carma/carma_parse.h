@@ -123,56 +123,6 @@ static inline OptionalDouble parse_double(StringView* s) {
     return (OptionalDouble){};
 }
 
-static inline uint64_t parse_u64_or_exit(StringView* s) {
-    auto optional = parse_u64(s);
-    return GET_OPTIONAL_OR_EXIT(optional, "Could not parse uint64_t");
-}
-
-static inline int parse_int_or_exit(StringView* s) {
-    auto optional = parse_int(s);
-    return GET_OPTIONAL_OR_EXIT(optional, "Could not parse int");
-}
-
-static inline double parse_double_or_exit(StringView* s) {
-    auto optional = parse_double(s);
-    return GET_OPTIONAL_OR_EXIT(optional, "Could not parse double");
-}
-
-#define PARSE_U64(s) parse_u64(&(s))
-#define PARSE_INT(s) parse_int(&(s))
-#define PARSE_DOUBLE(s) parse_double(&(s))
-
-#define PARSE_U64_OR_EXIT(s) parse_u64_or_exit(&(s))
-#define PARSE_INT_OR_EXIT(s) parse_int_or_exit(&(s))
-#define PARSE_DOUBLE_OR_EXIT(s) parse_double_or_exit(&(s))
-
-static inline
-StringView parse_line(StringView* s) {
-    StringView value = {s->data, 0};
-    while (!IS_EMPTY(*s) && FIRST_ITEM(*s) != '\r' && FIRST_ITEM(*s) != '\n') {
-        DROP_FRONT(*s);
-        value.count++;
-    }
-    if (STARTS_WITH_ITEM(*s, '\r')) {
-        DROP_FRONT(*s);
-    }
-    if (STARTS_WITH_ITEM(*s, '\n')) {
-        DROP_FRONT(*s);
-    }
-    return value;
-}
-
-#define PARSE_LINE(s) parse_line(&(s))
-
-static inline
-void parse_whitespace(StringView* s) {
-    while (!IS_EMPTY(*s) && is_whitespace(FIRST_ITEM(*s))) {
-        DROP_FRONT(*s);
-    }
-}
-
-#define PARSE_WHITESPACE(s) parse_whitespace(&(s))
-
 static inline
 StringView parse_quoted_string(StringView* s) {
     if (!STARTS_WITH_ITEM(*s, '"')) {
@@ -206,7 +156,56 @@ StringView parse_quoted_string(StringView* s) {
     return value;
 }
 
+static inline uint64_t parse_u64_or_exit(StringView* s) {
+    auto optional = parse_u64(s);
+    return GET_OPTIONAL_OR_EXIT(optional, "Could not parse uint64_t");
+}
+
+static inline int parse_int_or_exit(StringView* s) {
+    auto optional = parse_int(s);
+    return GET_OPTIONAL_OR_EXIT(optional, "Could not parse int");
+}
+
+static inline double parse_double_or_exit(StringView* s) {
+    auto optional = parse_double(s);
+    return GET_OPTIONAL_OR_EXIT(optional, "Could not parse double");
+}
+
+#define PARSE_U64(s) parse_u64(&(s))
+#define PARSE_INT(s) parse_int(&(s))
+#define PARSE_DOUBLE(s) parse_double(&(s))
 #define PARSE_QUOTED_STRING(s) parse_quoted_string(&(s))
+
+#define PARSE_U64_OR_EXIT(s) parse_u64_or_exit(&(s))
+#define PARSE_INT_OR_EXIT(s) parse_int_or_exit(&(s))
+#define PARSE_DOUBLE_OR_EXIT(s) parse_double_or_exit(&(s))
+
+static inline
+StringView parse_line(StringView* s) {
+    StringView value = {s->data, 0};
+    while (!IS_EMPTY(*s) && FIRST_ITEM(*s) != '\r' && FIRST_ITEM(*s) != '\n') {
+        DROP_FRONT(*s);
+        value.count++;
+    }
+    if (STARTS_WITH_ITEM(*s, '\r')) {
+        DROP_FRONT(*s);
+    }
+    if (STARTS_WITH_ITEM(*s, '\n')) {
+        DROP_FRONT(*s);
+    }
+    return value;
+}
+
+#define PARSE_LINE(s) parse_line(&(s))
+
+static inline
+void parse_whitespace(StringView* s) {
+    while (!IS_EMPTY(*s) && is_whitespace(FIRST_ITEM(*s))) {
+        DROP_FRONT(*s);
+    }
+}
+
+#define PARSE_WHITESPACE(s) parse_whitespace(&(s))
 
 static inline
 bool parse_structural_character(StringView* s, char c) {
