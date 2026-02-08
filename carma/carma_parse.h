@@ -125,14 +125,12 @@ static inline OptionalDouble parse_double(StringView* s) {
 
 static inline uint64_t parse_u64_or_exit(StringView* s) {
     auto optional = parse_u64(s);
-    CHECK_EXTERNAL(!IS_EMPTY(optional), "Could not parse uint64_t");
-    return GET_OPTIONAL(optional);
+    return GET_OPTIONAL_OR_EXIT(optional, "Could not parse uint64_t");
 }
 
 static inline int parse_int_or_exit(StringView* s) {
     auto optional = parse_int(s);
-    CHECK_EXTERNAL(!IS_EMPTY(optional), "Could not parse int");
-    return GET_OPTIONAL(optional);
+    return GET_OPTIONAL_OR_EXIT(optional, "Could not parse int");
 }
 
 #define PARSE_U64(s) parse_u64(&(s))
