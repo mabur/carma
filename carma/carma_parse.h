@@ -217,3 +217,5 @@ bool parse_structural_character(StringView* s, char c) {
     parse_whitespace(s);
     return true;
 }
+
+#define PARSE_STRUCTURAL_CHARACTER(s, c) parse_structural_character(&(s), c)
