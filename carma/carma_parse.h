@@ -45,9 +45,6 @@ bool is_whitespace(char c) {
 }
 
 static inline
-StringView parse_json_item(StringView* s);
-
-static inline
 OptionalU64 parse_u64(StringView* s) {
     uint64_t parsed_value = 0;
     int has_parsed_digits = false;

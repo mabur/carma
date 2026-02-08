@@ -9,6 +9,9 @@
 */
 
 static inline
+StringView parse_json_item(StringView* s);
+
+static inline
 StringView parse_json_object_key(StringView* s) {
     parse_whitespace(s);
     auto key = parse_quoted_string(s);
