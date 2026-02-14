@@ -1,6 +1,6 @@
 ## Json Serialization
 
-Let's say that you want to write this json:
+Let's say that you want to write this json string:
 
 ```
 {
