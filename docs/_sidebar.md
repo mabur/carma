@@ -7,3 +7,4 @@
 - [Strings](strings.md)
 - [Multi Dimensional Arrays](multi_dimensional_array_algorithms.md)
 - [Tables](table_algorithms.md)
+- [Json Serialization](json_serialization.md)
