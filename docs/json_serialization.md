@@ -4,7 +4,6 @@ Let's say that you want to write this json string:
 
 ```
 {
-    "visible": true,
     "width": 640,
     "height:" 480,
     "points_x": [300.0, 100.0, 500.0],
@@ -18,8 +17,6 @@ You use them like this:
 ```clike
 auto j = (JsonBuilder){};
 ADD_JSON_OBJECT(j) {
-    ADD_JSON_KEY(j, "visible");
-    ADD_JSON_BOOL(j, true);
     ADD_JSON_KEY(j, "width");
     ADD_JSON_INT(j, 640);
     ADD_JSON_KEY(j, "height");
