@@ -45,7 +45,7 @@ bool is_whitespace(char c) {
 }
 
 static inline
-OptionalU64 parse_u64(StringView* s) {
+OptionalU64 try_parse_u64(StringView* s) {
     uint64_t parsed_value = 0;
     int has_parsed_digits = false;
     while (!IS_EMPTY(*s) && is_digit(FIRST_ITEM(*s))) {
@@ -61,13 +61,13 @@ OptionalU64 parse_u64(StringView* s) {
 }
 
 static inline
-OptionalInt parse_int(StringView* s) {
+OptionalInt try_parse_int(StringView* s) {
     auto sign = +1;
     if (STARTS_WITH_ITEM(*s, '-')) {
         sign = -1;
         DROP_FRONT(*s);
     }
-    auto abs_value = parse_u64(s);
+    auto abs_value = try_parse_u64(s);
     FOR_EACH(it, abs_value) {
         return (OptionalInt){.data={sign * (int)(*it)}, .count=1};
     }
@@ -93,14 +93,14 @@ StringView parse_int_as_string(StringView* s) {
     return (StringView){.data=input_data, .count=input_count - s->count};
 }
 
-static inline OptionalDouble parse_double(StringView* s) {
+static inline OptionalDouble try_parse_double(StringView* s) {
     auto sign = +1.0;
     if (STARTS_WITH_ITEM(*s, '-')) {
         sign = -1.0;
         DROP_FRONT(*s);
     }
     auto integral = 0.0;
-    auto optional_integral = parse_u64(s);
+    auto optional_integral = try_parse_u64(s);
     FOR_EACH(it, optional_integral) {
         integral = (double)(*it);
     }
@@ -109,7 +109,7 @@ static inline OptionalDouble parse_double(StringView* s) {
     if (STARTS_WITH_ITEM(*s, '.')) {
         DROP_FRONT(*s);
         auto count = s->count;
-        optional_fractional = parse_u64(s);
+        optional_fractional = try_parse_u64(s);
         FOR_EACH(it, optional_fractional) {
             fractional = (double)(*it);
             for (; count > s->count; --count) {
@@ -157,23 +157,23 @@ StringView parse_quoted_string(StringView* s) {
 }
 
 static inline uint64_t parse_u64_or_exit(StringView* s) {
-    auto optional = parse_u64(s);
+    auto optional = try_parse_u64(s);
     return GET_OPTIONAL_OR_EXIT(optional, "Could not parse uint64_t");
 }
 
 static inline int parse_int_or_exit(StringView* s) {
-    auto optional = parse_int(s);
+    auto optional = try_parse_int(s);
     return GET_OPTIONAL_OR_EXIT(optional, "Could not parse int");
 }
 
 static inline double parse_double_or_exit(StringView* s) {
-    auto optional = parse_double(s);
+    auto optional = try_parse_double(s);
     return GET_OPTIONAL_OR_EXIT(optional, "Could not parse double");
 }
 
-#define PARSE_U64(s) parse_u64(&(s))
-#define PARSE_INT(s) parse_int(&(s))
-#define PARSE_DOUBLE(s) parse_double(&(s))
+#define TRY_PARSE_U64(s) try_parse_u64(&(s))
+#define TRY_PARSE_INT(s) try_parse_int(&(s))
+#define TRY_PARSE_DOUBLE(s) try_parse_double(&(s))
 #define PARSE_QUOTED_STRING(s) parse_quoted_string(&(s))
 
 #define PARSE_U64_OR_EXIT(s) parse_u64_or_exit(&(s))

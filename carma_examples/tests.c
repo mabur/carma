@@ -1196,18 +1196,18 @@ void test_table_available_keys() {
     ASSERT_EQUAL_INT("test_table_available_2_keys", value, 5);
 }
 
-void test_parse_u64() {
+void test_try_parse_u64() {
     auto string = STRING_VIEW("15");
-    auto value = PARSE_U64(string);
-    ASSERT_EQUAL_SIZE("PARSE_U64", GET_OPTIONAL(value), 15);
-    ASSERT_EQUAL_RANGE("PARSE_U64", string, (STRING_VIEW("")));
+    auto value = TRY_PARSE_U64(string);
+    ASSERT_EQUAL_SIZE("TRY_PARSE_U64", GET_OPTIONAL(value), 15);
+    ASSERT_EQUAL_RANGE("TRY_PARSE_U64", string, (STRING_VIEW("")));
 }
 
-void test_parse_int() {
+void test_try_parse_int() {
     auto string = STRING_VIEW("15");
-    auto value = PARSE_INT(string);
-    ASSERT_EQUAL_INT("PARSE_INT", GET_OPTIONAL(value), 15);
-    ASSERT_EQUAL_RANGE("PARSE_INT", string, (STRING_VIEW("")));
+    auto value = TRY_PARSE_INT(string);
+    ASSERT_EQUAL_INT("TRY_PARSE_INT", GET_OPTIONAL(value), 15);
+    ASSERT_EQUAL_RANGE("TRY_PARSE_INT", string, (STRING_VIEW("")));
 }
 
 void test_parse_int_or_exit() {
@@ -1226,9 +1226,9 @@ void test_parse_int_as_string() {
 
 void test_parse_double() {
     auto string = STRING_VIEW("15.4");
-    auto value = PARSE_DOUBLE(string);
-    ASSERT_EQUAL_DOUBLE("PARSE_DOUBLE", GET_OPTIONAL(value), 15.4);
-    ASSERT_EQUAL_RANGE("PARSE_DOUBLE", string, (STRING_VIEW("")));
+    auto value = TRY_PARSE_DOUBLE(string);
+    ASSERT_EQUAL_DOUBLE("TRY_PARSE_DOUBLE", GET_OPTIONAL(value), 15.4);
+    ASSERT_EQUAL_RANGE("TRY_PARSE_DOUBLE", string, (STRING_VIEW("")));
 }
 
 void test_parse_line() {
@@ -1263,7 +1263,7 @@ void test_parse_json_array_item_by_item() {
     auto expected = MAKE_DARRAY(IntArray, 1, 2, 3);
     auto actual = (IntArray){};
     for (auto item = parse_first_json_array_item(&string); !IS_EMPTY(item); item = parse_next_json_array_item(&string)) {
-        auto optional_int = PARSE_INT(item);
+        auto optional_int = TRY_PARSE_INT(item);
         FOR_EACH(it, optional_int) {
             APPEND(actual, *it);
         }
@@ -1300,7 +1300,7 @@ void test_parse_json_object_item_by_item() {
         k = parse_next_json_object_key(&string),
         v = parse_next_json_object_value(&string)
     ) {
-        auto optional_int = PARSE_INT(v);
+        auto optional_int = TRY_PARSE_INT(v);
         FOR_EACH(it, optional_int) {
             APPEND(actual_values, *it);
         }
@@ -1550,8 +1550,8 @@ int main() {
     test_table_available_key();
     test_table_available_keys();
 
-    test_parse_u64();
-    test_parse_int();
+    test_try_parse_u64();
+    test_try_parse_int();
     test_parse_int_or_exit();
     test_parse_int_as_string();
     test_parse_double();
