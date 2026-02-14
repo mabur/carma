@@ -16,8 +16,8 @@ You use them like this:
 
 ```clike
     StringView json = ...;
-    int width = PARSE_JSON_KEY_INT_OR_EXIT(json, "width");
-    int height = PARSE_JSON_KEY_INT_OR_EXIT(json, "height");
+    int width = PARSE_JSON_KEY_INT(json, "width");
+    int height = PARSE_JSON_KEY_INT(json, "height");
     StringView points_x = PARSE_JSON_KEY_ARRAY_OR_EXIT(json, "points_x");
     StringView points_y = PARSE_JSON_KEY_ARRAY_OR_EXIT(json, "points_y");
     FOR_EACH_JSON_ARRAY_ITEM(item, points_x) {

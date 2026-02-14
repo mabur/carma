@@ -219,5 +219,5 @@ static inline double parse_json_key_double_or_exit(StringView* s, const char* ke
     return PARSE_DOUBLE(value);
 }
 
-#define PARSE_JSON_KEY_INT_OR_EXIT(s, key) parse_json_key_int_or_exit(&(s), key)
-#define PARSE_JSON_KEY_DOUBLE_OR_EXIT(s, key) parse_json_key_double_or_exit(&(s), key)
+#define PARSE_JSON_KEY_INT(s, key) parse_json_key_int_or_exit(&(s), key)
+#define PARSE_JSON_KEY_DOUBLE(s, key) parse_json_key_double_or_exit(&(s), key)
