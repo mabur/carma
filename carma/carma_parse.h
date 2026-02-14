@@ -176,9 +176,9 @@ static inline double parse_double_or_exit(StringView* s) {
 #define TRY_PARSE_DOUBLE(s) try_parse_double(&(s))
 #define PARSE_QUOTED_STRING(s) parse_quoted_string(&(s))
 
-#define PARSE_U64_OR_EXIT(s) parse_u64_or_exit(&(s))
-#define PARSE_INT_OR_EXIT(s) parse_int_or_exit(&(s))
-#define PARSE_DOUBLE_OR_EXIT(s) parse_double_or_exit(&(s))
+#define PARSE_U64(s) parse_u64_or_exit(&(s))
+#define PARSE_INT(s) parse_int_or_exit(&(s))
+#define PARSE_DOUBLE(s) parse_double_or_exit(&(s))
 
 static inline
 StringView parse_line(StringView* s) {

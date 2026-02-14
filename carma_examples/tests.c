@@ -1210,11 +1210,11 @@ void test_try_parse_int() {
     ASSERT_EQUAL_RANGE("TRY_PARSE_INT", string, (STRING_VIEW("")));
 }
 
-void test_parse_int_or_exit() {
+void test_parse_int() {
     auto string = STRING_VIEW("15");
-    auto value = PARSE_INT_OR_EXIT(string);
-    ASSERT_EQUAL_INT("PARSE_INT_OR_EXIT", value, 15);
-    ASSERT_EQUAL_RANGE("PARSE_INT_OR_EXIT", string, (STRING_VIEW("")));
+    auto value = PARSE_INT(string);
+    ASSERT_EQUAL_INT("PARSE_INT", value, 15);
+    ASSERT_EQUAL_RANGE("PARSE_INT", string, (STRING_VIEW("")));
 }
 
 void test_parse_int_as_string() {
@@ -1224,7 +1224,7 @@ void test_parse_int_as_string() {
     ASSERT_EQUAL_RANGE("parse_int_as_string rest", string, (STRING_VIEW(" , 17")));
 }
 
-void test_parse_double() {
+void test_try_parse_double() {
     auto string = STRING_VIEW("15.4");
     auto value = TRY_PARSE_DOUBLE(string);
     ASSERT_EQUAL_DOUBLE("TRY_PARSE_DOUBLE", GET_OPTIONAL(value), 15.4);
@@ -1276,7 +1276,7 @@ void test_for_each_json_array_item() {
     auto expected = MAKE_DARRAY(IntArray, 1, 2, 3);
     auto actual = (IntArray){};
     FOR_EACH_JSON_ARRAY_ITEM(item, string) {
-        auto number = PARSE_INT_OR_EXIT(item);
+        auto number = PARSE_INT(item);
         APPEND(actual, number);
     }
     ASSERT_EQUAL_RANGE("test_for_each_json_array_item", actual, expected);
@@ -1313,7 +1313,7 @@ void test_for_each_json_object_item() {
     auto expected_values = MAKE_DARRAY(IntArray, 1, 2);
     auto actual_values = (IntArray){};
     FOR_EACH_JSON_OBJECT_ITEM(k, v, string) {
-        auto number = PARSE_INT_OR_EXIT(v);
+        auto number = PARSE_INT(v);
         APPEND(actual_values, number);
     }
     ASSERT_EQUAL_RANGE("test_for_each_json_object_item", actual_values, expected_values);
@@ -1552,9 +1552,9 @@ int main() {
 
     test_try_parse_u64();
     test_try_parse_int();
-    test_parse_int_or_exit();
+    test_parse_int();
     test_parse_int_as_string();
-    test_parse_double();
+    test_try_parse_double();
     test_parse_line();
     test_parse_whitespace();
     test_parse_quoted_string();
