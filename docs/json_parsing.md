@@ -18,12 +18,12 @@ You use them like this:
     StringView json = ...;
     int width = PARSE_JSON_KEY_INT(json, "width");
     int height = PARSE_JSON_KEY_INT(json, "height");
-    StringView points_x = PARSE_JSON_KEY_ARRAY_OR_EXIT(json, "points_x");
-    StringView points_y = PARSE_JSON_KEY_ARRAY_OR_EXIT(json, "points_y");
+    StringView points_x = PARSE_JSON_KEY_ARRAY(json, "points_x");
+    StringView points_y = PARSE_JSON_KEY_ARRAY(json, "points_y");
     FOR_EACH_JSON_ARRAY_ITEM(item, points_x) {
-        double x = PARSE_DOUBLE_OR_EXIT(item);
+        double x = PARSE_DOUBLE(item);
     }
     FOR_EACH_JSON_ARRAY_ITEM(item, points_x) {
-        double y = PARSE_DOUBLE_OR_EXIT(item);
+        double y = PARSE_DOUBLE(item);
     }
 ```
