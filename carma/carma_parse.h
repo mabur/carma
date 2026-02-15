@@ -162,7 +162,12 @@ static inline uint64_t parse_u64_or_exit(StringView* s) {
 }
 
 static inline int parse_int_or_exit(StringView* s) {
+    auto before = *s;
     auto optional = try_parse_int(s);
+    if (IS_EMPTY(optional)) {
+        fprintf(stderr, "Could not parse int from string:\n");
+        PRINT_CARMA_STRING(before);
+    }
     return GET_OPTIONAL_OR_EXIT(optional, "Could not parse int");
 }
 
