@@ -30,6 +30,17 @@ typedef struct StringBuilder {
     DROP_BACK(string_builder); \
 } while (0)
 
+static inline char* carma_make_cstring(const char* data, size_t count) {
+    char* result = malloc(count + 1);
+    if (result != NULL) {
+        memcpy(result, data, count);
+        result[count] = '\0';
+    }
+    return result;
+}
+
+#define MAKE_CSTRING(string) carma_make_cstring((string).data, (string).count)
+
 static inline
 StringBuilder carma_concat_string(StringBuilder string, const char* format, ...) {
     va_list args0;
