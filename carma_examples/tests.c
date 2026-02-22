@@ -1327,8 +1327,12 @@ void test_parse_json_key() {
 
 void test_parse_json_key_int() {
     auto string = STRING_VIEW("{ \"a\" : 1 , \"b\": 2 , \"c\": 3 }");
-    auto value = PARSE_JSON_KEY_INT(string, "b");
-    ASSERT_EQUAL_INT("test_parse_json_key_int", value, 2);
+
+    auto b = PARSE_JSON_KEY_INT(string, "b");
+    ASSERT_EQUAL_INT("test_parse_json_key_int", b, 2);
+
+    auto c = PARSE_JSON_KEY_INT(string, "c");
+    ASSERT_EQUAL_INT("test_parse_json_key_int", c, 3);
 }
 
 void test_add_json_int() {
