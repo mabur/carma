@@ -211,12 +211,22 @@ StringView parse_json_key(StringView* s, const char* key) {
 
 static inline int parse_json_key_int_or_exit(StringView* s, const char* key) {
     auto value = parse_json_key(s, key);
-    return PARSE_INT(value);
+    auto optional = TRY_PARSE_INT(value);
+    if (IS_EMPTY(optional)) {
+        auto cstring = MAKE_CSTRING(*s);
+        CARMA_EXIT_FAILURE("Could not parse key %s as int from string: %.16s...\n", key, cstring);
+    }
+    return GET_OPTIONAL(optional);
 }
 
 static inline double parse_json_key_double_or_exit(StringView* s, const char* key) {
     auto value = parse_json_key(s, key);
-    return PARSE_DOUBLE(value);
+    auto optional = TRY_PARSE_DOUBLE(value);
+    if (IS_EMPTY(optional)) {
+        auto cstring = MAKE_CSTRING(*s);
+        CARMA_EXIT_FAILURE("Could not parse key %s as double from string: %.16s...\n", key, cstring);
+    }
+    return GET_OPTIONAL(optional);
 }
 
 #define PARSE_JSON_KEY_INT(s, key) parse_json_key_int_or_exit(&(s), key)
