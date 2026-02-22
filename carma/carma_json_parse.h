@@ -219,6 +219,16 @@ static inline int parse_json_key_int_or_exit(StringView* s, const char* key) {
     return GET_OPTIONAL(optional);
 }
 
+static inline uint64_t parse_json_key_u64_or_exit(StringView* s, const char* key) {
+    auto value = parse_json_key(s, key);
+    auto optional = TRY_PARSE_U64(value);
+    if (IS_EMPTY(optional)) {
+        auto cstring = MAKE_CSTRING(*s);
+        CARMA_EXIT_FAILURE("Could not parse key %s as u64 from string: %.16s...\n", key, cstring);
+    }
+    return GET_OPTIONAL(optional);
+}
+
 static inline double parse_json_key_double_or_exit(StringView* s, const char* key) {
     auto value = parse_json_key(s, key);
     auto optional = TRY_PARSE_DOUBLE(value);
@@ -230,4 +240,5 @@ static inline double parse_json_key_double_or_exit(StringView* s, const char* ke
 }
 
 #define PARSE_JSON_KEY_INT(s, key) parse_json_key_int_or_exit(&(s), key)
+#define PARSE_JSON_KEY_U64(s, key) parse_json_key_u64_or_exit(&(s), key)
 #define PARSE_JSON_KEY_DOUBLE(s, key) parse_json_key_double_or_exit(&(s), key)
