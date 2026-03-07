@@ -487,6 +487,13 @@ void test_copy_backward_inplace() {
     ASSERT_EQUAL_RANGE("test_copy_backward_inplace", actual, expected);
 }
 
+void test_replace() {
+    auto actual = MAKE_DARRAY(IntArray, 1, 2, 3, 2);
+    REPLACE(actual, 2, 4);
+    auto expected = MAKE_DARRAY(IntArray, 1, 4, 3, 4);
+    ASSERT_EQUAL_RANGE("test_replace", actual, expected);
+}
+
 void test_drop_front() {
     auto actual = MAKE_RANGE(IntRange, -1, 4, -2, 1);
     DROP_FRONT(actual);
@@ -1467,6 +1474,8 @@ int main() {
 
     test_copy_inplace();
     test_copy_backward_inplace();
+
+    test_replace();
 
     test_drop_front();
     test_drop_back();

@@ -215,6 +215,14 @@
         *_target = *_source; \
 } while (0)
 
+#define REPLACE(range, old_item, new_item) do { \
+    FOR_EACH(item, range) { \
+        if (*item == old_item) { \
+            *item = new_item; \
+        } \
+    } \
+} while(0)
+
 #define COUNT_BYTES(range) (sizeof(VALUE_TYPE(range)) * (range).count)
     
 static inline bool carma_are_bits_equal(

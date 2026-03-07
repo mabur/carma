@@ -147,3 +147,5 @@ FOR_MAX(it, range) {
 
 - `COPY_BACKWARD(source_range, target_range)` overwrites all items in the `target_range` with the correposnding item from the `source_range`.
   Iterates from the end to the start of each range, which only matters if the source and target overlap.
+
+- `REPLACE(range, old_item, new_item)` replaces all occurances of `old_item` with `new_item` int the `range`.
