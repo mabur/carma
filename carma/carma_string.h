@@ -31,7 +31,7 @@ typedef struct StringBuilder {
 } while (0)
 
 static inline char* carma_make_cstring(const char* data, size_t count) {
-    char* result = malloc(count + 1);
+    char* result = (char*)malloc(count + 1);
     if (result != NULL) {
         memcpy(result, data, count);
         result[count] = '\0';
