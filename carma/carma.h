@@ -6,7 +6,7 @@
 
 #include "carma_assert.h"
 #include "carma_make.h"
-#include "carma_type_inference.h"
+#include "carma_auto.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // UTILITIES
