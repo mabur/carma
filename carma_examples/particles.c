@@ -16,7 +16,7 @@ typedef struct Particles {
 } Particles;
 
 Particle updateParticle(Particle p) {
-    return (Particle){p.x + p.vx, p.y + p.vy, p.vx, p.vy, p.age, p.mass};
+    return MAKE(Particle, p.x + p.vx, p.y + p.vy, p.vx, p.vy, p.age, p.mass);
 }
 
 bool shouldDie(Particle p) {
@@ -26,8 +26,8 @@ bool shouldDie(Particle p) {
 Particles explode(Particles new_particles, Particle p) {
     auto m = p.mass / 2;
     if (m > 0) {
-        auto a = (Particle){p.x, p.y, p.vy, -p.vx, 0, m};
-        auto b = (Particle){p.x, p.y, -p.vy, p.vx, 0, m};
+        auto a = MAKE(Particle, p.x, p.y, p.vy, -p.vx, 0, m);
+        auto b = MAKE(Particle, p.x, p.y, -p.vy, p.vx, 0, m);
         APPEND(new_particles, a);
         APPEND(new_particles, b);
     }
@@ -50,7 +50,7 @@ Particles update(Particles particles) {
 }
 
 int main() {
-    auto particles = (Particles){};
+    auto particles = MAKE(Particles);
     for (;;) {
         particles = update(particles);
     }

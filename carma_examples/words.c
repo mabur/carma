@@ -17,7 +17,7 @@ typedef struct {
 } Table;
 
 Table count_words(StringView text) {
-    auto table = (Table){};
+    auto table = MAKE(Table);
     FOR_EACH_WORD(word, text, isspace) {
         auto word_count = 0;
         GET_RANGE_KEY_VALUE(word, word_count, table);
@@ -33,7 +33,7 @@ int main(int argc, char **argv) {
     }
     auto file_path = argv[1];
     auto text = read_text_file(file_path);
-    auto table = count_words((StringView){.data = text.data, .count=text.count});
+    auto table = count_words(MAKE(StringView, .data = text.data, .count=text.count));
     FOR_EACH_TABLE(item, table) {
         auto word = item->key;
         auto word_count = item->value;
