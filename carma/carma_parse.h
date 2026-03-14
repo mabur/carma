@@ -6,6 +6,7 @@
 
 #include "carma.h"
 #include "carma_assert.h"
+#include "carma_make.h"
 #include "carma_string.h"
 
 /*
@@ -55,9 +56,9 @@ OptionalU64 try_parse_u64(StringView* s) {
         has_parsed_digits = true;
     }
     if (has_parsed_digits) {
-        return (OptionalU64){.data={parsed_value}, .count=1};
+        return MAKE(OptionalU64, .data={parsed_value}, .count=1);
     }
-    return (OptionalU64){};
+    return MAKE(OptionalU64);
 }
 
 static inline
@@ -69,9 +70,9 @@ OptionalInt try_parse_int(StringView* s) {
     }
     auto abs_value = try_parse_u64(s);
     FOR_EACH(it, abs_value) {
-        return (OptionalInt){.data={sign * (int)(*it)}, .count=1};
+        return MAKE(OptionalInt, .data={sign * (int)(*it)}, .count=1);
     }
-    return (OptionalInt){};
+    return MAKE(OptionalInt);
 }
 
 static inline
@@ -79,18 +80,18 @@ StringView parse_int_as_string(StringView* s) {
     auto input_data = s->data;
     auto input_count = s->count;
     if (IS_EMPTY(*s)) {
-        return (StringView){};
+        return MAKE(StringView);
     }
     if (FIRST_ITEM(*s) == '+' || FIRST_ITEM(*s) == '-') {
         DROP_FRONT(*s);
     }
     if (IS_EMPTY(*s) || !is_digit(FIRST_ITEM(*s))) {
-        return (StringView){};
+        return MAKE(StringView);
     }
     while (!IS_EMPTY(*s) && is_digit(FIRST_ITEM(*s))) {
         DROP_FRONT(*s);
     }
-    return (StringView){.data=input_data, .count=input_count - s->count};
+    return MAKE(StringView, .data=input_data, .count=input_count - s->count);
 }
 
 static inline OptionalDouble try_parse_double(StringView* s) {
@@ -105,7 +106,7 @@ static inline OptionalDouble try_parse_double(StringView* s) {
         integral = (double)(*it);
     }
     auto fractional = 0.0;
-    auto optional_fractional = (OptionalU64){};
+    auto optional_fractional = MAKE(OptionalU64);
     if (STARTS_WITH_ITEM(*s, '.')) {
         DROP_FRONT(*s);
         auto count = s->count;
@@ -118,15 +119,15 @@ static inline OptionalDouble try_parse_double(StringView* s) {
         }
     }
     if (!IS_EMPTY(optional_integral) || !IS_EMPTY(optional_fractional)) {
-        return (OptionalDouble){.data={sign * (integral + fractional)}, .count=1};
+        return MAKE(OptionalDouble, .data={sign * (integral + fractional)}, .count=1);
     }
-    return (OptionalDouble){};
+    return MAKE(OptionalDouble);
 }
 
 static inline
 StringView parse_quoted_string(StringView* s) {
     if (!STARTS_WITH_ITEM(*s, '"')) {
-        return (StringView){};
+        return MAKE(StringView);
     }
     auto remaining = *s;
     DROP_FRONT(remaining); // Opening quote

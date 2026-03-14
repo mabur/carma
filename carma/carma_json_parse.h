@@ -1,5 +1,6 @@
 #pragma once
 
+#include "carma_make.h"
 #include "carma_parse.h"
 
 /*
@@ -16,10 +17,10 @@ StringView parse_json_object_key(StringView* s) {
     parse_whitespace(s);
     auto key = parse_quoted_string(s);
     if (IS_EMPTY(key)) {
-        return (StringView){};
+        return MAKE(StringView);
     }
     if (!parse_structural_character(s, ':')) {
-        return (StringView){};
+        return MAKE(StringView);
     }
     return key;
 }
@@ -29,14 +30,14 @@ StringView parse_json_object_value(StringView* s) {
     parse_whitespace(s);
     auto value = parse_json_item(s);
     if (IS_EMPTY(value)) {
-        return (StringView){};
+        return MAKE(StringView);
     }
     parse_whitespace(s);
     if (STARTS_WITH_ITEM(*s, ',')) {
         DROP_FRONT(*s);
     }
     else if (!STARTS_WITH_ITEM(*s, '}')) {
-        return (StringView){};
+        return MAKE(StringView);
     }
     return value;
 }
@@ -47,14 +48,14 @@ StringView parse_first_json_array_item(StringView* s) {
     // In case of "[item]" it advances the input past "[item", and returns the item.
     // In case of "[item,]" it advances the input past "[item", and returns the item.
     if (!parse_structural_character(s, '[')) {
-        return (StringView){};
+        return MAKE(StringView);
     }
     if (parse_structural_character(s, ']')) {
-        return (StringView){};
+        return MAKE(StringView);
     }
     auto result = parse_json_item(s);
-    if (IS_EMPTY(result)){
-        return (StringView){};
+    if (IS_EMPTY(result)) {
+        return MAKE(StringView);
     }
     return result;
 }
@@ -65,14 +66,14 @@ StringView parse_next_json_array_item(StringView* s) {
     // In case of ",item]" it advances the input past ",item", and returns the item.
     // In case of ",item,]" it advances the input past the ",item", and returns the item.
     if (parse_structural_character(s, ']')) {
-        return (StringView){};
+        return MAKE(StringView);
     }
     if (!parse_structural_character(s, ',')) {
-        return (StringView){};
+        return MAKE(StringView);
     }
     auto result = parse_json_item(s);
-    if (IS_EMPTY(result)){
-        return (StringView){};
+    if (IS_EMPTY(result)) {
+        return MAKE(StringView);
     }
     return result;
 }
@@ -81,18 +82,18 @@ static inline
 StringView parse_json_array(StringView* s) {
     StringView array = {s->data, 0};
     if (!parse_structural_character(s, '[')) {
-        return (StringView){};
+        return MAKE(StringView);
     }
     while (!IS_EMPTY(*s) && FIRST_ITEM(*s) != ']') {
         if (IS_EMPTY(parse_json_item(s))) {
-            return (StringView){};
+            return MAKE(StringView);
         }
         if (!parse_structural_character(s, ',')) {
             break;
         }
     }
     if (!parse_structural_character(s, ']')) {
-        return (StringView){};
+        return MAKE(StringView);
     }
     array.count = s->data - array.data;
     return array;
@@ -105,14 +106,14 @@ StringView parse_first_json_object_key(StringView* s) {
     // In case of {} it advances the input past {}, and returns an empty string.
     // In case of {"k":v} it advances the input past {"k" and returns k.
     if (!parse_structural_character(s, '{')) {
-        return (StringView){};
+        return MAKE(StringView);
     }
     if (parse_structural_character(s, '}')) {
-        return (StringView){};
+        return MAKE(StringView);
     }
     auto result = parse_quoted_string(s);
-    if (IS_EMPTY(result)){
-        return (StringView){};
+    if (IS_EMPTY(result)) {
+        return MAKE(StringView);
     }
     return result;
 }
@@ -121,11 +122,11 @@ static inline
 StringView parse_next_json_object_value(StringView* s) {
     // In case of :v} it advances the input past :v and returns the value.
     if (!parse_structural_character(s, ':')) {
-        return (StringView){};
+        return MAKE(StringView);
     }
     auto result = parse_json_item(s);
-    if (IS_EMPTY(result)){
-        return (StringView){};
+    if (IS_EMPTY(result)) {
+        return MAKE(StringView);
     }
     return result;
 }
@@ -135,14 +136,14 @@ StringView parse_next_json_object_key(StringView* s) {
     // In case of } it advances the input past } and returns an empty string.
     // In case of ,"k":v} it advances the input past ,"key" and returns the key.
     if (parse_structural_character(s, '}')) {
-        return (StringView){};
+        return MAKE(StringView);
     }
     if (!parse_structural_character(s, ',')) {
-        return (StringView){};
+        return MAKE(StringView);
     }
     auto result = parse_quoted_string(s);
-    if (IS_EMPTY(result)){
-        return (StringView){};
+    if (IS_EMPTY(result)) {
+        return MAKE(StringView);
     }
     return result;
 }
@@ -151,14 +152,14 @@ static inline
 StringView parse_json_object(StringView* s) {
     StringView object = {s->data, 0};
     if (!parse_structural_character(s, '{')) {
-        return (StringView){};
+        return MAKE(StringView);
     }
     while (!parse_structural_character(s, '}')) {
         if (IS_EMPTY(parse_json_object_key(s))) {
-            return (StringView){};
+            return MAKE(StringView);
         }
         if (IS_EMPTY(parse_json_object_value(s))) {
-            return (StringView){};
+            return MAKE(StringView);
         }
     }
     object.count = s->data - object.data;
@@ -171,7 +172,7 @@ static inline
 StringView parse_json_item(StringView* s) {
     parse_whitespace(s);
     if (IS_EMPTY(*s)) {
-        return (StringView){};
+        return MAKE(StringView);
     }
     auto c = FIRST_ITEM(*s);
     switch (c) {
@@ -204,7 +205,7 @@ StringView parse_json_key(StringView s, const char* key) {
             return v;
         }
     }
-    return (StringView){};
+    return MAKE(StringView);
 }
 
 #define PARSE_JSON_KEY(s, key) parse_json_key((s), (key))

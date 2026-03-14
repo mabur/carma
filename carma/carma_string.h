@@ -6,6 +6,7 @@
 #include <stdlib.h>
 
 #include "carma.h"
+#include "carma_make.h"
 
 typedef struct StringView {
     const char* data;
@@ -18,11 +19,7 @@ typedef struct StringBuilder {
     size_t capacity;
 } StringBuilder;
 
-#ifdef __cplusplus
-#define STRING_VIEW(cstring) StringView{(cstring), strlen(cstring)}
-#else
-#define STRING_VIEW(cstring) (StringView){(cstring), strlen(cstring)}
-#endif
+#define STRING_VIEW(cstring) MAKE(StringView, (cstring), strlen(cstring))
 
 #define CONCAT_CSTRING(string_builder, cstring) do { \
     StringView tail_with_null_terminator = {(cstring), strlen(cstring) + 1}; \

@@ -5,6 +5,7 @@
 #include <stdbool.h>
 
 #include "carma_assert.h"
+#include "carma_make.h"
 #include "carma_type_inference.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -79,48 +80,48 @@
 
 #ifdef __cplusplus
     #define MAKE_RANGE(range_type, ...) ([&]() { \
-        using T = VALUE_TYPE((range_type){}); \
+        using T = VALUE_TYPE(MAKE(range_type)); \
         T carray[] = {__VA_ARGS__}; \
         CARMA_AUTO item_size = sizeof(carray[0]); \
         CARMA_AUTO byte_count = sizeof(carray); \
         CARMA_AUTO count = byte_count / item_size; \
         CARMA_AUTO data = (T*)malloc(byte_count); \
         memcpy(data, carray, byte_count); \
-        return (range_type){.data=data, .count=count}; \
+        return MAKE(range_type, .data=data, .count=count); \
     }())
 
     #define MAKE_DARRAY(darray_type, ...) ([&]() { \
-        using T = VALUE_TYPE((darray_type){}); \
+        using T = VALUE_TYPE(MAKE(darray_type)); \
         T carray[] = {__VA_ARGS__}; \
         CARMA_AUTO item_size = sizeof(carray[0]); \
         CARMA_AUTO byte_count = sizeof(carray); \
         CARMA_AUTO count = byte_count / item_size; \
         CARMA_AUTO data = (T*)malloc(byte_count); \
         memcpy(data, carray, byte_count); \
-        return (darray_type){.data=data, .count=count, .capacity=count}; \
+        return MAKE(darray_type, .data=data, .count=count, .capacity=count); \
     }())
 #else
     #define CARMA_MAKE_ARRAY_LITERAL(range_type, ...) \
-        ((VALUE_TYPE((range_type){})[]){ __VA_ARGS__ })
+        ((VALUE_TYPE(MAKE(range_type))[]){ __VA_ARGS__ })
     #define CARMA_COUNT_HOMOGENEOUS_VARGS_BYTES(range_type, ...) sizeof(CARMA_MAKE_ARRAY_LITERAL(range_type, __VA_ARGS__))
-    #define CARMA_COUNT_HOMOGENEOUS_VARGS(range_type, ...) CARMA_COUNT_HOMOGENEOUS_VARGS_BYTES(range_type, __VA_ARGS__) / ITEM_SIZE((range_type){})
+    #define CARMA_COUNT_HOMOGENEOUS_VARGS(range_type, ...) CARMA_COUNT_HOMOGENEOUS_VARGS_BYTES(range_type, __VA_ARGS__) / ITEM_SIZE(MAKE(range_type))
 
-    #define CARMA_COPY_HOMOGENEOUS_VARGS(range_type, ...) (POINTER_TYPE((range_type){}))memcpy(\
+    #define CARMA_COPY_HOMOGENEOUS_VARGS(range_type, ...) (POINTER_TYPE(MAKE(range_type)))memcpy(\
         malloc(CARMA_COUNT_HOMOGENEOUS_VARGS_BYTES(range_type, __VA_ARGS__)),\
         CARMA_MAKE_ARRAY_LITERAL(range_type, __VA_ARGS__),\
         CARMA_COUNT_HOMOGENEOUS_VARGS_BYTES(range_type, __VA_ARGS__)\
     )
 
-    #define MAKE_RANGE(range_type, ...) (range_type){\
+    #define MAKE_RANGE(range_type, ...) MAKE(range_type,\
         .data=CARMA_COPY_HOMOGENEOUS_VARGS(range_type, __VA_ARGS__),\
         .count=CARMA_COUNT_HOMOGENEOUS_VARGS(range_type, __VA_ARGS__)\
-    }
+    )
 
-    #define MAKE_DARRAY(darray_type, ...) (darray_type){\
+    #define MAKE_DARRAY(darray_type, ...) MAKE(darray_type,\
         .data=CARMA_COPY_HOMOGENEOUS_VARGS(darray_type, __VA_ARGS__),\
         .count=CARMA_COUNT_HOMOGENEOUS_VARGS(darray_type, __VA_ARGS__),\
         .capacity=CARMA_COUNT_HOMOGENEOUS_VARGS(darray_type, __VA_ARGS__)\
-    }
+    )
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -201,7 +202,7 @@
     if (it != END_POINTER(range))
 
 #define SUB_RANGE(range, start_index, new_count) \
-    (TYPE_OF_EXPRESSION(range)){.data=(range).data + (start_index), .count=(new_count)}
+    MAKE(TYPE_OF_EXPRESSION(range), .data=(range).data + (start_index), .count=(new_count))
 
 #define FILL(range, value) FOR_EACH(it, (range)) *it = (value)
 
