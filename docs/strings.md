@@ -3,7 +3,7 @@
 Carma generally provides macros that you can use on the array structs
 that you define on your own. However, Carma makes an exception for
 strings and define two concrete array structures that you can use:
-`StringView` and `StringBuilder`.
+`StringView` and `StringBuilder`. They are defined in `carma_string.h`
 
 ## StringView
 
