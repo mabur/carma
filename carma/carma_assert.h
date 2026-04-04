@@ -15,15 +15,15 @@
     abort() \
 )
 
-#define CHECK_INTERNAL(condition) do { \
+#define CHECK_INTERNAL(condition, fmt, ...) do { \
     if (!(condition)) { \
-        CARMA_ABORT_FAILURE("CHECK_INTERNAL failed at %s:%d\n", __FILE__, __LINE__); \
+        CARMA_ABORT_FAILURE("CHECK_INTERNAL failed at %s:%d:\n" fmt "\n", __FILE__, __LINE__, ##__VA_ARGS__); \
     } \
 } while (0)
 
 #define CHECK_EXTERNAL(condition, fmt, ...) do { \
     if (!(condition)) { \
-        CARMA_EXIT_FAILURE("CHECK_EXTERNAL failed at %s:%d: " fmt "\n", __FILE__, __LINE__, ##__VA_ARGS__); \
+        CARMA_EXIT_FAILURE("CHECK_EXTERNAL failed at %s:%d:\n" fmt "\n", __FILE__, __LINE__, ##__VA_ARGS__); \
     } \
 } while (0)
 

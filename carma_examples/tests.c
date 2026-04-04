@@ -1593,7 +1593,7 @@ int main() {
     test_add_json_object_single();
     test_add_json_object_multiple();
 
-    CHECK_INTERNAL(true);
+    CHECK_INTERNAL(true, "Some internal error");
     CHECK_EXTERNAL(true, "Some external error");
     (void)CHECK_INTERNAL_VALUE(1, true);
     (void)CHECK_EXTERNAL_VALUE(1, true, "Some external error");
