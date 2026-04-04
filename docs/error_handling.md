@@ -1,6 +1,6 @@
 # Error Handling
 
-These macros are defined in `carma_assert.h`.
+Carma provides some macros for error handling.
 We divide error handling in two different cases.
 
 ## Internal Errors

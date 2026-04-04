@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include "carma_assert.h"
+#include "carma_error.h"
 #include "carma_make.h"
 #include "carma_auto.h"
 

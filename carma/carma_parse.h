@@ -5,7 +5,7 @@
 #include <stdint.h>
 
 #include "carma.h"
-#include "carma_assert.h"
+#include "carma_error.h"
 #include "carma_make.h"
 #include "carma_string.h"
 

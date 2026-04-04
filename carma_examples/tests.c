@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 #include <carma/carma.h>
-#include <carma/carma_assert.h>
+#include <carma/carma_error.h>
 #include <carma/carma_parse.h>
 #include <carma/carma_json_serialize.h>
 #include <carma/carma_json_parse.h>
