@@ -3,12 +3,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Use when the program encounters a handled error and should exit cleanly.
+// This can for example be that some external input is wrong.
 #define CARMA_EXIT_FAILURE(fmt, ...) ( \
     fprintf(stderr, fmt, ##__VA_ARGS__), \
     fflush(stderr), \
     exit(EXIT_FAILURE) \
 )
 
+// Use to indicate an internal bug or unhandled internal error.
+// Like an assertion failure.
 #define CARMA_ABORT_FAILURE(fmt, ...) ( \
     fprintf(stderr, fmt, ##__VA_ARGS__), \
     fflush(stderr), \
