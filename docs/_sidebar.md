@@ -9,3 +9,4 @@
 - [Tables](table_algorithms.md)
 - [Json Serialization](json_serialization.md)
 - [Json Parsing](json_parsing.md)
+- [Error Handling](error_handling.md)
