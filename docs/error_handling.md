@@ -18,7 +18,7 @@ Our long term goal is to have zero internal errors.
   Checks an internal condition that should always hold.
   If the condition is not valid then it prints a formatted error message
   and aborts the program and returns the error code 1.
-  This is like an assert.
+  This is like an assert, but it is active in both debug and release builds.
 
 ## External Errors
 
@@ -36,3 +36,4 @@ Some external errors might be expected.
   Checks an external condition that is required to hold for the program to be able to continue.
   If the condition is not valid then it prints a formatted error message
   and exits the program and returns the error code 1.
+  It is active in both debug and release builds.
