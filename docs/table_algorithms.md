@@ -8,7 +8,7 @@ They should all be primitive types.
 This is an example of an item struct for a table:
 
 ```c
-typedef struct {
+typedef struct Item {
     int key;
     char value;
     bool occupied;
@@ -18,7 +18,7 @@ typedef struct {
 The table then looks just like a dynamic array of such items:
 
 ```c
-typedef struct {
+typedef struct Table {
     Item* data;
     size_t count;
     size_t capacity;

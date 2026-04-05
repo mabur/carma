@@ -6,7 +6,7 @@ the member variables `data` and `count`, where `data` is an array of size one
 and `count` can be any integer type. For example:
 
 ```c
-typedef struct {
+typedef struct OptionalCharacter {
     char data[1];
     size_t count;
 } OptionalCharacter;

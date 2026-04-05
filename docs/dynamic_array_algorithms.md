@@ -6,7 +6,7 @@ with the additional member variable `capacity` of any integer type.
 For example:
 
 ```c
-typedef struct {
+typedef struct ExampleDynamicArray {
     int* data;
     size_t count;
     size_t capacity;

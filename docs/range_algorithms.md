@@ -8,7 +8,7 @@ where `data` can be any pointer type and `count` can be any integer type.
 For example:
 
 ```clike
-typedef struct {
+typedef struct ExampleRange {
     int* data;
     size_t count;
 } ExampleRange;
