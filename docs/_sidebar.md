@@ -10,3 +10,4 @@
 - [Json Serialization](json_serialization.md)
 - [Json Parsing](json_parsing.md)
 - [Error Handling](error_handling.md)
+- [Compatibility](compatibility.md)
