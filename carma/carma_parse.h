@@ -66,10 +66,12 @@ ParsedInt try_parse_int(StringView* s) {
         DROP_FRONT(*s);
     }
     auto abs_value = try_parse_u64(s);
+    auto result = MAKE(ParsedInt);
     if (abs_value.ok) {
-        return MAKE(ParsedInt, .value=sign * (int)abs_value.value, .ok=true);
+        result.value = sign * (int)abs_value.value;
+        result.ok = true;
     }
-    return MAKE(ParsedInt);
+    return result;
 }
 
 static inline
