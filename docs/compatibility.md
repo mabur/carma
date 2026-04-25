@@ -15,9 +15,26 @@ In practice that means that these common compilers work:
 
 ## Type Inference
 
-`CARMA_AUTO` is used for type inference, similar to `auto` in C++11 and C23,
+* `CARMA_AUTO` is used for type inference.
+It is similar to `auto` in C++11 and C23,
 and the `__auto_type` extension in GCC and Clang.
 It is mainly for internal library usage.
+Example:
+```c
+CARMA_AUTO my_int = 10;
+CARMA_AUTO my_double = 3.14;
+```
+
+* `CARMA_TYPE_OF` is used to get the type of an expression.
+It is similar to `typeof` in C23 and `decltype` in C++11,
+and the `__typeof__` extension in GCC and Clang.
+It is mainly for internal library usage.
+Example:
+```c
+for (CARMA_TYPE_OF(count) index = 0; index < count; ++index) {
+    ...
+}
+```
 
 ## Aggregate Construction
 
