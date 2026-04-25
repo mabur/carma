@@ -7,6 +7,7 @@
 #include "carma_error.h"
 #include "carma_make.h"
 #include "carma_auto.h"
+#include "carma_type_of.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // UTILITIES
@@ -35,12 +36,6 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // MEMBER TYPES
-
-#if defined(__GNUC__) || defined(__clang__)
-    #define TYPE_OF_EXPRESSION(x) typeof(x)
-#elif defined(__cplusplus)
-    #define TYPE_OF_EXPRESSION(x) decltype(x)
-#endif
 
 #define POINTER_TYPE(range) TYPE_OF_EXPRESSION((range).data)
 #define VALUE_TYPE(range) TYPE_OF_EXPRESSION(*(range).data)
