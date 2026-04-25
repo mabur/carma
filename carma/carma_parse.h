@@ -93,7 +93,8 @@ StringView parse_int_as_string(StringView* s) {
     return MAKE(StringView, .data=input_data, .count=input_count - s->count);
 }
 
-static inline ParsedDouble try_parse_double(StringView* s) {
+static inline
+ParsedDouble try_parse_double(StringView* s) {
     auto sign = +1.0;
     if (STARTS_WITH_ITEM(*s, '-')) {
         sign = -1.0;
@@ -117,10 +118,12 @@ static inline ParsedDouble try_parse_double(StringView* s) {
             }
         }
     }
+    auto result = MAKE(ParsedDouble);
     if (optional_integral.ok || optional_fractional.ok) {
-        return MAKE(ParsedDouble, .value=sign * (integral + fractional), .ok=true);
+        result.value = sign * (integral + fractional);
+        result.ok = true;
     }
-    return MAKE(ParsedDouble);
+    return result;
 }
 
 static inline
