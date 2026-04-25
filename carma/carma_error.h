@@ -41,3 +41,9 @@
         : (fprintf(stderr, "CHECK_EXTERNAL failed at %s:%d:\n", __FILE__, __LINE__), \
             CARMA_EXIT_FAILURE(fmt, ##__VA_ARGS__), \
             (value)))
+
+#define GET_OPTIONAL_OR_ABORT(optional) \
+    CHECK_INTERNAL_VALUE((optional).value, (optional).ok)
+
+#define GET_OPTIONAL_OR_EXIT(optional, fmt, ...) \
+    CHECK_EXTERNAL_VALUE((optional).value, (optional).ok, fmt, ##__VA_ARGS__)
