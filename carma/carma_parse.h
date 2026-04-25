@@ -48,18 +48,14 @@ bool is_whitespace(char c) {
 
 static inline
 ParsedU64 try_parse_u64(StringView* s) {
-    uint64_t parsed_value = 0;
-    int has_parsed_digits = false;
+    auto result = MAKE(ParsedU64);
     while (!IS_EMPTY(*s) && is_digit(FIRST_ITEM(*s))) {
-        parsed_value *= 10;
-        parsed_value += FIRST_ITEM(*s) - '0';
+        result.value *= 10;
+        result.value += FIRST_ITEM(*s) - '0';
         DROP_FRONT(*s);
-        has_parsed_digits = true;
+        result.ok = true;
     }
-    if (has_parsed_digits) {
-        return MAKE(ParsedU64, .value=parsed_value, .ok=true);
-    }
-    return MAKE(ParsedU64);
+    return result;
 }
 
 static inline
