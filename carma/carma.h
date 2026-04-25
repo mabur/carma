@@ -37,9 +37,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 // MEMBER TYPES
 
-#define POINTER_TYPE(range) TYPE_OF_EXPRESSION((range).data)
-#define VALUE_TYPE(range) TYPE_OF_EXPRESSION(*(range).data)
-#define INDEX_TYPE(range) TYPE_OF_EXPRESSION((range).count)
+#define POINTER_TYPE(range) CARMA_TYPE_OF((range).data)
+#define VALUE_TYPE(range) CARMA_TYPE_OF(*(range).data)
+#define INDEX_TYPE(range) CARMA_TYPE_OF((range).count)
 
 ////////////////////////////////////////////////////////////////////////////////
 // ALLOCATE MEMORY
@@ -197,7 +197,7 @@
     if (it != END_POINTER(range))
 
 #define SUB_RANGE(range, start_index, new_count) \
-    MAKE(TYPE_OF_EXPRESSION(range), .data=(range).data + (start_index), .count=(new_count))
+    MAKE(CARMA_TYPE_OF(range), .data=(range).data + (start_index), .count=(new_count))
 
 #define FILL(range, value) FOR_EACH(it, (range)) *it = (value)
 
