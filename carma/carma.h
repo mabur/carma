@@ -293,19 +293,19 @@ static inline bool carma_are_bits_equal(
 ////////////////////////////////////////////////////////////////////////////////
 // OPTIONAL ALGORITHMS
 
-#define SET_OPTIONAL(optional, item) \
-    do {(optional).data[0] = (item); (optional).count = 1;} while (0)
+//#define SET_OPTIONAL(optional, item) \
+//    do {(optional).data[0] = (item); (optional).count = 1;} while (0)
 
-#define GET_OPTIONAL(optional) FIRST_ITEM(optional)
+//#define GET_OPTIONAL(optional) FIRST_ITEM(optional)
 
-#define GET_OPTIONAL_OR(optional, default_item) \
-    (IS_EMPTY(optional) ? (default_item) : GET_OPTIONAL(optional))
+//#define GET_OPTIONAL_OR(optional, default_item) \
+//    (!(optional).ok ? (default_item) : (optional).value)
 
 #define GET_OPTIONAL_OR_ABORT(optional) \
-    CHECK_INTERNAL_VALUE(GET_OPTIONAL(optional), !IS_EMPTY(optional))
+    CHECK_INTERNAL_VALUE((optional).value, (optional).ok)
 
 #define GET_OPTIONAL_OR_EXIT(optional, fmt, ...) \
-    CHECK_EXTERNAL_VALUE(GET_OPTIONAL(optional), !IS_EMPTY(optional), fmt, ##__VA_ARGS__)
+    CHECK_EXTERNAL_VALUE((optional).value, (optional).ok, fmt, ##__VA_ARGS__)
 
 ////////////////////////////////////////////////////////////////////////////////
 // DYNAMIC ARRAY ALGORITHMS

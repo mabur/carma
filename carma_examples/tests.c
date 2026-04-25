@@ -9,6 +9,11 @@
 #include <carma/carma_string.h>
 #include <carma/carma_table.h>
 
+typedef struct OptionalInt {
+    int data[1];
+    size_t count;
+} OptionalInt;
+
 typedef struct {
     int* data;
     size_t count;
@@ -937,25 +942,6 @@ void test_concat() {
     ASSERT_EQUAL_SIZE("CONCAT", target.capacity, 8);
 }
 
-void test_optional() {
-    auto optional = (OptionalInt){};
-    ASSERT_EQUAL_SIZE("Optional init", optional.count, 0);
-    SET_OPTIONAL(optional, 3);
-    ASSERT_EQUAL_SIZE("SET_OPTIONAL count", optional.count, 1);
-    FOR_EACH(x, optional) {
-        ASSERT_EQUAL_INT("Optional FOR_EACH 3", *x, 3);
-    }
-    SET_OPTIONAL(optional, 4);
-    ASSERT_EQUAL_SIZE("Redo SET_OPTIONAL count", optional.count, 1);
-    FOR_EACH(x, optional) {
-        ASSERT_EQUAL_INT("Optional FOR_EACH 4", *x, 4);
-    }
-    (void)GET_OPTIONAL_OR_ABORT(optional);
-    (void)GET_OPTIONAL_OR_EXIT(optional, "error message");
-    CLEAR(optional);
-    ASSERT_EQUAL_SIZE("Optional CLEAR", optional.count, 0);
-}
-
 void test_for_x_y() {
     Image actual;
     INIT_2D_ARRAY(actual, 2, 3);
@@ -1205,15 +1191,15 @@ void test_table_available_keys() {
 
 void test_try_parse_u64() {
     auto string = STRING_VIEW("15");
-    auto value = TRY_PARSE_U64(string);
-    ASSERT_EQUAL_SIZE("TRY_PARSE_U64", GET_OPTIONAL(value), 15);
+    auto result = TRY_PARSE_U64(string);
+    ASSERT_EQUAL_SIZE("TRY_PARSE_U64", result.value, 15);
     ASSERT_EQUAL_RANGE("TRY_PARSE_U64", string, (STRING_VIEW("")));
 }
 
 void test_try_parse_int() {
     auto string = STRING_VIEW("15");
-    auto value = TRY_PARSE_INT(string);
-    ASSERT_EQUAL_INT("TRY_PARSE_INT", GET_OPTIONAL(value), 15);
+    auto result = TRY_PARSE_INT(string);
+    ASSERT_EQUAL_INT("TRY_PARSE_INT", result.value, 15);
     ASSERT_EQUAL_RANGE("TRY_PARSE_INT", string, (STRING_VIEW("")));
 }
 
@@ -1233,8 +1219,8 @@ void test_parse_int_as_string() {
 
 void test_try_parse_double() {
     auto string = STRING_VIEW("15.4");
-    auto value = TRY_PARSE_DOUBLE(string);
-    ASSERT_EQUAL_DOUBLE("TRY_PARSE_DOUBLE", GET_OPTIONAL(value), 15.4);
+    auto result = TRY_PARSE_DOUBLE(string);
+    ASSERT_EQUAL_DOUBLE("TRY_PARSE_DOUBLE", result.value, 15.4);
     ASSERT_EQUAL_RANGE("TRY_PARSE_DOUBLE", string, (STRING_VIEW("")));
 }
 
@@ -1271,8 +1257,8 @@ void test_parse_json_array_item_by_item() {
     auto actual = (IntArray){};
     for (auto item = parse_first_json_array_item(&string); !IS_EMPTY(item); item = parse_next_json_array_item(&string)) {
         auto optional_int = TRY_PARSE_INT(item);
-        FOR_EACH(it, optional_int) {
-            APPEND(actual, *it);
+        if (optional_int.ok) {
+            APPEND(actual, optional_int.value);
         }
     }
     ASSERT_EQUAL_RANGE("test_parse_json_array_item_by_item", actual, expected);
@@ -1308,8 +1294,8 @@ void test_parse_json_object_item_by_item() {
         v = parse_next_json_object_value(&string)
     ) {
         auto optional_int = TRY_PARSE_INT(v);
-        FOR_EACH(it, optional_int) {
-            APPEND(actual_values, *it);
+        if (optional_int.ok) {
+            APPEND(actual_values, optional_int.value);
         }
     }
     ASSERT_EQUAL_RANGE("test_parse_json_object_item_by_item", actual_values, expected_values);
@@ -1538,8 +1524,6 @@ int main() {
     test_insert_range0b();
     test_insert_range1a();
     test_insert_range1b();
-
-    test_optional();
 
     test_for_x_y();
     test_for_x_y_z();

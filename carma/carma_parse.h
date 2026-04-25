@@ -1,6 +1,7 @@
 #pragma once
 
 #include <limits.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 
@@ -20,20 +21,20 @@ parse_word
 parse_white_space
 */
 
-typedef struct OptionalInt {
-    int data[1];
-    size_t count;
-} OptionalInt;
+typedef struct ParsedInt {
+    int value;
+    bool ok;
+} ParsedInt;
 
-typedef struct OptionalU64 {
-    uint64_t data[1];
-    size_t count;
-} OptionalU64;
+typedef struct ParsedU64 {
+    uint64_t value;
+    bool ok;
+} ParsedU64;
 
-typedef struct OptionalDouble {
-    double data[1];
-    size_t count;
-} OptionalDouble;
+typedef struct ParsedDouble {
+    double value;
+    bool ok;
+} ParsedDouble;
 
 static inline
 bool is_digit(char c) {
@@ -46,7 +47,7 @@ bool is_whitespace(char c) {
 }
 
 static inline
-OptionalU64 try_parse_u64(StringView* s) {
+ParsedU64 try_parse_u64(StringView* s) {
     uint64_t parsed_value = 0;
     int has_parsed_digits = false;
     while (!IS_EMPTY(*s) && is_digit(FIRST_ITEM(*s))) {
@@ -56,23 +57,23 @@ OptionalU64 try_parse_u64(StringView* s) {
         has_parsed_digits = true;
     }
     if (has_parsed_digits) {
-        return MAKE(OptionalU64, .data={parsed_value}, .count=1);
+        return MAKE(ParsedU64, .value=parsed_value, .ok=true);
     }
-    return MAKE(OptionalU64);
+    return MAKE(ParsedU64);
 }
 
 static inline
-OptionalInt try_parse_int(StringView* s) {
+ParsedInt try_parse_int(StringView* s) {
     auto sign = +1;
     if (STARTS_WITH_ITEM(*s, '-')) {
         sign = -1;
         DROP_FRONT(*s);
     }
     auto abs_value = try_parse_u64(s);
-    FOR_EACH(it, abs_value) {
-        return MAKE(OptionalInt, .data={sign * (int)(*it)}, .count=1);
+    if (abs_value.ok) {
+        return MAKE(ParsedInt, .value=sign * (int)abs_value.value, .ok=true);
     }
-    return MAKE(OptionalInt);
+    return MAKE(ParsedInt);
 }
 
 static inline
@@ -94,7 +95,7 @@ StringView parse_int_as_string(StringView* s) {
     return MAKE(StringView, .data=input_data, .count=input_count - s->count);
 }
 
-static inline OptionalDouble try_parse_double(StringView* s) {
+static inline ParsedDouble try_parse_double(StringView* s) {
     auto sign = +1.0;
     if (STARTS_WITH_ITEM(*s, '-')) {
         sign = -1.0;
@@ -102,26 +103,26 @@ static inline OptionalDouble try_parse_double(StringView* s) {
     }
     auto integral = 0.0;
     auto optional_integral = try_parse_u64(s);
-    FOR_EACH(it, optional_integral) {
-        integral = (double)(*it);
+    if (optional_integral.ok) {
+        integral = (double)optional_integral.value;
     }
     auto fractional = 0.0;
-    auto optional_fractional = MAKE(OptionalU64);
+    auto optional_fractional = MAKE(ParsedU64);
     if (STARTS_WITH_ITEM(*s, '.')) {
         DROP_FRONT(*s);
         auto count = s->count;
         optional_fractional = try_parse_u64(s);
-        FOR_EACH(it, optional_fractional) {
-            fractional = (double)(*it);
+        if (optional_fractional.ok) {
+            fractional = (double)optional_fractional.value;
             for (; count > s->count; --count) {
                 fractional *= 0.1;
             }
         }
     }
-    if (!IS_EMPTY(optional_integral) || !IS_EMPTY(optional_fractional)) {
-        return MAKE(OptionalDouble, .data={sign * (integral + fractional)}, .count=1);
+    if (optional_integral.ok || optional_fractional.ok) {
+        return MAKE(ParsedDouble, .value=sign * (integral + fractional), .ok=true);
     }
-    return MAKE(OptionalDouble);
+    return MAKE(ParsedDouble);
 }
 
 static inline
@@ -165,7 +166,7 @@ static inline uint64_t parse_u64_or_exit(StringView* s) {
 static inline int parse_int_or_exit(StringView* s) {
     auto before = *s;
     auto optional = try_parse_int(s);
-    if (IS_EMPTY(optional)) {
+    if (!optional.ok) {
         fprintf(stderr, "Could not parse int from string:\n");
         PRINT_CARMA_STRING(before);
     }
