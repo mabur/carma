@@ -28,11 +28,10 @@
 #define ITEM_SIZE(range) sizeof(*(range).data)
 
 #define SWAP(a, b) do { \
-    CARMA_AUTO c = (a); \
+    CARMA_AUTO carma_swap_temp_ = (a); \
     (a) = (b); \
-    (b) = c; \
+    (b) = carma_swap_temp_; \
 } while (0)
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // MEMBER TYPES
