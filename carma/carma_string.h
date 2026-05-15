@@ -197,5 +197,6 @@ static inline void carma_serialize_unsigned_type(StringBuilder* string, uintmax_
 } while(0)
 
 #define SERIALIZE_BOOL(string, x) do { \
-    CONCAT_STRING((string), "%s", (bool)(x) ? "true" : "false"); \
+    if (x) CONCAT_CSTRING(string, "true"); \
+    else CONCAT_CSTRING(string, "false"); \
 } while(0)
