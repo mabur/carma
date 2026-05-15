@@ -1195,6 +1195,22 @@ void test_table_available_keys() {
     ASSERT_EQUAL_INT("test_table_available_2_keys", value, 5);
 }
 
+void test_serialize_int() {
+    auto s = (StringBuilder){};
+    
+    CLEAR(s);
+    SERIALIZE_INT(s, 0);
+    ASSERT_EQUAL_STRINGS("test_serialize_int 0", s.data, "0");
+    
+    CLEAR(s);
+    SERIALIZE_INT(s, -1);
+    ASSERT_EQUAL_STRINGS("test_serialize_int -1", s.data, "-1");
+    
+    CLEAR(s);
+    SERIALIZE_INT(s, 12345);
+    ASSERT_EQUAL_STRINGS("test_serialize_int 12345", s.data, "12345");
+}
+
 void test_try_parse_u64() {
     auto string = STRING_VIEW("15");
     auto result = TRY_PARSE_U64(string);
@@ -1554,6 +1570,8 @@ int main() {
     test_table_available_key();
     test_table_available_keys();
 
+    test_serialize_int();
+    
     test_try_parse_u64();
     test_try_parse_int();
     test_parse_int();
