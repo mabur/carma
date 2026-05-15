@@ -1200,14 +1200,17 @@ void test_serialize_int() {
     
     CLEAR(s);
     SERIALIZE_INT(s, 0);
+    APPEND(s, '\0');
     ASSERT_EQUAL_STRINGS("test_serialize_int 0", s.data, "0");
     
     CLEAR(s);
     SERIALIZE_INT(s, -1);
+    APPEND(s, '\0');
     ASSERT_EQUAL_STRINGS("test_serialize_int -1", s.data, "-1");
     
     CLEAR(s);
     SERIALIZE_INT(s, 12345);
+    APPEND(s, '\0');
     ASSERT_EQUAL_STRINGS("test_serialize_int 12345", s.data, "12345");
 }
 
@@ -1216,10 +1219,12 @@ void test_serialize_size_t() {
     
     CLEAR(s);
     SERIALIZE_SIZE_T(s, 0);
+    APPEND(s, '\0');
     ASSERT_EQUAL_STRINGS("test_serialize_size_t 0", s.data, "0");
     
     CLEAR(s);
     SERIALIZE_SIZE_T(s, 12345);
+    APPEND(s, '\0');
     ASSERT_EQUAL_STRINGS("test_serialize_size_t 12345", s.data, "12345");
 }
 
@@ -1228,22 +1233,27 @@ void test_serialize_double() {
     
     CLEAR(s);
     SERIALIZE_DOUBLE(s, +0);
+    APPEND(s, '\0');
     ASSERT_EQUAL_STRINGS("test_serialize_double +0", s.data, "0.000000");
     
     CLEAR(s);
     SERIALIZE_DOUBLE(s, -0);
+    APPEND(s, '\0');
     ASSERT_EQUAL_STRINGS("test_serialize_double -0", s.data, "0.000000");
     
     CLEAR(s);
     SERIALIZE_DOUBLE(s, 1);
+    APPEND(s, '\0');
     ASSERT_EQUAL_STRINGS("test_serialize_double 1", s.data, "1.000000");
     
     CLEAR(s);
     SERIALIZE_DOUBLE(s, -1);
+    APPEND(s, '\0');
     ASSERT_EQUAL_STRINGS("test_serialize_double -1", s.data, "-1.000000");
     
     CLEAR(s);
     SERIALIZE_DOUBLE(s, 3.14151965);
+    APPEND(s, '\0');
     ASSERT_EQUAL_STRINGS("test_serialize_double pi", s.data, "3.141520");
 }
 
@@ -1252,10 +1262,12 @@ void test_serialize_bool() {
     
     CLEAR(s);
     SERIALIZE_BOOL(s, true);
+    APPEND(s, '\0');
     ASSERT_EQUAL_STRINGS("test_serialize_bool true", s.data, "true");
     
     CLEAR(s);
     SERIALIZE_BOOL(s, false);
+    APPEND(s, '\0');
     ASSERT_EQUAL_STRINGS("test_serialize_bool false", s.data, "false");
 }
 

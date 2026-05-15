@@ -179,21 +179,17 @@ static inline void carma_serialize_unsigned_type(StringBuilder* string, uintmax_
     }
 }
 
-static inline void carma_serialize_int(StringBuilder* string, intmax_t x) {
-    if (x < 0) {
-        APPEND(*string, '-');
-        carma_serialize_unsigned_type(string, (uintmax_t)(-x));
-    } else {
-        carma_serialize_unsigned_type(string, (uintmax_t)(x));
-    }
-}
-
-#define SERIALIZE_INT(string, x) do { \
-    carma_serialize_int(&(string), (intmax_t)(x)); \
-} while(0)
-
 #define SERIALIZE_SIZE_T(string, x) do { \
     carma_serialize_unsigned_type(&(string), (x)); \
+} while(0)
+
+#define SERIALIZE_INT(string, x) do { \
+    if (x < 0) { \
+        APPEND(string, '-'); \
+        carma_serialize_unsigned_type(&(string), (uintmax_t)(-x)); \
+    } else { \
+        carma_serialize_unsigned_type(&(string), (uintmax_t)(x)); \
+    } \
 } while(0)
 
 #define SERIALIZE_DOUBLE(string, x) do { \
