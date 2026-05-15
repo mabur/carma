@@ -173,7 +173,8 @@ static inline void carma_serialize_size_t(StringBuilder* string, size_t x) {
     size_t start = string->count;
     size_t count = 0;
     do {
-        APPEND(*string, '0' + (char)(x % 10));
+        char digit = '0' + (char)(x % 10);
+        APPEND(*string, digit);
         x /= 10;
         count++;
     } while (x > 0);
