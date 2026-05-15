@@ -1102,6 +1102,7 @@ void test_concat_string() {
 void test_format_string() {
     ASSERT_EQUAL_STRINGS("test_format_string 0", FORMAT_STRING("").data, "");
     ASSERT_EQUAL_STRINGS("test_format_string 1", FORMAT_STRING("a").data, "a");
+    ASSERT_EQUAL_STRINGS("test_format_string 2", FORMAT_STRING("%zu", 0).data, "0");
 }
 
 void test_table_set_key_value_duplicates() {

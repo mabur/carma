@@ -39,18 +39,16 @@ static inline char* carma_make_cstring(const char* data, size_t count) {
 #define MAKE_CSTRING(string) carma_make_cstring((string).data, (string).count)
 
 static inline
-StringBuilder carma_concat_string(StringBuilder string, const char* format, ...) {
-    va_list args0;
+StringBuilder carma_vconcat_string(StringBuilder string, const char* format, va_list args) {
     va_list args1;
-    va_start(args0, format);
-    va_copy(args1, args0);
+    va_copy(args1, args);
 
     // Try writing at the end of the string:
     int num_characters = vsnprintf(
         END_POINTER(string),
         REMAINING_CAPACITY(string),
         format,
-        args0
+        args
     );
     // Check if we succeed:
     if (num_characters >= 0) {
@@ -66,8 +64,16 @@ StringBuilder carma_concat_string(StringBuilder string, const char* format, ...)
         string.count += (size_t)num_characters;
     }
 
-    va_end(args0);
     va_end(args1);
+    return string;
+}
+
+static inline
+StringBuilder carma_concat_string(StringBuilder string, const char* format, ...) {
+    va_list args;
+    va_start(args, format);
+    string = carma_vconcat_string(string, format, args);
+    va_end(args);
     return string;
 }
 
@@ -81,7 +87,7 @@ StringView FORMAT_STRING(const char* format, ...) {
     CLEAR(string);
     va_list args;
     va_start(args, format);
-    string = carma_concat_string(string, format, args);
+    string = carma_vconcat_string(string, format, args);
     va_end(args);
     StringView result = {string.data, string.count};
     return result;
