@@ -169,8 +169,28 @@ StringBuilder read_text_file(const char* file_path) {
     CONCAT_STRING((string), "%i", (int)(x)); \
 } while(0)
 
+static inline void carma_serialize_size_t(StringBuilder* string, size_t x) {
+    if (x == 0) {
+        APPEND(*string, '0');
+        APPEND(*string, '\0');
+        return;
+    }
+    size_t start = string->count;
+    size_t count = 0;
+    while (x > 0) {
+        auto digit = '0' + (char)(x % 10);
+        APPEND(*string, digit);
+        x /= 10;
+        count++;
+    }
+    for (size_t first = 0, last = count - 1; first < last; first++, last--) {
+        SWAP((string->data[start + first]), string->data[start + last]);
+    }
+    APPEND(*string, '\0');
+}
+
 #define SERIALIZE_SIZE_T(string, x) do { \
-    CONCAT_STRING((string), "%zu", (size_t)(x)); \
+    carma_serialize_size_t(&(string), (size_t)(x)); \
 } while(0)
 
 #define SERIALIZE_DOUBLE(string, x) do { \
