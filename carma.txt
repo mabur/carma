@@ -11,13 +11,23 @@
                 │StringBuilder│                                       
                 └─────────────┘                                       
 
+* Variadic functions for string interpolation is a source of complexity and bugs.
+  - Also hard to remember formatting string codes.
+  - Is it really needed?
+  - Would it make sense to replace with explicit versions for each primitive type:
+    - CONCAT_CSTRING, CONCAT_INT, CONCAT_SIZET, CONCAT_DOUBLE, ...
+    - CONCAT_INT, CONCAT_STRING_INT, CONCAT_INT_STRING, CONCAT_SERIALIZED_INT, SERIALIZE_INT
+    - Such functions/macros could either output result by:
+      - concat to a buffer passed as input (most general building block, but least ergonomic).
+      - Use a static buffer internally.
+      - Return a small string on the stack.
+* Small string on stack struct String64 {char data[64]; size_t count;}
+  - A common use-case is to do something like: String64 file_path = FORMAT_STRING64("%s%s", dir_path, file_name);
+  - Can have multiple: String16, String32, String64, String128, String256, String512
 * Defer
   - https://www.reddit.com/r/C_Programming/comments/1n62v63/defer_in_c89/
   - ScopedStringBuilder
   - ScopedFile
-* Small string on stack struct String64 {char data[64]; size_t count;}
-  - A common use-case is to do something like: String64 file_path = FORMAT_STRING64("%s%s", dir_path, file_name);
-  - Can have multiple: String16, String32, String64, String128, String256, String512
 * Macros not related to arrays:
   - let / var (Make it portable across c and C++ compilers, including msvc)
   - make(my_struct, .x=0, .y=2) (Make it portable across c and C++ compilers, including msvc)
@@ -71,6 +81,7 @@
   - "A slice, on the other hand, is a dynamically-sized, flexible view into the elements of an array."
   - "In practice, slices are much more common than arrays."
 * Memory handling
+  - Most memory can be allocated on the stack. Also small arrays.
   - Some memory can be allocated once and freed when the program exits.
   - Some memory can be allocated once and then grow/append as needed during run-time, and then freed when the program exits.
   - Some memory can be allocated as static variable inside function, and shared for all calls to the functions, and freed when the program exits.
