@@ -1211,6 +1211,18 @@ void test_serialize_int() {
     ASSERT_EQUAL_STRINGS("test_serialize_int 12345", s.data, "12345");
 }
 
+void test_serialize_size_t() {
+    auto s = (StringBuilder){};
+    
+    CLEAR(s);
+    SERIALIZE_SIZE_T(s, 0);
+    ASSERT_EQUAL_STRINGS("test_serialize_size_t 0", s.data, "0");
+    
+    CLEAR(s);
+    SERIALIZE_SIZE_T(s, 12345);
+    ASSERT_EQUAL_STRINGS("test_serialize_size_t 12345", s.data, "12345");
+}
+
 void test_serialize_double() {
     auto s = (StringBuilder){};
     
@@ -1607,6 +1619,7 @@ int main() {
     test_table_available_keys();
 
     test_serialize_int();
+    test_serialize_size_t();
     test_serialize_double();
     test_serialize_bool();
     

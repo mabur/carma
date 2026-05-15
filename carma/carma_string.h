@@ -169,6 +169,10 @@ StringBuilder read_text_file(const char* file_path) {
     CONCAT_STRING((string), "%i", (int)(x)); \
 } while(0)
 
+#define SERIALIZE_SIZE_T(string, x) do { \
+    CONCAT_STRING((string), "%zu", (size_t)(x)); \
+} while(0)
+
 #define SERIALIZE_DOUBLE(string, x) do { \
     CONCAT_STRING((string), "%f", (double)(x)); \
 } while(0)
