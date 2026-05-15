@@ -166,13 +166,13 @@ StringBuilder read_text_file(const char* file_path) {
 /// Serialization
 
 #define SERIALIZE_INT(string, x) do { \
-    CONCAT_STRING((string), "%i", (x)); \
+    CONCAT_STRING((string), "%i", (int)(x)); \
 } while(0)
 
 #define SERIALIZE_DOUBLE(string, x) do { \
-    CONCAT_STRING((string), "%f", (x)); \
+    CONCAT_STRING((string), "%f", (double)(x)); \
 } while(0)
 
 #define SERIALIZE_BOOL(string, x) do { \
-    CONCAT_STRING((string), "%s", (x) ? "true" : "false"); \
+    CONCAT_STRING((string), "%s", (bool)(x) ? "true" : "false"); \
 } while(0)

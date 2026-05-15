@@ -1211,6 +1211,30 @@ void test_serialize_int() {
     ASSERT_EQUAL_STRINGS("test_serialize_int 12345", s.data, "12345");
 }
 
+void test_serialize_double() {
+    auto s = (StringBuilder){};
+    
+    CLEAR(s);
+    SERIALIZE_DOUBLE(s, +0);
+    ASSERT_EQUAL_STRINGS("test_serialize_double +0", s.data, "0.000000");
+    
+    CLEAR(s);
+    SERIALIZE_DOUBLE(s, -0);
+    ASSERT_EQUAL_STRINGS("test_serialize_double -0", s.data, "0.000000");
+    
+    CLEAR(s);
+    SERIALIZE_DOUBLE(s, 1);
+    ASSERT_EQUAL_STRINGS("test_serialize_double 1", s.data, "1.000000");
+    
+    CLEAR(s);
+    SERIALIZE_DOUBLE(s, -1);
+    ASSERT_EQUAL_STRINGS("test_serialize_double -1", s.data, "-1.000000");
+    
+    CLEAR(s);
+    SERIALIZE_DOUBLE(s, 3.14151965);
+    ASSERT_EQUAL_STRINGS("test_serialize_double pi", s.data, "3.141520");
+}
+
 void test_serialize_bool() {
     auto s = (StringBuilder){};
     
@@ -1583,6 +1607,7 @@ int main() {
     test_table_available_keys();
 
     test_serialize_int();
+    test_serialize_double();
     test_serialize_bool();
     
     test_try_parse_u64();
