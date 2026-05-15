@@ -161,3 +161,18 @@ StringBuilder read_text_file(const char* file_path) {
     }
     return result;
 }
+
+////////////////////////////////////////////////////////////////////////////////
+/// Serialization
+
+#define SERIALIZE_INT(string, x) do { \
+    CONCAT_STRING((string), "%i", (x)); \
+} while(0)
+
+#define SERIALIZE_DOUBLE(string, x) do { \
+    CONCAT_STRING((string), "%f", (x)); \
+} while(0)
+
+#define SERIALIZE_BOOL(string, x) do { \
+    CONCAT_STRING((string), "%s", (x) ? "true" : "false"); \
+} while(0)
