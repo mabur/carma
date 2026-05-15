@@ -1211,6 +1211,18 @@ void test_serialize_int() {
     ASSERT_EQUAL_STRINGS("test_serialize_int 12345", s.data, "12345");
 }
 
+void test_serialize_bool() {
+    auto s = (StringBuilder){};
+    
+    CLEAR(s);
+    SERIALIZE_BOOL(s, true);
+    ASSERT_EQUAL_STRINGS("test_serialize_bool true", s.data, "true");
+    
+    CLEAR(s);
+    SERIALIZE_BOOL(s, false);
+    ASSERT_EQUAL_STRINGS("test_serialize_bool false", s.data, "false");
+}
+
 void test_try_parse_u64() {
     auto string = STRING_VIEW("15");
     auto result = TRY_PARSE_U64(string);
@@ -1571,6 +1583,7 @@ int main() {
     test_table_available_keys();
 
     test_serialize_int();
+    test_serialize_bool();
     
     test_try_parse_u64();
     test_try_parse_int();
