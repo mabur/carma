@@ -2,6 +2,7 @@
 
 #include <stdarg.h>
 #include <stddef.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -169,12 +170,11 @@ StringBuilder read_text_file(const char* file_path) {
     CONCAT_STRING((string), "%i", (int)(x)); \
 } while(0)
 
-static inline void carma_serialize_size_t(StringBuilder* string, size_t x) {
+static inline void carma_serialize_unsigned_type(StringBuilder* string, uintmax_t x) {
     size_t start = string->count;
     size_t count = 0;
     do {
-        char digit = '0' + (char)(x % 10);
-        APPEND(*string, digit);
+        APPEND(*string, (char)('0' + x % 10));
         x /= 10;
         count++;
     } while (x > 0);
@@ -185,7 +185,7 @@ static inline void carma_serialize_size_t(StringBuilder* string, size_t x) {
 }
 
 #define SERIALIZE_SIZE_T(string, x) do { \
-    carma_serialize_size_t(&(string), (size_t)(x)); \
+    carma_serialize_unsigned_type(&(string), (x)); \
 } while(0)
 
 #define SERIALIZE_DOUBLE(string, x) do { \
