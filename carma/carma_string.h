@@ -166,10 +166,6 @@ StringBuilder read_text_file(const char* file_path) {
 ////////////////////////////////////////////////////////////////////////////////
 /// Serialization
 
-#define SERIALIZE_INT(string, x) do { \
-    CONCAT_STRING((string), "%i", (int)(x)); \
-} while(0)
-
 static inline void carma_serialize_unsigned_type(StringBuilder* string, uintmax_t x) {
     size_t start = string->count;
     size_t count = 0;
@@ -181,8 +177,20 @@ static inline void carma_serialize_unsigned_type(StringBuilder* string, uintmax_
     for (size_t first = 0, last = count - 1; first < last; first++, last--) {
         SWAP((string->data[start + first]), string->data[start + last]);
     }
-    APPEND(*string, '\0');
 }
+
+static inline void carma_serialize_int(StringBuilder* string, intmax_t x) {
+    if (x < 0) {
+        APPEND(*string, '-');
+        carma_serialize_unsigned_type(string, (uintmax_t)(-x));
+    } else {
+        carma_serialize_unsigned_type(string, (uintmax_t)(x));
+    }
+}
+
+#define SERIALIZE_INT(string, x) do { \
+    carma_serialize_int(&(string), (intmax_t)(x)); \
+} while(0)
 
 #define SERIALIZE_SIZE_T(string, x) do { \
     carma_serialize_unsigned_type(&(string), (x)); \
