@@ -1099,6 +1099,11 @@ void test_concat_string() {
     ASSERT_STRING_BUILDER("test_concat_string 8", s, "abbccc", 6, 8);
 }
 
+void test_format_string() {
+    ASSERT_EQUAL_STRINGS("test_format_string 0", FORMAT_STRING("").data, "");
+    ASSERT_EQUAL_STRINGS("test_format_string 1", FORMAT_STRING("a").data, "a");
+}
+
 void test_table_set_key_value_duplicates() {
     auto table = (TableIntInt){};
     SET_KEY_VALUE(1, 2, table);
@@ -1534,6 +1539,7 @@ int main() {
     test_string_view();
     test_concat_cstring();
     test_concat_string();
+    test_format_string();
 
     test_table_set_key_value_duplicates();
     test_table_set_keys_value_duplicates();
