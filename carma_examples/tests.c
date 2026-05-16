@@ -1230,13 +1230,11 @@ void test_serialize_size_t() {
     
     CLEAR(s);
     SERIALIZE_SIZE_T(s, 0);
-    APPEND(s, '\0');
-    ASSERT_EQUAL_STRINGS("test_serialize_size_t 0", s.data, "0");
+    ASSERT_STRING_BUILDER("test_serialize_size_t 0", s, "0");
     
     CLEAR(s);
     SERIALIZE_SIZE_T(s, 12345);
-    APPEND(s, '\0');
-    ASSERT_EQUAL_STRINGS("test_serialize_size_t 12345", s.data, "12345");
+    ASSERT_STRING_BUILDER("test_serialize_size_t 12345", s, "12345");
 }
 
 void test_serialize_double() {
