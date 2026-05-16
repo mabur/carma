@@ -202,7 +202,10 @@ static inline void carma_serialize_unsigned_type(StringBuilder* string, uintmax_
     if (isnan(_x)) { \
         SERIALIZE_CSTRING((string), "nan"); \
     } else if (isinf(_x)) { \
-        SERIALIZE_CSTRING((string), _x > 0 ? "inf" : "-inf"); \
+        if (_x > 0) \
+            SERIALIZE_CSTRING((string), "inf"); \
+        else \
+            SERIALIZE_CSTRING((string), "-inf"); \
     } else { \
         if (_x < 0) { APPEND((string), '-'); _x = -_x; } \
         uintmax_t _integer_part = (uintmax_t)_x; \
