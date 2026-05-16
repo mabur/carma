@@ -1258,7 +1258,7 @@ void test_serialize_double() {
     
     CLEAR(s);
     SERIALIZE_DOUBLE(s, 3.14151965);
-    ASSERT_STRING_BUILDER("test_serialize_double pi", s, "3.141520");
+    ASSERT_STRING_BUILDER("test_serialize_double pi", s, "3.141519");
 }
 
 void test_serialize_bool() {

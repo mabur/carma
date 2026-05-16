@@ -1,5 +1,6 @@
 #pragma once
 
+#include <math.h>
 #include <stdarg.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -197,7 +198,25 @@ static inline void carma_serialize_unsigned_type(StringBuilder* string, uintmax_
 } while(0)
 
 #define SERIALIZE_DOUBLE(string, x) do { \
-    CONCAT_STRING((string), "%f", (double)(x)); \
+    double _x = (double)(x); \
+    if (isnan(_x)) { \
+        SERIALIZE_CSTRING((string), "nan"); \
+    } else if (isinf(_x)) { \
+        SERIALIZE_CSTRING((string), _x > 0 ? "inf" : "-inf"); \
+    } else { \
+        if (_x < 0) { APPEND((string), '-'); _x = -_x; } \
+        uintmax_t _integer_part = (uintmax_t)_x; \
+        double _fractional = _x - (double)_integer_part; \
+        carma_serialize_unsigned_type(&(string), _integer_part); \
+        APPEND((string), '.'); \
+        for (int _i = 0; _i < 6; _i++) { \
+            _fractional *= 10; \
+            APPEND((string), '0' + (char)_fractional); \
+            _fractional -= (int)_fractional; \
+        } \
+        APPEND(string, '\0'); \
+        DROP_BACK(string); \
+    } \
 } while(0)
 
 #define SERIALIZE_BOOL(string, x) do { \
