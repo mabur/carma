@@ -107,6 +107,16 @@ void ASSERT_EQUAL_INT(const char* description, int a, int b) {
     }
 }
 
+void ASSERT_EQUAL_CHAR(const char* description, char a, char b) {
+    global_assert_count++;
+    if (a == b) {
+        printf("%s ok\n", (description));
+    } else {
+        printf("%s %c!=%c bad\n", (description), (a), (b));
+        global_assert_errors++;
+    }
+}
+
 void ASSERT_EQUAL_DOUBLE(const char* description, double a, double b) {
     global_assert_count++;
     if (a == b) {
@@ -143,6 +153,16 @@ void ASSERT_EQUAL_SIZE(const char* description, size_t a, size_t b) {
         printf("%s ok\n", (description));
     } else {
         printf("%s %zu!=%zu bad\n", (description), (a), (b));
+        global_assert_errors++;
+    }
+}
+
+void ASSERT_LESS_SIZE(const char* description, size_t a, size_t b) {
+    global_assert_count++;
+    if (a < b) {
+        printf("%s ok\n", (description));
+    } else {
+        printf("%s %zu >= %zu bad\n", (description), (a), (b));
         global_assert_errors++;
     }
 }
@@ -207,16 +227,10 @@ void ASSERT_EQUAL_SIZE(const char* description, size_t a, size_t b) {
     } \
 } while (0)
 
-void ASSERT_STRING_BUILDER(
-    const char* description,
-    StringBuilder string,
-    const char* data,
-    size_t count,
-    size_t capacity
-) {
+void ASSERT_STRING_BUILDER(const char* description, StringBuilder string, const char* data) {
+    ASSERT_EQUAL_SIZE(description, strlen(data), string.count);
+    ASSERT_LESS_SIZE(description, strlen(data), string.capacity);
     ASSERT_EQUAL_STRINGS((description), (string).data, (data));
-    ASSERT_EQUAL_SIZE((description), (string).count, (count));
-    ASSERT_EQUAL_SIZE((description), (string).capacity, (capacity));
 }
 
 void summarize_tests() {
@@ -1035,22 +1049,22 @@ void test_serialize_cstring() {
 
     s = (StringBuilder){};
     SERIALIZE_CSTRING(s, "");
-    ASSERT_STRING_BUILDER("test_serialize_cstring 0", s, "", 0, 1);
+    ASSERT_STRING_BUILDER("test_serialize_cstring 0", s, "");
 
     s = (StringBuilder){};
     SERIALIZE_CSTRING(s, "");
     SERIALIZE_CSTRING(s, "");
-    ASSERT_STRING_BUILDER("test_serialize_cstring 1", s, "", 0, 1);
+    ASSERT_STRING_BUILDER("test_serialize_cstring 1", s, "");
 
     s = (StringBuilder){};
     SERIALIZE_CSTRING(s, "a");
     SERIALIZE_CSTRING(s, "");
-    ASSERT_STRING_BUILDER("test_serialize_cstring 2", s, "a", 1, 2);
+    ASSERT_STRING_BUILDER("test_serialize_cstring 2", s, "a");
 
     s = (StringBuilder){};
     SERIALIZE_CSTRING(s, "");
     SERIALIZE_CSTRING(s, "a");
-    ASSERT_STRING_BUILDER("test_serialize_cstring 3", s, "a", 1, 2);
+    ASSERT_STRING_BUILDER("test_serialize_cstring 3", s, "a");
 }
 
 void test_concat_string() {
@@ -1058,45 +1072,45 @@ void test_concat_string() {
     
     s = (StringBuilder){};
     CONCAT_STRING(s, "");
-    ASSERT_STRING_BUILDER("test_concat_string 0", s, "", 0, 1);
+    ASSERT_STRING_BUILDER("test_concat_string 0", s, "");
 
     s = (StringBuilder){};
     CONCAT_STRING(s, "a");
-    ASSERT_STRING_BUILDER("test_concat_string 1", s, "a", 1, 2);
+    ASSERT_STRING_BUILDER("test_concat_string 1", s, "a");
 
     s = (StringBuilder){};
     CONCAT_STRING(s, "ab");
-    ASSERT_STRING_BUILDER("test_concat_string 2", s, "ab", 2, 4);
+    ASSERT_STRING_BUILDER("test_concat_string 2", s, "ab");
 
     s = (StringBuilder){};
     CONCAT_STRING(s, "%i%s\n%i", 1, "ab", 99);
-    ASSERT_STRING_BUILDER("test_concat_string 3", s, "1ab\n99", 6, 8);
+    ASSERT_STRING_BUILDER("test_concat_string 3", s, "1ab\n99");
 
     s = (StringBuilder){};
     CONCAT_STRING(s, "");
     CONCAT_STRING(s, "");
-    ASSERT_STRING_BUILDER("test_concat_string 4", s, "", 0, 1);
+    ASSERT_STRING_BUILDER("test_concat_string 4", s, "");
     
     s = (StringBuilder){};
     CONCAT_STRING(s, "");
     CONCAT_STRING(s, "a");
-    ASSERT_STRING_BUILDER("test_concat_string 5", s, "a", 1, 2);
+    ASSERT_STRING_BUILDER("test_concat_string 5", s, "a");
 
     s = (StringBuilder){};
     CONCAT_STRING(s, "a");
     CONCAT_STRING(s, "");
-    ASSERT_STRING_BUILDER("test_concat_string 6", s, "a", 1, 2);
+    ASSERT_STRING_BUILDER("test_concat_string 6", s, "a");
 
     s = (StringBuilder){};
     CONCAT_STRING(s, "a");
     CONCAT_STRING(s, "b");
-    ASSERT_STRING_BUILDER("test_concat_string 7", s, "ab", 2, 4);
+    ASSERT_STRING_BUILDER("test_concat_string 7", s, "ab");
     
     s = (StringBuilder){};
     CONCAT_STRING(s, "a");
     CONCAT_STRING(s, "bb");
     CONCAT_STRING(s, "ccc");
-    ASSERT_STRING_BUILDER("test_concat_string 8", s, "abbccc", 6, 8);
+    ASSERT_STRING_BUILDER("test_concat_string 8", s, "abbccc");
 }
 
 void test_format_string() {
@@ -1200,18 +1214,15 @@ void test_serialize_int() {
     
     CLEAR(s);
     SERIALIZE_INT(s, 0);
-    APPEND(s, '\0');
-    ASSERT_EQUAL_STRINGS("test_serialize_int 0", s.data, "0");
+    ASSERT_STRING_BUILDER("test_serialize_int 0", s, "0");
     
     CLEAR(s);
     SERIALIZE_INT(s, -1);
-    APPEND(s, '\0');
-    ASSERT_EQUAL_STRINGS("test_serialize_int -1", s.data, "-1");
+    ASSERT_STRING_BUILDER("test_serialize_int -1", s, "-1");
     
     CLEAR(s);
     SERIALIZE_INT(s, 12345);
-    APPEND(s, '\0');
-    ASSERT_EQUAL_STRINGS("test_serialize_int 12345", s.data, "12345");
+    ASSERT_STRING_BUILDER("test_serialize_int 12345", s, "12345");
 }
 
 void test_serialize_size_t() {
