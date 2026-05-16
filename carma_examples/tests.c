@@ -1266,13 +1266,11 @@ void test_serialize_bool() {
     
     CLEAR(s);
     SERIALIZE_BOOL(s, true);
-    APPEND(s, '\0');
-    ASSERT_EQUAL_STRINGS("test_serialize_bool true", s.data, "true");
+    ASSERT_STRING_BUILDER("test_serialize_bool true", s, "true");
     
     CLEAR(s);
     SERIALIZE_BOOL(s, false);
-    APPEND(s, '\0');
-    ASSERT_EQUAL_STRINGS("test_serialize_bool false", s.data, "false");
+    ASSERT_STRING_BUILDER("test_serialize_bool false", s, "false");
 }
 
 void test_try_parse_u64() {
