@@ -85,7 +85,7 @@ static inline void carma_end_json_object(JsonBuilder* json) {
 
 #define ADD_JSON_INT(json, i) do { \
     carma_handle_json_array_delimiter(&json); \
-    SERIALIZE_INT((json).string, i); \
+    SERIALIZE_INTEGRAL((json).string, i); \
 } while(0)
 
 #define ADD_JSON_DOUBLE(json, d) do { \

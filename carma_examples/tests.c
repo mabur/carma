@@ -1209,32 +1209,20 @@ void test_table_available_keys() {
     ASSERT_EQUAL_INT("test_table_available_2_keys", value, 5);
 }
 
-void test_serialize_int() {
+void test_serialize_integral() {
     auto s = (StringBuilder){};
     
     CLEAR(s);
-    SERIALIZE_INT(s, 0);
-    ASSERT_STRING_BUILDER("test_serialize_int 0", s, "0");
+    SERIALIZE_INTEGRAL(s, 0);
+    ASSERT_STRING_BUILDER("test_serialize_integral 0", s, "0");
     
     CLEAR(s);
-    SERIALIZE_INT(s, -1);
-    ASSERT_STRING_BUILDER("test_serialize_int -1", s, "-1");
+    SERIALIZE_INTEGRAL(s, -1);
+    ASSERT_STRING_BUILDER("test_serialize_integral -1", s, "-1");
     
     CLEAR(s);
-    SERIALIZE_INT(s, 12345);
-    ASSERT_STRING_BUILDER("test_serialize_int 12345", s, "12345");
-}
-
-void test_serialize_size_t() {
-    auto s = (StringBuilder){};
-    
-    CLEAR(s);
-    SERIALIZE_SIZE_T(s, 0);
-    ASSERT_STRING_BUILDER("test_serialize_size_t 0", s, "0");
-    
-    CLEAR(s);
-    SERIALIZE_SIZE_T(s, 12345);
-    ASSERT_STRING_BUILDER("test_serialize_size_t 12345", s, "12345");
+    SERIALIZE_INTEGRAL(s, 12345);
+    ASSERT_STRING_BUILDER("test_serialize_integral 12345", s, "12345");
 }
 
 void test_serialize_double() {
@@ -1632,8 +1620,7 @@ int main() {
     test_table_available_key();
     test_table_available_keys();
 
-    test_serialize_int();
-    test_serialize_size_t();
+    test_serialize_integral();
     test_serialize_double();
     test_serialize_bool();
     

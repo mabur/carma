@@ -186,9 +186,6 @@ StringBuilder read_text_file(const char* file_path) {
     DROP_BACK(string); \
 } while(0)
 
-#define SERIALIZE_INT(string, x) SERIALIZE_INTEGRAL((string), (x))
-#define SERIALIZE_SIZE_T(string, x) SERIALIZE_INTEGRAL((string), (x))
-
 #define SERIALIZE_DOUBLE(string, x) do { \
     double _x = (double)(x); \
     if (isnan(_x)) { \
