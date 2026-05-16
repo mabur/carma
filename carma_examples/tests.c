@@ -1242,28 +1242,23 @@ void test_serialize_double() {
     
     CLEAR(s);
     SERIALIZE_DOUBLE(s, +0);
-    APPEND(s, '\0');
-    ASSERT_EQUAL_STRINGS("test_serialize_double +0", s.data, "0.000000");
+    ASSERT_STRING_BUILDER("test_serialize_double +0", s, "0.000000");
     
     CLEAR(s);
     SERIALIZE_DOUBLE(s, -0);
-    APPEND(s, '\0');
-    ASSERT_EQUAL_STRINGS("test_serialize_double -0", s.data, "0.000000");
+    ASSERT_STRING_BUILDER("test_serialize_double -0", s, "0.000000");
     
     CLEAR(s);
     SERIALIZE_DOUBLE(s, 1);
-    APPEND(s, '\0');
-    ASSERT_EQUAL_STRINGS("test_serialize_double 1", s.data, "1.000000");
+    ASSERT_STRING_BUILDER("test_serialize_double 1", s, "1.000000");
     
     CLEAR(s);
     SERIALIZE_DOUBLE(s, -1);
-    APPEND(s, '\0');
-    ASSERT_EQUAL_STRINGS("test_serialize_double -1", s.data, "-1.000000");
+    ASSERT_STRING_BUILDER("test_serialize_double -1", s, "-1.000000");
     
     CLEAR(s);
     SERIALIZE_DOUBLE(s, 3.14151965);
-    APPEND(s, '\0');
-    ASSERT_EQUAL_STRINGS("test_serialize_double pi", s.data, "3.141520");
+    ASSERT_STRING_BUILDER("test_serialize_double pi", s, "3.141520");
 }
 
 void test_serialize_bool() {
