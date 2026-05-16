@@ -168,7 +168,7 @@ StringBuilder read_text_file(const char* file_path) {
 } while (0)
 
 #define SERIALIZE_UNSIGNED(string, x) do { \
-    uintmax_t _su_x = (uintmax_t)(x); \
+    CARMA_AUTO _su_x = (x); \
     size_t _su_start = (string).count; \
     size_t _su_count = 0; \
     do { \
@@ -179,7 +179,7 @@ StringBuilder read_text_file(const char* file_path) {
     for (size_t first = 0, last = _su_count - 1; first < last; first++, last--) { \
         SWAP((string).data[_su_start + first], (string).data[_su_start + last]); \
     } \
-    APPEND(string, '\0'); \
+    APPEND((string), '\0'); \
     DROP_BACK(string); \
 } while(0)
 
