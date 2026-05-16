@@ -169,15 +169,15 @@ StringBuilder read_text_file(const char* file_path) {
 
 #define SERIALIZE_INTEGRAL(string, x) do { \
     CARMA_AUTO _si_x = (x); \
-    size_t _si_start = (string).count; \
     size_t _si_count = 0; \
-    if (_si_x < 0) APPEND((string), '-'); \
-    CARMA_AUTO _si_abs = _si_x < 0 ? (uintmax_t)(-_si_x) : (uintmax_t)(_si_x); \
+    if (_si_x < 0) \
+        APPEND((string), '-'); \
+    _si_x = _si_x < 0 ? (uintmax_t)(-_si_x) : (uintmax_t)(_si_x); \
     do { \
-        APPEND((string), (char)('0' + _si_abs % 10)); \
-        _si_abs /= 10; \
+        APPEND((string), (char)('0' + _si_x % 10)); \
+        _si_x /= 10; \
         _si_count++; \
-    } while (_si_abs > 0); \
+    } while (_si_x > 0); \
     size_t _si_digits_start = (string).count - _si_count; \
     for (size_t _si_first = 0, _si_last = _si_count - 1; _si_first < _si_last; _si_first++, _si_last--) { \
         SWAP((string).data[_si_digits_start + _si_first], (string).data[_si_digits_start + _si_last]); \
