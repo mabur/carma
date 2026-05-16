@@ -167,34 +167,27 @@ StringBuilder read_text_file(const char* file_path) {
     DROP_BACK(string_builder); \
 } while (0)
 
-#define SERIALIZE_UNSIGNED(string, x) do { \
-    CARMA_AUTO _su_x = (x); \
-    size_t _su_start = (string).count; \
-    size_t _su_count = 0; \
+#define SERIALIZE_INTEGRAL(string, x) do { \
+    CARMA_AUTO _si_x = (x); \
+    size_t _si_start = (string).count; \
+    size_t _si_count = 0; \
+    if (_si_x < 0) APPEND((string), '-'); \
+    CARMA_AUTO _si_abs = _si_x < 0 ? (uintmax_t)(-_si_x) : (uintmax_t)(_si_x); \
     do { \
-        APPEND((string), (char)('0' + _su_x % 10)); \
-        _su_x /= 10; \
-        _su_count++; \
-    } while (_su_x > 0); \
-    for (size_t first = 0, last = _su_count - 1; first < last; first++, last--) { \
-        SWAP((string).data[_su_start + first], (string).data[_su_start + last]); \
-    } \
-    APPEND((string), '\0'); \
-    DROP_BACK(string); \
-} while(0)
-
-#define SERIALIZE_SIZE_T(string, x) SERIALIZE_UNSIGNED((string), (x))
-
-#define SERIALIZE_INT(string, x) do { \
-    if (x < 0) { \
-        APPEND(string, '-'); \
-        SERIALIZE_UNSIGNED((string), (uintmax_t)(-x)); \
-    } else { \
-        SERIALIZE_UNSIGNED((string), (uintmax_t)(x)); \
+        APPEND((string), (char)('0' + _si_abs % 10)); \
+        _si_abs /= 10; \
+        _si_count++; \
+    } while (_si_abs > 0); \
+    size_t _si_digits_start = (string).count - _si_count; \
+    for (size_t _si_first = 0, _si_last = _si_count - 1; _si_first < _si_last; _si_first++, _si_last--) { \
+        SWAP((string).data[_si_digits_start + _si_first], (string).data[_si_digits_start + _si_last]); \
     } \
     APPEND(string, '\0'); \
     DROP_BACK(string); \
 } while(0)
+
+#define SERIALIZE_INT(string, x) SERIALIZE_INTEGRAL((string), (x))
+#define SERIALIZE_SIZE_T(string, x) SERIALIZE_INTEGRAL((string), (x))
 
 #define SERIALIZE_DOUBLE(string, x) do { \
     double _x = (double)(x); \
@@ -212,16 +205,16 @@ StringBuilder read_text_file(const char* file_path) {
         } \
         uintmax_t _integer_part = (uintmax_t)_x; \
         double _fractional = _x - (double)_integer_part; \
-        SERIALIZE_UNSIGNED((string), _integer_part); \
+        SERIALIZE_INTEGRAL((string), _integer_part); \
         APPEND((string), '.'); \
         for (int _i = 0; _i < 6; _i++) { \
             _fractional *= 10; \
             APPEND((string), '0' + (char)_fractional); \
             _fractional -= (int)_fractional; \
         } \
-        APPEND(string, '\0'); \
-        DROP_BACK(string); \
     } \
+    APPEND(string, '\0'); \
+    DROP_BACK(string); \
 } while(0)
 
 #define SERIALIZE_BOOL(string, x) do { \
