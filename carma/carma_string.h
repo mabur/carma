@@ -176,8 +176,8 @@ StringBuilder read_text_file(const char* file_path) {
         _su_x /= 10; \
         _su_count++; \
     } while (_su_x > 0); \
-    for (size_t _su_first = 0, _su_last = _su_count - 1; _su_first < _su_last; _su_first++, _su_last--) { \
-        SWAP((string).data[_su_start + _su_first], (string).data[_su_start + _su_last]); \
+    for (size_t first = 0, last = _su_count - 1; first < last; first++, last--) { \
+        SWAP((string).data[_su_start + first], (string).data[_su_start + last]); \
     } \
     APPEND(string, '\0'); \
     DROP_BACK(string); \
