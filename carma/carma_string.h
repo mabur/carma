@@ -167,31 +167,30 @@ StringBuilder read_text_file(const char* file_path) {
     DROP_BACK(string_builder); \
 } while (0)
 
-static inline void carma_serialize_unsigned_type(StringBuilder* string, uintmax_t x) {
-    size_t start = string->count;
-    size_t count = 0;
-    do {
-        APPEND(*string, (char)('0' + x % 10));
-        x /= 10;
-        count++;
-    } while (x > 0);
-    for (size_t first = 0, last = count - 1; first < last; first++, last--) {
-        SWAP((string->data[start + first]), string->data[start + last]);
-    }
-}
-
-#define SERIALIZE_SIZE_T(string, x) do { \
-    carma_serialize_unsigned_type(&(string), (x)); \
+#define SERIALIZE_UNSIGNED(string, x) do { \
+    uintmax_t _su_x = (uintmax_t)(x); \
+    size_t _su_start = (string).count; \
+    size_t _su_count = 0; \
+    do { \
+        APPEND((string), (char)('0' + _su_x % 10)); \
+        _su_x /= 10; \
+        _su_count++; \
+    } while (_su_x > 0); \
+    for (size_t _su_first = 0, _su_last = _su_count - 1; _su_first < _su_last; _su_first++, _su_last--) { \
+        SWAP((string).data[_su_start + _su_first], (string).data[_su_start + _su_last]); \
+    } \
     APPEND(string, '\0'); \
     DROP_BACK(string); \
 } while(0)
 
+#define SERIALIZE_SIZE_T(string, x) SERIALIZE_UNSIGNED((string), (x))
+
 #define SERIALIZE_INT(string, x) do { \
     if (x < 0) { \
         APPEND(string, '-'); \
-        carma_serialize_unsigned_type(&(string), (uintmax_t)(-x)); \
+        SERIALIZE_UNSIGNED((string), (uintmax_t)(-x)); \
     } else { \
-        carma_serialize_unsigned_type(&(string), (uintmax_t)(x)); \
+        SERIALIZE_UNSIGNED((string), (uintmax_t)(x)); \
     } \
     APPEND(string, '\0'); \
     DROP_BACK(string); \
@@ -213,7 +212,7 @@ static inline void carma_serialize_unsigned_type(StringBuilder* string, uintmax_
         } \
         uintmax_t _integer_part = (uintmax_t)_x; \
         double _fractional = _x - (double)_integer_part; \
-        carma_serialize_unsigned_type(&(string), _integer_part); \
+        SERIALIZE_UNSIGNED((string), _integer_part); \
         APPEND((string), '.'); \
         for (int _i = 0; _i < 6; _i++) { \
             _fractional *= 10; \
