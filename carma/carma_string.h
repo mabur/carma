@@ -181,6 +181,8 @@ static inline void carma_serialize_unsigned_type(StringBuilder* string, uintmax_
 
 #define SERIALIZE_SIZE_T(string, x) do { \
     carma_serialize_unsigned_type(&(string), (x)); \
+    APPEND(string, '\0'); \
+    DROP_BACK(string); \
 } while(0)
 
 #define SERIALIZE_INT(string, x) do { \
@@ -190,6 +192,8 @@ static inline void carma_serialize_unsigned_type(StringBuilder* string, uintmax_
     } else { \
         carma_serialize_unsigned_type(&(string), (uintmax_t)(x)); \
     } \
+    APPEND(string, '\0'); \
+    DROP_BACK(string); \
 } while(0)
 
 #define SERIALIZE_DOUBLE(string, x) do { \
