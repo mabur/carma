@@ -207,7 +207,10 @@ static inline void carma_serialize_unsigned_type(StringBuilder* string, uintmax_
         else \
             SERIALIZE_CSTRING((string), "-inf"); \
     } else { \
-        if (_x < 0) { APPEND((string), '-'); _x = -_x; } \
+        if (_x < 0) { \
+            APPEND((string), '-'); \
+            _x = -_x; \
+        } \
         uintmax_t _integer_part = (uintmax_t)_x; \
         double _fractional = _x - (double)_integer_part; \
         carma_serialize_unsigned_type(&(string), _integer_part); \
