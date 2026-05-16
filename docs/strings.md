@@ -43,16 +43,16 @@ so all range and dynamic array macros can be used for it.
 StringView s = STRING_VIEW("Hello World");
 ```
 
-- `CONCAT_CSTRING(string_builder, cstring)` concatenates a c string
+- `SERIALIZE_CSTRING(string_builder, cstring)` concatenates a c string
   at the end of the given `StringBuilder`.
   The null terminator is included at the end but not included in the `count`.
   Example:
 
 ```c
 StringBuilder s = {};
-CONCAT_CSTRING(s, "Hello");
-CONCAT_CSTRING(s, " ");
-CONCAT_CSTRING(s, "World");
+SERIALIZE_CSTRING(s, "Hello");
+SERIALIZE_CSTRING(s, " ");
+SERIALIZE_CSTRING(s, "World");
 ```
 
 - `CONCAT_STRING(string_builder, format, ...)` concatenates a formatted string
@@ -60,8 +60,8 @@ CONCAT_CSTRING(s, "World");
 
 ```c
 StringBuilder s = {};
-CONCAT_CSTRING(s, "Hello World");
-CONCAT_CSTRING(s, " Number %d", 99);
+CONCAT_STRING(s, "Hello World");
+CONCAT_STRING(s, " Number %d", 99);
 ```
 
 - `FORMAT_STRING(const char* format, ...)` formats a string

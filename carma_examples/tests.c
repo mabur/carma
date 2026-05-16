@@ -1030,27 +1030,27 @@ void test_string_view() {
     ASSERT_EQUAL_INT("test_string_view", STRING_VIEW("\0").count, 0);
 }
 
-void test_concat_cstring() {
+void test_serialize_cstring() {
     auto s = (StringBuilder){};
 
     s = (StringBuilder){};
-    CONCAT_CSTRING(s, "");
-    ASSERT_STRING_BUILDER("test_concat_cstring 0", s, "", 0, 1);
+    SERIALIZE_CSTRING(s, "");
+    ASSERT_STRING_BUILDER("test_serialize_cstring 0", s, "", 0, 1);
 
     s = (StringBuilder){};
-    CONCAT_CSTRING(s, "");
-    CONCAT_CSTRING(s, "");
-    ASSERT_STRING_BUILDER("test_concat_cstring 1", s, "", 0, 1);
+    SERIALIZE_CSTRING(s, "");
+    SERIALIZE_CSTRING(s, "");
+    ASSERT_STRING_BUILDER("test_serialize_cstring 1", s, "", 0, 1);
 
     s = (StringBuilder){};
-    CONCAT_CSTRING(s, "a");
-    CONCAT_CSTRING(s, "");
-    ASSERT_STRING_BUILDER("test_concat_cstring 2", s, "a", 1, 2);
+    SERIALIZE_CSTRING(s, "a");
+    SERIALIZE_CSTRING(s, "");
+    ASSERT_STRING_BUILDER("test_serialize_cstring 2", s, "a", 1, 2);
 
     s = (StringBuilder){};
-    CONCAT_CSTRING(s, "");
-    CONCAT_CSTRING(s, "a");
-    ASSERT_STRING_BUILDER("test_concat_cstring 3", s, "a", 1, 2);
+    SERIALIZE_CSTRING(s, "");
+    SERIALIZE_CSTRING(s, "a");
+    ASSERT_STRING_BUILDER("test_serialize_cstring 3", s, "a", 1, 2);
 }
 
 void test_concat_string() {
@@ -1614,7 +1614,7 @@ int main() {
     test_flip_image_y();
 
     test_string_view();
-    test_concat_cstring();
+    test_serialize_cstring();
     test_concat_string();
     test_format_string();
 

@@ -22,12 +22,6 @@ typedef struct StringBuilder {
 
 #define STRING_VIEW(cstring) MAKE(StringView, (cstring), strlen(cstring))
 
-#define CONCAT_CSTRING(string_builder, cstring) do { \
-    StringView tail_with_null_terminator = {(cstring), strlen(cstring) + 1}; \
-    CONCAT((string_builder), tail_with_null_terminator); \
-    DROP_BACK(string_builder); \
-} while (0)
-
 static inline char* carma_make_cstring(const char* data, size_t count) {
     char* result = (char*)malloc(count + 1);
     if (result != NULL) {
@@ -166,6 +160,12 @@ StringBuilder read_text_file(const char* file_path) {
 ////////////////////////////////////////////////////////////////////////////////
 /// Serialization
 
+#define SERIALIZE_CSTRING(string_builder, cstring) do { \
+    StringView tail_with_null_terminator = {(cstring), strlen(cstring) + 1}; \
+    CONCAT((string_builder), tail_with_null_terminator); \
+    DROP_BACK(string_builder); \
+} while (0)
+
 static inline void carma_serialize_unsigned_type(StringBuilder* string, uintmax_t x) {
     size_t start = string->count;
     size_t count = 0;
@@ -201,6 +201,6 @@ static inline void carma_serialize_unsigned_type(StringBuilder* string, uintmax_
 } while(0)
 
 #define SERIALIZE_BOOL(string, x) do { \
-    if (x) CONCAT_CSTRING(string, "true"); \
-    else CONCAT_CSTRING(string, "false"); \
+    if (x) SERIALIZE_CSTRING(string, "true"); \
+    else SERIALIZE_CSTRING(string, "false"); \
 } while(0)
