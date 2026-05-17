@@ -194,7 +194,7 @@ StringBuilder read_text_file(const char* file_path) {
             SERIALIZE_CSTRING((string_builder), "inf"); \
         else \
             SERIALIZE_CSTRING((string_builder), "-inf"); \
-    } else if (_x == floor(_x)) { \
+    } else if (_x == floor(_x) && (double)INTMAX_MIN <= _x && _x <= (double)INTMAX_MAX) { \
         SERIALIZE_INTEGRAL((string_builder), (intmax_t)_x); \
     } else { \
         if (_x < 0) { \
