@@ -172,6 +172,12 @@ StringBuilder read_text_file(const char* file_path) {
     else SERIALIZE_CSTRING(string_builder, "false"); \
 } while(0)
 
+#define SERIALIZE_CHARACTER(string_builder, x) do { \
+    APPEND((string_builder), (x)); \
+    APPEND((string_builder), '\0'); \
+    DROP_BACK(string_builder); \
+} while(0)
+
 #define SERIALIZE_INTEGRAL(string_builder, x) do { \
     CARMA_AUTO _si_x = (x); \
     if (_si_x < 0) { \
