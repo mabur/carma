@@ -173,15 +173,13 @@ StringBuilder read_text_file(const char* file_path) {
         _si_x = -_si_x; \        
         APPEND((string_builder), '-'); \
     } \
-    size_t _si_count = 0; \
+    size_t _front = (string_builder).count; \
     do { \
         APPEND((string_builder), (char)('0' + _si_x % 10)); \
         _si_x /= 10; \
-        _si_count++; \
     } while (_si_x > 0); \
-    size_t _si_digits_start = (string_builder).count - _si_count; \
-    for (size_t _si_first = 0, _si_last = _si_count - 1; _si_first < _si_last; _si_first++, _si_last--) { \
-        SWAP((string_builder).data[_si_digits_start + _si_first], (string_builder).data[_si_digits_start + _si_last]); \
+    for (size_t _si_back = (string_builder).count - 1; _front < _si_back; _front++, _si_back--) { \
+        SWAP((string_builder).data[_front], (string_builder).data[_si_back]); \
     } \
     APPEND(string_builder, '\0'); \
     DROP_BACK(string_builder); \
