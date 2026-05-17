@@ -169,10 +169,11 @@ StringBuilder read_text_file(const char* file_path) {
 
 #define SERIALIZE_INTEGRAL(string_builder, x) do { \
     CARMA_AUTO _si_x = (x); \
-    size_t _si_count = 0; \
-    if (_si_x < 0) \
+    if (_si_x < 0) { \
+        _si_x = -_si_x; \        
         APPEND((string_builder), '-'); \
-    _si_x = _si_x < 0 ? (uintmax_t)(-_si_x) : (uintmax_t)(_si_x); \
+    } \
+    size_t _si_count = 0; \
     do { \
         APPEND((string_builder), (char)('0' + _si_x % 10)); \
         _si_x /= 10; \
