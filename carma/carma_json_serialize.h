@@ -107,7 +107,10 @@ static inline void carma_end_json_object(JsonBuilder* json) {
 
 #define ADD_JSON_KEY(json, k) do { \
     carma_handle_json_object_delimiter(&json); \
-    CONCAT_STRING((json).string, "\"%s\":", k); \
+    SERIALIZE_CHARACTER((json).string, '"'); \
+    SERIALIZE_CSTRING((json).string, (k)); \
+    SERIALIZE_CHARACTER((json).string, '"'); \
+    SERIALIZE_CHARACTER((json).string, ':'); \
 } while(0)
 
 #define ADD_JSON_ARRAY(json) for ( \
