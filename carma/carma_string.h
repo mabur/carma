@@ -173,12 +173,12 @@ StringBuilder read_text_file(const char* file_path) {
         _si_x = -_si_x; \        
         APPEND((string_builder), '-'); \
     } \
-    size_t _front = (string_builder).count; \
+    CARMA_AUTO _front = (string_builder).count; \
     do { \
         APPEND((string_builder), (char)('0' + _si_x % 10)); \
         _si_x /= 10; \
     } while (_si_x > 0); \
-    for (size_t _si_back = (string_builder).count - 1; _front < _si_back; _front++, _si_back--) { \
+    for (CARMA_AUTO _si_back = (string_builder).count - 1; _front < _si_back; _front++, _si_back--) { \
         SWAP((string_builder).data[_front], (string_builder).data[_si_back]); \
     } \
     APPEND(string_builder, '\0'); \
