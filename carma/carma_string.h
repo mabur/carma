@@ -194,6 +194,8 @@ StringBuilder read_text_file(const char* file_path) {
             SERIALIZE_CSTRING((string_builder), "inf"); \
         else \
             SERIALIZE_CSTRING((string_builder), "-inf"); \
+    } else if (_x == floor(_x)) { \
+        SERIALIZE_INTEGRAL((string_builder), (intmax_t)_x); \
     } else { \
         if (_x < 0) { \
             APPEND((string_builder), '-'); \

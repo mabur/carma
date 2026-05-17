@@ -1230,19 +1230,19 @@ void test_serialize_double() {
     
     CLEAR(s);
     SERIALIZE_DOUBLE(s, +0);
-    ASSERT_STRING_BUILDER("test_serialize_double +0", s, "0.000000");
+    ASSERT_STRING_BUILDER("test_serialize_double +0", s, "0");
     
     CLEAR(s);
     SERIALIZE_DOUBLE(s, -0);
-    ASSERT_STRING_BUILDER("test_serialize_double -0", s, "0.000000");
+    ASSERT_STRING_BUILDER("test_serialize_double -0", s, "0");
     
     CLEAR(s);
     SERIALIZE_DOUBLE(s, 1);
-    ASSERT_STRING_BUILDER("test_serialize_double 1", s, "1.000000");
+    ASSERT_STRING_BUILDER("test_serialize_double 1", s, "1");
     
     CLEAR(s);
     SERIALIZE_DOUBLE(s, -1);
-    ASSERT_STRING_BUILDER("test_serialize_double -1", s, "-1.000000");
+    ASSERT_STRING_BUILDER("test_serialize_double -1", s, "-1");
     
     CLEAR(s);
     SERIALIZE_DOUBLE(s, 3.14151965);
@@ -1483,7 +1483,7 @@ void test_add_json_object_multiple() {
         ADD_JSON_KEY(actual, "c");
         ADD_JSON_CSTRING(actual, "d");
     }
-    auto expected = STRING_VIEW("{\"a\":1,\"b\":2.000000,\"c\":\"d\"}");
+    auto expected = STRING_VIEW("{\"a\":1,\"b\":2,\"c\":\"d\"}");
     ASSERT_EQUAL_CARMA_STRINGS("test_add_json_object_multiple", actual.string, expected);
     FREE_JSON_BUILDER(actual);
 }
