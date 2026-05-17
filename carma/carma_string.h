@@ -199,14 +199,13 @@ StringBuilder read_text_file(const char* file_path) {
             APPEND((string_builder), '-'); \
             _x = -_x; \
         } \
-        uintmax_t _integer_part = (uintmax_t)_x; \
-        double _fractional = _x - (double)_integer_part; \
-        SERIALIZE_INTEGRAL((string_builder), _integer_part); \
-        APPEND((string_builder), '.'); \
-        for (int _i = 0; _i < 6; _i++) { \
-            _fractional *= 10; \
-            APPEND((string_builder), '0' + (char)_fractional); \
-            _fractional -= (int)_fractional; \
+        int _int_digits = _x >= 1.0 ? (int)log10(_x) + 1 : 1; \
+        double _d = _x / pow(10.0, _int_digits - 1); \
+        for (int _i = 0; _i < _int_digits + 6; _i++) { \
+            if (_i == _int_digits) APPEND((string_builder), '.'); \
+            int _digit = (int)_d; \
+            APPEND((string_builder), '0' + _digit); \
+            _d = (_d - _digit) * 10.0; \
         } \
     } \
     APPEND(string_builder, '\0'); \
