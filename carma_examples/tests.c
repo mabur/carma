@@ -1067,52 +1067,6 @@ void test_serialize_cstring() {
     ASSERT_STRING_BUILDER("test_serialize_cstring 3", s, "a");
 }
 
-void test_concat_string() {
-    auto s = (StringBuilder){};
-    
-    s = (StringBuilder){};
-    CONCAT_STRING(s, "");
-    ASSERT_STRING_BUILDER("test_concat_string 0", s, "");
-
-    s = (StringBuilder){};
-    CONCAT_STRING(s, "a");
-    ASSERT_STRING_BUILDER("test_concat_string 1", s, "a");
-
-    s = (StringBuilder){};
-    CONCAT_STRING(s, "ab");
-    ASSERT_STRING_BUILDER("test_concat_string 2", s, "ab");
-
-    s = (StringBuilder){};
-    CONCAT_STRING(s, "%i%s\n%i", 1, "ab", 99);
-    ASSERT_STRING_BUILDER("test_concat_string 3", s, "1ab\n99");
-
-    s = (StringBuilder){};
-    CONCAT_STRING(s, "");
-    CONCAT_STRING(s, "");
-    ASSERT_STRING_BUILDER("test_concat_string 4", s, "");
-    
-    s = (StringBuilder){};
-    CONCAT_STRING(s, "");
-    CONCAT_STRING(s, "a");
-    ASSERT_STRING_BUILDER("test_concat_string 5", s, "a");
-
-    s = (StringBuilder){};
-    CONCAT_STRING(s, "a");
-    CONCAT_STRING(s, "");
-    ASSERT_STRING_BUILDER("test_concat_string 6", s, "a");
-
-    s = (StringBuilder){};
-    CONCAT_STRING(s, "a");
-    CONCAT_STRING(s, "b");
-    ASSERT_STRING_BUILDER("test_concat_string 7", s, "ab");
-    
-    s = (StringBuilder){};
-    CONCAT_STRING(s, "a");
-    CONCAT_STRING(s, "bb");
-    CONCAT_STRING(s, "ccc");
-    ASSERT_STRING_BUILDER("test_concat_string 8", s, "abbccc");
-}
-
 void test_format_string() {
     ASSERT_EQUAL_STRINGS("test_format_string 0", FORMAT_STRING("").data, "");
     ASSERT_EQUAL_STRINGS("test_format_string 1", FORMAT_STRING("a").data, "a");
@@ -1605,7 +1559,6 @@ int main() {
 
     test_string_view();
     test_serialize_cstring();
-    test_concat_string();
     test_format_string();
 
     test_table_set_key_value_duplicates();

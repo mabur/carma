@@ -65,19 +65,6 @@ StringBuilder carma_vconcat_string(StringBuilder string, const char* format, va_
 }
 
 static inline
-StringBuilder carma_concat_string(StringBuilder string, const char* format, ...) {
-    va_list args;
-    va_start(args, format);
-    string = carma_vconcat_string(string, format, args);
-    va_end(args);
-    return string;
-}
-
-#define CONCAT_STRING(string_builder, format, ...) do { \
-    (string_builder) = carma_concat_string((string_builder), (format), ##__VA_ARGS__); \
-} while (0)
-
-static inline
 StringView FORMAT_STRING(const char* format, ...) {
     static StringBuilder string = {};
     CLEAR(string);
