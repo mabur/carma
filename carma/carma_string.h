@@ -167,54 +167,54 @@ StringBuilder read_text_file(const char* file_path) {
     DROP_BACK(string_builder); \
 } while (0)
 
-#define SERIALIZE_INTEGRAL(string, x) do { \
+#define SERIALIZE_INTEGRAL(string_builder, x) do { \
     CARMA_AUTO _si_x = (x); \
     size_t _si_count = 0; \
     if (_si_x < 0) \
-        APPEND((string), '-'); \
+        APPEND((string_builder), '-'); \
     _si_x = _si_x < 0 ? (uintmax_t)(-_si_x) : (uintmax_t)(_si_x); \
     do { \
-        APPEND((string), (char)('0' + _si_x % 10)); \
+        APPEND((string_builder), (char)('0' + _si_x % 10)); \
         _si_x /= 10; \
         _si_count++; \
     } while (_si_x > 0); \
-    size_t _si_digits_start = (string).count - _si_count; \
+    size_t _si_digits_start = (string_builder).count - _si_count; \
     for (size_t _si_first = 0, _si_last = _si_count - 1; _si_first < _si_last; _si_first++, _si_last--) { \
-        SWAP((string).data[_si_digits_start + _si_first], (string).data[_si_digits_start + _si_last]); \
+        SWAP((string_builder).data[_si_digits_start + _si_first], (string_builder).data[_si_digits_start + _si_last]); \
     } \
-    APPEND(string, '\0'); \
-    DROP_BACK(string); \
+    APPEND(string_builder, '\0'); \
+    DROP_BACK(string_builder); \
 } while(0)
 
-#define SERIALIZE_DOUBLE(string, x) do { \
+#define SERIALIZE_DOUBLE(string_builder, x) do { \
     double _x = (double)(x); \
     if (isnan(_x)) { \
-        SERIALIZE_CSTRING((string), "nan"); \
+        SERIALIZE_CSTRING((string_builder), "nan"); \
     } else if (isinf(_x)) { \
         if (_x > 0) \
-            SERIALIZE_CSTRING((string), "inf"); \
+            SERIALIZE_CSTRING((string_builder), "inf"); \
         else \
-            SERIALIZE_CSTRING((string), "-inf"); \
+            SERIALIZE_CSTRING((string_builder), "-inf"); \
     } else { \
         if (_x < 0) { \
-            APPEND((string), '-'); \
+            APPEND((string_builder), '-'); \
             _x = -_x; \
         } \
         uintmax_t _integer_part = (uintmax_t)_x; \
         double _fractional = _x - (double)_integer_part; \
-        SERIALIZE_INTEGRAL((string), _integer_part); \
-        APPEND((string), '.'); \
+        SERIALIZE_INTEGRAL((string_builder), _integer_part); \
+        APPEND((string_builder), '.'); \
         for (int _i = 0; _i < 6; _i++) { \
             _fractional *= 10; \
-            APPEND((string), '0' + (char)_fractional); \
+            APPEND((string_builder), '0' + (char)_fractional); \
             _fractional -= (int)_fractional; \
         } \
     } \
-    APPEND(string, '\0'); \
-    DROP_BACK(string); \
+    APPEND(string_builder, '\0'); \
+    DROP_BACK(string_builder); \
 } while(0)
 
-#define SERIALIZE_BOOL(string, x) do { \
-    if (x) SERIALIZE_CSTRING(string, "true"); \
-    else SERIALIZE_CSTRING(string, "false"); \
+#define SERIALIZE_BOOL(string_builder, x) do { \
+    if (x) SERIALIZE_CSTRING(string_builder, "true"); \
+    else SERIALIZE_CSTRING(string_builder, "false"); \
 } while(0)
