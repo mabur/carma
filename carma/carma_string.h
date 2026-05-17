@@ -175,7 +175,7 @@ StringBuilder read_text_file(const char* file_path) {
 #define SERIALIZE_INTEGRAL(string_builder, x) do { \
     CARMA_AUTO _si_x = (x); \
     if (_si_x < 0) { \
-        _si_x = -_si_x; \        
+        _si_x = -_si_x; \
         APPEND((string_builder), '-'); \
     } \
     CARMA_AUTO _front = (string_builder).count; \
