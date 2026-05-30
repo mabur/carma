@@ -48,26 +48,31 @@
     CHECK_INTERNAL(buffer, "realloc failed"); \
 } while (0)
 
+#define CARMA_MALLOC(buffer, capacity) do { \
+    buffer = (CARMA_TYPE_OF(buffer))malloc((capacity) * sizeof(CARMA_TYPE_OF(*(buffer)))); \
+    CHECK_INTERNAL(buffer, "malloc failed"); \
+} while (0)
+
 #define INIT_RANGE(range, mycount) do { \
-    (range).data = (POINTER_TYPE(range))malloc((mycount) * sizeof(VALUE_TYPE(range))); \
+    CARMA_MALLOC((range).data, (mycount)); \
     (range).count = (mycount); \
 } while (0)
 
 #define INIT_DARRAY(darray, mycount, mycapacity) do { \
-    (darray).data = (POINTER_TYPE(darray))malloc((mycapacity) * sizeof(VALUE_TYPE(darray))); \
+    CARMA_MALLOC((darray).data, (mycapacity)); \
     (darray).count = (mycount); \
     (darray).capacity = (mycapacity); \
 } while (0)
 
 #define INIT_2D_ARRAY(array, mywidth, myheight) do { \
-    (array).data = (POINTER_TYPE(array))malloc((mywidth) * (myheight) * sizeof(VALUE_TYPE(array))); \
+    CARMA_MALLOC((array).data, (mywidth) * (myheight)); \
     (array).width = (mywidth); \
     (array).height = (myheight); \
     (array).count = (mywidth) * (myheight); \
 } while (0)
 
 #define INIT_3D_ARRAY(array, mywidth, myheight, mydepth) do { \
-    (array).data = (POINTER_TYPE(array))malloc((mywidth) * (myheight) * (mydepth) * sizeof(VALUE_TYPE(array))); \
+    CARMA_MALLOC((array).data, (mywidth) * (myheight) * (mydepth)); \
     (array).width = (mywidth); \
     (array).height = (myheight); \
     (array).depth = (mydepth); \
@@ -85,6 +90,7 @@
         CARMA_AUTO byte_count = sizeof(carray); \
         CARMA_AUTO count = byte_count / item_size; \
         CARMA_AUTO data = (T*)malloc(byte_count); \
+        CHECK_INTERNAL(data, "malloc failed"); \
         memcpy(data, carray, byte_count); \
         return MAKE(range_type, .data=data, .count=count); \
     }())
@@ -96,6 +102,7 @@
         CARMA_AUTO byte_count = sizeof(carray); \
         CARMA_AUTO count = byte_count / item_size; \
         CARMA_AUTO data = (T*)malloc(byte_count); \
+        CHECK_INTERNAL(data, "malloc failed"); \
         memcpy(data, carray, byte_count); \
         return MAKE(darray_type, .data=data, .count=count, .capacity=count); \
     }())
