@@ -292,12 +292,17 @@ static inline bool carma_are_bits_equal(
 ////////////////////////////////////////////////////////////////////////////////
 // DYNAMIC ARRAY ALGORITHMS
 
+#define CARMA_REALLOC(buffer, new_capacity) do { \
+    buffer = (CARMA_TYPE_OF(buffer))realloc((buffer), (new_capacity) * sizeof(CARMA_TYPE_OF(*(buffer)))); \
+    CHECK_INTERNAL(buffer, "realloc failed"); \
+} while (0)
+
 #define RESERVE(dynamic_array, new_capacity) do { \
     (dynamic_array).capacity = (new_capacity); \
     if ((dynamic_array).count > (new_capacity)) { \
         (dynamic_array).count = (new_capacity); \
     } \
-    (dynamic_array).data = (POINTER_TYPE(dynamic_array))realloc((dynamic_array).data, (new_capacity) * sizeof(VALUE_TYPE(dynamic_array))); \
+    CARMA_REALLOC((dynamic_array).data, (new_capacity)); \
 } while (0)
 
 #define RESERVE_EXPONENTIAL_GROWTH(dynamic_array, min_required_capacity) do { \
@@ -315,7 +320,7 @@ static inline bool carma_are_bits_equal(
 #define APPEND(dynamic_array, item) do { \
     if ((dynamic_array).count == (dynamic_array).capacity) { \
         (dynamic_array).capacity = (dynamic_array).capacity == 0 ? 1 : (dynamic_array).capacity * 2; \
-        (dynamic_array).data = (POINTER_TYPE(dynamic_array))realloc((dynamic_array).data, (dynamic_array).capacity * sizeof(VALUE_TYPE(dynamic_array))); \
+        CARMA_REALLOC((dynamic_array).data, (dynamic_array).capacity); \
     } \
     ((dynamic_array).data)[(dynamic_array).count] = (item); \
     (dynamic_array).count++; \
