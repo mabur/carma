@@ -17,8 +17,8 @@
 #define BEGIN_POINTER(range) ((range).data)
 #define END_POINTER(range) ((range).data + (range).count)
 
-#define FIRST_ITEM(range) ((range).data[0])
-#define LAST_ITEM(range) ((range).data[0 + (range).count - 1])
+#define FIRST_ITEM(range) CHECK_INTERNAL_VALUE((range).data[0], !IS_EMPTY(range))
+#define LAST_ITEM(range) CHECK_INTERNAL_VALUE((range).data[0 + (range).count - 1], !IS_EMPTY(range))
 
 #define STARTS_WITH_ITEM(range, item) (!IS_EMPTY(range) && FIRST_ITEM(range) == (item))
 #define ENDS_WITH_ITEM(range, item) (!IS_EMPTY(range) && LAST_ITEM(range) == (item))
@@ -253,11 +253,13 @@ static inline bool carma_are_bits_equal(
 // Document behavior.
 
 #define DROP_FRONT(range) do { \
+    CHECK_INTERNAL(!IS_EMPTY(range), "Error calling DROP_FRONT on empty range"); \
     (range).data++; \
     (range).count--; \
 } while (0)
 
 #define DROP_BACK(range) do { \
+    CHECK_INTERNAL(!IS_EMPTY(range), "Error calling DROP_BACK on empty range"); \
     (range).count--; \
 } while (0)
 
@@ -400,6 +402,7 @@ static inline bool carma_are_bits_equal(
 } while (0)
 
 #define ERASE_BACK(dynamic_array) do { \
+    CHECK_INTERNAL(!IS_EMPTY(dynamic_array), "Error calling ERASE_BACK on empty dynamic array"); \
     (dynamic_array).count--; \
 } while (0)
 
