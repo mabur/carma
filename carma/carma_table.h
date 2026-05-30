@@ -1,6 +1,5 @@
 #pragma once
 
-#include <assert.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -94,7 +93,7 @@ bool carma_is_power_of_two(size_t n) {
 
 // Zero initializes with calloc so that occupied is false.
 #define INIT_TABLE(table, mycapacity) do { \
-    assert(carma_is_power_of_two(mycapacity)); \
+    CHECK_INTERNAL(carma_is_power_of_two(mycapacity), "Table capacity should be a power of two"); \
     CARMA_CALLOC((table).data, (mycapacity)); \
     (table).count = (0); \
     (table).capacity = (mycapacity); \
@@ -114,7 +113,7 @@ bool carma_is_power_of_two(size_t n) {
     FOR_EACH_TABLE(_old_item, (table)) { \
         CARMA_AUTO _new_item = new_table.data; \
         CARMA_FIND_FREE_INDEX_FOR_KEY((new_table), _old_item->key, _new_item); \
-        assert(_new_item != NULL); \
+        CHECK_INTERNAL(_new_item, "I found an unexpected null pointer in CARMA_DOUBLE_TABLE_CAPACITY_KEY"); \
         *_new_item = *_old_item; \
     } \
     FREE_TABLE(table); \
@@ -129,7 +128,7 @@ bool carma_is_power_of_two(size_t n) {
     FOR_EACH_TABLE(_old_item, (table)) { \
         CARMA_AUTO _new_item = new_table.data; \
         CARMA_FIND_FREE_INDEX_FOR_RANGE_KEY((new_table), _old_item->key, _new_item); \
-        assert(_new_item != NULL); \
+        CHECK_INTERNAL(_new_item, "I found an unexpected null pointer in CARMA_DOUBLE_TABLE_CAPACITY_RANGE_KEY"); \
         *_new_item = *_old_item; \
     } \
     FREE_TABLE(table); \
