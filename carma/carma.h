@@ -43,6 +43,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 // ALLOCATE MEMORY
 
+#define CARMA_REALLOC(buffer, new_capacity) do { \
+    buffer = (CARMA_TYPE_OF(buffer))realloc((buffer), (new_capacity) * sizeof(CARMA_TYPE_OF(*(buffer)))); \
+    CHECK_INTERNAL(buffer, "realloc failed"); \
+} while (0)
+
 #define INIT_RANGE(range, mycount) do { \
     (range).data = (POINTER_TYPE(range))malloc((mycount) * sizeof(VALUE_TYPE(range))); \
     (range).count = (mycount); \
@@ -291,11 +296,6 @@ static inline bool carma_are_bits_equal(
 
 ////////////////////////////////////////////////////////////////////////////////
 // DYNAMIC ARRAY ALGORITHMS
-
-#define CARMA_REALLOC(buffer, new_capacity) do { \
-    buffer = (CARMA_TYPE_OF(buffer))realloc((buffer), (new_capacity) * sizeof(CARMA_TYPE_OF(*(buffer)))); \
-    CHECK_INTERNAL(buffer, "realloc failed"); \
-} while (0)
 
 #define RESERVE(dynamic_array, new_capacity) do { \
     (dynamic_array).capacity = (new_capacity); \
