@@ -106,8 +106,7 @@ bool carma_is_power_of_two(size_t n) {
     if ((iterator)->occupied)
     
 #define CARMA_DOUBLE_TABLE_CAPACITY_KEY(table) do { \
-    CHECK_INTERNAL((table).capacity <= SIZE_MAX / 2, "Table capacity overflow"); \
-    CARMA_AUTO new_capacity = 2 * (table).capacity; \
+    CARMA_AUTO new_capacity = CARMA_DOUBLED_CAPACITY((table).capacity); \
     CARMA_AUTO new_table = table; \
     INIT_TABLE(new_table, new_capacity); \
     new_table.count = (table).count; \
@@ -122,8 +121,7 @@ bool carma_is_power_of_two(size_t n) {
 } while (0)
 
 #define CARMA_DOUBLE_TABLE_CAPACITY_RANGE_KEY(table) do { \
-    CHECK_INTERNAL((table).capacity <= SIZE_MAX / 2, "Table capacity overflow"); \
-    CARMA_AUTO new_capacity = 2 * (table).capacity; \
+    CARMA_AUTO new_capacity = CARMA_DOUBLED_CAPACITY((table).capacity); \
     CARMA_AUTO new_table = table; \
     INIT_TABLE(new_table, new_capacity); \
     new_table.count = (table).count; \

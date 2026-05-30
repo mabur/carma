@@ -319,21 +319,23 @@ static inline bool carma_are_bits_equal(
     CARMA_REALLOC((dynamic_array).data, (new_capacity)); \
 } while (0)
 
+#define CARMA_DOUBLED_CAPACITY(capacity) \
+    (capacity) == 0 \
+        ? 1 \
+        : (capacity) <= SIZE_MAX / 2 \
+            ? (capacity) * 2 \
+            : (CARMA_ABORT_FAILURE("No room to double capacity") , (capacity))
+
 #define RESERVE_EXPONENTIAL_GROWTH(dynamic_array, min_required_capacity) do { \
     while ((dynamic_array).capacity < (min_required_capacity)) { \
-        if ((dynamic_array).capacity == 0) { \
-            (dynamic_array).capacity = 1; \
-        } \
-        else { \
-            (dynamic_array).capacity *= 2; \
-        } \
+        (dynamic_array).capacity = CARMA_DOUBLED_CAPACITY((dynamic_array).capacity); \
     } \
     RESERVE((dynamic_array), (dynamic_array).capacity); \
 } while (0)
 
 #define APPEND(dynamic_array, item) do { \
     if ((dynamic_array).count == (dynamic_array).capacity) { \
-        (dynamic_array).capacity = (dynamic_array).capacity == 0 ? 1 : (dynamic_array).capacity * 2; \
+        (dynamic_array).capacity = CARMA_DOUBLED_CAPACITY((dynamic_array).capacity); \
         CARMA_REALLOC((dynamic_array).data, (dynamic_array).capacity); \
     } \
     ((dynamic_array).data)[(dynamic_array).count] = (item); \
