@@ -95,7 +95,7 @@ bool carma_is_power_of_two(size_t n) {
 // Zero initializes with calloc so that occupied is false.
 #define INIT_TABLE(table, mycapacity) do { \
     assert(carma_is_power_of_two(mycapacity)); \
-    (table).data = (POINTER_TYPE(table))calloc((mycapacity), sizeof(VALUE_TYPE(table))); \
+    CARMA_CALLOC((table).data, (mycapacity)); \
     (table).count = (0); \
     (table).capacity = (mycapacity); \
 } while (0)

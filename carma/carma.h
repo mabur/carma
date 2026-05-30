@@ -53,26 +53,31 @@
     CHECK_INTERNAL(buffer, "malloc failed"); \
 } while (0)
 
+#define CARMA_CALLOC(buffer, capacity) do { \
+    buffer = (CARMA_TYPE_OF(buffer))calloc((capacity), sizeof(CARMA_TYPE_OF(*(buffer)))); \
+    CHECK_INTERNAL(buffer, "calloc failed"); \
+} while (0)
+
 #define INIT_RANGE(range, mycount) do { \
-    CARMA_MALLOC((range).data, (mycount)); \
+    CARMA_CALLOC((range).data, (mycount)); \
     (range).count = (mycount); \
 } while (0)
 
 #define INIT_DARRAY(darray, mycount, mycapacity) do { \
-    CARMA_MALLOC((darray).data, (mycapacity)); \
+    CARMA_CALLOC((darray).data, (mycapacity)); \
     (darray).count = (mycount); \
     (darray).capacity = (mycapacity); \
 } while (0)
 
 #define INIT_2D_ARRAY(array, mywidth, myheight) do { \
-    CARMA_MALLOC((array).data, (mywidth) * (myheight)); \
+    CARMA_CALLOC((array).data, (mywidth) * (myheight)); \
     (array).width = (mywidth); \
     (array).height = (myheight); \
     (array).count = (mywidth) * (myheight); \
 } while (0)
 
 #define INIT_3D_ARRAY(array, mywidth, myheight, mydepth) do { \
-    CARMA_MALLOC((array).data, (mywidth) * (myheight) * (mydepth)); \
+    CARMA_CALLOC((array).data, (mywidth) * (myheight) * (mydepth)); \
     (array).width = (mywidth); \
     (array).height = (myheight); \
     (array).depth = (mydepth); \
