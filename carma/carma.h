@@ -371,7 +371,7 @@ static inline bool carma_are_bits_equal(
     } \
 } while (0)
 
-#define ERASE_INDEX_ORDERED(dynamic_array, index) { \
+#define ERASE_INDEX_ORDERED(dynamic_array, index) do { \
     COPY( \
         SUB_RANGE((dynamic_array), (index) + 1, (dynamic_array).count - index - 1), \
         SUB_RANGE((dynamic_array), (index), (dynamic_array).count - index - 1) \
@@ -441,13 +441,13 @@ static inline bool carma_are_bits_equal(
     ((array).data[(array).height * (array).width * (z) + (array).width * (y) + (x)])
 
 #define AT_INDEX_OR(array, i, default_value) \
-    (IS_INSIDE_ARRAY((array), (I)) ? AT_INDEX((array), (i)) : (default_value));
+    (IS_INSIDE_ARRAY((array), (i)) ? AT_INDEX((array), (i)) : (default_value));
 
 #define AT_XY_OR(array, x, y, default_value) \
     (IS_INSIDE_ARRAY2D((array), (x), (y)) ? AT_XY((array), (x), (y)) : (default_value));
 
 #define AT_XYZ_OR(array, x, y, z, default_value) \
-    (IS_INSIDE_ARRAY3D((array), (x), (y)) ? AT_XYZ((array), (x), (y), (z)) : (default_value));
+    (IS_INSIDE_ARRAY3D((array), (x), (y), (z)) ? AT_XYZ((array), (x), (y), (z)) : (default_value));
 
 #define FLIP_IMAGE_X(image) do { \
     CARMA_AUTO width = (image).width; \
