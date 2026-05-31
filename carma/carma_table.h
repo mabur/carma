@@ -24,9 +24,8 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
 
 #define CARMA_HASH_INIT 5381
 
-#define CARMA_BYTES_RANGE(key) (const char*)&(key), sizeof(key)
-
-#define CARMA_HASH_KEY(key) carma_hash_bytes(CARMA_HASH_INIT, CARMA_BYTES_RANGE(key))
+#define CARMA_HASH_KEY(key) \
+    carma_hash_bytes(CARMA_HASH_INIT, (const char*)&(key), sizeof(key))
 
 #define CARMA_HASH_RANGE_KEY(key) \
     carma_hash_bytes(CARMA_HASH_INIT, (const char*)(BEGIN_POINTER(key)), COUNT_BYTES(key))
