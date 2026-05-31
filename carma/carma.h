@@ -400,7 +400,7 @@ static inline bool carma_are_bits_equal(
     ERASE_BACK(dynamic_array); \
 } while (0)
 
-#define ERASE_MANY_ORDERED(dynamic_array, index, erase_count) { \
+#define ERASE_MANY_ORDERED(dynamic_array, index, erase_count) do { \
     COPY( \
         SUB_RANGE((dynamic_array), (index) + (erase_count), (dynamic_array).count - (index) - (erase_count)), \
         SUB_RANGE((dynamic_array), (index), (dynamic_array).count - (index) - (erase_count)) \
