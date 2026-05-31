@@ -39,6 +39,7 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
 
 #define CARMA_FIND_FREE_INDEX_FOR_KEY(table, k, _it) do { \
     size_t _capacity = (table).capacity; \
+    CHECK_INTERNAL(_capacity, "Unexpected zero capacity"); \
     CARMA_AUTO _base = CARMA_HASH_KEY(k) % _capacity; \
     bool _found = false; \
     for (size_t _offset = 0; _offset < _capacity; ++_offset) { \
