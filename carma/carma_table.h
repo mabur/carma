@@ -107,7 +107,10 @@ bool carma_is_power_of_two(size_t n) {
     for (CARMA_AUTO iterator = (table).data; iterator != (table).data + (table).capacity; ++iterator) \
     if ((iterator)->occupied)
     
-#define CARMA_DOUBLE_TABLE_CAPACITY_KEY(table) do { \
+#define CARMA_ENSURE_TABLE_CAPACITY_KEY(table) do { \
+    if ((table).count < 0.7 * (table).capacity) { \
+        break; \
+    } \
     CARMA_AUTO new_capacity = CARMA_DOUBLED_CAPACITY((table).capacity); \
     CARMA_AUTO new_table = table; \
     INIT_TABLE(new_table, new_capacity); \
@@ -121,7 +124,10 @@ bool carma_is_power_of_two(size_t n) {
     table = new_table; \
 } while (0)
 
-#define CARMA_DOUBLE_TABLE_CAPACITY_RANGE_KEY(table) do { \
+#define CARMA_ENSURE_TABLE_CAPACITY_RANGE_KEY(table) do { \
+    if ((table).count < 0.7 * (table).capacity) { \
+        break; \
+    } \
     CARMA_AUTO new_capacity = CARMA_DOUBLED_CAPACITY((table).capacity); \
     CARMA_AUTO new_table = table; \
     INIT_TABLE(new_table, new_capacity); \
@@ -136,12 +142,7 @@ bool carma_is_power_of_two(size_t n) {
 } while (0)
 
 #define SET_KEY_VALUE(k, v, table) do { \
-    if ((table).capacity == 0) { \
-        INIT_TABLE(table, 1); \
-    } \
-    if ((table).count > 0.7 * (table).capacity) { \
-        CARMA_DOUBLE_TABLE_CAPACITY_KEY(table); \
-    } \
+    CARMA_ENSURE_TABLE_CAPACITY_KEY(table); \
     CARMA_AUTO _k = (k); \
     CARMA_AUTO _item = (table).data; \
     CARMA_FIND_FREE_INDEX_FOR_KEY((table), _k, _item); \
@@ -154,12 +155,7 @@ bool carma_is_power_of_two(size_t n) {
 } while (0)
 
 #define SET_RANGE_KEY_VALUE(k, v, table) do { \
-    if ((table).capacity == 0) { \
-        INIT_TABLE(table, 1); \
-    } \
-    if ((table).count > 0.7 * (table).capacity) { \
-        CARMA_DOUBLE_TABLE_CAPACITY_RANGE_KEY(table); \
-    } \
+    CARMA_ENSURE_TABLE_CAPACITY_RANGE_KEY(table); \
     CARMA_AUTO _k = (k); \
     CARMA_AUTO _item = (table).data; \
     CARMA_FIND_FREE_INDEX_FOR_RANGE_KEY((table), _k, _item); \
