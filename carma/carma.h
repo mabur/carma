@@ -386,6 +386,7 @@ static inline bool carma_are_bits_equal(
 #define CLEAR(dynamic_array) do {(dynamic_array).count = 0;} while (0)
 
 #define ERASE_INDEX(dynamic_array, index) do { \
+    CHECK_INTERNAL(IS_INSIDE_ARRAY((dynamic_array), (index)), "Cannot erase index outside of array"); \
     --(dynamic_array).count; \
     if ((index) != (dynamic_array).count) { \
         (dynamic_array).data[index] = (dynamic_array).data[(dynamic_array).count]; \
@@ -393,6 +394,7 @@ static inline bool carma_are_bits_equal(
 } while (0)
 
 #define ERASE_INDEX_ORDERED(dynamic_array, index) do { \
+    CHECK_INTERNAL(IS_INSIDE_ARRAY((dynamic_array), (index)), "Cannot erase index outside of array"); \
     COPY( \
         SUB_RANGE((dynamic_array), (index) + 1, (dynamic_array).count - index - 1), \
         SUB_RANGE((dynamic_array), (index), (dynamic_array).count - index - 1) \
