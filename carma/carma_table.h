@@ -139,6 +139,9 @@ bool carma_is_power_of_two(size_t n) {
     if ((table).capacity == 0) { \
         INIT_TABLE(table, 1); \
     } \
+    if ((table).count > 0.7 * (table).capacity) { \
+        CARMA_DOUBLE_TABLE_CAPACITY_KEY(table); \
+    } \
     CARMA_AUTO _k = (k); \
     CARMA_AUTO _item = (table).data; \
     CARMA_FIND_FREE_INDEX_FOR_KEY((table), _k, _item); \
@@ -157,6 +160,9 @@ bool carma_is_power_of_two(size_t n) {
 #define SET_RANGE_KEY_VALUE(k, v, table) do { \
     if ((table).capacity == 0) { \
         INIT_TABLE(table, 1); \
+    } \
+    if ((table).count > 0.7 * (table).capacity) { \
+        CARMA_DOUBLE_TABLE_CAPACITY_RANGE_KEY(table); \
     } \
     CARMA_AUTO _k = (k); \
     CARMA_AUTO _item = (table).data; \
