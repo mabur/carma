@@ -37,7 +37,7 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
     CARMA_AUTO _key = (k); \
     CARMA_AUTO _it = (table).data; \
     CARMA_FIND_FREE_INDEX_FOR_KEY((table), _key, _it); \
-    if (_it != NULL && _it->occupied) { \
+    if (_it->occupied) { \
         (_value) = _it->value; \
     } \
 } while (0)
@@ -47,7 +47,7 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
         break; \
     CARMA_AUTO _it = (table).data; \
     CARMA_FIND_FREE_INDEX_FOR_RANGE_KEY((table), (_key), _it); \
-    if (_it != NULL && _it->occupied) { \
+    if (_it->occupied) { \
         (_value) = _it->value; \
     } \
 } while (0)
@@ -58,27 +58,29 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
 #define CARMA_FIND_FREE_INDEX_FOR_KEY(table, k, _it) do { \
     size_t _capacity = (table).capacity; \
     CARMA_AUTO _base = CARMA_HASH_KEY(k) % _capacity; \
-    (_it) = NULL; \
+    bool _found = false; \
     for (size_t _offset = 0; _offset < _capacity; ++_offset) { \
-        CARMA_AUTO _candidate = (table).data + (_base + _offset) % _capacity; \
-        if (!_candidate->occupied || _candidate->key == (k)) { \
-            (_it) = _candidate; \
+        _it = (table).data + (_base + _offset) % _capacity; \
+        if (!_it->occupied || _it->key == (k)) { \
+            _found = true; \
             break; \
         } \
     } \
+    CHECK_INTERNAL(_found, "Error in CARMA_FIND_FREE_INDEX_FOR_KEY "); \
 } while (0)
 
 #define CARMA_FIND_FREE_INDEX_FOR_RANGE_KEY(table, k, _it) do { \
     size_t _capacity = (table).capacity; \
     CARMA_AUTO _base = CARMA_HASH_RANGE_KEY(k) % _capacity; \
-    (_it) = NULL; \
+    bool _found = false; \
     for (size_t _offset = 0; _offset < _capacity; ++_offset) { \
-        CARMA_AUTO _candidate = (table).data + (_base + _offset) % _capacity; \
-        if (!_candidate->occupied || ARE_EQUAL(_candidate->key, (k))) { \
-            (_it) = _candidate; \
+        _it = (table).data + (_base + _offset) % _capacity; \
+        if (!_it->occupied || ARE_EQUAL(_it->key, (k))) { \
+            _found = true; \
             break; \
         } \
     } \
+    CHECK_INTERNAL(_found, "Error in CARMA_FIND_FREE_INDEX_FOR_RANGE_KEY "); \
 } while (0)
 
 #define CLEAR_TABLE(table) FOR_EACH_TABLE(item, (table)) item->occupied = false;
@@ -113,7 +115,6 @@ bool carma_is_power_of_two(size_t n) {
     FOR_EACH_TABLE(_old_item, (table)) { \
         CARMA_AUTO _new_item = new_table.data; \
         CARMA_FIND_FREE_INDEX_FOR_KEY((new_table), _old_item->key, _new_item); \
-        CHECK_INTERNAL(_new_item, "I found an unexpected null pointer in CARMA_DOUBLE_TABLE_CAPACITY_KEY"); \
         *_new_item = *_old_item; \
     } \
     FREE_TABLE(table); \
@@ -128,7 +129,6 @@ bool carma_is_power_of_two(size_t n) {
     FOR_EACH_TABLE(_old_item, (table)) { \
         CARMA_AUTO _new_item = new_table.data; \
         CARMA_FIND_FREE_INDEX_FOR_RANGE_KEY((new_table), _old_item->key, _new_item); \
-        CHECK_INTERNAL(_new_item, "I found an unexpected null pointer in CARMA_DOUBLE_TABLE_CAPACITY_RANGE_KEY"); \
         *_new_item = *_old_item; \
     } \
     FREE_TABLE(table); \
@@ -145,10 +145,6 @@ bool carma_is_power_of_two(size_t n) {
     CARMA_AUTO _k = (k); \
     CARMA_AUTO _item = (table).data; \
     CARMA_FIND_FREE_INDEX_FOR_KEY((table), _k, _item); \
-    while (_item == NULL) { \
-        CARMA_DOUBLE_TABLE_CAPACITY_KEY(table); \
-        CARMA_FIND_FREE_INDEX_FOR_KEY((table), _k, _item); \
-    } \
     if (!_item->occupied) { \
         (table).count++; \
     } \
@@ -167,10 +163,6 @@ bool carma_is_power_of_two(size_t n) {
     CARMA_AUTO _k = (k); \
     CARMA_AUTO _item = (table).data; \
     CARMA_FIND_FREE_INDEX_FOR_RANGE_KEY((table), _k, _item); \
-    while (_item == NULL) { \
-        CARMA_DOUBLE_TABLE_CAPACITY_RANGE_KEY(table); \
-        CARMA_FIND_FREE_INDEX_FOR_RANGE_KEY((table), _k, _item); \
-    } \
     if (!_item->occupied) { \
         (table).count++; \
     } \
