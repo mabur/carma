@@ -170,4 +170,4 @@ bool carma_is_power_of_two(size_t n) {
     CHECK_INTERNAL((table).count < (table).capacity, "There should always be room left in table"); \
 } while (0)
 
-#define CLEAR_TABLE(table) FOR_EACH_TABLE(item, (table)) item->occupied = false;
+#define CLEAR_TABLE(table) do { FOR_EACH_TABLE(item, (table)) item->occupied = false; } while(0)
