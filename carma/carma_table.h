@@ -30,29 +30,25 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
 
 #define CARMA_HASH_RANGE_KEY(key) \
     carma_hash_bytes(CARMA_HASH_INIT, (const char*)(BEGIN_POINTER(key)), COUNT_BYTES(key))
-
-#define CARMA_GET_FIRST_KEY_ITEM(key, table) \
-    ((table).data + CARMA_HASH_KEY(key) % (table).capacity)
-
-#define CARMA_GET_FIRST_RANGE_KEY_ITEM(key, table) \
-    ((table).data + CARMA_HASH_RANGE_KEY(key) % (table).capacity)
     
 #define GET_KEY_VALUE(k, _value, table) do { \
     if (IS_EMPTY(table)) \
         break; \
     CARMA_AUTO _key = (k); \
-    CARMA_AUTO _item = CARMA_GET_FIRST_KEY_ITEM(_key, table); \
-    if (_item->occupied && _item->key == _key) { \
-        (_value) = _item->value; \
+    CARMA_AUTO _it = (table).data; \
+    CARMA_FIND_FREE_INDEX_FOR_KEY((table), _key, _it); \
+    if (_it != NULL && _it->occupied) { \
+        (_value) = _it->value; \
     } \
 } while (0)
 
 #define GET_RANGE_KEY_VALUE(_key, _value, table) do { \
     if (IS_EMPTY(table)) \
         break; \
-    CARMA_AUTO _item = CARMA_GET_FIRST_RANGE_KEY_ITEM(_key, table); \
-    if (_item->occupied && ARE_EQUAL(_item->key, (_key))) { \
-        (_value) = _item->value; \
+    CARMA_AUTO _it = (table).data; \
+    CARMA_FIND_FREE_INDEX_FOR_RANGE_KEY((table), (_key), _it); \
+    if (_it != NULL && _it->occupied) { \
+        (_value) = _it->value; \
     } \
 } while (0)
 
@@ -60,24 +56,28 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
 // ADD DATA TO TABLE
 
 #define CARMA_FIND_FREE_INDEX_FOR_KEY(table, k, _it) do { \
-    _it = CARMA_GET_FIRST_KEY_ITEM((k), (table)); \
-    if (!_it->occupied) { \
-    } \
-    else if (_it->key == (k)) { \
-    } \
-    else { \
-        (_it) = NULL; \
+    size_t _capacity = (table).capacity; \
+    CARMA_AUTO _base = CARMA_HASH_KEY(k) % _capacity; \
+    (_it) = NULL; \
+    for (size_t _offset = 0; _offset < _capacity; ++_offset) { \
+        CARMA_AUTO _candidate = (table).data + (_base + _offset) % _capacity; \
+        if (!_candidate->occupied || _candidate->key == (k)) { \
+            (_it) = _candidate; \
+            break; \
+        } \
     } \
 } while (0)
 
 #define CARMA_FIND_FREE_INDEX_FOR_RANGE_KEY(table, k, _it) do { \
-    _it = CARMA_GET_FIRST_RANGE_KEY_ITEM((k), (table)); \
-    if (!_it->occupied) { \
-    } \
-    else if (ARE_EQUAL(_it->key, (k))) { \
-    } \
-    else { \
-        (_it) = NULL; \
+    size_t _capacity = (table).capacity; \
+    CARMA_AUTO _base = CARMA_HASH_RANGE_KEY(k) % _capacity; \
+    (_it) = NULL; \
+    for (size_t _offset = 0; _offset < _capacity; ++_offset) { \
+        CARMA_AUTO _candidate = (table).data + (_base + _offset) % _capacity; \
+        if (!_candidate->occupied || ARE_EQUAL(_candidate->key, (k))) { \
+            (_it) = _candidate; \
+            break; \
+        } \
     } \
 } while (0)
 
