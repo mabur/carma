@@ -98,7 +98,7 @@
 
 #define FIND_IF_NOT_BACKWARDS_ITERATOR(first, last, predicate) ({ \
     CARMA_AUTO it = (last) - 1; \
-    for (; it != (range).data - 1 && (predicate)(*it); --it) { \
+    for (; it != first - 1 && (predicate)(*it); --it) { \
     } \
     it; \
 })
