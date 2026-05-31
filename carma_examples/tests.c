@@ -817,7 +817,7 @@ void test_append() {
     ASSERT_EQUAL_SIZE("APPEND", array.capacity, 0);
     APPEND(array, 1);
     ASSERT_EQUAL_SIZE("APPEND", array.count, 1);
-    ASSERT_EQUAL_SIZE("APPEND", array.capacity, 1);
+    ASSERT_EQUAL_SIZE("APPEND", array.capacity, 2);
     APPEND(array, 2);
     ASSERT_EQUAL_SIZE("APPEND", array.count, 2);
     ASSERT_EQUAL_SIZE("APPEND", array.capacity, 2);
@@ -843,7 +843,7 @@ void test_prepend() {
     ASSERT_EQUAL_SIZE("PREPEND", array.capacity, 0);
     PREPEND(array, 1);
     ASSERT_EQUAL_SIZE("PREPEND", array.count, 1);
-    ASSERT_EQUAL_SIZE("PREPEND", array.capacity, 1);
+    ASSERT_EQUAL_SIZE("PREPEND", array.capacity, 2);
     PREPEND(array, 2);
     ASSERT_EQUAL_SIZE("PREPEND", array.count, 2);
     ASSERT_EQUAL_SIZE("PREPEND", array.capacity, 2);

@@ -106,9 +106,9 @@ bool carma_is_power_of_two(size_t n) {
 } while (0)
 
 #define FREE_TABLE(table) FREE_DARRAY(table)
-    
+
 #define CARMA_ENSURE_TABLE_CAPACITY_KEY(table) do { \
-    if ((table).count < 0.7 * (table).capacity) { \
+    if ((table).count + 1 < 0.7 * (table).capacity) { \
         break; \
     } \
     CARMA_AUTO new_capacity = CARMA_DOUBLED_CAPACITY((table).capacity); \
@@ -125,7 +125,7 @@ bool carma_is_power_of_two(size_t n) {
 } while (0)
 
 #define CARMA_ENSURE_TABLE_CAPACITY_RANGE_KEY(table) do { \
-    if ((table).count < 0.7 * (table).capacity) { \
+    if ((table).count + 1 < 0.7 * (table).capacity) { \
         break; \
     } \
     CARMA_AUTO new_capacity = CARMA_DOUBLED_CAPACITY((table).capacity); \
@@ -152,6 +152,7 @@ bool carma_is_power_of_two(size_t n) {
     _item->key = _k; \
     _item->value = (v); \
     _item->occupied = (true); \
+    CHECK_INTERNAL((table).count < (table).capacity, "There should always be room left in table"); \
 } while (0)
 
 #define SET_RANGE_KEY_VALUE(k, v, table) do { \
@@ -165,6 +166,7 @@ bool carma_is_power_of_two(size_t n) {
     _item->key = _k; \
     _item->value = (v); \
     _item->occupied = (true); \
+    CHECK_INTERNAL((table).count < (table).capacity, "There should always be room left in table"); \
 } while (0)
 
 #define CLEAR_TABLE(table) FOR_EACH_TABLE(item, (table)) item->occupied = false;

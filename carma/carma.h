@@ -321,7 +321,7 @@ static inline bool carma_are_bits_equal(
 
 #define CARMA_DOUBLED_CAPACITY(capacity) \
     (capacity) == 0 \
-        ? 1 \
+        ? 2 \
         : (capacity) <= SIZE_MAX / 2 \
             ? (capacity) * 2 \
             : (CARMA_ABORT_FAILURE("No room to double capacity") , (capacity))
