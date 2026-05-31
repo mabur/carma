@@ -7,7 +7,7 @@
 #include "carma.h"
 
 ////////////////////////////////////////////////////////////////////////////////
-// FIND DATA IN TABLE
+// HASH FUNCTIONS
 
 static inline
 size_t carma_hash_byte(size_t hash, char data) {
@@ -30,30 +30,13 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
 
 #define CARMA_HASH_RANGE_KEY(key) \
     carma_hash_bytes(CARMA_HASH_INIT, (const char*)(BEGIN_POINTER(key)), COUNT_BYTES(key))
-    
-#define GET_KEY_VALUE(k, _value, table) do { \
-    if (IS_EMPTY(table)) \
-        break; \
-    CARMA_AUTO _key = (k); \
-    CARMA_AUTO _it = (table).data; \
-    CARMA_FIND_FREE_INDEX_FOR_KEY((table), _key, _it); \
-    if (_it->occupied) { \
-        (_value) = _it->value; \
-    } \
-} while (0)
-
-#define GET_RANGE_KEY_VALUE(_key, _value, table) do { \
-    if (IS_EMPTY(table)) \
-        break; \
-    CARMA_AUTO _it = (table).data; \
-    CARMA_FIND_FREE_INDEX_FOR_RANGE_KEY((table), (_key), _it); \
-    if (_it->occupied) { \
-        (_value) = _it->value; \
-    } \
-} while (0)
 
 ////////////////////////////////////////////////////////////////////////////////
-// ADD DATA TO TABLE
+// FIND DATA IN TABLE
+
+#define FOR_EACH_TABLE(iterator, table) \
+    for (CARMA_AUTO iterator = (table).data; iterator != (table).data + (table).capacity; ++iterator) \
+        if ((iterator)->occupied)
 
 #define CARMA_FIND_FREE_INDEX_FOR_KEY(table, k, _it) do { \
     size_t _capacity = (table).capacity; \
@@ -83,7 +66,29 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
     CHECK_INTERNAL(_found, "Error in CARMA_FIND_FREE_INDEX_FOR_RANGE_KEY "); \
 } while (0)
 
-#define CLEAR_TABLE(table) FOR_EACH_TABLE(item, (table)) item->occupied = false;
+#define GET_KEY_VALUE(k, _value, table) do { \
+    if (IS_EMPTY(table)) \
+        break; \
+    CARMA_AUTO _key = (k); \
+    CARMA_AUTO _it = (table).data; \
+    CARMA_FIND_FREE_INDEX_FOR_KEY((table), _key, _it); \
+    if (_it->occupied) { \
+        (_value) = _it->value; \
+    } \
+} while (0)
+
+#define GET_RANGE_KEY_VALUE(_key, _value, table) do { \
+    if (IS_EMPTY(table)) \
+        break; \
+    CARMA_AUTO _it = (table).data; \
+    CARMA_FIND_FREE_INDEX_FOR_RANGE_KEY((table), (_key), _it); \
+    if (_it->occupied) { \
+        (_value) = _it->value; \
+    } \
+} while (0)
+
+////////////////////////////////////////////////////////////////////////////////
+// MODIFY TABLE
 
 static inline
 bool carma_is_power_of_two(size_t n) {
@@ -102,10 +107,6 @@ bool carma_is_power_of_two(size_t n) {
 } while (0)
 
 #define FREE_TABLE(table) FREE_DARRAY(table)
-
-#define FOR_EACH_TABLE(iterator, table) \
-    for (CARMA_AUTO iterator = (table).data; iterator != (table).data + (table).capacity; ++iterator) \
-    if ((iterator)->occupied)
     
 #define CARMA_ENSURE_TABLE_CAPACITY_KEY(table) do { \
     if ((table).count < 0.7 * (table).capacity) { \
@@ -166,3 +167,5 @@ bool carma_is_power_of_two(size_t n) {
     _item->value = (v); \
     _item->occupied = (true); \
 } while (0)
+
+#define CLEAR_TABLE(table) FOR_EACH_TABLE(item, (table)) item->occupied = false;
