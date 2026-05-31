@@ -82,6 +82,8 @@
     it; \
 })
 
+// Handle undefined behavior for first minus one.
+/*
 #define FIND_IF_BACKWARDS(range, predicate) ({ \
     CARMA_AUTO it = END_POINTER(range) - 1; \
     for (; it != (range).data - 1 && !(predicate)(*it); --it) { \
@@ -102,3 +104,4 @@
     } \
     it; \
 })
+*/
