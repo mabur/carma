@@ -43,6 +43,16 @@ so all range and dynamic array macros can be used for it.
 StringView s = STRING_VIEW("Hello World");
 ```
 
+- `MAKE_CSTRING(carma_string)` takes a carma string and allocate a new copy of it as a c string which is returned:
+  Example:
+
+```c
+StringView a = STRING_VIEW("Hello World");
+char* b = MAKE_CSTRING(a);
+b[0] = 'h';
+b[6] = 'w';
+```
+
 - `FORMAT_STRING(const char* format, ...)` formats a string
   and returns a `StringView` of it. An internal buffer is re-used
   which means that you don't need to free the memory of the returned `StringView`,
