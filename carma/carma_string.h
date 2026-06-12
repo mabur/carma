@@ -148,23 +148,6 @@ StringBuilder read_text_file(const char* file_path) {
 ////////////////////////////////////////////////////////////////////////////////
 /// Serialization
 
-#define SERIALIZE_CSTRING(string_builder, cstring) do { \
-    StringView tail_with_null_terminator = {(cstring), strlen(cstring) + 1}; \
-    CONCAT((string_builder), tail_with_null_terminator); \
-    DROP_BACK(string_builder); \
-} while (0)
-
-#define SERIALIZE_BOOL(string_builder, x) do { \
-    if (x) SERIALIZE_CSTRING(string_builder, "true"); \
-    else SERIALIZE_CSTRING(string_builder, "false"); \
-} while(0)
-
-#define SERIALIZE_CHARACTER(string_builder, x) do { \
-    APPEND((string_builder), (x)); \
-    APPEND((string_builder), '\0'); \
-    DROP_BACK(string_builder); \
-} while(0)
-
 #define SERIALIZE_INTEGRAL(string_builder, x) do { \
     CARMA_AUTO _si_x = (x); \
     if (_si_x < 0) { \
@@ -211,3 +194,20 @@ StringBuilder read_text_file(const char* file_path) {
     APPEND(string_builder, '\0'); \
     DROP_BACK(string_builder); \
 } while(0)
+
+#define SERIALIZE_BOOL(string_builder, x) do { \
+    if (x) SERIALIZE_CSTRING(string_builder, "true"); \
+    else SERIALIZE_CSTRING(string_builder, "false"); \
+} while(0)
+
+#define SERIALIZE_CHARACTER(string_builder, x) do { \
+    APPEND((string_builder), (x)); \
+    APPEND((string_builder), '\0'); \
+    DROP_BACK(string_builder); \
+} while(0)
+
+#define SERIALIZE_CSTRING(string_builder, cstring) do { \
+    StringView tail_with_null_terminator = {(cstring), strlen(cstring) + 1}; \
+    CONCAT((string_builder), tail_with_null_terminator); \
+    DROP_BACK(string_builder); \
+} while (0)
