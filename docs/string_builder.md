@@ -8,7 +8,7 @@ strings and define two concrete array structures that you can use:
 
 ## StringBuilder
 
-You can use `StringBuilder` for dynamic strings that can grow or shrink in size:
+You can use `StringBuilder` for mutable strings that can grow or shrink in size:
 
 ```c
 typedef struct StringBuilder {
@@ -22,12 +22,22 @@ A `StringBuilder` is both a range and a dynamic array,
 so all range and dynamic array macros can be used for it.
 
 
+## String Macros O(1)
+
+- `AS_CSTRING(string_builder)` takes a `StringBuilder` and returns a null terminated c string view of it:
+  Example:
+```c
+StringBuilder a = read_text_file("data.txt");
+char* b = AS_CSTRING(a);
+b[0] = '\n';
+```
+
 ## String Macros O(N)
 
 - `read_text_file(file_path_cstring)` reads a text file
   and returns a `StringBuilder` of its content.
 
-- `MAKE_CSTRING(string_builder)` takes a `StringBuilder` and allocate a new copy of it as a c string which is returned:
+- `MAKE_CSTRING(string_builder)` takes a `StringBuilder` and allocate a new copy of it as a null terminated c string which is returned:
   Example:
 ```c
 StringBuilder a = read_text_file("data.txt");
