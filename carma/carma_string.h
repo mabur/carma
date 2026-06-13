@@ -32,7 +32,15 @@ static inline char* carma_make_cstring(const char* data, size_t count) {
     return result;
 }
 
+static inline char* carma_as_cstring(StringBuilder* string_builder) {
+    APPEND(*string_builder, '\0');
+    DROP_BACK(*string_builder);
+    return string_builder->data;
+}
+
 #define MAKE_CSTRING(string) carma_make_cstring((string).data, (string).count)
+
+#define AS_CSTRING(string_builder) carma_as_cstring(&(string_builder))
 
 static inline
 StringBuilder carma_vconcat_string(StringBuilder string, const char* format, va_list args) {
