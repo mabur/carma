@@ -90,7 +90,7 @@ StringView FORMAT_STRING(const char* format, ...) {
 }
 
 static inline
-size_t carma_find_first_character_of(const char* data, size_t max_index, int (*predicate)(int)) {
+size_t carma_find_character_if(const char* data, size_t max_index, int (*predicate)(int)) {
     for (size_t i = 0; i < max_index; ++i) {
         if (predicate(data[i])) {
             return i;
@@ -100,7 +100,7 @@ size_t carma_find_first_character_of(const char* data, size_t max_index, int (*p
 }
 
 static inline
-size_t carma_find_first_character_not_of(const char* data, size_t max_index, int (*predicate)(int)) {
+size_t carma_find_character_not_if(const char* data, size_t max_index, int (*predicate)(int)) {
     for (size_t i = 0; i < max_index; ++i) {
         if (!predicate(data[i])) {
             return i;
@@ -115,14 +115,14 @@ size_t carma_find_first_character_not_of(const char* data, size_t max_index, int
     size_t _word_length,\
     _delimeter_length\
     ;\
-    _word_length = carma_find_first_character_of((string).data, (string).count, (is_delimiter)),\
+    _word_length = carma_find_character_if((string).data, (string).count, (is_delimiter)),\
     (word).data = (string).data,\
     (word).count = _word_length,\
     (string).data += _word_length,\
     (string).count -= _word_length,\
     !IS_EMPTY(word)\
     ;\
-    _delimeter_length = carma_find_first_character_not_of((string).data, (string).count, (is_delimiter)),\
+    _delimeter_length = carma_find_character_not_if((string).data, (string).count, (is_delimiter)),\
     (string).data += _delimeter_length,\
     (string).count -= _delimeter_length\
     )
