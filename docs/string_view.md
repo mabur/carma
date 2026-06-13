@@ -50,7 +50,7 @@ b[6] = 'w';
 StringView s = FORMAT_STRING("Number %d", 99);
 ```
 
-- `FOR_EACH_WORD(word, string, is_delimiter)` can be used to loop
+- `FOR_EACH_WORD_PREDICATE(word, string, is_delimiter)` can be used to loop
   through all words of a given `string`. You can decide what you consider
   to be a delimeter with the predicate function `is_delimiter`, which
   takes a char and returns a bool. The loop variable `word` is a `StringView`

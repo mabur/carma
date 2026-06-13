@@ -18,7 +18,7 @@ typedef struct {
 
 Table count_words(StringView text) {
     auto table = MAKE(Table);
-    FOR_EACH_WORD(word, text, isspace) {
+    FOR_EACH_WORD_PREDICATE(word, text, isspace) {
         auto word_count = 0;
         GET_RANGE_KEY_VALUE(word, word_count, table);
         word_count++;

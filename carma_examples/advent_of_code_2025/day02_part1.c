@@ -35,7 +35,7 @@ int main() {
     auto text = read_text_file(file_path);
     APPEND(text, '\0');
     long sum = 0;
-    FOR_EACH_WORD(word, text, isComma) {
+    FOR_EACH_WORD_PREDICATE(word, text, isComma) {
         auto interval = parseInterval(word);
         for (auto id = interval.first; id <= interval.last; id++) {
             if (isInvalidId(id)) {
