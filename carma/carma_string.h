@@ -90,6 +90,16 @@ StringView FORMAT_STRING(const char* format, ...) {
 }
 
 static inline
+size_t carma_find_character(const char* data, size_t max_index, char c) {
+    for (size_t i = 0; i < max_index; ++i) {
+        if (data[i] == c) {
+            return i;
+        }
+    }
+    return max_index;
+}
+
+static inline
 size_t carma_find_character_if(const char* data, size_t max_index, int (*predicate)(int)) {
     for (size_t i = 0; i < max_index; ++i) {
         if (predicate(data[i])) {
@@ -108,6 +118,22 @@ size_t carma_find_character_not_if(const char* data, size_t max_index, int (*pre
     }
     return max_index;
 }
+
+
+#define FOR_EACH_WORD(word, string, delimiter) \
+    StringView word = {}; \
+    for (\
+    size_t _word_length;\
+    _word_length = carma_find_character((string).data, (string).count, (delimiter)),\
+    (word).data = (string).data,\
+    (word).count = _word_length,\
+    (string).data += _word_length,\
+    (string).count -= _word_length,\
+    !IS_EMPTY(word)\
+    ;\
+    (string).data++,\
+    (string).count--\
+    )
 
 #define FOR_EACH_WORD_PREDICATE(word, string, is_delimiter) \
     StringView word = {}; \

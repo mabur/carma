@@ -50,6 +50,24 @@ b[6] = 'w';
 StringView s = FORMAT_STRING("Number %d", 99);
 ```
 
+
+- `FOR_EACH_WORD(word, string, delimiter)` can be used to loop
+  through all words of a given `string`, split by the `delimiter`.
+  The loop variable `word` is a `StringView`
+  that iterates through all words in the string. Example
+
+```c
+StringView text = STRING_VIEW("hello,world,99")
+size_t word_count = 0;
+size_t average_word_length = 0;
+FOR_EACH_WORD(word, text, ',') {
+    word_count++;
+    average_word_length += word.count;
+}
+average_word_length /= word_count;
+```
+
+
 - `FOR_EACH_WORD_PREDICATE(word, string, is_delimiter)` can be used to loop
   through all words of a given `string`. You can decide what you consider
   to be a delimeter with the predicate function `is_delimiter`, which
@@ -57,14 +75,14 @@ StringView s = FORMAT_STRING("Number %d", 99);
   that iterates through all words in the string. Example
 
 ```c
-bool is_comma(char c) {
-  return c == ',';
+bool is_comma_or_space(char c) {
+  return c == ',' || c == ' ';
 }
 
-StringView text = STRING_VIEW("hello,world,99")
+StringView text = STRING_VIEW("hello ,world ,   99")
 size_t word_count = 0;
 size_t average_word_length = 0;
-FOR_EACH_WORD(word, text, is_comma) {
+FOR_EACH_WORD_PREDICATE(word, text, is_comma_or_space) {
     word_count++;
     average_word_length += word.count;
 }
