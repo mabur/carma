@@ -19,15 +19,16 @@ Interval parseInterval(StringView word) {
 }
 
 bool isInvalidId(uint64_t id) {
-    char s[32];
-    snprintf(s, sizeof(s), "%" PRIu64, id);
-    auto count = strlen(s);
+    static StringBuilder s = {};
+    CLEAR(s);
+    SERIALIZE_INTEGRAL(s, id);
+    auto count = s.count;
     if (count % 2 != 0) {
         return false;
     }
     auto half_count = count / 2;
-    auto a = (StringView){s, half_count};
-    auto b = (StringView){s + half_count, half_count};
+    auto a = (StringView){s.data, half_count};
+    auto b = (StringView){s.data + half_count, half_count};
     return ARE_EQUAL(a, b);
 }
 
