@@ -1044,6 +1044,15 @@ void test_string_view() {
     ASSERT_EQUAL_INT("test_string_view", STRING_VIEW("\0").count, 0);
 }
 
+void test_for_each_word() {
+    auto s = STRING_VIEW("a,bc,def");
+    size_t count = 0;
+    FOR_EACH_WORD(w, s, ',') {
+        count++;
+    }
+    ASSERT_EQUAL_INT("test_for_each_word", count, 3);
+}
+
 void test_serialize_cstring() {
     auto s = (StringBuilder){};
 
@@ -1557,6 +1566,7 @@ int main() {
     test_flip_image_x();
     test_flip_image_y();
 
+    test_for_each_word();
     test_string_view();
     test_serialize_cstring();
     test_format_string();
