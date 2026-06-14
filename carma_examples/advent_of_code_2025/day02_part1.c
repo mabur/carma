@@ -3,6 +3,8 @@
 #include <carma/carma.h>
 #include <carma/carma_string.h>
 
+#include "carma/carma_parse.h"
+
 typedef struct Interval {
     uint64_t first;
     uint64_t last;
@@ -10,7 +12,9 @@ typedef struct Interval {
 
 Interval parseInterval(StringView word) {
     auto interval = (Interval){};
-    sscanf(word.data, "%" SCNu64 "-%" SCNu64, &interval.first, &interval.last);
+    interval.first = PARSE_U64(word);
+    DROP_FRONT(word);
+    interval.last = PARSE_U64(word);
     return interval;
 }
 
