@@ -1,15 +1,16 @@
 #include <stdio.h>
+#include <inttypes.h>
 #include <carma/carma.h>
 #include <carma/carma_string.h>
 
 typedef struct Interval {
-    long first;
-    long last;
+    int64_t first;
+    int64_t last;
 } Interval;
 
 Interval parseInterval(StringView word) {
     auto interval = (Interval){};
-    sscanf(word.data, "%ld-%ld", &interval.first, &interval.last);
+    sscanf(word.data, "%" SCNd64 "-%" SCNd64, &interval.first, &interval.last);
     return interval;
 }
 
@@ -17,9 +18,9 @@ int isComma(int c) {
     return c == ',';
 }
 
-bool isInvalidId(long id) {
+bool isInvalidId(int64_t id) {
     char s[32];
-    snprintf(s, sizeof(s), "%ld", id);
+    snprintf(s, sizeof(s), "%" PRId64, id);
     auto count = strlen(s);
     if (count % 2 != 0) {
         return false;
@@ -34,14 +35,14 @@ int main() {
     auto file_path = "day02.txt";
     auto text = read_text_file(file_path);
     APPEND(text, '\0');
-    long sum = 0;
+    int64_t sum = 0;
     FOR_EACH_WORD_PREDICATE(word, text, isComma) {
         auto interval = parseInterval(word);
-        for (auto id = interval.first; id <= interval.last; id++) {
+        for (int64_t id = interval.first; id <= interval.last; id++) {
             if (isInvalidId(id)) {
                 sum += id;
             }
         }
     }
-    printf("%ld\n", sum);
+    printf("%" PRId64 "\n", sum);
 }
