@@ -101,23 +101,25 @@ size_t carma_count_steps_until_delimiter(const char* begin, const char* end, cha
 }
 
 static inline
-size_t carma_find_character_if(const char* data, size_t max_index, int (*predicate)(int)) {
-    for (size_t i = 0; i < max_index; ++i) {
-        if (predicate(data[i])) {
-            return i;
+size_t carma_count_steps_until(const char* begin, const char* end, int (*predicate)(int)) {
+    size_t steps = 0;
+    for (const char* iterator = begin; iterator != end; ++iterator, ++steps) {
+        if (predicate(*iterator)) {
+            return steps;
         }
     }
-    return max_index;
+    return steps;
 }
 
 static inline
-size_t carma_find_character_not_if(const char* data, size_t max_index, int (*predicate)(int)) {
-    for (size_t i = 0; i < max_index; ++i) {
-        if (!predicate(data[i])) {
-            return i;
+size_t carma_count_steps_while(const char* begin, const char* end, int (*predicate)(int)) {
+    size_t steps = 0;
+    for (const char* iterator = begin; iterator != end; ++iterator, ++steps) {
+        if (!predicate(*iterator)) {
+            return steps;
         }
     }
-    return max_index;
+    return steps;
 }
 
 
@@ -133,10 +135,10 @@ size_t carma_find_character_not_if(const char* data, size_t max_index, int (*pre
 #define FOR_EACH_WORD_PREDICATE(word, string, is_delimiter) \
     for (\
     StringView word = {(string).data};\
-    (word).count = carma_find_character_if((word).data, END_POINTER(string) - (word).data, (is_delimiter)),\
+    (word).count = carma_count_steps_until((word).data, END_POINTER(string), (is_delimiter)),\
     (word).data != END_POINTER(string)\
     ;\
-    (word).data += (word).count + carma_find_character_not_if((word).data + (word).count, END_POINTER(string) - (word).data - (word).count, (is_delimiter))\
+    (word).data += (word).count + carma_count_steps_while(END_POINTER(word), END_POINTER(string), (is_delimiter))\
     )
 
 ////////////////////////////////////////////////////////////////////////////////
