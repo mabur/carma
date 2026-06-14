@@ -131,21 +131,12 @@ size_t carma_find_character_not_if(const char* data, size_t max_index, int (*pre
     )
 
 #define FOR_EACH_WORD_PREDICATE(word, string, is_delimiter) \
-    StringView word = {}; \
     for (\
-    size_t _word_length,\
-    _delimeter_length\
+    StringView word = {(string).data};\
+    (word).count = carma_find_character_if((word).data, END_POINTER(string) - (word).data, (is_delimiter)),\
+    (word).data != END_POINTER(string)\
     ;\
-    _word_length = carma_find_character_if((string).data, (string).count, (is_delimiter)),\
-    (word).data = (string).data,\
-    (word).count = _word_length,\
-    (string).data += _word_length,\
-    (string).count -= _word_length,\
-    !IS_EMPTY(word)\
-    ;\
-    _delimeter_length = carma_find_character_not_if((string).data, (string).count, (is_delimiter)),\
-    (string).data += _delimeter_length,\
-    (string).count -= _delimeter_length\
+    (word).data += (word).count + carma_find_character_not_if((word).data + (word).count, END_POINTER(string) - (word).data - (word).count, (is_delimiter))\
     )
 
 ////////////////////////////////////////////////////////////////////////////////
