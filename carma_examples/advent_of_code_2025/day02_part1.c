@@ -14,10 +14,6 @@ Interval parseInterval(StringView word) {
     return interval;
 }
 
-int isComma(int c) {
-    return c == ',';
-}
-
 bool isInvalidId(int64_t id) {
     char s[32];
     snprintf(s, sizeof(s), "%" PRId64, id);
@@ -36,7 +32,7 @@ int main() {
     auto text = read_text_file(file_path);
     APPEND(text, '\0');
     int64_t sum = 0;
-    FOR_EACH_WORD_PREDICATE(word, text, isComma) {
+    FOR_EACH_WORD(word, text, ',') {
         auto interval = parseInterval(word);
         for (int64_t id = interval.first; id <= interval.last; id++) {
             if (isInvalidId(id)) {
