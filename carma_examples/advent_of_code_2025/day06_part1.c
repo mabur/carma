@@ -20,7 +20,6 @@ typedef struct Rows {
     size_t capacity;
 } Rows;
 
-
 Rows transpose(Rows input_rows) {
     auto output_rows = (Rows){};
     return output_rows;
@@ -80,15 +79,6 @@ Rows parseRows(StringView* input_stream) {
         APPEND(rows, row);
     }
     return rows;
-}
-
-int parseInt(StringView text) {
-    auto result = 0;
-    while (!IS_EMPTY(text) && isdigit(FIRST_ITEM(text))) {
-        result = result * 10 + (FIRST_ITEM(text) - '0');
-        DROP_FRONT(text);
-    }
-    return result;
 }
 
 char parseChar(StringView text) {
