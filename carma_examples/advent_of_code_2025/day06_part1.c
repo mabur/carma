@@ -81,10 +81,6 @@ Rows parseRows(StringView* input_stream) {
     return rows;
 }
 
-char parseChar(StringView text) {
-    return IS_EMPTY(text) ? '\0' : FIRST_ITEM(text);
-}
-
 int main() {
     auto file_path = "day06.txt";
     auto text = read_text_file(file_path);
@@ -97,7 +93,7 @@ int main() {
         auto b = PARSE_U64(rows.data[1].data[i]);
         auto c = PARSE_U64(rows.data[2].data[i]);
         auto d = PARSE_U64(rows.data[3].data[i]);
-        auto operation = parseChar(rows.data[4].data[i]);
+        auto operation = PARSE_CHAR(rows.data[4].data[i]);
         if (operation == '*') {
             result += a * b * c * d;
         }
