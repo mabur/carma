@@ -4,6 +4,8 @@
 #include <carma/carma.h>
 #include <carma/carma_string.h>
 
+#include "carma/carma_parse.h"
+
 typedef StringView Cell;
 
 typedef struct Row {
@@ -89,15 +91,6 @@ int parseInt(StringView text) {
     return result;
 }
 
-uint64_t parseU64(StringView text) {
-    uint64_t result = 0;
-    while (!IS_EMPTY(text) && isdigit(FIRST_ITEM(text))) {
-        result = result * 10 + (FIRST_ITEM(text) - '0');
-        DROP_FRONT(text);
-    }
-    return result;
-}
-
 char parseChar(StringView text) {
     return IS_EMPTY(text) ? '\0' : FIRST_ITEM(text);
 }
@@ -110,10 +103,10 @@ int main() {
     printf("Test\n");
     uint64_t result = 0;
     FOR_INDEX(i, FIRST_ITEM(rows)) {
-        auto a = parseU64(rows.data[0].data[i]);
-        auto b = parseU64(rows.data[1].data[i]);
-        auto c = parseU64(rows.data[2].data[i]);
-        auto d = parseU64(rows.data[3].data[i]);
+        auto a = PARSE_U64(rows.data[0].data[i]);
+        auto b = PARSE_U64(rows.data[1].data[i]);
+        auto c = PARSE_U64(rows.data[2].data[i]);
+        auto d = PARSE_U64(rows.data[3].data[i]);
         auto operation = parseChar(rows.data[4].data[i]);
         if (operation == '*') {
             result += a * b * c * d;
