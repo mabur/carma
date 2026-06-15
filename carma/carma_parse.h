@@ -21,6 +21,11 @@ parse_word
 parse_white_space
 */
 
+typedef struct ParsedChar {
+    char value;
+    bool ok;
+} ParsedChar;
+
 typedef struct ParsedInt {
     int value;
     bool ok;
@@ -44,6 +49,17 @@ bool is_digit(char c) {
 static inline
 bool is_whitespace(char c) {
     return c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\v' || c == '\f';
+}
+
+static inline
+ParsedChar try_parse_char(StringView* s) {
+    auto result = MAKE(ParsedChar);
+    if (!IS_EMPTY(*s)) {
+        result.value = FIRST_ITEM(*s);
+        DROP_FRONT(*s);
+        result.ok = true;
+    }
+    return result;
 }
 
 static inline
@@ -159,6 +175,11 @@ StringView parse_quoted_string(StringView* s) {
     return value;
 }
 
+static inline char parse_char_or_exit(StringView* s) {
+    auto optional = try_parse_char(s);
+    return GET_OPTIONAL_OR_EXIT(optional, "Could not parse char");
+}
+
 static inline uint64_t parse_u64_or_exit(StringView* s) {
     auto optional = try_parse_u64(s);
     return GET_OPTIONAL_OR_EXIT(optional, "Could not parse uint64_t");
@@ -179,11 +200,13 @@ static inline double parse_double_or_exit(StringView* s) {
     return GET_OPTIONAL_OR_EXIT(optional, "Could not parse double");
 }
 
+#define TRY_PARSE_CHAR(s) try_parse_char(&(s))
 #define TRY_PARSE_U64(s) try_parse_u64(&(s))
 #define TRY_PARSE_INT(s) try_parse_int(&(s))
 #define TRY_PARSE_DOUBLE(s) try_parse_double(&(s))
 #define PARSE_QUOTED_STRING(s) parse_quoted_string(&(s))
 
+#define PARSE_CHAR(s) parse_char_or_exit(&(s))
 #define PARSE_U64(s) parse_u64_or_exit(&(s))
 #define PARSE_INT(s) parse_int_or_exit(&(s))
 #define PARSE_DOUBLE(s) parse_double_or_exit(&(s))
