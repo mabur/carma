@@ -1,4 +1,5 @@
 #include <ctype.h>
+#include <inttypes.h>
 #include <stdio.h>
 #include <carma/carma.h>
 #include <carma/carma_string.h>
@@ -88,8 +89,8 @@ int parseInt(StringView text) {
     return result;
 }
 
-long parseLong(StringView text) {
-    long result = 0;
+uint64_t parseU64(StringView text) {
+    uint64_t result = 0;
     while (!IS_EMPTY(text) && isdigit(FIRST_ITEM(text))) {
         result = result * 10 + (FIRST_ITEM(text) - '0');
         DROP_FRONT(text);
@@ -107,12 +108,12 @@ int main() {
     auto text_view = STRING_VIEW_FROM_RANGE(text);
     auto rows = parseRows(&text_view);
     printf("Test\n");
-    long result = 0;
+    uint64_t result = 0;
     FOR_INDEX(i, FIRST_ITEM(rows)) {
-        auto a = parseLong(rows.data[0].data[i]);
-        auto b = parseLong(rows.data[1].data[i]);
-        auto c = parseLong(rows.data[2].data[i]);
-        auto d = parseLong(rows.data[3].data[i]);
+        auto a = parseU64(rows.data[0].data[i]);
+        auto b = parseU64(rows.data[1].data[i]);
+        auto c = parseU64(rows.data[2].data[i]);
+        auto d = parseU64(rows.data[3].data[i]);
         auto operation = parseChar(rows.data[4].data[i]);
         if (operation == '*') {
             result += a * b * c * d;
@@ -121,5 +122,5 @@ int main() {
             result += a + b + c + d;
         }
     }
-    printf("Result: %ld\n", result);
+    printf("Result: %" PRIu64 "\n", result);
 }
