@@ -1,10 +1,12 @@
 #include <stdio.h>
+#include <inttypes.h>
 #include <carma/carma.h>
 #include <carma/carma_string.h>
+#include <carma/carma_parse.h>
 
 typedef struct Interval {
-    long first;
-    long last;
+    uint64_t first;
+    uint64_t last;
 } Interval;
 
 typedef struct Intervals {
@@ -14,16 +16,16 @@ typedef struct Intervals {
 } Intervals;
 
 typedef struct Ids {
-    long* data;
+    uint64_t* data;
     size_t count;
     size_t capacity;
 } Ids;
 
-bool isInsideInterval(long id, Interval interval) {
+bool isInsideInterval(uint64_t id, Interval interval) {
     return interval.first <= id && id <= interval.last;
 }
 
-bool isInsideAnyInterval(long id, Intervals intervals) {
+bool isInsideAnyInterval(uint64_t id, Intervals intervals) {
     FOR_EACH(interval, intervals) {
         if (isInsideInterval(id,*interval)) {
             return true;
@@ -53,14 +55,16 @@ int main() {
             read_interval = false;
             continue;
         }
+        auto word = STRING_VIEW(line);
         if (read_interval) {
             auto interval = (Interval){};
-            sscanf(line, "%ld-%ld", &interval.first, &interval.last);
+            interval.first = PARSE_U64(word);
+            DROP_FRONT(word);
+            interval.last = PARSE_U64(word);
             APPEND(intervals, interval);
         }
         else {
-            long id = -1;
-            sscanf(line, "%ld", &id);
+            auto id = PARSE_U64(word);
             APPEND(ids, id);
         }
     }
