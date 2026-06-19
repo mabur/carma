@@ -174,7 +174,7 @@ static inline char* carma_as_cstring(StringBuilder* string_builder) {
             SERIALIZE_CSTRING((string_builder), "inf"); \
         else \
             SERIALIZE_CSTRING((string_builder), "-inf"); \
-    } else if (_x == floor(_x) && (double)INTMAX_MIN <= _x && _x <= (double)INTMAX_MAX) { \
+    } else if ((double)INTMAX_MIN <= _x && _x <= (double)INTMAX_MAX && _x == (double)(intmax_t)_x) { \
         SERIALIZE_INTEGRAL((string_builder), (intmax_t)_x); \
     } else { \
         if (_x < 0) { \
