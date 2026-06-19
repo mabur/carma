@@ -1,7 +1,6 @@
 #pragma once
 
-#include <stdio.h>
-#include <stdlib.h>
+#include "carma_std.h"
 
 // Use when the program encounters a handled error and should exit cleanly.
 // This can for example be that some external input is wrong.

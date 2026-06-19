@@ -1,8 +1,6 @@
 #pragma once
 
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
+#include "carma_std.h"
 
 #include "carma_error.h"
 #include "carma_make.h"

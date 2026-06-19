@@ -1,11 +1,6 @@
 #pragma once
 
-#include <math.h>
-#include <stdarg.h>
-#include <stddef.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "carma_std.h"
 
 #include "carma.h"
 #include "carma_make.h"
