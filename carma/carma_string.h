@@ -179,13 +179,12 @@ static inline double carma_normalize_decimal(double x, int int_digits) {
 
 #define SERIALIZE_DOUBLE(string_builder, x) do { \
     double _x = (double)(x); \
-    if (isnan(_x)) { \
+    if (_x != _x) { \
         SERIALIZE_CSTRING((string_builder), "nan"); \
-    } else if (isinf(_x)) { \
-        if (_x > 0) \
-            SERIALIZE_CSTRING((string_builder), "inf"); \
-        else \
-            SERIALIZE_CSTRING((string_builder), "-inf"); \
+    } else if (_x == 1.0 / 0.0) { \
+        SERIALIZE_CSTRING((string_builder), "inf"); \
+    } else if (_x == -1.0 / 0.0) { \
+        SERIALIZE_CSTRING((string_builder), "-inf"); \
     } else if ((double)INTMAX_MIN <= _x && _x <= (double)INTMAX_MAX && _x == (double)(intmax_t)_x) { \
         SERIALIZE_INTEGRAL((string_builder), (intmax_t)_x); \
     } else { \
