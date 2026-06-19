@@ -132,6 +132,10 @@
     - Immediately invoked lambda för msvc C++
     - Extensions for gcc & clang
   - MAKE(Particle, x, y) istället för (Particle){x, y} eller Particle{x, y}
+* C style
+  - https://nullprogram.com/blog/2023/10/08/
+  - https://floooh.github.io/2019/09/27/modern-c-for-cpp-peeps.html
+  - https://www.youtube.com/watch?v=QpAhX-gsHMs
 
 From Falco Girgis:
 // alloca()
