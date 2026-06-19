@@ -13,7 +13,7 @@ typedef struct Interval {
 Interval parseInterval(StringView word) {
     auto interval = (Interval){};
     interval.first = PARSE_U64(word);
-    DROP_FRONT(word);
+    PARSE_CHAR(word);
     interval.last = PARSE_U64(word);
     return interval;
 }

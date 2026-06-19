@@ -59,7 +59,7 @@ int main() {
         if (read_interval) {
             auto interval = (Interval){};
             interval.first = PARSE_U64(word);
-            DROP_FRONT(word);
+            PARSE_CHAR(word);
             interval.last = PARSE_U64(word);
             APPEND(intervals, interval);
         }

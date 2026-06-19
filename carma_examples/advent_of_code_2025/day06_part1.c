@@ -37,8 +37,6 @@ int isContent(int c) {
     return !isSpace(c) && ! isNewLine(c);
 }
 
-#define STRING_VIEW_FROM_RANGE(range) ((StringView){(range).data, (range).count})
-
 #define PARSE_WHILE(input_range, predicate, output_range) do { \
     (output_range).data = (input_range).data; \
     (output_range).count = 0; \
@@ -84,7 +82,7 @@ Rows parseRows(StringView* input_stream) {
 int main() {
     auto file_path = "day06.txt";
     auto text = read_text_file(file_path);
-    auto text_view = STRING_VIEW_FROM_RANGE(text);
+    auto text_view = MAKE(StringView, text.data, text.count);
     auto rows = parseRows(&text_view);
     printf("Test\n");
     uint64_t result = 0;
