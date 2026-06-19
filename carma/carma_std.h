@@ -2,7 +2,6 @@
 
 #ifdef __cplusplus
 #include <climits>
-#include <cmath>
 #include <cstdarg>
 #include <cstddef>
 #include <cstdint>
@@ -11,7 +10,6 @@
 #include <cstring>
 #else
 #include <limits.h>
-#include <math.h>
 #include <stdarg.h>
 #include <stddef.h>
 #include <stdint.h>
