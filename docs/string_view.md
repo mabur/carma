@@ -88,3 +88,25 @@ FOR_EACH_WORD_PREDICATE(word, text, is_comma_or_space) {
 }
 average_word_length /= word_count;
 ```
+
+## String Parsing
+
+The following macros take a StringView and attempts to parse it into something else.
+If the parsing succeeds then the parsed value is returned
+and the parsed characters are dropped from the beginning of the StringView.
+If the parsing failes then the whole program exits with the failure code 1.
+
+- `PARSE_CHAR(string_view)`
+- `PARSE_INT(string_view)`
+- `PARSE_U64(string_view)`
+- `PARSE_DOUBLE(string_view)`
+
+The following macros take a StringView and attempts to parse it into something else.
+They return a struct where the `ok` member is a `bool` that tells if the parsing suuceeded or failed.
+If the parsing succeesed then the `value` member is the parsed value.
+The parsed characters are dropped from the beginning of the StringView, if the parsing succeeded but not if it failed.
+
+- `TRY_PARSE_CHAR(string_view)`
+- `TRY_PARSE_INT(string_view)`
+- `TRY_PARSE_U64(string_view)`
+- `TRY_PARSE_DOUBLE(string_view)`
