@@ -165,6 +165,18 @@ static inline char* carma_as_cstring(StringBuilder* string_builder) {
     DROP_BACK(string_builder); \
 } while(0)
 
+static inline int carma_count_integer_digits(double x) {
+    int digits = 1;
+    for (double t = x; t >= 10.0; t /= 10.0) digits++;
+    return digits;
+}
+
+static inline double carma_normalize_decimal(double x, int int_digits) {
+    double scale = 1.0;
+    for (int i = 0; i < int_digits - 1; i++) scale *= 10.0;
+    return x / scale;
+}
+
 #define SERIALIZE_DOUBLE(string_builder, x) do { \
     double _x = (double)(x); \
     if (isnan(_x)) { \
@@ -181,8 +193,8 @@ static inline char* carma_as_cstring(StringBuilder* string_builder) {
             APPEND((string_builder), '-'); \
             _x = -_x; \
         } \
-        int _int_digits = _x >= 1.0 ? (int)log10(_x) + 1 : 1; \
-        double _d = _x / pow(10.0, _int_digits - 1); \
+        int _int_digits = carma_count_integer_digits(_x); \
+        double _d = carma_normalize_decimal(_x, _int_digits); \
         for (int _i = 0; _i < _int_digits + 6; _i++) { \
             if (_i == _int_digits) APPEND((string_builder), '.'); \
             int _digit = (int)_d; \
