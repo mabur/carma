@@ -30,11 +30,8 @@
   - ScopedFile
 * Macros not related to arrays:
   - let / var (Make it portable across c and C++ compilers, including msvc)
-  - make(my_struct, .x=0, .y=2) (Make it portable across c and C++ compilers, including msvc)
   - BEGIN_EXTERN_C, END_EXTERN_C, #include <carma/begin_c_header.h>, #include <carma/end_c_header.h>
   - integer types: f32, f64, u8, u32, u64, i8, i32, i64
-* typeof, is not standard C. It is supported by gcc and clang. C++ uses decltype.
-  - Figure out how to deal with this in main carma header.
 * Arrays
   - array2d, array3d
   - look_up_xy, look_up_xyz, at_xy, at_xyz

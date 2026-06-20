@@ -61,3 +61,26 @@ if your compiler supports C99 or C++20:
 ```C
 MAKE(Color, .red=0.5, .green=0.0, .blue=1.0)
 ```
+
+
+## Linkage
+
+`CARMA_BEGIN_EXTERN_C` and `CARMA_END_EXTERN_C` can be used to make functions declared in a C header link correctly when called from C++.
+It prevents name mangling issues.
+Place `CARMA_BEGIN_EXTERN_C` before the declarations in a C header and `CARMA_END_EXTERN_C` after them.
+Example:
+```c
+#pragma once
+
+#include <stdint.h>
+#include <carma/carma_extern_c.h>
+
+CARMA_BEGIN_EXTERN_C
+
+uint8_t sample_random_u8();
+uint16_t sample_random_u16();
+uint32_t sample_random_u32();
+uint64_t sample_random_u64();
+
+CARMA_END_EXTERN_C
+```
