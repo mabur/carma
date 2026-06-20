@@ -20,13 +20,23 @@ typedef struct StringView {
 A `StringView` is a range so all range macros can be used for it.
 
 
-## String Macros O(N)
+## String Macros O(1)
 
-- `STRING_VIEW(cstring)` takes a c string and returns a `StringView` of it.
+- `STRING_LITERAL(cstring_literal)` takes a string literal and returns a `StringView` of it.
   Example:
 
 ```c
-StringView s = STRING_VIEW("Hello World");
+StringView s = STRING_LITERAL("Hello World");
+```
+
+## String Macros O(N)
+
+- `STRING_VIEW(cstring)` takes a null terminated c string and returns a `StringView` of it.
+  Example:
+
+```c
+char* a = ...;
+StringView b = STRING_VIEW(a);
 ```
 
 - `MAKE_CSTRING(string_view)` takes a `StringView` and allocate a new copy of it as a c string which is returned:

@@ -41,6 +41,7 @@ static inline char* carma_make_cstring(const char* data, size_t count) {
 // STRING VIEW MACROS
 
 #define STRING_VIEW(cstring) MAKE(StringView, (cstring), strlen(cstring))
+#define STRING_LITERAL(cstring_literal) MAKE(StringView, (cstring_literal), sizeof(cstring_literal) - 1)
 
 static inline
 StringBuilder carma_vconcat_string(StringBuilder string, const char* format, va_list args) {
