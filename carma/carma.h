@@ -48,8 +48,9 @@ static inline void* carma_byte_malloc(size_t byte_count) {
 }
 
 #define CARMA_REALLOC(buffer, new_capacity) do { \
-    buffer = (CARMA_TYPE_OF(buffer))realloc((buffer), (new_capacity) * sizeof(CARMA_TYPE_OF(*(buffer)))); \
-    CHECK_INTERNAL(buffer, "realloc failed"); \
+    CARMA_TYPE_OF(buffer) carma_realloc_temp_ = (CARMA_TYPE_OF(buffer))realloc((buffer), (new_capacity) * sizeof(CARMA_TYPE_OF(*(buffer)))); \
+    CHECK_INTERNAL(carma_realloc_temp_, "realloc failed"); \
+    buffer = carma_realloc_temp_; \
 } while (0)
 
 #define CARMA_MALLOC(buffer, capacity) do { \
