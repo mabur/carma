@@ -41,6 +41,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 // ALLOCATE MEMORY
 
+static inline void* carma_byte_malloc(size_t byte_count) {
+    void* buffer = malloc(byte_count);
+    CHECK_INTERNAL(buffer, "malloc failed");
+    return buffer;
+}
+
 #define CARMA_REALLOC(buffer, new_capacity) do { \
     buffer = (CARMA_TYPE_OF(buffer))realloc((buffer), (new_capacity) * sizeof(CARMA_TYPE_OF(*(buffer)))); \
     CHECK_INTERNAL(buffer, "realloc failed"); \
@@ -116,7 +122,7 @@
     #define CARMA_COUNT_HOMOGENEOUS_VARGS(range_type, ...) CARMA_COUNT_HOMOGENEOUS_VARGS_BYTES(range_type, __VA_ARGS__) / ITEM_SIZE(MAKE(range_type))
 
     #define CARMA_COPY_HOMOGENEOUS_VARGS(range_type, ...) (POINTER_TYPE(MAKE(range_type)))memcpy(\
-        malloc(CARMA_COUNT_HOMOGENEOUS_VARGS_BYTES(range_type, __VA_ARGS__)),\
+        carma_byte_malloc(CARMA_COUNT_HOMOGENEOUS_VARGS_BYTES(range_type, __VA_ARGS__)),\
         CARMA_MAKE_ARRAY_LITERAL(range_type, __VA_ARGS__),\
         CARMA_COUNT_HOMOGENEOUS_VARGS_BYTES(range_type, __VA_ARGS__)\
     )
