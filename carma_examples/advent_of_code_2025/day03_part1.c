@@ -3,7 +3,7 @@
 #include <carma/carma_string.h>
 
 int maxJoltage(const char* max_it, const char* max_before_it, const char* max_after_it, const char* end) {
-    char s[3];
+    char s[4];
     if (max_after_it == end) {
         s[0] = *max_before_it;
         s[1] = *max_it;
