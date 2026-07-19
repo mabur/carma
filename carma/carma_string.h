@@ -121,7 +121,7 @@ size_t carma_count_steps_while(const char* begin, const char* end, int (*predica
 
 #define FOR_EACH_WORD(word, string, delimiter) \
     for (\
-    StringView word = {(string).data};\
+    StringView word = {(string).data, 0};\
     (word).count = carma_count_steps_until_delimiter((word).data, END_POINTER(string), (delimiter)),\
     (word).data != END_POINTER(string)\
     ;\
@@ -130,7 +130,7 @@ size_t carma_count_steps_while(const char* begin, const char* end, int (*predica
 
 #define FOR_EACH_WORD_PREDICATE(word, string, is_delimiter) \
     for (\
-    StringView word = {(string).data};\
+    StringView word = {(string).data, 0};\
     (word).count = carma_count_steps_until((word).data, END_POINTER(string), (is_delimiter)),\
     (word).data != END_POINTER(string)\
     ;\
