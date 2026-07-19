@@ -265,16 +265,19 @@ void test_is_empty() {
     ASSERT_EQUAL_INT("test_is_empty", IS_EMPTY(actual), true);
     APPEND(actual, 1);
     ASSERT_EQUAL_INT("test_is_empty", IS_EMPTY(actual), false);
+    FREE_DARRAY(actual);
 }
 
 void test_first_item() {
     auto actual = MAKE_DARRAY(IntArray, 3, 4, 5);
     ASSERT_EQUAL_INT("test_first_item", FIRST_ITEM(actual), 3);
+    FREE_DARRAY(actual);
 }
 
 void test_last_item() {
     auto actual = MAKE_DARRAY(IntArray, 3, 4, 5);
     ASSERT_EQUAL_INT("test_last_item", LAST_ITEM(actual), 5);
+    FREE_DARRAY(actual);
 }
 
 void test_for_each() {
@@ -283,7 +286,9 @@ void test_for_each() {
         *it = square(*it);
     }
     auto expected = MAKE_DARRAY(IntArray, 1, 4, 9);
-    ASSERT_EQUAL_RANGE("test_for_each", actual, expected);  
+    ASSERT_EQUAL_RANGE("test_for_each", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_for_each2() {
@@ -294,6 +299,9 @@ void test_for_each2() {
         *a = square(*b);
     }
     ASSERT_EQUAL_RANGE("test_for_each2", actual, expected);
+    FREE_DARRAY(input);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_for_each_backward2() {
@@ -306,6 +314,10 @@ void test_for_each_backward2() {
         APPEND(actual, item);
     }
     ASSERT_EQUAL_RANGE("test_for_each_backward2", actual, expected);
+    FREE_DARRAY(input0);
+    FREE_DARRAY(input1);
+    FREE_DARRAY(expected);
+    FREE_DARRAY(actual);
 }
 
 void test_for_each3() {
@@ -317,6 +329,10 @@ void test_for_each3() {
         *a = add(*b, *c);
     }
     ASSERT_EQUAL_RANGE("test_for_each3", actual, expected);
+    FREE_DARRAY(left);
+    FREE_DARRAY(right);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_for_each_backward_a() {
@@ -327,6 +343,9 @@ void test_for_each_backward_a() {
     }
     auto expected = (IntArray){};
     ASSERT_EQUAL_RANGE("test_for_each_backward0", actual, expected);
+    FREE_DARRAY(inputs);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_for_each_backward_b() {
@@ -337,6 +356,9 @@ void test_for_each_backward_b() {
     }
     auto expected = MAKE_DARRAY(IntArray, 1);
     ASSERT_EQUAL_RANGE("test_for_each_backward1", actual, expected);
+    FREE_DARRAY(inputs);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_for_each_backward_c() {
@@ -347,6 +369,9 @@ void test_for_each_backward_c() {
     }
     auto expected = MAKE_DARRAY(IntArray, 2, 1);
     ASSERT_EQUAL_RANGE("test_for_each_backward2", actual, expected);
+    FREE_DARRAY(inputs);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_for_each_backward_d() {
@@ -357,6 +382,9 @@ void test_for_each_backward_d() {
     }
     auto expected = MAKE_DARRAY(IntArray, 3, 2, 1);
     ASSERT_EQUAL_RANGE("test_for_each_backward3", actual, expected);
+    FREE_DARRAY(inputs);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_for_index() {
@@ -366,6 +394,8 @@ void test_for_index() {
     }
     auto expected = MAKE_DARRAY(IntArray, 1, 4, 9);
     ASSERT_EQUAL_RANGE("test_for_index", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_sub_range0() {
@@ -373,6 +403,8 @@ void test_sub_range0() {
     auto actual = SUB_RANGE(source, 0, 0);
     auto expected = MAKE_DARRAY(IntArray);
     ASSERT_EQUAL_RANGE("test_sub_range0", actual, expected);
+    FREE_DARRAY(source);
+    FREE_DARRAY(expected);
 }
 
 void test_sub_range1a() {
@@ -380,6 +412,8 @@ void test_sub_range1a() {
     auto actual = SUB_RANGE(source, 0, 0);
     auto expected = MAKE_DARRAY(IntArray);
     ASSERT_EQUAL_RANGE("test_sub_range1a", actual, expected);
+    FREE_DARRAY(source);
+    FREE_DARRAY(expected);
 }
 
 void test_sub_range1b() {
@@ -387,6 +421,8 @@ void test_sub_range1b() {
     auto actual = SUB_RANGE(source, 1, 0);
     auto expected = MAKE_DARRAY(IntArray);
     ASSERT_EQUAL_RANGE("test_sub_range1b", actual, expected);
+    FREE_DARRAY(source);
+    FREE_DARRAY(expected);
 }
 
 void test_sub_range1c() {
@@ -394,6 +430,8 @@ void test_sub_range1c() {
     auto actual = SUB_RANGE(source, 0, 1);
     auto expected = MAKE_DARRAY(IntArray, 1);
     ASSERT_EQUAL_RANGE("test_sub_range1c", actual, expected);
+    FREE_DARRAY(source);
+    FREE_DARRAY(expected);
 }
 
 void test_sub_range2a() {
@@ -401,6 +439,8 @@ void test_sub_range2a() {
     auto actual = SUB_RANGE(source, 0, 1);
     auto expected = MAKE_DARRAY(IntArray, 1);
     ASSERT_EQUAL_RANGE("test_sub_range2a", actual, expected);
+    FREE_DARRAY(source);
+    FREE_DARRAY(expected);
 }
 
 void test_sub_range2b() {
@@ -408,6 +448,8 @@ void test_sub_range2b() {
     auto actual = SUB_RANGE(source, 1, 1);
     auto expected = MAKE_DARRAY(IntArray, 2);
     ASSERT_EQUAL_RANGE("test_sub_range2b", actual, expected);
+    FREE_DARRAY(source);
+    FREE_DARRAY(expected);
 }
 
 void test_sub_range2c() {
@@ -415,6 +457,8 @@ void test_sub_range2c() {
     auto actual = SUB_RANGE(source, 0, 2);
     auto expected = MAKE_DARRAY(IntArray, 1, 2);
     ASSERT_EQUAL_RANGE("test_sub_range2c", actual, expected);
+    FREE_DARRAY(source);
+    FREE_DARRAY(expected);
 }
 
 void test_for_min() {
@@ -423,6 +467,7 @@ void test_for_min() {
         ASSERT_EQUAL_INT("test_for_min element", *it, -3);
     }
     ASSERT_NOT_EQUAL_POINTER("test_for_min iterator", it, END_POINTER(actual));
+    FREE_DARRAY(actual);
 }
 
 void test_for_max() {
@@ -431,30 +476,39 @@ void test_for_max() {
         ASSERT_EQUAL_INT("test_for_max element", *it, 3);
     }
     ASSERT_NOT_EQUAL_POINTER("test_for_max iterator", it, END_POINTER(actual));
+    FREE_DARRAY(actual);
 }
 
 void test_are_equal() {
     auto a = MAKE_DARRAY(IntArray, 1, 2, 3);
     auto b = MAKE_DARRAY(IntArray, 1, 2, 3);
     ASSERT_BOOL("test_are_equal", ARE_EQUAL(a, b));
+    FREE_DARRAY(a);
+    FREE_DARRAY(b);
 }
 
 void test_are_equal_not() {
     auto a = MAKE_DARRAY(IntArray, 1, 2, 3);
     auto b = MAKE_DARRAY(IntArray, 1, 2, 4);
     ASSERT_BOOL("test_are_equal", !ARE_EQUAL(a, b));
+    FREE_DARRAY(a);
+    FREE_DARRAY(b);
 }
 
 void test_are_equal_empty() {
     auto a = MAKE_DARRAY(IntArray);
     auto b = MAKE_DARRAY(IntArray);
     ASSERT_BOOL("test_are_equal", ARE_EQUAL(a, b));
+    FREE_DARRAY(a);
+    FREE_DARRAY(b);
 }
 
 void test_are_equal_different_count() {
     auto a = MAKE_DARRAY(IntArray, 1, 2);
     auto b = MAKE_DARRAY(IntArray, 1, 2, 3);
     ASSERT_BOOL("test_are_equal", !ARE_EQUAL(a, b));
+    FREE_DARRAY(a);
+    FREE_DARRAY(b);
 }
 
 void test_fill() {
@@ -462,6 +516,8 @@ void test_fill() {
     FILL(actual, 3);
     auto expected = MAKE_DARRAY(IntArray, 3, 3, 3);
     ASSERT_EQUAL_RANGE("test_fill", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_copy0() {
@@ -470,6 +526,9 @@ void test_copy0() {
     COPY(source, actual);
     auto expected = MAKE_DARRAY(IntArray);
     ASSERT_EQUAL_RANGE("test_copy0", actual, expected);
+    FREE_DARRAY(source);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_copy1() {
@@ -478,6 +537,9 @@ void test_copy1() {
     COPY(source, actual);
     auto expected = MAKE_DARRAY(IntArray, 1);
     ASSERT_EQUAL_RANGE("test_copy1", actual, expected);
+    FREE_DARRAY(source);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_copy2() {
@@ -486,6 +548,9 @@ void test_copy2() {
     COPY(source, actual);
     auto expected = MAKE_DARRAY(IntArray, 1, 2);
     ASSERT_EQUAL_RANGE("test_copy2", actual, expected);
+    FREE_DARRAY(source);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_copy_inplace() {
@@ -495,6 +560,8 @@ void test_copy_inplace() {
     COPY(source, target);
     auto expected = MAKE_DARRAY(IntArray, 2, 3, 3);
     ASSERT_EQUAL_RANGE("test_copy_inplace", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_copy_backward_inplace() {
@@ -504,6 +571,8 @@ void test_copy_backward_inplace() {
     COPY_BACKWARD(source, target);
     auto expected = MAKE_DARRAY(IntArray, 1, 1, 2);
     ASSERT_EQUAL_RANGE("test_copy_backward_inplace", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_replace() {
@@ -511,13 +580,18 @@ void test_replace() {
     REPLACE(actual, 2, 4);
     auto expected = MAKE_DARRAY(IntArray, 1, 4, 3, 4);
     ASSERT_EQUAL_RANGE("test_replace", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_drop_front() {
-    auto actual = MAKE_RANGE(IntRange, -1, 4, -2, 1);
+    auto owner = MAKE_RANGE(IntRange, -1, 4, -2, 1);
+    auto actual = owner;
     DROP_FRONT(actual);
     auto expected = MAKE_RANGE(IntRange, 4, -2, 1);
     ASSERT_EQUAL_RANGE("drop_front", actual, expected);
+    FREE_RANGE(owner);
+    FREE_RANGE(expected);
 }
 
 void test_drop_back() {
@@ -525,6 +599,8 @@ void test_drop_back() {
     DROP_BACK(actual);
     auto expected = MAKE_RANGE(IntRange, -1, 4, -2);
     ASSERT_EQUAL_RANGE("drop_back", actual, expected);
+    FREE_RANGE(actual);
+    FREE_RANGE(expected);
 }
 
 void test_erase_back() {
@@ -532,46 +608,56 @@ void test_erase_back() {
     ERASE_BACK(actual);
     auto expected = MAKE_RANGE(IntRange, -1, 4, -2);
     ASSERT_EQUAL_RANGE("erase_back", actual, expected);
+    FREE_RANGE(actual);
+    FREE_RANGE(expected);
 }
 
 void test_drop_front_while() {
-    auto range = MAKE_RANGE(IntRange, -1, 4, -2, 1);
+    auto owner = MAKE_RANGE(IntRange, -1, 4, -2, 1);
+    auto range = owner;
     DROP_FRONT_WHILE(range, is_negative);
     ASSERT_EQUAL_INT("DROP_FRONT_WHILE", FIRST_ITEM(range), 4);
     DROP_FRONT_WHILE(range, is_positive);
     ASSERT_EQUAL_INT("DROP_FRONT_WHILE", FIRST_ITEM(range), -2);
     DROP_FRONT_WHILE(range, is_zero);
     ASSERT_EQUAL_INT("DROP_FRONT_WHILE", FIRST_ITEM(range), -2);
+    FREE_RANGE(owner);
 }
 
 void test_drop_front_while_item() {
-    auto range = MAKE_RANGE(IntRange, -1, 4, -2, 1);
+    auto owner = MAKE_RANGE(IntRange, -1, 4, -2, 1);
+    auto range = owner;
     DROP_FRONT_WHILE_ITEM(range, -1);
     ASSERT_EQUAL_INT("DROP_FRONT_WHILE_ITEM", FIRST_ITEM(range), 4);
     DROP_FRONT_WHILE_ITEM(range, 4);
     ASSERT_EQUAL_INT("DROP_FRONT_WHILE_ITEM", FIRST_ITEM(range), -2);
     DROP_FRONT_WHILE_ITEM(range, 0);
     ASSERT_EQUAL_INT("DROP_FRONT_WHILE_ITEM", FIRST_ITEM(range), -2);
+    FREE_RANGE(owner);
 }
 
 void test_drop_front_until() {
-    auto range = MAKE_RANGE(IntRange, -1, 4, -2, 1);
+    auto owner = MAKE_RANGE(IntRange, -1, 4, -2, 1);
+    auto range = owner;
     DROP_FRONT_UNTIL(range, is_positive);
     ASSERT_EQUAL_INT("DROP_FRONT_UNTIL", FIRST_ITEM(range), 4);
     DROP_FRONT_UNTIL(range, is_negative);
     ASSERT_EQUAL_INT("DROP_FRONT_UNTIL", FIRST_ITEM(range), -2);
     DROP_FRONT_UNTIL(range, is_zero);
     ASSERT_EQUAL_POINTER("DROP_FRONT_UNTIL", BEGIN_POINTER(range), END_POINTER(range));
+    FREE_RANGE(owner);
 }
 
 void test_drop_front_until_item() {
-    auto range = MAKE_RANGE(IntRange, -1, 4, -2, 1);
+    auto owner = MAKE_RANGE(IntRange, -1, 4, -2, 1);
+    auto range = owner;
     DROP_FRONT_UNTIL_ITEM(range, 4);
     ASSERT_EQUAL_INT("DROP_FRONT_UNTIL_ITEM", FIRST_ITEM(range), 4);
     DROP_FRONT_UNTIL_ITEM(range, -2);
     ASSERT_EQUAL_INT("DROP_FRONT_UNTIL_ITEM", FIRST_ITEM(range), -2);
     DROP_FRONT_UNTIL_ITEM(range, 0);
     ASSERT_EQUAL_POINTER("DROP_FRONT_UNTIL_ITEM", BEGIN_POINTER(range), END_POINTER(range));
+    FREE_RANGE(owner);
 }
 
 void test_drop_back_while() {
@@ -582,6 +668,7 @@ void test_drop_back_while() {
     ASSERT_EQUAL_INT("DROP_BACK_WHILE", LAST_ITEM(range), 4);
     DROP_BACK_WHILE(range, is_zero);
     ASSERT_EQUAL_INT("DROP_BACK_WHILE", LAST_ITEM(range), 4);
+    FREE_RANGE(range);
 }
 
 void test_drop_back_while_item() {
@@ -592,6 +679,7 @@ void test_drop_back_while_item() {
     ASSERT_EQUAL_INT("DROP_BACK_WHILE_ITEM", LAST_ITEM(range), 4);
     DROP_BACK_WHILE_ITEM(range, 0);
     ASSERT_EQUAL_INT("DROP_BACK_WHILE_ITEM", LAST_ITEM(range), 4);
+    FREE_RANGE(range);
 }
 
 void test_drop_back_until() {
@@ -602,6 +690,7 @@ void test_drop_back_until() {
     ASSERT_EQUAL_INT("DROP_BACK_UNTIL", LAST_ITEM(range), 4);
     DROP_BACK_UNTIL(range, is_zero);
     ASSERT_EQUAL_SIZE("DROP_BACK_UNTIL", range.count, 0);
+    FREE_RANGE(range);
 }
 
 void test_drop_back_until_item() {
@@ -612,6 +701,7 @@ void test_drop_back_until_item() {
     ASSERT_EQUAL_INT("DROP_BACK_UNTIL_ITEM", LAST_ITEM(range), 4);
     DROP_BACK_UNTIL_ITEM(range, 0);
     ASSERT_EQUAL_SIZE("DROP_BACK_UNTIL_ITEM", range.count, 0);
+    FREE_RANGE(range);
 }
 
 void test_erase_front() {
@@ -619,6 +709,8 @@ void test_erase_front() {
     ERASE_FRONT(actual);
     auto expected = MAKE_DARRAY(IntArray, 2, 3);
     ASSERT_EQUAL_RANGE("ERASE_FRONT", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_erase_index1() {
@@ -626,6 +718,8 @@ void test_erase_index1() {
     ERASE_INDEX(actual, 0);
     auto expected = (IntArray){};
     ASSERT_EQUAL_RANGE("ERASE_INDEX 1", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_erase_index_ordered1() {
@@ -633,6 +727,8 @@ void test_erase_index_ordered1() {
     ERASE_INDEX_ORDERED(actual, 0);
     auto expected = (IntArray){};
     ASSERT_EQUAL_RANGE("ERASE_INDEX 1", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_erase_index2a() {
@@ -640,6 +736,8 @@ void test_erase_index2a() {
     ERASE_INDEX(actual, 0);
     auto expected = MAKE_DARRAY(IntArray, 8);
     ASSERT_EQUAL_RANGE("ERASE_INDEX 2a", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_erase_index_ordered2a() {
@@ -647,6 +745,8 @@ void test_erase_index_ordered2a() {
     ERASE_INDEX_ORDERED(actual, 0);
     auto expected = MAKE_DARRAY(IntArray, 8);
     ASSERT_EQUAL_RANGE("ERASE_INDEX 2a", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_erase_index2b() {
@@ -654,6 +754,8 @@ void test_erase_index2b() {
     ERASE_INDEX(actual, 1);
     auto expected = MAKE_DARRAY(IntArray, 9);
     ASSERT_EQUAL_RANGE("ERASE_INDEX 2b", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_erase_index_ordered2b() {
@@ -661,6 +763,8 @@ void test_erase_index_ordered2b() {
     ERASE_INDEX_ORDERED(actual, 1);
     auto expected = MAKE_DARRAY(IntArray, 9);
     ASSERT_EQUAL_RANGE("ERASE_INDEX 2b", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_erase_index3a() {
@@ -668,6 +772,8 @@ void test_erase_index3a() {
     ERASE_INDEX(actual, 0);
     auto expected = MAKE_DARRAY(IntArray, 7, 8);
     ASSERT_EQUAL_RANGE("ERASE_INDEX 3a", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_erase_index_ordered3a() {
@@ -675,6 +781,8 @@ void test_erase_index_ordered3a() {
     ERASE_INDEX_ORDERED(actual, 0);
     auto expected = MAKE_DARRAY(IntArray, 8, 7);
     ASSERT_EQUAL_RANGE("ERASE_INDEX 3a", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_erase_index3b() {
@@ -682,6 +790,8 @@ void test_erase_index3b() {
     ERASE_INDEX(actual, 1);
     auto expected = MAKE_DARRAY(IntArray, 9, 7);
     ASSERT_EQUAL_RANGE("ERASE_INDEX 3b", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_erase_index_ordered3b() {
@@ -689,6 +799,8 @@ void test_erase_index_ordered3b() {
     ERASE_INDEX_ORDERED(actual, 1);
     auto expected = MAKE_DARRAY(IntArray, 9, 7);
     ASSERT_EQUAL_RANGE("ERASE_INDEX 3b", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 
@@ -697,6 +809,8 @@ void test_erase_index3c() {
     ERASE_INDEX(actual, 2);
     auto expected = MAKE_DARRAY(IntArray, 9, 8);
     ASSERT_EQUAL_RANGE("ERASE_INDEX 3b", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_erase_index_ordered3c() {
@@ -704,6 +818,8 @@ void test_erase_index_ordered3c() {
     ERASE_INDEX_ORDERED(actual, 2);
     auto expected = MAKE_DARRAY(IntArray, 9, 8);
     ASSERT_EQUAL_RANGE("ERASE_INDEX 3b", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_erase_many_ordered1() {
@@ -711,6 +827,8 @@ void test_erase_many_ordered1() {
     ERASE_MANY_ORDERED(actual, 0, 1);
     auto expected = MAKE_DARRAY(IntArray);
     ASSERT_EQUAL_RANGE("ERASE_MANY_ORDERED 1", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_erase_many_ordered2() {
@@ -718,6 +836,8 @@ void test_erase_many_ordered2() {
     ERASE_MANY_ORDERED(actual, 0, 2);
     auto expected = MAKE_DARRAY(IntArray, 7, 6, 5);
     ASSERT_EQUAL_RANGE("ERASE_MANY_ORDERED 1", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_erase_many_ordered3() {
@@ -725,6 +845,8 @@ void test_erase_many_ordered3() {
     ERASE_MANY_ORDERED(actual, 3, 2);
     auto expected = MAKE_DARRAY(IntArray, 9, 8, 7);
     ASSERT_EQUAL_RANGE("ERASE_MANY_ORDERED 1", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_erase_if_unallocated() {
@@ -752,6 +874,8 @@ void test_erase_if0() {
     ERASE_IF(actual, is_zero);
     auto expected = (IntArray){};
     ASSERT_EQUAL_RANGE("ERASE_IF 0", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_erase_if1() {
@@ -759,6 +883,8 @@ void test_erase_if1() {
     ERASE_IF(actual, is_zero);
     auto expected = MAKE_DARRAY(IntArray, 1);
     ASSERT_EQUAL_RANGE("ERASE_IF 1", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_erase_if11() {
@@ -766,6 +892,8 @@ void test_erase_if11() {
     ERASE_IF(actual, is_zero);
     auto expected = MAKE_DARRAY(IntArray, 1, 1);
     ASSERT_EQUAL_RANGE("ERASE_IF 11", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_erase_if00() {
@@ -773,6 +901,8 @@ void test_erase_if00() {
     ERASE_IF(actual, is_zero);
     auto expected = (IntArray){};
     ASSERT_EQUAL_RANGE("ERASE_IF 00", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_erase_if10() {
@@ -780,6 +910,8 @@ void test_erase_if10() {
     ERASE_IF(actual, is_zero);
     auto expected = MAKE_DARRAY(IntArray, 1);
     ASSERT_EQUAL_RANGE("ERASE_IF 10", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_erase_if01() {
@@ -787,6 +919,8 @@ void test_erase_if01() {
     ERASE_IF(actual, is_zero);
     auto expected = MAKE_DARRAY(IntArray, 1);
     ASSERT_EQUAL_RANGE("ERASE_IF 01", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_erase_if101() {
@@ -794,6 +928,8 @@ void test_erase_if101() {
     ERASE_IF(actual, is_zero);
     auto expected = MAKE_DARRAY(IntArray, 1, 1);
     ASSERT_EQUAL_RANGE("ERASE_IF 101", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_erase_if010() {
@@ -801,6 +937,8 @@ void test_erase_if010() {
     ERASE_IF(actual, is_zero);
     auto expected = MAKE_DARRAY(IntArray, 1);
     ASSERT_EQUAL_RANGE("ERASE_IF 010", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_erase_if() {
@@ -808,6 +946,8 @@ void test_erase_if() {
     ERASE_IF(actual, is_positive);
     auto expected = MAKE_DARRAY(IntArray, -1, -2);
     ASSERT_EQUAL_RANGE("ERASE_IF", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_append() {
@@ -834,6 +974,7 @@ void test_append() {
     auto expected = MAKE_DARRAY(IntArray, 1, 2, 3, 4, 5);
     ASSERT_EQUAL_RANGE("APPEND", array, expected);
     FREE_DARRAY(array);
+    FREE_DARRAY(expected);
 }
 
 void test_prepend() {
@@ -860,6 +1001,7 @@ void test_prepend() {
     auto expected = MAKE_DARRAY(IntArray, 5, 4, 3, 2, 1);
     ASSERT_EQUAL_RANGE("APPEND", array, expected);
     FREE_DARRAY(array);
+    FREE_DARRAY(expected);
 }
 
 void test_insert_index0() {
@@ -867,6 +1009,8 @@ void test_insert_index0() {
     INSERT_INDEX(actual, 0, 1);
     auto expected = MAKE_DARRAY(IntArray, 1);
     ASSERT_EQUAL_RANGE("INSERT_INDEX0", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_insert_index1a() {
@@ -874,6 +1018,8 @@ void test_insert_index1a() {
     INSERT_INDEX(actual, 0, 2);
     auto expected = MAKE_DARRAY(IntArray, 2, 1);
     ASSERT_EQUAL_RANGE("INSERT_INDEX1a", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_insert_index1b() {
@@ -881,6 +1027,8 @@ void test_insert_index1b() {
     INSERT_INDEX(actual, 1, 2);
     auto expected = MAKE_DARRAY(IntArray, 1, 2);
     ASSERT_EQUAL_RANGE("INSERT_INDEX1b", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_insert_index2a() {
@@ -888,6 +1036,8 @@ void test_insert_index2a() {
     INSERT_INDEX(actual, 0, 3);
     auto expected = MAKE_DARRAY(IntArray, 3, 1, 2);
     ASSERT_EQUAL_RANGE("INSERT_INDEX2a", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_insert_index2b() {
@@ -895,6 +1045,8 @@ void test_insert_index2b() {
     INSERT_INDEX(actual, 1, 3);
     auto expected = MAKE_DARRAY(IntArray, 1, 3, 2);
     ASSERT_EQUAL_RANGE("INSERT_INDEX2b", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_insert_index2c() {
@@ -902,6 +1054,8 @@ void test_insert_index2c() {
     INSERT_INDEX(actual, 2, 3);
     auto expected = MAKE_DARRAY(IntArray, 1, 2, 3);
     ASSERT_EQUAL_RANGE("INSERT_INDEX2b", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_insert_range0a() {
@@ -910,6 +1064,9 @@ void test_insert_range0a() {
     INSERT_RANGE(actual, 0, part);
     auto expected = MAKE_DARRAY(IntArray, 9);
     ASSERT_EQUAL_RANGE("INSERT_RANGE0a", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(part);
+    FREE_DARRAY(expected);
 }
 
 void test_insert_range0b() {
@@ -918,6 +1075,9 @@ void test_insert_range0b() {
     INSERT_RANGE(actual, 0, part);
     auto expected = MAKE_DARRAY(IntArray, 8, 9);
     ASSERT_EQUAL_RANGE("INSERT_RANGE0b", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(part);
+    FREE_DARRAY(expected);
 }
 
 void test_insert_range1a() {
@@ -926,6 +1086,9 @@ void test_insert_range1a() {
     INSERT_RANGE(actual, 0, part);
     auto expected = MAKE_DARRAY(IntArray, 8, 9, 1);
     ASSERT_EQUAL_RANGE("INSERT_RANGE1a", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(part);
+    FREE_DARRAY(expected);
 }
 
 void test_insert_range1b() {
@@ -934,14 +1097,17 @@ void test_insert_range1b() {
     INSERT_RANGE(actual, 1, part);
     auto expected = MAKE_DARRAY(IntArray, 1, 8, 9);
     ASSERT_EQUAL_RANGE("INSERT_RANGE1b", actual, expected);
+    FREE_DARRAY(actual);
+    FREE_DARRAY(part);
+    FREE_DARRAY(expected);
 }
 
 void test_concat() {
     IntArray target;
     INIT_DARRAY(target, 0, 0);
-    
+
     auto source = MAKE_DARRAY(IntArray, 1, 2, 3);
-    
+
     ASSERT_EQUAL_SIZE("CONCAT", target.count, 0);
     ASSERT_EQUAL_SIZE("CONCAT", target.capacity, 0);
 
@@ -954,6 +1120,11 @@ void test_concat() {
     auto expected1 = MAKE_DARRAY(IntArray, 1, 2, 3, 1, 2, 3);
     ASSERT_EQUAL_RANGE("CONCAT", target, expected1);
     ASSERT_EQUAL_SIZE("CONCAT", target.capacity, 8);
+
+    FREE_DARRAY(target);
+    FREE_DARRAY(source);
+    FREE_DARRAY(expected0);
+    FREE_DARRAY(expected1);
 }
 
 void test_for_x_y() {
@@ -972,6 +1143,8 @@ void test_for_x_y() {
         4, 5,
     );
     ASSERT_EQUAL_RANGE("test_for_x_y", actual, expected);
+    FREE_2D_ARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_for_x_y_z() {
@@ -990,12 +1163,14 @@ void test_for_x_y_z() {
         0, 1, 2, 3,
         4, 5, 6, 7,
         8, 9, 10, 11,
-        
+
         12, 13, 14, 15,
         16, 17, 18, 19,
         20, 21, 22, 23,
     );
     ASSERT_EQUAL_RANGE("test_for_x_y_z", actual, expected);
+    FREE_3D_ARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_flip_image_x() {
@@ -1015,6 +1190,8 @@ void test_flip_image_x() {
         5, 4,
     );
     ASSERT_EQUAL_RANGE("test_flip_image_x", actual, expected);
+    FREE_2D_ARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_flip_image_y() {
@@ -1034,6 +1211,8 @@ void test_flip_image_y() {
         0, 1,
     );
     ASSERT_EQUAL_RANGE("test_flip_image_y", actual, expected);
+    FREE_2D_ARRAY(actual);
+    FREE_DARRAY(expected);
 }
 
 void test_string_view() {
@@ -1072,21 +1251,25 @@ void test_serialize_cstring() {
     s = (StringBuilder){};
     SERIALIZE_CSTRING(s, "");
     ASSERT_STRING_BUILDER("test_serialize_cstring 0", s, "");
+    FREE_DARRAY(s);
 
     s = (StringBuilder){};
     SERIALIZE_CSTRING(s, "");
     SERIALIZE_CSTRING(s, "");
     ASSERT_STRING_BUILDER("test_serialize_cstring 1", s, "");
+    FREE_DARRAY(s);
 
     s = (StringBuilder){};
     SERIALIZE_CSTRING(s, "a");
     SERIALIZE_CSTRING(s, "");
     ASSERT_STRING_BUILDER("test_serialize_cstring 2", s, "a");
+    FREE_DARRAY(s);
 
     s = (StringBuilder){};
     SERIALIZE_CSTRING(s, "");
     SERIALIZE_CSTRING(s, "a");
     ASSERT_STRING_BUILDER("test_serialize_cstring 3", s, "a");
+    FREE_DARRAY(s);
 }
 
 void test_format_string() {
@@ -1104,6 +1287,7 @@ void test_table_set_key_value_duplicates() {
         product *= item->value;
     }
     ASSERT_EQUAL_INT("test_table_set_key_value_duplicates", product, 3);
+    FREE_TABLE(table);
 }
 
 void test_table_set_keys_value_duplicates() {
@@ -1118,6 +1302,8 @@ void test_table_set_keys_value_duplicates() {
         product *= item->value;
     }
     ASSERT_EQUAL_INT("test_table_set_keys_value_duplicates", product, 3);
+    FREE_TABLE(table);
+    FREE_DARRAY(keys);
 }
 
 void test_table_set_key_value() {
@@ -1131,6 +1317,7 @@ void test_table_set_key_value() {
         product *= item->value;
     }
     ASSERT_EQUAL_INT("test_table_set_key_value", product, 30);
+    FREE_TABLE(table);
 }
 
 void test_table_set_keys_value() {
@@ -1149,6 +1336,8 @@ void test_table_set_keys_value() {
         product *= item->value;
     }
     ASSERT_EQUAL_INT("test_table_set_keys_value", product, 30);
+    FREE_TABLE(table);
+    FREE_DARRAY(keys);
 }
 
 void test_table_missing_key() {
@@ -1156,6 +1345,7 @@ void test_table_missing_key() {
     auto value = 0;
     GET_KEY_VALUE(2, value, table);
     ASSERT_EQUAL_INT("test_table_missing_key", value, 0);
+    FREE_TABLE(table);
 }
 
 void test_table_missing_keys() {
@@ -1165,6 +1355,8 @@ void test_table_missing_keys() {
     auto value = 0;
     GET_RANGE_KEY_VALUE(keys, value, table);
     ASSERT_EQUAL_INT("test_table_missing_keys", value, 0);
+    FREE_TABLE(table);
+    FREE_DARRAY(keys);
 }
 
 void test_table_available_key() {
@@ -1173,6 +1365,7 @@ void test_table_available_key() {
     auto value = 0;
     GET_KEY_VALUE(2, value, table);
     ASSERT_EQUAL_INT("test_table_available_key", value, 5);
+    FREE_TABLE(table);
 }
 
 void test_table_available_keys() {
@@ -1183,6 +1376,8 @@ void test_table_available_keys() {
     auto value = 0;
     GET_RANGE_KEY_VALUE(keys, value, table);
     ASSERT_EQUAL_INT("test_table_available_2_keys", value, 5);
+    FREE_TABLE(table);
+    FREE_DARRAY(keys);
 }
 
 void test_serialize_integral() {
@@ -1199,6 +1394,8 @@ void test_serialize_integral() {
     CLEAR(s);
     SERIALIZE_INTEGRAL(s, 12345);
     ASSERT_STRING_BUILDER("test_serialize_integral 12345", s, "12345");
+
+    FREE_DARRAY(s);
 }
 
 void test_serialize_double() {
@@ -1223,6 +1420,8 @@ void test_serialize_double() {
     CLEAR(s);
     SERIALIZE_DOUBLE(s, 3.14151965);
     ASSERT_STRING_BUILDER("test_serialize_double pi", s, "3.141519");
+
+    FREE_DARRAY(s);
 }
 
 void test_serialize_bool() {
@@ -1235,6 +1434,8 @@ void test_serialize_bool() {
     CLEAR(s);
     SERIALIZE_BOOL(s, false);
     ASSERT_STRING_BUILDER("test_serialize_bool false", s, "false");
+
+    FREE_DARRAY(s);
 }
 
 void test_try_parse_u64() {
@@ -1310,6 +1511,8 @@ void test_parse_json_array_item_by_item() {
         }
     }
     ASSERT_EQUAL_RANGE("test_parse_json_array_item_by_item", actual, expected);
+    FREE_DARRAY(expected);
+    FREE_DARRAY(actual);
 }
 
 void test_for_each_json_array_item() {
@@ -1321,6 +1524,8 @@ void test_for_each_json_array_item() {
         APPEND(actual, number);
     }
     ASSERT_EQUAL_RANGE("test_for_each_json_array_item", actual, expected);
+    FREE_DARRAY(expected);
+    FREE_DARRAY(actual);
 }
 
 void test_parse_json_object() {
@@ -1347,6 +1552,8 @@ void test_parse_json_object_item_by_item() {
         }
     }
     ASSERT_EQUAL_RANGE("test_parse_json_object_item_by_item", actual_values, expected_values);
+    FREE_DARRAY(expected_values);
+    FREE_DARRAY(actual_values);
 }
 
 void test_for_each_json_object_item() {
@@ -1358,6 +1565,8 @@ void test_for_each_json_object_item() {
         APPEND(actual_values, number);
     }
     ASSERT_EQUAL_RANGE("test_for_each_json_object_item", actual_values, expected_values);
+    FREE_DARRAY(expected_values);
+    FREE_DARRAY(actual_values);
 }
 
 void test_parse_json_key() {
@@ -1416,6 +1625,7 @@ void test_add_json_array_single() {
     }
     auto expected = STRING_VIEW("[1]");
     ASSERT_EQUAL_RANGE("test_add_json_array_single", actual.string, expected);
+    FREE_JSON_BUILDER(actual);
 }
 
 void test_add_json_array_multiple() {

@@ -65,4 +65,6 @@ if(CMAKE_C_COMPILER_ID MATCHES "GNU")
     target_compile_options(aoc22_01 PRIVATE ${WARN_FLAGS})
     target_compile_options(particles PRIVATE ${WARN_FLAGS})
     target_compile_options(words PRIVATE ${WARN_FLAGS})
+    
+    # target_compile_options(tests PRIVATE -fanalyzer) # Slow static analyzer.
 endif()
