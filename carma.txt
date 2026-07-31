@@ -134,6 +134,21 @@
   - https://nullprogram.com/blog/2023/10/08/
   - https://floooh.github.io/2019/09/27/modern-c-for-cpp-peeps.html
   - https://www.youtube.com/watch?v=QpAhX-gsHMs
+* Reference counting
+* Additional Run-time Memory Safety
+  - Prevent dangling pointers and use after free or realloc
+  - Have fat pointers and extra layer of indirection to track free and realloc
+
+int main() {
+  StringBuilder owner = {};
+  APPEND(owner, 'a';
+  StringView view = AS_STRING_VIEW(owner);
+  PRINT(view); // ok
+  APPEND(owner, 'b')
+  PRINT(view); // Use after realloc
+  FREE_DARRAY(owner);
+  PRINT(view); // Use after free
+}
 
 From Falco Girgis:
 // alloca()
