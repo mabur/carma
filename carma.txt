@@ -150,6 +150,13 @@ int main() {
   PRINT(view); // Use after free
 }
 
+* DEFER and MOVE macros, with linter rules to prevent memoery leaks and use after free:
+  - An owner can be initialized from a SOURCE, or MOVED from another owner.
+  - Returning an owner requires MOVE
+  - An owner can be assigned and updated with INOUT functions.
+  - Solves: no-memory leaks, no usage before init for owners, no use after free for owners. Similar to C++ RAII.
+  - Does not solve: dangling pointers for non-owners.
+
 From Falco Girgis:
 // alloca()
 #ifndef GBL_ALLOCA
