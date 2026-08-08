@@ -44,48 +44,6 @@ static inline char* carma_make_cstring(const char* data, size_t count) {
 #define STRING_LITERAL(cstring_literal) MAKE(StringView, (cstring_literal), sizeof(cstring_literal) - 1)
 
 static inline
-StringBuilder carma_vconcat_string(StringBuilder string, const char* format, va_list args) {
-    va_list args1;
-    va_copy(args1, args);
-
-    // Try writing at the end of the string:
-    int num_characters = vsnprintf(
-        END_POINTER(string),
-        REMAINING_CAPACITY(string),
-        format,
-        args
-    );
-    // Check if we succeed:
-    if (num_characters >= 0) {
-        size_t required_capacity = string.count + (size_t)num_characters + 1;
-        // Check if we need to reallocate the string to fit:
-        if (required_capacity > string.capacity) {
-            RESERVE_EXPONENTIAL_GROWTH(string, required_capacity);
-            // Write the string that should fit now:
-            num_characters = vsnprintf(
-                END_POINTER(string), REMAINING_CAPACITY(string), format, args1
-            );
-        }
-        string.count += (size_t)num_characters;
-    }
-
-    va_end(args1);
-    return string;
-}
-
-static inline
-StringView FORMAT_STRING(const char* format, ...) {
-    static StringBuilder string = {};
-    CLEAR(string);
-    va_list args;
-    va_start(args, format);
-    string = carma_vconcat_string(string, format, args);
-    va_end(args);
-    StringView result = {string.data, string.count};
-    return result;
-}
-
-static inline
 size_t carma_count_steps_until_delimiter(const char* begin, const char* end, char delimiter) {
     size_t steps = 0;
     for (const char* iterator = begin; iterator != end; ++iterator, ++steps) {
