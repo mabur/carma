@@ -3,6 +3,7 @@
 - [Introduction](README.md)
 - [Ranges](range_algorithms.md)
 - [Dynamic Arrays](dynamic_array_algorithms.md)
+- [Strings with Fixed Capacity](string_x.md)
 - [StringView](string_view.md)
 - [StringBuilder](string_builder.md)
 - [Multi Dimensional Arrays](multi_dimensional_array_algorithms.md)
