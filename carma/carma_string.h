@@ -223,6 +223,41 @@ static inline double carma_normalize_decimal(double x, size_t int_digits) {
     DROP_BACK(string_builder); \
 } while (0)
 
+
+////////////////////////////////////////////////////////////////////////////////
+// SMALL STRINGS WITH VALUE SEMANTICS AND ITEMS ON THE STACK
+
+typedef struct String2 {char data[2];} String2;
+typedef struct String4 {char data[4];} String4;
+typedef struct String8 {char data[8];} String8;
+typedef struct String16 {char data[16];} String16;
+typedef struct String32 {char data[32];} String32;
+typedef struct String64 {char data[64];} String64;
+typedef struct String128 {char data[128];} String128;
+typedef struct String256 {char data[256];} String256;
+typedef struct String512 {char data[512];} String512;
+typedef struct String1024 {char data[1024];} String1024;
+
+#define FORMAT_STRING_BODY(StringType, format) \
+    StringType s; \
+    va_list args; \
+    va_start(args, format); \
+    vsnprintf(s.data, sizeof(s.data), (format), args); \
+    va_end(args); \
+    return s
+
+static inline String2 formatString2(const char* format, ...) { FORMAT_STRING_BODY(String2, format); }
+static inline String4 formatString4(const char* format, ...) { FORMAT_STRING_BODY(String4, format); }
+static inline String8 formatString8(const char* format, ...) { FORMAT_STRING_BODY(String8, format); }
+static inline String16 formatString16(const char* format, ...) { FORMAT_STRING_BODY(String16, format); }
+static inline String32 formatString32(const char* format, ...) { FORMAT_STRING_BODY(String32, format); }
+static inline String64 formatString64(const char* format, ...) { FORMAT_STRING_BODY(String64, format); }
+static inline String128 formatString128(const char* format, ...) { FORMAT_STRING_BODY(String128, format); }
+static inline String256 formatString256(const char* format, ...) { FORMAT_STRING_BODY(String256, format); }
+static inline String512 formatString512(const char* format, ...) { FORMAT_STRING_BODY(String512, format); }
+static inline String1024 formatString1024(const char* format, ...) { FORMAT_STRING_BODY(String1024, format); }
+
+
 ////////////////////////////////////////////////////////////////////////////////
 // FILE ALGORITHMS
 
