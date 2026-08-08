@@ -185,16 +185,16 @@ static inline double carma_normalize_decimal(double x, size_t int_digits) {
 ////////////////////////////////////////////////////////////////////////////////
 // SMALL STRINGS WITH VALUE SEMANTICS AND ITEMS ON THE STACK
 
-typedef struct String2 {char data[2];} String2;
-typedef struct String4 {char data[4];} String4;
-typedef struct String8 {char data[8];} String8;
-typedef struct String16 {char data[16];} String16;
-typedef struct String32 {char data[32];} String32;
-typedef struct String64 {char data[64];} String64;
-typedef struct String128 {char data[128];} String128;
-typedef struct String256 {char data[256];} String256;
-typedef struct String512 {char data[512];} String512;
-typedef struct String1024 {char data[1024];} String1024;
+typedef struct String2 {char data[2]; size_t count;} String2;
+typedef struct String4 {char data[4]; size_t count;} String4;
+typedef struct String8 {char data[8]; size_t count;} String8;
+typedef struct String16 {char data[16]; size_t count;} String16;
+typedef struct String32 {char data[32]; size_t count;} String32;
+typedef struct String64 {char data[64]; size_t count;} String64;
+typedef struct String128 {char data[128]; size_t count;} String128;
+typedef struct String256 {char data[256]; size_t count;} String256;
+typedef struct String512 {char data[512]; size_t count;} String512;
+typedef struct String1024 {char data[1024]; size_t count;} String1024;
 
 #define FORMAT_STRING_BODY(StringType, format) \
     StringType s; \
@@ -202,6 +202,7 @@ typedef struct String1024 {char data[1024];} String1024;
     va_start(args, format); \
     vsnprintf(s.data, sizeof(s.data), (format), args); \
     va_end(args); \
+    s.count = strlen(s.data); \
     return s
 
 static inline String2 formatString2(const char* format, ...) { FORMAT_STRING_BODY(String2, format); }
