@@ -49,17 +49,6 @@ b[0] = 'h';
 b[6] = 'w';
 ```
 
-- `FORMAT_STRING(const char* format, ...)` formats a string
-  and returns a `StringView` of it. An internal buffer is re-used
-  which means that you don't need to free the memory of the returned `StringView`,
-  but it also means that result is only valid until the next call of the function,
-  and that it cannot be used multi-threaded.
-  Example:
-
-```c
-StringView s = FORMAT_STRING("Number %d", 99);
-```
-
 
 - `FOR_EACH_WORD(word, string, delimiter)` can be used to loop
   through all words of a given `string`, split by the `delimiter`.
