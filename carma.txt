@@ -113,6 +113,7 @@ MEMORY MANAGEMENT
   - Dereference old dangling pointer after realloc
   - Dereference old dangling pointer after free
   - Dereference old dangling pointer to shared buffer
+  - Dereference old dangling pointer to stack
   - Memory leak
 * Memory safety solutions:
   - Always initialize variables solves uninitialized pointer problem.
