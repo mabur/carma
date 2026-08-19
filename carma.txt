@@ -15,7 +15,7 @@
   - ScopedStringBuilder
   - ScopedFile
 * Macros not related to arrays:
-  - let / var (Make it portable across c and C++ compilers, including msvc)
+  - auto (Make it portable across c and C++ compilers, including msvc)
   - BEGIN_EXTERN_C, END_EXTERN_C, #include <carma/begin_c_header.h>, #include <carma/end_c_header.h>
   - integer types: f32, f64, u8, u32, u64, i8, i32, i64
 * For erase and insert allow both:
@@ -54,20 +54,11 @@
   - Related to shadowing warnings. So good that the user can get warning when this happens.
   - Could circumvent by using less generic names for local variable inside macros.
 * Simulate closures, by having extra parameters.
-* Json
 * Csv
 * Compare arrays and slices in Golang:
   - "An array has a fixed size."
   - "A slice, on the other hand, is a dynamically-sized, flexible view into the elements of an array."
   - "In practice, slices are much more common than arrays."
-* Memory handling
-  - Most memory can be allocated on the stack. Also small arrays.
-  - Some memory can be allocated once and freed when the program exits.
-  - Some memory can be allocated once and then grow/append as needed during run-time, and then freed when the program exits.
-  - Some memory can be allocated as static variable inside function, and shared for all calls to the functions, and freed when the program exits.
-  - Some memory can be allocated for a game interval, like a frame or a scene, and then deallocated/cleared after that frame or scene.
-  - Some memory can be allocated on the stack using alloca (C&C++) or VLA (C). At least arrays up to ~1000 primitives.
-  - What common cases are left?
 * Similar libraries:
   - https://github.com/tsoding/sv
   - github.com/nothings/stb/blob/master/stb_ds.h
@@ -107,16 +98,44 @@
       - Image
     - Table
 * Translate arralg to carma
-* Carma för C23, gcc, clang, msvc c++
-  - auto som funkar för all
-  - block expressions som funkar för alla
-    - Immediately invoked lambda för msvc C++
-    - Extensions for gcc & clang
-  - MAKE(Particle, x, y) istället för (Particle){x, y} eller Particle{x, y}
 * C style
   - https://nullprogram.com/blog/2023/10/08/
   - https://floooh.github.io/2019/09/27/modern-c-for-cpp-peeps.html
   - https://www.youtube.com/watch?v=QpAhX-gsHMs
+
+
+MEMORY MANAGEMENT
+
+* Memory safety problems
+  - Dereference uninitialized pointer
+  - Dereference null pointer
+  - Dereference index out of bounds
+  - Dereference old dangling pointer after realloc
+  - Dereference old dangling pointer after free
+  - Dereference old dangling pointer to shared buffer
+  - Memory leak
+* Memory safety solutions:
+  - Always initialize variables solves uninitialized pointer problem.
+  - Array iteration macros solve indexing out of bounds and null pointer problems for arrays.
+  - Fixed capacity arrays on stack, like small strings.
+    - Solves all problems except indexing out of bounds.
+    - Adds copying cost for large arrays.
+  - Fixed capacity arrays on heap. Never realloc.
+    - Solves dangling pointers after realloc, since we never realloc
+  - Never free, or just free at the end of the program
+    - Solves dangling pointers after free
+  - Re-usable shared static array within function
+    - Solves memory leak, forgetting to free inside the function
+    - Solves dangling pointers after free
+    - Adds dangling pointer to shared buffer
+* Memory handling
+  - Most memory can be allocated on the stack. Also small arrays and strings.
+  - Some memory can be allocated once and freed when the program exits, manually or automatically.
+  - Some memory can be allocated once and then grow/append as needed during run-time, and then freed when the program exits.
+  - Some memory can be allocated as static variable inside function, and shared for all calls to the functions, and freed when the program exits.
+  - Some memory can be allocated for a game interval, like a frame or a scene, and then deallocated/cleared after that frame or scene.
+  - Some memory can be allocated on the stack using alloca (C&C++) or VLA (C). At least arrays up to ~1000 primitives.
+  - What common cases are left?
 * Reference counting
 * Additional Run-time Memory Safety
   - Prevent dangling pointers and use after free or realloc
@@ -140,21 +159,5 @@ int main() {
   - Solves: no-memory leaks, no usage before init for owners, no use after free for owners. Similar to C++ RAII.
   - Does not solve: dangling pointers for non-owners.
 * Allocators, or "never-free-policy" for realloc, to prevent dangling pointers.
-
-From Falco Girgis:
-// alloca()
-#ifndef GBL_ALLOCA
-//#   ifndef alloca
-#       if defined(__APPLE__) || defined(__GLIBC__) || defined(__sun) || defined(__CYGWIN__) || defined(__EMSCRIPTEN__) || defined(VITA) || defined(__DREAMCAST__) || defined(PSP)
-#           include <alloca.h>     // alloca
-#       elif defined(_WIN32)
-#           include <malloc.h>     // alloca
-#           ifndef alloca
-#               define alloca _alloca  // for clang with MS Codegen
-#           endif
-#       else
-#           include <stdlib.h>     // alloca
-#       endif
-//#   endif
-#   define GBL_ALLOCA alloca
-#endif
+* Fixed capacity for all/most arrays, to avoid realloc.
+* Allocate on startup, to prevent dangling pointers.
