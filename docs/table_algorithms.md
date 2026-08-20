@@ -25,7 +25,7 @@ typedef struct Table {
 } Table;
 ```
 
-However, the table is not a dynamic array since it can have wholes of items that are not occupied. You should not use the dynamic array macros on tables. You should instead use the following dedicated table macros:
+However, the table is not a dynamic array since it can have holes of items that are not occupied. You should not use the dynamic array macros on tables. You should instead use the following dedicated table macros:
 
 - `INIT_TABLE(table, capacity)` can be used to init an empty table, if you know the capacity you need from the start.
   If you don't know what capacity you want then you can just zero initialize the table instead like `(MyTable){}` or `(MyTable){0}`;
