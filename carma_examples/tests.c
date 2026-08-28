@@ -28,25 +28,33 @@ typedef struct {
 typedef struct {
     int key;
     int value;
-    bool occupied;
 } ItemIntInt;
 
 typedef struct {
     IntArray key;
     int value;
-    bool occupied;
 } ItemIntArrayInt;
 
 typedef struct {
     ItemIntInt* data;
     size_t count;
     size_t capacity;
+} ItemsIntInt;
+
+typedef struct {
+    ItemsIntInt items;
+    TableIndices indices;
 } TableIntInt;
 
 typedef struct {
     ItemIntArrayInt* data;
     size_t count;
     size_t capacity;
+} ItemsIntArrayInt;
+
+typedef struct {
+    ItemsIntArrayInt items;
+    TableIndices indices;
 } TableIntArrayInt;
 
 typedef struct {
@@ -1277,7 +1285,7 @@ void test_table_set_key_value_duplicates() {
     SET_KEY_VALUE(1, 2, table);
     SET_KEY_VALUE(1, 3, table);
     auto product = 1;
-    FOR_EACH_TABLE(item, table) {
+    FOR_EACH(item, table.items) {
         product *= item->value;
     }
     ASSERT_EQUAL_INT("test_table_set_key_value_duplicates", product, 3);
@@ -1292,7 +1300,7 @@ void test_table_set_keys_value_duplicates() {
     SET_RANGE_KEY_VALUE(keys, 2, table);
     SET_RANGE_KEY_VALUE(keys, 3, table);
     auto product = 1;
-    FOR_EACH_TABLE(item, table) {
+    FOR_EACH(item, table.items) {
         product *= item->value;
     }
     ASSERT_EQUAL_INT("test_table_set_keys_value_duplicates", product, 3);
@@ -1307,7 +1315,7 @@ void test_table_set_key_value() {
     SET_KEY_VALUE(3, 0, table);
     SET_KEY_VALUE(3, 5, table);
     auto product = 1;
-    FOR_EACH_TABLE(item, table) {
+    FOR_EACH(item, table.items) {
         product *= item->value;
     }
     ASSERT_EQUAL_INT("test_table_set_key_value", product, 30);
@@ -1326,7 +1334,7 @@ void test_table_set_keys_value() {
     SET_RANGE_KEY_VALUE(keys, 5, table);
 
     auto product = 1;
-    FOR_EACH_TABLE(item, table) {
+    FOR_EACH(item, table.items) {
         product *= item->value;
     }
     ASSERT_EQUAL_INT("test_table_set_keys_value", product, 30);

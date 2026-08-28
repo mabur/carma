@@ -4,6 +4,11 @@
 
 #include "carma.h"
 
+typedef struct TableIndices {
+    size_t* data;
+    size_t capacity;
+} TableIndices;
+
 ////////////////////////////////////////////////////////////////////////////////
 // HASH FUNCTIONS
 
@@ -31,57 +36,61 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
 ////////////////////////////////////////////////////////////////////////////////
 // FIND DATA IN TABLE
 
-#define FOR_EACH_TABLE(iterator, table) \
-    for (CARMA_AUTO iterator = (table).data; iterator != (table).data + (table).capacity; ++iterator) \
-        if ((iterator)->occupied)
+#define CARMA_TABLE_EMPTY_INDEX_BYTE_PATTERN 0xFF
 
-#define CARMA_FIND_FREE_INDEX_FOR_KEY(table, k, _it) do { \
-    size_t _capacity = (table).capacity; \
+static inline
+bool carma_is_slot_empty(size_t* index) {
+    return *index == SIZE_MAX;
+}
+
+#define CARMA_FIND_INDEX_SLOT_FOR_KEY(table, k, _slot) do { \
+    size_t _capacity = (table).indices.capacity; \
     CHECK_INTERNAL(_capacity, "Unexpected zero capacity"); \
     CARMA_AUTO _base = CARMA_HASH_KEY(k) % _capacity; \
     bool _found = false; \
     for (size_t _offset = 0; _offset < _capacity; ++_offset) { \
-        _it = (table).data + (_base + _offset) % _capacity; \
-        if (!_it->occupied || _it->key == (k)) { \
+        (_slot) = (table).indices.data + (_base + _offset) % _capacity; \
+        if (carma_is_slot_empty(_slot) || (table).items.data[*(_slot)].key == (k)) { \
             _found = true; \
             break; \
         } \
     } \
-    CHECK_INTERNAL(_found, "Error in CARMA_FIND_FREE_INDEX_FOR_KEY "); \
+    CHECK_INTERNAL(_found, "Error in CARMA_FIND_INDEX_SLOT_FOR_KEY "); \
 } while (0)
 
-#define CARMA_FIND_FREE_INDEX_FOR_RANGE_KEY(table, k, _it) do { \
-    size_t _capacity = (table).capacity; \
+#define CARMA_FIND_INDEX_SLOT_FOR_RANGE_KEY(table, k, _slot) do { \
+    size_t _capacity = (table).indices.capacity; \
+    CHECK_INTERNAL(_capacity, "Unexpected zero capacity"); \
     CARMA_AUTO _base = CARMA_HASH_RANGE_KEY(k) % _capacity; \
     bool _found = false; \
     for (size_t _offset = 0; _offset < _capacity; ++_offset) { \
-        _it = (table).data + (_base + _offset) % _capacity; \
-        if (!_it->occupied || ARE_EQUAL(_it->key, (k))) { \
+        (_slot) = (table).indices.data + (_base + _offset) % _capacity; \
+        if (carma_is_slot_empty(_slot) || ARE_EQUAL((table).items.data[*(_slot)].key, (k))) { \
             _found = true; \
             break; \
         } \
     } \
-    CHECK_INTERNAL(_found, "Error in CARMA_FIND_FREE_INDEX_FOR_RANGE_KEY "); \
+    CHECK_INTERNAL(_found, "Error in CARMA_FIND_INDEX_SLOT_FOR_RANGE_KEY "); \
 } while (0)
 
 #define GET_KEY_VALUE(k, _value, table) do { \
-    if (IS_EMPTY(table)) \
+    if (IS_EMPTY((table).items)) \
         break; \
     CARMA_AUTO _key = (k); \
-    CARMA_AUTO _it = (table).data; \
-    CARMA_FIND_FREE_INDEX_FOR_KEY((table), _key, _it); \
-    if (_it->occupied) { \
-        (_value) = _it->value; \
+    CARMA_AUTO _slot = (table).indices.data; \
+    CARMA_FIND_INDEX_SLOT_FOR_KEY((table), _key, _slot); \
+    if (!carma_is_slot_empty(_slot)) { \
+        (_value) = (table).items.data[*_slot].value; \
     } \
 } while (0)
 
 #define GET_RANGE_KEY_VALUE(_key, _value, table) do { \
-    if (IS_EMPTY(table)) \
+    if (IS_EMPTY((table).items)) \
         break; \
-    CARMA_AUTO _it = (table).data; \
-    CARMA_FIND_FREE_INDEX_FOR_RANGE_KEY((table), (_key), _it); \
-    if (_it->occupied) { \
-        (_value) = _it->value; \
+    CARMA_AUTO _slot = (table).indices.data; \
+    CARMA_FIND_INDEX_SLOT_FOR_RANGE_KEY((table), (_key), _slot); \
+    if (!carma_is_slot_empty(_slot)) { \
+        (_value) = (table).items.data[*_slot].value; \
     } \
 } while (0)
 
@@ -96,76 +105,84 @@ bool carma_is_power_of_two(size_t n) {
     return (n != 0) && ((n & (n - 1)) == 0);
 }
 
-// Zero initializes with calloc so that occupied is false.
+#define CARMA_CLEAR_TABLE_INDICES(indices) do { \
+    memset((indices).data, CARMA_TABLE_EMPTY_INDEX_BYTE_PATTERN, (indices).capacity * sizeof(*(indices).data)); \
+} while (0)
+
 #define INIT_TABLE(table, mycapacity) do { \
     CHECK_INTERNAL(carma_is_power_of_two(mycapacity), "Table capacity should be a power of two"); \
-    CARMA_CALLOC((table).data, (mycapacity)); \
-    (table).count = (0); \
-    (table).capacity = (mycapacity); \
+    INIT_DARRAY((table).items, 0, (mycapacity)); \
+    CARMA_MALLOC((table).indices.data, (mycapacity)); \
+    (table).indices.capacity = (mycapacity); \
+    CARMA_CLEAR_TABLE_INDICES((table).indices); \
 } while (0)
 
-#define FREE_TABLE(table) FREE_DARRAY(table)
-
-#define CARMA_ENSURE_TABLE_CAPACITY_KEY(table) do { \
-    if ((table).count + 1 < 0.7 * (table).capacity) { \
-        break; \
-    } \
-    CARMA_AUTO new_capacity = CARMA_DOUBLED_CAPACITY((table).capacity); \
-    CARMA_AUTO new_table = table; \
-    INIT_TABLE(new_table, new_capacity); \
-    new_table.count = (table).count; \
-    FOR_EACH_TABLE(_old_item, (table)) { \
-        CARMA_AUTO _new_item = new_table.data; \
-        CARMA_FIND_FREE_INDEX_FOR_KEY((new_table), _old_item->key, _new_item); \
-        *_new_item = *_old_item; \
-    } \
-    FREE_TABLE(table); \
-    table = new_table; \
+#define FREE_TABLE(table) do { \
+    FREE_DARRAY((table).items); \
+    free((table).indices.data); \
+    (table).indices.data = NULL; \
+    (table).indices.capacity = 0; \
 } while (0)
 
-#define CARMA_ENSURE_TABLE_CAPACITY_RANGE_KEY(table) do { \
-    if ((table).count + 1 < 0.7 * (table).capacity) { \
-        break; \
+#define CARMA_IS_ABOVE_LOAD_FACTOR(table) ((table).items.count + 1 >= 0.7 * (table).indices.capacity)
+
+#define CARMA_INCREASE_TABLE_CAPACITY_KEY(table) do { \
+    CARMA_AUTO _new_capacity = CARMA_DOUBLED_CAPACITY((table).indices.capacity); \
+    free((table).indices.data); \
+    CARMA_MALLOC((table).indices.data, _new_capacity); \
+    (table).indices.capacity = _new_capacity; \
+    CARMA_CLEAR_TABLE_INDICES((table).indices); \
+    for (size_t _i = 0; _i < (table).items.count; ++_i) { \
+        CARMA_AUTO _slot = (table).indices.data; \
+        CARMA_FIND_INDEX_SLOT_FOR_KEY((table), (table).items.data[_i].key, _slot); \
+        *_slot = _i; \
     } \
-    CARMA_AUTO new_capacity = CARMA_DOUBLED_CAPACITY((table).capacity); \
-    CARMA_AUTO new_table = table; \
-    INIT_TABLE(new_table, new_capacity); \
-    new_table.count = (table).count; \
-    FOR_EACH_TABLE(_old_item, (table)) { \
-        CARMA_AUTO _new_item = new_table.data; \
-        CARMA_FIND_FREE_INDEX_FOR_RANGE_KEY((new_table), _old_item->key, _new_item); \
-        *_new_item = *_old_item; \
+} while (0)
+
+#define CARMA_INCREASE_TABLE_CAPACITY_RANGE_KEY(table) do { \
+    CARMA_AUTO _new_capacity = CARMA_DOUBLED_CAPACITY((table).indices.capacity); \
+    free((table).indices.data); \
+    CARMA_MALLOC((table).indices.data, _new_capacity); \
+    (table).indices.capacity = _new_capacity; \
+    CARMA_CLEAR_TABLE_INDICES((table).indices); \
+    FOR_INDEX(_i, (table).items) { \
+        CARMA_AUTO _slot = (table).indices.data; \
+        CARMA_FIND_INDEX_SLOT_FOR_RANGE_KEY((table), (table).items.data[_i].key, _slot); \
+        *_slot = _i; \
     } \
-    FREE_TABLE(table); \
-    table = new_table; \
 } while (0)
 
 #define SET_KEY_VALUE(k, v, table) do { \
-    CARMA_ENSURE_TABLE_CAPACITY_KEY(table); \
-    CARMA_AUTO _k = (k); \
-    CARMA_AUTO _item = (table).data; \
-    CARMA_FIND_FREE_INDEX_FOR_KEY((table), _k, _item); \
-    if (!_item->occupied) { \
-        (table).count++; \
+    if (CARMA_IS_ABOVE_LOAD_FACTOR(table)) { \
+        CARMA_INCREASE_TABLE_CAPACITY_KEY(table); \
     } \
-    _item->key = _k; \
-    _item->value = (v); \
-    _item->occupied = (true); \
-    CHECK_INTERNAL((table).count < (table).capacity, "There should always be room left in table"); \
+    CARMA_AUTO _k = (k); \
+    CARMA_AUTO _slot = (table).indices.data; \
+    CARMA_FIND_INDEX_SLOT_FOR_KEY((table), _k, _slot); \
+    if (carma_is_slot_empty(_slot)) { \
+        *_slot = (table).items.count; \
+        APPEND((table).items, MAKE(VALUE_TYPE((table).items), .key=_k, .value=(v))); \
+    } else { \
+        (table).items.data[*_slot].value = (v); \
+    } \
 } while (0)
 
 #define SET_RANGE_KEY_VALUE(k, v, table) do { \
-    CARMA_ENSURE_TABLE_CAPACITY_RANGE_KEY(table); \
-    CARMA_AUTO _k = (k); \
-    CARMA_AUTO _item = (table).data; \
-    CARMA_FIND_FREE_INDEX_FOR_RANGE_KEY((table), _k, _item); \
-    if (!_item->occupied) { \
-        (table).count++; \
+    if (CARMA_IS_ABOVE_LOAD_FACTOR(table)) { \
+        CARMA_INCREASE_TABLE_CAPACITY_RANGE_KEY(table); \
     } \
-    _item->key = _k; \
-    _item->value = (v); \
-    _item->occupied = (true); \
-    CHECK_INTERNAL((table).count < (table).capacity, "There should always be room left in table"); \
+    CARMA_AUTO _k = (k); \
+    CARMA_AUTO _slot = (table).indices.data; \
+    CARMA_FIND_INDEX_SLOT_FOR_RANGE_KEY((table), _k, _slot); \
+    if (carma_is_slot_empty(_slot)) { \
+        *_slot = (table).items.count; \
+        APPEND((table).items, MAKE(VALUE_TYPE((table).items), .key=_k, .value=(v))); \
+    } else { \
+        (table).items.data[*_slot].value = (v); \
+    } \
 } while (0)
 
-#define CLEAR_TABLE(table) do { FOR_EACH_TABLE(item, (table)) item->occupied = false; } while(0)
+#define CLEAR_TABLE(table) do { \
+    CLEAR((table).items); \
+    CARMA_CLEAR_TABLE_INDICES((table).indices); \
+} while (0)

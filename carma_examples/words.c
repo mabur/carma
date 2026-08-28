@@ -7,13 +7,17 @@
 typedef struct {
     StringView key;
     size_t value;
-    bool occupied;
 } Item;
 
 typedef struct {
     Item* data;
     size_t count;
     size_t capacity;
+} Items;
+
+typedef struct {
+    Items items;
+    TableIndices indices;
 } Table;
 
 Table count_words(StringView text) {
@@ -34,11 +38,11 @@ int main(int argc, char **argv) {
     auto file_path = argv[1];
     auto text = read_text_file(file_path);
     auto table = count_words(MAKE(StringView, .data = text.data, .count=text.count));
-    FOR_EACH_TABLE(item, table) {
+    FOR_EACH(item, table.items) {
         auto word = item->key;
         auto word_count = item->value;
         printf("%.*s (%zu)\n", (int)word.count, word.data, word_count);
     }
-    printf("%zu unique words\n", table.count);
+    printf("%zu unique words\n", table.items.count);
     return EXIT_SUCCESS;
 }
