@@ -1,4 +1,4 @@
-# Table Macros
+# Tables
 
 Carma support hash tables that look like this:
 ```clike
@@ -25,6 +25,8 @@ It is used under the hood to map from key hashes to array indices.
 
 The second part of a carma table is `Table.items` which is a normal dynamic array, that holds all items in insertion order.
 The keys can either be primitive types like integers, or ranges like Carma strings.
+
+## Table Macros
 
 You can use the normal range macros on `Table.items` as long as you don't modify the keys or change the size of the table. You should use the following dedicated table macros when you want to modify a table:
 
