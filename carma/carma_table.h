@@ -122,13 +122,13 @@ bool carma_is_power_of_two(size_t n) {
     } \
 } while (0)
 
-#define SET_KEY_VALUE(k, v, table) do { \
+#define SET_GENERIC_KEY_VALUE(k, v, table, hash_function, equality) do { \
     if (CARMA_IS_ABOVE_LOAD_FACTOR(table)) { \
-        CARMA_INCREASE_TABLE_CAPACITY(table, CARMA_HASH_KEY, ARE_EQUAL_PRIMITIVES); \
+        CARMA_INCREASE_TABLE_CAPACITY(table, hash_function, equality); \
     } \
     CARMA_AUTO _k = (k); \
     CARMA_AUTO _slot = (table).indices.data; \
-    CARMA_FIND_INDEX_SLOT_FOR_GENERIC_KEY((table), (_k), (_slot), CARMA_HASH_KEY, ARE_EQUAL_PRIMITIVES); \
+    CARMA_FIND_INDEX_SLOT_FOR_GENERIC_KEY((table), (_k), (_slot), hash_function, equality); \
     if (carma_is_slot_empty(_slot)) { \
         *_slot = (table).items.count; \
         APPEND((table).items, MAKE(VALUE_TYPE((table).items), .key=_k, .value=(v))); \
@@ -137,20 +137,11 @@ bool carma_is_power_of_two(size_t n) {
     } \
 } while (0)
 
-#define SET_RANGE_KEY_VALUE(k, v, table) do { \
-    if (CARMA_IS_ABOVE_LOAD_FACTOR(table)) { \
-        CARMA_INCREASE_TABLE_CAPACITY(table, CARMA_HASH_RANGE_KEY, ARE_EQUAL); \
-    } \
-    CARMA_AUTO _k = (k); \
-    CARMA_AUTO _slot = (table).indices.data; \
-    CARMA_FIND_INDEX_SLOT_FOR_GENERIC_KEY((table), (_k), (_slot), CARMA_HASH_RANGE_KEY, ARE_EQUAL); \
-    if (carma_is_slot_empty(_slot)) { \
-        *_slot = (table).items.count; \
-        APPEND((table).items, MAKE(VALUE_TYPE((table).items), .key=_k, .value=(v))); \
-    } else { \
-        (table).items.data[*_slot].value = (v); \
-    } \
-} while (0)
+#define SET_KEY_VALUE(k, v, table) \
+    SET_GENERIC_KEY_VALUE(k, v, table, CARMA_HASH_KEY, ARE_EQUAL_PRIMITIVES)
+
+#define SET_RANGE_KEY_VALUE(k, v, table) \
+    SET_GENERIC_KEY_VALUE(k, v, table, CARMA_HASH_RANGE_KEY, ARE_EQUAL)
 
 #define CLEAR_TABLE(table) do { \
     CLEAR((table).items); \
