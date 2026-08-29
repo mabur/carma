@@ -74,8 +74,8 @@ bool carma_is_slot_empty(size_t* index) {
 #define GET_KEY_VALUE(k, _value, table) \
     GET_GENERIC_KEY_VALUE(k, _value, table, CARMA_HASH_KEY, ARE_EQUAL_PRIMITIVES)
 
-#define GET_RANGE_KEY_VALUE(_key, _value, table) \
-    GET_GENERIC_KEY_VALUE(_key, _value, table, CARMA_HASH_RANGE_KEY, ARE_EQUAL)
+#define GET_RANGE_KEY_VALUE(k, _value, table) \
+    GET_GENERIC_KEY_VALUE(k, _value, table, CARMA_HASH_RANGE_KEY, ARE_EQUAL)
 
 ////////////////////////////////////////////////////////////////////////////////
 // MODIFY TABLE
