@@ -92,6 +92,11 @@ bool carma_is_power_of_two(size_t n) {
     memset((indices).data, CARMA_TABLE_EMPTY_INDEX_BYTE_PATTERN, (indices).capacity * sizeof(*(indices).data)); \
 } while (0)
 
+#define CLEAR_TABLE(table) do { \
+    CLEAR((table).items); \
+    CARMA_CLEAR_TABLE_INDICES((table).indices); \
+} while (0)
+
 #define INIT_TABLE(table, mycapacity) do { \
     CHECK_INTERNAL(carma_is_power_of_two(mycapacity), "Table capacity should be a power of two"); \
     INIT_DARRAY((table).items, 0, (mycapacity)); \
@@ -142,8 +147,3 @@ bool carma_is_power_of_two(size_t n) {
 
 #define SET_RANGE_KEY_VALUE(k, v, table) \
     SET_GENERIC_KEY_VALUE(k, v, table, CARMA_HASH_RANGE_KEY, ARE_EQUAL)
-
-#define CLEAR_TABLE(table) do { \
-    CLEAR((table).items); \
-    CARMA_CLEAR_TABLE_INDICES((table).indices); \
-} while (0)
