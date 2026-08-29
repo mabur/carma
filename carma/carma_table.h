@@ -60,26 +60,22 @@ bool carma_is_slot_empty(size_t* index) {
     CHECK_INTERNAL(_found, "Error in CARMA_FIND_INDEX_SLOT_FOR_GENERIC_KEY"); \
 } while (0)
 
-#define GET_KEY_VALUE(k, _value, table) do { \
+#define GET_GENERIC_KEY_VALUE(k, _value, table, hash_function, equality) do { \
     if (IS_EMPTY((table).items)) \
         break; \
     CARMA_AUTO _key = (k); \
     CARMA_AUTO _slot = (table).indices.data; \
-    CARMA_FIND_INDEX_SLOT_FOR_GENERIC_KEY((table), (_key), (_slot), CARMA_HASH_KEY, ARE_EQUAL_PRIMITIVES); \
+    CARMA_FIND_INDEX_SLOT_FOR_GENERIC_KEY((table), (_key), (_slot), hash_function, equality); \
     if (!carma_is_slot_empty(_slot)) { \
         (_value) = (table).items.data[*_slot].value; \
     } \
 } while (0)
 
-#define GET_RANGE_KEY_VALUE(_key, _value, table) do { \
-    if (IS_EMPTY((table).items)) \
-        break; \
-    CARMA_AUTO _slot = (table).indices.data; \
-    CARMA_FIND_INDEX_SLOT_FOR_GENERIC_KEY((table), (_key), (_slot), CARMA_HASH_RANGE_KEY, ARE_EQUAL); \
-    if (!carma_is_slot_empty(_slot)) { \
-        (_value) = (table).items.data[*_slot].value; \
-    } \
-} while (0)
+#define GET_KEY_VALUE(k, _value, table) \
+    GET_GENERIC_KEY_VALUE(k, _value, table, CARMA_HASH_KEY, ARE_EQUAL_PRIMITIVES)
+
+#define GET_RANGE_KEY_VALUE(_key, _value, table) \
+    GET_GENERIC_KEY_VALUE(_key, _value, table, CARMA_HASH_RANGE_KEY, ARE_EQUAL)
 
 ////////////////////////////////////////////////////////////////////////////////
 // MODIFY TABLE
