@@ -60,18 +60,12 @@ bool carma_is_slot_empty(size_t* index) {
     CHECK_INTERNAL(_found, "Error in CARMA_FIND_INDEX_SLOT_FOR_GENERIC_KEY"); \
 } while (0)
 
-#define CARMA_FIND_INDEX_SLOT_FOR_KEY(table, k, _slot) \
-    CARMA_FIND_INDEX_SLOT_FOR_GENERIC_KEY((table), (k), (_slot), CARMA_HASH_KEY, ARE_EQUAL_PRIMITIVES)
-
-#define CARMA_FIND_INDEX_SLOT_FOR_RANGE_KEY(table, k, _slot) \
-    CARMA_FIND_INDEX_SLOT_FOR_GENERIC_KEY((table), (k), (_slot), CARMA_HASH_RANGE_KEY, ARE_EQUAL)
-
 #define GET_KEY_VALUE(k, _value, table) do { \
     if (IS_EMPTY((table).items)) \
         break; \
     CARMA_AUTO _key = (k); \
     CARMA_AUTO _slot = (table).indices.data; \
-    CARMA_FIND_INDEX_SLOT_FOR_KEY((table), _key, _slot); \
+    CARMA_FIND_INDEX_SLOT_FOR_GENERIC_KEY((table), (_key), (_slot), CARMA_HASH_KEY, ARE_EQUAL_PRIMITIVES); \
     if (!carma_is_slot_empty(_slot)) { \
         (_value) = (table).items.data[*_slot].value; \
     } \
@@ -81,7 +75,7 @@ bool carma_is_slot_empty(size_t* index) {
     if (IS_EMPTY((table).items)) \
         break; \
     CARMA_AUTO _slot = (table).indices.data; \
-    CARMA_FIND_INDEX_SLOT_FOR_RANGE_KEY((table), (_key), _slot); \
+    CARMA_FIND_INDEX_SLOT_FOR_GENERIC_KEY((table), (_key), (_slot), CARMA_HASH_RANGE_KEY, ARE_EQUAL); \
     if (!carma_is_slot_empty(_slot)) { \
         (_value) = (table).items.data[*_slot].value; \
     } \
@@ -127,7 +121,7 @@ bool carma_is_power_of_two(size_t n) {
     CARMA_CLEAR_TABLE_INDICES((table).indices); \
     for (size_t _i = 0; _i < (table).items.count; ++_i) { \
         CARMA_AUTO _slot = (table).indices.data; \
-        CARMA_FIND_INDEX_SLOT_FOR_KEY((table), (table).items.data[_i].key, _slot); \
+        CARMA_FIND_INDEX_SLOT_FOR_GENERIC_KEY((table), (table).items.data[_i].key, (_slot), CARMA_HASH_KEY, ARE_EQUAL_PRIMITIVES); \
         *_slot = _i; \
     } \
 } while (0)
@@ -140,7 +134,7 @@ bool carma_is_power_of_two(size_t n) {
     CARMA_CLEAR_TABLE_INDICES((table).indices); \
     FOR_INDEX(_i, (table).items) { \
         CARMA_AUTO _slot = (table).indices.data; \
-        CARMA_FIND_INDEX_SLOT_FOR_RANGE_KEY((table), (table).items.data[_i].key, _slot); \
+        CARMA_FIND_INDEX_SLOT_FOR_GENERIC_KEY((table), (table).items.data[_i].key, (_slot), CARMA_HASH_RANGE_KEY, ARE_EQUAL); \
         *_slot = _i; \
     } \
 } while (0)
@@ -151,7 +145,7 @@ bool carma_is_power_of_two(size_t n) {
     } \
     CARMA_AUTO _k = (k); \
     CARMA_AUTO _slot = (table).indices.data; \
-    CARMA_FIND_INDEX_SLOT_FOR_KEY((table), _k, _slot); \
+    CARMA_FIND_INDEX_SLOT_FOR_GENERIC_KEY((table), (_k), (_slot), CARMA_HASH_KEY, ARE_EQUAL_PRIMITIVES); \
     if (carma_is_slot_empty(_slot)) { \
         *_slot = (table).items.count; \
         APPEND((table).items, MAKE(VALUE_TYPE((table).items), .key=_k, .value=(v))); \
@@ -166,7 +160,7 @@ bool carma_is_power_of_two(size_t n) {
     } \
     CARMA_AUTO _k = (k); \
     CARMA_AUTO _slot = (table).indices.data; \
-    CARMA_FIND_INDEX_SLOT_FOR_RANGE_KEY((table), _k, _slot); \
+    CARMA_FIND_INDEX_SLOT_FOR_GENERIC_KEY((table), (_k), (_slot), CARMA_HASH_RANGE_KEY, ARE_EQUAL); \
     if (carma_is_slot_empty(_slot)) { \
         *_slot = (table).items.count; \
         APPEND((table).items, MAKE(VALUE_TYPE((table).items), .key=_k, .value=(v))); \
