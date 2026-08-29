@@ -113,7 +113,7 @@ bool carma_is_power_of_two(size_t n) {
 
 #define CARMA_IS_ABOVE_LOAD_FACTOR(table) ((table).items.count + 1 >= 0.7 * (table).indices.capacity)
 
-#define CARMA_INCREASE_TABLE_CAPACITY_KEY(table) do { \
+#define CARMA_INCREASE_TABLE_CAPACITY(table, hash_function, equality) do { \
     CARMA_AUTO _new_capacity = CARMA_DOUBLED_CAPACITY((table).indices.capacity); \
     free((table).indices.data); \
     CARMA_MALLOC((table).indices.data, _new_capacity); \
@@ -121,27 +121,14 @@ bool carma_is_power_of_two(size_t n) {
     CARMA_CLEAR_TABLE_INDICES((table).indices); \
     for (size_t _i = 0; _i < (table).items.count; ++_i) { \
         CARMA_AUTO _slot = (table).indices.data; \
-        CARMA_FIND_INDEX_SLOT_FOR_GENERIC_KEY((table), (table).items.data[_i].key, (_slot), CARMA_HASH_KEY, ARE_EQUAL_PRIMITIVES); \
-        *_slot = _i; \
-    } \
-} while (0)
-
-#define CARMA_INCREASE_TABLE_CAPACITY_RANGE_KEY(table) do { \
-    CARMA_AUTO _new_capacity = CARMA_DOUBLED_CAPACITY((table).indices.capacity); \
-    free((table).indices.data); \
-    CARMA_MALLOC((table).indices.data, _new_capacity); \
-    (table).indices.capacity = _new_capacity; \
-    CARMA_CLEAR_TABLE_INDICES((table).indices); \
-    FOR_INDEX(_i, (table).items) { \
-        CARMA_AUTO _slot = (table).indices.data; \
-        CARMA_FIND_INDEX_SLOT_FOR_GENERIC_KEY((table), (table).items.data[_i].key, (_slot), CARMA_HASH_RANGE_KEY, ARE_EQUAL); \
+        CARMA_FIND_INDEX_SLOT_FOR_GENERIC_KEY((table), (table).items.data[_i].key, (_slot), hash_function, equality); \
         *_slot = _i; \
     } \
 } while (0)
 
 #define SET_KEY_VALUE(k, v, table) do { \
     if (CARMA_IS_ABOVE_LOAD_FACTOR(table)) { \
-        CARMA_INCREASE_TABLE_CAPACITY_KEY(table); \
+        CARMA_INCREASE_TABLE_CAPACITY(table, CARMA_HASH_KEY, ARE_EQUAL_PRIMITIVES); \
     } \
     CARMA_AUTO _k = (k); \
     CARMA_AUTO _slot = (table).indices.data; \
@@ -156,7 +143,7 @@ bool carma_is_power_of_two(size_t n) {
 
 #define SET_RANGE_KEY_VALUE(k, v, table) do { \
     if (CARMA_IS_ABOVE_LOAD_FACTOR(table)) { \
-        CARMA_INCREASE_TABLE_CAPACITY_RANGE_KEY(table); \
+        CARMA_INCREASE_TABLE_CAPACITY(table, CARMA_HASH_RANGE_KEY, ARE_EQUAL); \
     } \
     CARMA_AUTO _k = (k); \
     CARMA_AUTO _slot = (table).indices.data; \
