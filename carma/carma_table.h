@@ -27,7 +27,7 @@ size_t carma_hash_bytes(size_t hash, const char* data, size_t count) {
 
 #define CARMA_HASH_INIT 5381
 
-#define CARMA_HASH_KEY(key) \
+#define CARMA_HASH_PRIMITIVE_KEY(key) \
     carma_hash_bytes(CARMA_HASH_INIT, (const char*)&(key), sizeof(key))
 
 #define CARMA_HASH_RANGE_KEY(key) \
@@ -72,7 +72,7 @@ bool carma_is_slot_empty(size_t* index) {
 } while (0)
 
 #define GET_KEY_VALUE(k, _value, table) \
-    GET_GENERIC_KEY_VALUE(k, _value, table, CARMA_HASH_KEY, ARE_EQUAL_PRIMITIVES)
+    GET_GENERIC_KEY_VALUE(k, _value, table, CARMA_HASH_PRIMITIVE_KEY, ARE_EQUAL_PRIMITIVES)
 
 #define GET_RANGE_KEY_VALUE(k, _value, table) \
     GET_GENERIC_KEY_VALUE(k, _value, table, CARMA_HASH_RANGE_KEY, ARE_EQUAL)
@@ -138,7 +138,7 @@ bool carma_is_power_of_two(size_t n) {
 } while (0)
 
 #define SET_KEY_VALUE(k, v, table) \
-    SET_GENERIC_KEY_VALUE(k, v, table, CARMA_HASH_KEY, ARE_EQUAL_PRIMITIVES)
+    SET_GENERIC_KEY_VALUE(k, v, table, CARMA_HASH_PRIMITIVE_KEY, ARE_EQUAL_PRIMITIVES)
 
 #define SET_RANGE_KEY_VALUE(k, v, table) \
     SET_GENERIC_KEY_VALUE(k, v, table, CARMA_HASH_RANGE_KEY, ARE_EQUAL)
