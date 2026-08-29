@@ -43,35 +43,28 @@ bool carma_is_slot_empty(size_t* index) {
     return *index == SIZE_MAX;
 }
 
-#define CARMA_FIND_INDEX_SLOT_FOR_KEY(table, k, _slot) do { \
+#define ARE_EQUAL_PRIMITIVES(a, b) ((a) == (b))
+
+#define CARMA_FIND_INDEX_SLOT_FOR_GENERIC_KEY(table, k, _slot, hash_function, equality) do { \
     size_t _capacity = (table).indices.capacity; \
     CHECK_INTERNAL(_capacity, "Unexpected zero capacity"); \
-    CARMA_AUTO _base = CARMA_HASH_KEY(k) % _capacity; \
+    CARMA_AUTO _base = hash_function(k) % _capacity; \
     bool _found = false; \
     for (size_t _offset = 0; _offset < _capacity; ++_offset) { \
         (_slot) = (table).indices.data + (_base + _offset) % _capacity; \
-        if (carma_is_slot_empty(_slot) || (table).items.data[*(_slot)].key == (k)) { \
+        if (carma_is_slot_empty(_slot) || equality((table).items.data[*(_slot)].key, (k))) { \
             _found = true; \
             break; \
         } \
     } \
-    CHECK_INTERNAL(_found, "Error in CARMA_FIND_INDEX_SLOT_FOR_KEY "); \
+    CHECK_INTERNAL(_found, "Error in CARMA_FIND_INDEX_SLOT_FOR_GENERIC_KEY"); \
 } while (0)
 
-#define CARMA_FIND_INDEX_SLOT_FOR_RANGE_KEY(table, k, _slot) do { \
-    size_t _capacity = (table).indices.capacity; \
-    CHECK_INTERNAL(_capacity, "Unexpected zero capacity"); \
-    CARMA_AUTO _base = CARMA_HASH_RANGE_KEY(k) % _capacity; \
-    bool _found = false; \
-    for (size_t _offset = 0; _offset < _capacity; ++_offset) { \
-        (_slot) = (table).indices.data + (_base + _offset) % _capacity; \
-        if (carma_is_slot_empty(_slot) || ARE_EQUAL((table).items.data[*(_slot)].key, (k))) { \
-            _found = true; \
-            break; \
-        } \
-    } \
-    CHECK_INTERNAL(_found, "Error in CARMA_FIND_INDEX_SLOT_FOR_RANGE_KEY "); \
-} while (0)
+#define CARMA_FIND_INDEX_SLOT_FOR_KEY(table, k, _slot) \
+    CARMA_FIND_INDEX_SLOT_FOR_GENERIC_KEY((table), (k), (_slot), CARMA_HASH_KEY, ARE_EQUAL_PRIMITIVES)
+
+#define CARMA_FIND_INDEX_SLOT_FOR_RANGE_KEY(table, k, _slot) \
+    CARMA_FIND_INDEX_SLOT_FOR_GENERIC_KEY((table), (k), (_slot), CARMA_HASH_RANGE_KEY, ARE_EQUAL)
 
 #define GET_KEY_VALUE(k, _value, table) do { \
     if (IS_EMPTY((table).items)) \
